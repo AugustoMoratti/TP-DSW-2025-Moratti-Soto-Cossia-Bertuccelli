@@ -18,7 +18,7 @@ Nuestra propuesta se basa en una aplicacion online que logre conectar dos person
 
 ### Diagrama Entidad-Relacion
 ![Captura de pantalla del Diagrama de Entidad-Relacion del TP](https://github.com/user-attachments/assets/7a9126e5-7d5f-4f91-b585-e3889516c32d)
-![Captura de pantalla del Diagrama de Entidad-Relacion del TP2](https://discord.com/channels/1291509159384318072/1358573613904695547/1387279114414723192)
+![Captura de pantalla del Diagrama de Entidad-Relacion del TP2](https://cdn.discordapp.com/attachments/1358573613904695547/1387279114213265478/DSW.jpg?ex=68694a1b&is=6867f89b&hm=bcbf9544505180f2cfbd93cc1ac7d18d0c95f82fb8e37d8b97653f050c2c20ae&)
 
 ## Alcance Funcional
 

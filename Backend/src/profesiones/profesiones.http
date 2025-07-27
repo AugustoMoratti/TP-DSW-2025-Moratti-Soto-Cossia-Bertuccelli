@@ -1,0 +1,40 @@
+GET http://localhost:3000/api/profesiones
+
+### Obtener una profesiones (Con el id o cualquier otro atributo de la class)
+GET http://localhost:3000/api/profesiones/a02b91bc-3769-4221-beb1-d7a3aeba7dad
+
+### Crear una nueva profesiones (POST - crear recurso)
+POST http://localhost:3000/api/profesiones
+Content-Type: application/json
+
+{ 
+  "nombreProf": "Plomero",
+  "estado": true
+}
+
+### Modifica una profesiones (PUT - modificar recurso completo e idempotente)
+PUT http://localhost:3000/api/profesiones/a02b91bc-3769-4221-beb1-d7a3aeba7dad
+Content-Type: application/json
+
+{ 
+  "nombreProf": "Ingeniero",
+  "estado": true
+}
+
+### Modificar una profesiones (PATCH - modificar recurso parcialmente)
+PATCH http://localhost:3000/api/profesiones/a02b91bc-3769-4221-beb1-d7a3aeba7dad
+Content-Type: application/json
+
+{ 
+  "nombreProf": "Ingeniero",
+  "estado": true
+}
+
+### Eliminar una provicia (DELETE - eliminar recurso)
+DELETE http://localhost:3000/api/profesiones/a02b91bc-3769-4221-beb1-d7a3aeba7dad
+
+
+/* La extension REST Client, nos permite hacer peticiones sin la 
+la necesidad del navegador, por ejemplo meter un archivo reversionado
+dentro del proyecto y realizarle peticiones y controlar que funcione
+todo correctamente */

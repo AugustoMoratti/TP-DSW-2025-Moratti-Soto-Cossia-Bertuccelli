@@ -1,0 +1,1 @@
+{"version":3,"file":"provincia.entity.js","sourceRoot":"","sources":["../../Backend/src/provincia/provincia.entity.ts"],"names":[],"mappings":"AAAA,OAAO,MAAM,MAAM,aAAa,CAAA;AAEhC,MAAM,OAAO,SAAS;IACpB,YACS,MAAc,EACd,MAAe,EACf,KAAK,MAAM,CAAC,UAAU,EAAE;QAFxB,WAAM,GAAN,MAAM,CAAQ;QACd,WAAM,GAAN,MAAM,CAAS;QACf,OAAE,GAAF,EAAE,CAAsB;IAC7B,CAAC;CACN"}

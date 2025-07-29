@@ -1,10 +1,10 @@
-GET http://localhost:3000/api/profesiones
+GET http://localhost:3000/api/profesion
 
 ### Obtener una profesiones (Con el id o cualquier otro atributo de la class)
-GET http://localhost:3000/api/profesiones/a02b91bc-3769-4221-beb1-d7a3aeba7dad
+GET http://localhost:3000/api/profesion/a02b91bc-3769-4221-beb1-d7a3aeba7dad
 
 ### Crear una nueva profesiones (POST - crear recurso)
-POST http://localhost:3000/api/profesiones
+POST http://localhost:3000/api/profesion
 Content-Type: application/json
 
 { 
@@ -13,7 +13,7 @@ Content-Type: application/json
 }
 
 ### Modifica una profesiones (PUT - modificar recurso completo e idempotente)
-PUT http://localhost:3000/api/profesiones/a02b91bc-3769-4221-beb1-d7a3aeba7dad
+PUT http://localhost:3000/api/profesion/a02b91bc-3769-4221-beb1-d7a3aeba7dad
 Content-Type: application/json
 
 { 
@@ -22,7 +22,7 @@ Content-Type: application/json
 }
 
 ### Modificar una profesiones (PATCH - modificar recurso parcialmente)
-PATCH http://localhost:3000/api/profesiones/a02b91bc-3769-4221-beb1-d7a3aeba7dad
+PATCH http://localhost:3000/api/profesion/a02b91bc-3769-4221-beb1-d7a3aeba7dad
 Content-Type: application/json
 
 { 
@@ -31,7 +31,7 @@ Content-Type: application/json
 }
 
 ### Eliminar una provicia (DELETE - eliminar recurso)
-DELETE http://localhost:3000/api/profesiones/a02b91bc-3769-4221-beb1-d7a3aeba7dad
+DELETE http://localhost:3000/api/profesion/a02b91bc-3769-4221-beb1-d7a3aeba7dad
 
 
 /* La extension REST Client, nos permite hacer peticiones sin la 

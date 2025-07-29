@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { sanitizeProfesionesInput, findAll, findOne, add, update, remove } from './profesion.controler.js'; //Si sale error, es porque todavia no se han definido las funciones en el controlador
+import { sanitizeProfesionesInput, findAll, findOne, add, update, remove } from './profesion.controler.js';
 export const profesionesRouter = Router();
 profesionesRouter.get('/', findAll);
 profesionesRouter.get('/:id', findOne);

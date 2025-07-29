@@ -57,7 +57,7 @@ function remove(req, res) {
         res.status(404).send({ message: 'No se encontro la profesion' });
         return;
     }
-    res.status(200).send({ message: 'Profesion eliminada con exito', data: profesion });
+    res.status(200).send({ message: 'Profesion eliminada con exito', data: profesion }); //Se pone return?
 }
 export { sanitizeProfesionesInput, findAll, findOne, add, update, remove };
 //# sourceMappingURL=profesion.controler.js.map

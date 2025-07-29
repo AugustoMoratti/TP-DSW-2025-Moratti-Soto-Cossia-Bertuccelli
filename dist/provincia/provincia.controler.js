@@ -58,4 +58,5 @@ function remove(req, res) {
     }
 }
 export { sanitizeProvinciaInput, findAll, findOne, add, update, remove };
+//PONER LOS RETURN DE LOS MENSAJEs
 //# sourceMappingURL=provincia.controler.js.map

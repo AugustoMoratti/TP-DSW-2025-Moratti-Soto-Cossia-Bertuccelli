@@ -34,6 +34,7 @@ export class UsuarioRepository implements Repository<Usuario> {
     }
   }
 
+  //Falta terminar
   public update(item: Usuario): Usuario | undefined {
     const usuarioIdx = usuarios.findIndex((usuario) => usuario.id === item.id)
 

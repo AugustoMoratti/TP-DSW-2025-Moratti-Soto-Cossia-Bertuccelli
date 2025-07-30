@@ -70,6 +70,7 @@ function add(req: Request, res: Response) {
   }
 }
 
+//Falta terminar
 function update(req: Request, res: Response) {
   req.body.sanitizedInput.id = req.params.id
 

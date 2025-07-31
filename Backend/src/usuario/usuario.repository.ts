@@ -10,7 +10,7 @@ const usuarios = [
     'agus@gmail.com',
     'Usuario No profesional',
     34123456789,
-    '2500',
+    '2000',
     'a02b91bc-3769-4221-beb1-d7a3aeba7dad'
   ),
 ]

@@ -1,6 +1,6 @@
 import { Usuario } from './usuario.entity.js';
 const usuarios = [
-    new Usuario('Augusto', 'Moratti', 'a1b2c3', 'agus@gmail.com', 'Usuario No profesional', 34123456789, '2500'),
+    new Usuario('Augusto', 'Moratti', 'a1b2c3', 'agus@gmail.com', 'Usuario No profesional', 34123456789, '2500', 'a02b91bc-3769-4221-beb1-d7a3aeba7dad'),
 ];
 export class UsuarioRepository {
     findAll() {
@@ -19,6 +19,7 @@ export class UsuarioRepository {
             return;
         }
     }
+    //Falta terminar
     update(item) {
         const usuarioIdx = usuarios.findIndex((usuario) => usuario.id === item.id);
         if (usuarioIdx !== -1) {

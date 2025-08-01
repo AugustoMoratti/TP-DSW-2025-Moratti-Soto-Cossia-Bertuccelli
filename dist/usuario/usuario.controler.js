@@ -60,7 +60,7 @@ function update(req, res) {
     // Si se intenta modificar el codigoPostal, verificar que exista en localidades
     if (req.body.sanitizedInput.codigoPostal && req.body.sanitizedInput.codigoPostal !== usuarioActual.codigoPostal) {
         if (!localidadRepo.findOne({ id: req.body.sanitizedInput.codigoPostal })) {
-            return res.status(400).send({ message: 'La nueva localidad no existe' });
+            return res.status(400).send({ message: 'La nueva localidad no existe, no se pudo actualizar el usuario' });
         }
     }
     const usuarioActualizado = repository.update(req.body.sanitizedInput);

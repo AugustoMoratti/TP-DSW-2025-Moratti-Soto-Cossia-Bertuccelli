@@ -36,6 +36,3 @@ Adicional para Aprobación:
 |:-|:-|
 |CRUD |1. CRUD Provincia<br/>2. CRUD Profesiones<br/>3. CRUD Usuarios<br/>4. CRUD Localidad<br/>5. CRUD Admin<br/>6. CRUD Cliente/Profesional|
 |CUU/Epic|1. Agendar trabajo<br/>2. Aceptar trabajo<br/>3. Reseñar Trabajo<br/>4. Cancelar Trabajo<br/>5. Pagar Trabajo<br/>6. Ver estado de cuotas de pago<br/>7. Solicitar nueva profesion<br/>8. Recuperar contraseña<br/>|
-
-
-BORRAR DIST - NODE_MODULES - PUSH - GIT IGNORE - PUSH - pnpm install

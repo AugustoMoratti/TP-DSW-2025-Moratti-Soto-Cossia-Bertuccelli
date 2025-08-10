@@ -17,8 +17,7 @@
 Nuestra propuesta se basa en una aplicacion online que logre conectar dos personas, un primer usuario que requiere de un servicio (como puede ser un electricista) y otro tipo de usuario que ofrezca sus servicios, en la cual los usuarios puedan encontrar, postular y puntuar profesionales que estén ofreciendo sus servicios. estos servicios están orientado a oficios como electricista, plomero o carpintero, todos con su debida acreditación y con reseñas de usuarios. La idea es crear un lugar donde se pueden encontrar profesionales con validaciones de usuarios previos con sus experiencia.
 
 ### Diagrama Entidad-Relacion (D-E-R)
-![Captura de pantalla del Diagrama de Entidad-Relacion del TP](https://github.com/user-attachments/assets/bd5c4105-e9cd-4c32-a217-db27fa7ecbd3)
-
+![Captura de pantalla del Diagrama de Entidad-Relacion del TP](https://github.com/user-attachments/assets/b7a62e4b-aeb3-47e8-b06b-d0420080d068)
 
 ## Alcance Funcional
 

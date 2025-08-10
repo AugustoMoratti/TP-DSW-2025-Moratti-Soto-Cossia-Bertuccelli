@@ -66,7 +66,7 @@ function remove(req: Request, res: Response) {
   const provincia = repository.delete({ id })
 
   if (!provincia) {
-    res.status(404).send({ message: 'La provincia no se encontro' })
+    return res.status(404).send({ message: 'La provincia no se encontro' })
   } else {
     res.status(200).send({ message: 'Provincia borrada correctamente' })
   }
@@ -74,4 +74,3 @@ function remove(req: Request, res: Response) {
 
 export { sanitizeProvinciaInput, findAll, findOne, add, update, remove }
 
-//PONER LOS RETURN DE LOS MENSAJEs

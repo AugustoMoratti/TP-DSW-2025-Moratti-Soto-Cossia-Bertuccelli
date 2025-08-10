@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from 'express'
-import { ProvinciaRepository } from './provincia.repository.js'
 import { Provincia } from './provincia.entity.js'
+import { orm } from '../../DB/orm.js';
 
-const repository = new ProvinciaRepository()
+const em = orm.em
 
 function sanitizeProvinciaInput(req: Request, res: Response, next: NextFunction) {
   req.body.sanitizedInput = {
@@ -17,58 +17,62 @@ function sanitizeProvinciaInput(req: Request, res: Response, next: NextFunction)
   next()
 }
 
-function findAll(req: Request, res: Response) {
-  res.json({ data: repository.findAll() })
-}
-
-function findOne(req: Request, res: Response) {
-  const id = req.params.id
-  const provincia = repository.findOne({ id })
-  if (!provincia) {
-    res.status(404).send({ message: 'La provincia no se encontro' })
-    return
-  }
-  res.json({ data: provincia })
-}
-
-function add(req: Request, res: Response) {
-  const input = req.body.sanitizedInput
-
-  const provinciaInput = new Provincia(
-    input.nombre,
-    input.estado,
-  )
-
-  const provincia = repository.add(provinciaInput)
-  if (provincia) {
-    res.status(201).send({ message: 'Provincia creada', data: provincia })
-    return
-  } else {
-    res.status(404).send({ message: 'Provincia ya existente' })
-    return
+async function findAll(req: Request, res: Response) {
+  try {
+    const provincia = await em.find(
+      Provincia,
+      {},
+    )
+    res.status(200).json({ message: 'found all Provincia', data: provincia })
+  } catch (error: any) {
+    res.status(500).json({ message: error.message })
   }
 }
 
-function update(req: Request, res: Response) {
-  req.body.sanitizedInput.id = req.params.id
-  const provincia = repository.update(req.body.sanitizedInput)
-
-  if (!provincia) {
-    res.status(404).send({ message: 'La provincia no se encontro' })
-    return
+async function findOne(req: Request, res: Response) {
+  try {
+    const id = Number.parseInt(req.params.id)
+    const provincia = await em.findOneOrFail(
+      Provincia,
+      { id },
+    )
+    res.status(200).json({ message: 'found provincia', data: provincia })
+  } catch (error: any) {
+    res.status(500).json({ message: error.message })
   }
-
-  res.status(200).send({ message: 'Provincia actualizada correctamente', data: provincia })
 }
 
-function remove(req: Request, res: Response) {
-  const id = req.params.id
-  const provincia = repository.delete({ id })
+async function add(req: Request, res: Response) {
+  try {
+    const provincia = em.create(Provincia, req.body.sanitizedInput)
+    await em.flush()
+    res.status(201).json({ message: 'provincia created', data: provincia })
+  } catch (error: any) {
+    res.status(500).json({ message: error.message })
+  }
+}
 
-  if (!provincia) {
-    return res.status(404).send({ message: 'La provincia no se encontro' })
-  } else {
-    res.status(200).send({ message: 'Provincia borrada correctamente' })
+async function update(req: Request, res: Response) {
+  try {
+    const id = Number.parseInt(req.params.id)
+    const provinciaToUpdate = await em.findOneOrFail(Provincia, { id })
+    em.assign(provinciaToUpdate, req.body.sanitizedInput)
+    await em.flush()
+    res
+      .status(200)
+      .json({ message: 'provincia updated', data: provinciaToUpdate })
+  } catch (error: any) {
+    res.status(500).json({ message: error.message })
+  }
+}
+
+async function remove(req: Request, res: Response) {
+  try {
+    const id = Number.parseInt(req.params.id)
+    const provincia = em.getReference(Provincia, id)
+    await em.removeAndFlush(provincia)
+  } catch (error: any) {
+    res.status(500).json({ message: error.message })
   }
 }
 

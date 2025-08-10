@@ -1,11 +1,12 @@
 import { Router } from "express"
-import { sanitizeLocalidadInput, findOneLocalidad, findAllLocalidad, addLocalidad, updateLocalidad, removeLocalidad } from "./localidad.controler.js" //Sale error pues no estan definidas
+import { sanitizeLocalidadInput, findOne, findAll, add, update, remove } from "./localidad.controler.js" 
+import { removeListener } from "process"
 
 export const localidadesRouter = Router()
 
-localidadesRouter.get('/', findAllLocalidad)
-localidadesRouter.get('/:id', findOneLocalidad)
-localidadesRouter.post('/', sanitizeLocalidadInput, addLocalidad)
-localidadesRouter.put('/:id', sanitizeLocalidadInput, updateLocalidad)
-localidadesRouter.patch('/;id', sanitizeLocalidadInput, updateLocalidad)
-localidadesRouter.delete('/:id', removeLocalidad)
+localidadesRouter.get('/', findAll)
+localidadesRouter.get('/:id', findOne)
+localidadesRouter.post('/', sanitizeLocalidadInput, add)
+localidadesRouter.put('/:id', sanitizeLocalidadInput, update)
+localidadesRouter.patch('/;id', sanitizeLocalidadInput, update)
+localidadesRouter.delete('/:id', remove)

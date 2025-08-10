@@ -1,11 +1,8 @@
 import { Request, Response, NextFunction } from 'express'
-import { UsuarioRepository } from './usuario.repository.js'
 import { Usuario } from './usuario.entity.js'
-import { LocalidadRepository } from '../localidad/localidad.repository.js' // IMPORTARLO
+import { orm } from '../../DB/orm.js';
 
-const localidadRepo = new LocalidadRepository()
-
-const repository = new UsuarioRepository()
+const em = orm.em
 
 function sanitizeUsuarioInput(req: Request, res: Response, next: NextFunction) {
   req.body.sanitizedInput = {
@@ -27,77 +24,61 @@ function sanitizeUsuarioInput(req: Request, res: Response, next: NextFunction) {
   next()
 }
 
-function findAll(req: Request, res: Response) {
-  res.json({ data: repository.findAll() })
-}
-
-function findOne(req: Request, res: Response) {
-  const id = req.params.id
-  const usuario = repository.findOne({ id })
-  if (!usuario) {
-    res.status(404).send({ message: 'El usuario no se encontró' })
-    return
-  }
-  res.json({ data: usuario })
-}
-
-function add(req: Request, res: Response) {
-  const input = req.body.sanitizedInput
-
-  const localidadExiste = localidadRepo.findOne({ id: input.codigoPostal }) // el input.localidad contiene el código postal
-  if (!localidadExiste) {
-    return res.status(404).send({ message: 'El código postal ingresado no corresponde a una localidad registrada' })
-  }
-
-  const usuarioInput = new Usuario(
-    input.nombre,
-    input.apellido,
-    input.clave,
-    input.email,
-    input.descripcion,
-    input.contacto,
-    input.codigoPostal,
-  )
-
-  const usuario = repository.add(usuarioInput)
-
-  if (usuario) {
-    res.status(201).send({ message: 'Usuario creado', data: usuario })
-    return
-  } else {
-    res.status(404).send({ message: 'Usuario ya existente' })
-    return
+async function findAll(req: Request, res: Response) {
+  try {
+    const usuarios = await em.find(Usuario, {})
+    res
+      .status(200)
+      .json({ message: 'found all Usuarios', data: usuarios })
+  } catch (error: any) {
+    res.status(500).json({ message: error.message })
   }
 }
 
-
-function update(req: Request, res: Response) {
-  req.body.sanitizedInput.id = req.params.id
-
-  const usuarioActual = repository.findOne({ id: req.body.sanitizedInput.id })
-  if (!usuarioActual) {
-    return res.status(404).send({ message: 'Usuario no encontrado' })
+async function findOne(req: Request, res: Response) {
+  try {
+    const id = Number.parseInt(req.params.id)
+    const usuario = await em.findOneOrFail(Usuario, { id })
+    res
+      .status(200)
+      .json({ message: 'found Usuario', data: usuario })
+  } catch (error: any) {
+    res.status(500).json({ message: error.message })
   }
-
-  // Si se intenta modificar el codigoPostal, verificar que exista en localidades
-  if (req.body.sanitizedInput.codigoPostal && req.body.sanitizedInput.codigoPostal !== usuarioActual.codigoPostal) {
-    if (!localidadRepo.findOne({ id: req.body.sanitizedInput.codigoPostal })) {
-      return res.status(400).send({ message: 'La nueva localidad no existe, no se pudo actualizar el usuario' })
-    }
-  }
-
-  const usuarioActualizado = repository.update(req.body.sanitizedInput)
-  return res.status(200).send({ message: 'Usuario actualizado correctamente', data: usuarioActualizado })
 }
 
-function remove(req: Request, res: Response) {
-  const id = req.params.id
-  const usuario = repository.delete({ id })
+async function add(req: Request, res: Response) {
+  try {
+    const usuario = em.create(Usuario, req.body)
+    await em.flush()
+    res
+      .status(201)
+      .json({ message: 'Usuario class created', data: usuario })
+  } catch (error: any) {
+    res.status(500).json({ message: error.message })
+  }
+}
 
-  if (!usuario) {
-    res.status(404).send({ message: 'El usuario no se encontro' })
-  } else {
-    res.status(200).send({ message: 'Usuario borrado correctamente' })
+async function update(req: Request, res: Response) {
+  try {
+    const id = Number.parseInt(req.params.id)
+    const usuario = em.getReference(Usuario, id)
+    em.assign(usuario, req.body)
+    await em.flush()
+    res.status(200).json({ message: 'Usuario class updated' })
+  } catch (error: any) {
+    res.status(500).json({ message: error.message })
+  }
+}
+
+async function remove(req: Request, res: Response) {
+  try {
+    const id = Number.parseInt(req.params.id)
+    const usuario = em.getReference(Usuario, id)
+    await em.removeAndFlush(Usuario)
+    res.status(200).send({ message: 'Usuario deleted' })
+  } catch (error: any) {
+    res.status(500).json({ message: error.message })
   }
 }
 

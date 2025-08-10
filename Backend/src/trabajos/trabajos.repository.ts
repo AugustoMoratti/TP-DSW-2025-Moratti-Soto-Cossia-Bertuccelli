@@ -5,8 +5,6 @@ const trabajos = [
     new Trabajo(
         'a02b91bc-3769-4221-beb1-d7a3aeba7dad',
         true,
-        '2025-3-01',
-        '2025-3-07',
         15000,
     ),
 ]
@@ -21,7 +19,7 @@ export class TrabajosRepository implements Repository<Trabajo> {
     }
 
     public add (item: Trabajo): Trabajo | undefined {
-        const trabajo = trabajos.find((trabajo) => trabajo.fecha_solicitud === item.fecha_solicitud)
+        const trabajo = trabajos.find((trabajo) => trabajo.id === item.id)
         if (!trabajo) {
             trabajos.push(item)
             return item

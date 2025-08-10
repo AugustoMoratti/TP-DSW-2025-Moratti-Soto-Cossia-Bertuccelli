@@ -38,8 +38,6 @@ function add(req: Request, res: Response) {
     const trabajoInput = new Trabajo(
         input.id,
         input.estado,
-        input.fecha_solicitud,
-        input.fecha_realizado,
         input.montoTotal,
     )
 

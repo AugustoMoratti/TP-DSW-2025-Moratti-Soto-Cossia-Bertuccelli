@@ -2,9 +2,9 @@ import { MikroORM } from '@mikro-orm/core'
 import { SqlHighlighter } from '@mikro-orm/sql-highlighter'
 
 export const orm = await MikroORM.init({
-    entities: ['dist//*.entity.js'],
-    entitiesTs: ['src//.entity.ts'],
-    dbName: 'ferrocarril',
+    entities: ['dist/**/*.entity.js'],
+    entitiesTs: ['src/**/.entity.ts'],
+    dbName: 'conectar',
     type: 'mysql',
     clientUrl: 'mysql://admin:admin@localhost:3306/conectar',
     highlighter: new SqlHighlighter(),
@@ -17,11 +17,11 @@ export const orm = await MikroORM.init({
     }
 })
 
-export const syncSchema = async (): Promise<void> => {
+export const syncSchema = async () => {
     const generator = orm.getSchemaGenerator()
     /*   
-        await generator.dropSchema()
-        await generator.createSchema()
+    await generator.dropSchema()
+    await generator.createSchema()
     */
     await generator.updateSchema()
 }

@@ -10,10 +10,11 @@ import { usuarioRouter } from './usuario/usuario.routes.js';
 import { trabajosRouter } from './trabajos/trabajos.routes.js';
 const app = express();
 app.use(express.json());
+//Despues de los middlewares de express
 app.use((req, res, next) => {
     RequestContext.create(orm.em, next);
 });
-await syncSchema(); //never in production
+//Antes de los middlewares de rutas
 app.use('/api/provincia', provinciaRouter);
 app.use('/api/profesion', profesionesRouter);
 app.use('/api/admin', administradorRouter);
@@ -23,6 +24,7 @@ app.use('/api/trabajos', trabajosRouter);
 app.use((_req, res, _next) => {
     return res.status(404).send({ message: 'Not found' });
 });
+await syncSchema(); //never in production
 app.listen(3000, () => {
     console.log('Server runnning on http://localhost:3000/');
 });

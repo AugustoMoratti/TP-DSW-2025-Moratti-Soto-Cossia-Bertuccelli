@@ -4,19 +4,6 @@ import { orm } from '../../DB/orm.js';
 
 const em = orm.em
 
-function sanitizeLocalidadInput(req: Request, res: Response, next: NextFunction) {
-  req.body.sanitizedInput = {
-    codPostal: req.body.codPostal,
-    nombre: req.body.nombre,
-  }
-  Object.keys(req.body.sanitizedInput).forEach((key) => {
-    if (req.body.sanitizedInput[key] === undefined) {
-      delete req.body.sanitizedInput[key]
-    }
-  })
-  next()
-}
-
 async function findAll(req: Request, res: Response) {
   try {
     const localidad = await em.find(
@@ -78,7 +65,6 @@ async function remove(req: Request, res: Response) {
 
 
 export {
-  sanitizeLocalidadInput,
   findAll,
   findOne,
   add,

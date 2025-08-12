@@ -4,26 +4,6 @@ import { orm } from '../../DB/orm.js';
 
 const em = orm.em
 
-function sanitizeUsuarioInput(req: Request, res: Response, next: NextFunction) {
-  req.body.sanitizedInput = {
-    nombre: req.body.nombre,
-    apellido: req.body.apellido,
-    clave: req.body.clave,
-    email: req.body.email,
-    descripcion: req.body.descripcion,
-    contacto: req.body.contacto,
-    codigoPostal: req.body.codigoPostal,
-  }
-  Object.keys(req.body.sanitizedInput).forEach((key) => {
-    if (req.body.sanitizedInput[key] === undefined) {
-      delete req.body.sanitizedInput[key]
-    }
-  })
-  /*Recordar modificar esta porcion de codigo en todos los crud, ya que esto nos sirve 
-  para corrobar campos obligatorios y no ignorar si son undefined sino pedirlos si o si*/
-  next()
-}
-
 async function findAll(req: Request, res: Response) {
   try {
     const usuarios = await em.find(Usuario, {})
@@ -82,4 +62,4 @@ async function remove(req: Request, res: Response) {
   }
 }
 
-export { sanitizeUsuarioInput, findAll, findOne, add, update, remove }
+export { findAll, findOne, add, update, remove }

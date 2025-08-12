@@ -12,12 +12,12 @@ import { trabajosRouter } from './trabajos/trabajos.routes.js'
 
 const app = express()
 app.use(express.json())
+
 //Despues de los middlewares de express
 app.use((req: Request, res: Response, next: NextFunction) => {
   RequestContext.create(orm.em, next)
 })
 //Antes de los middlewares de rutas
-
 
 app.use('/api/provincia', provinciaRouter)
 app.use('/api/profesion', profesionesRouter)

@@ -1,1 +1,0 @@
-{"version":3,"file":"admin.entity.js","sourceRoot":"","sources":["../../../Backend/src/admin/admin.entity.ts"],"names":[],"mappings":"AAAA,OAAO,MAAM,MAAM,aAAa,CAAA;AAEhC,MAAM,OAAO,aAAa;IACtB,YACW,IAAY,EACZ,KAAa,EACb,MAAe,EACf,UAAU,MAAM,CAAC,UAAU,EAAE;QAH7B,SAAI,GAAJ,IAAI,CAAQ;QACZ,UAAK,GAAL,KAAK,CAAQ;QACb,WAAM,GAAN,MAAM,CAAS;QACf,YAAO,GAAP,OAAO,CAAsB;IACpC,CAAC;CACR"}

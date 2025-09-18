@@ -1,1 +1,0 @@
-{"version":3,"file":"trabajos.entity.js","sourceRoot":"","sources":["../../../Backend/src/trabajos/trabajos.entity.ts"],"names":[],"mappings":"AAAA,OAAO,MAAM,MAAM,QAAQ,CAAC;AAE5B,MAAM,OAAO,OAAO;IAChB,YACW,KAAK,MAAM,CAAC,UAAU,EAAE,EACxB,SAAS,IAAI,EACb,UAAkB;QAFlB,OAAE,GAAF,EAAE,CAAsB;QACxB,WAAM,GAAN,MAAM,CAAO;QACb,eAAU,GAAV,UAAU,CAAQ;IACzB,CAAC;CACR,CAAC,8BAA8B"}

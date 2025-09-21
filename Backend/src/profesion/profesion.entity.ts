@@ -1,10 +1,17 @@
-import crypto from 'crypto'
+import {
+    Entity,
+    Property
+} from '@mikro-orm/core';
+import { BaseEntity } from '../../DB/baseEntity.entity.js';
 
-export class Profesion {
-    constructor(
-        public nombreProf: string,
-        public descProf: string,
-        public estado: boolean,
-        public codProf = crypto.randomUUID()
-    ) { }
+@Entity()
+export class Profesiones extends BaseEntity {
+    @Property({ length: 50, nullable: false })
+    nombreProfesion!: string;
+
+    @Property({ length: 200, nullable: false })
+    descripcionProfesion!: string;
+
+    @Property({ length: 10, nullable: false })
+    estado!: string;
 }

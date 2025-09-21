@@ -7,14 +7,14 @@ import { Usuario } from "../usuario/usuario.entity.js";
 export class Localidades extends BaseEntity {
 
   @Property({ length: 100, unique: true, nullable: false })
-    nombre!: string;
+  nombre!: string;
 
   @Property({ length: 10, unique: true, nullable: false })
-    codPostal!: string;
+  codPostal!: string;
 
   @ManyToOne(() => Provincia, { nullable: false })
-    provincia!: Provincia;
+  provincia!: Provincia;
 
   @OneToMany(() => Usuario, usuario => usuario.localidad, { cascade: [Cascade.ALL] })
-    usuarios = new Collection<Usuario>(this);
+  usuarios = new Collection<Usuario>(this);
 }

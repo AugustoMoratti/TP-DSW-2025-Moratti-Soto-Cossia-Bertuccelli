@@ -10,7 +10,7 @@ export const orm = await MikroORM.init({
     highlighter: new SqlHighlighter(),
     debug: true,
     schemaGenerator: {
-    // never in production
+        // never in production
         disableForeignKeys: true,
         createForeignKeyConstraints: true,
         ignoreSchema: []

@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { Localidades } from './localidades.entity.js';
+import { Localidad } from './localidades.entity.js';
 import { orm } from '../../DB/orm.js';
 
 const em = orm.em
@@ -7,7 +7,7 @@ const em = orm.em
 async function findAll(req: Request, res: Response) {
   try {
     const localidad = await em.find(
-      Localidades,
+      Localidad,
       {},
     )
     res.status(200).json({ message: 'found all localidades', data: localidad })
@@ -20,7 +20,7 @@ async function findOne(req: Request, res: Response) {
   try {
     const id = Number.parseInt(req.params.id)
     const localidad = await em.findOneOrFail(
-      Localidades,
+      Localidad,
       { id },
     )
     res.status(200).json({ message: 'found localidad', data: localidad })
@@ -31,7 +31,7 @@ async function findOne(req: Request, res: Response) {
 
 async function add(req: Request, res: Response) {
   try {
-    const localidad = em.create(Localidades, req.body.sanitizedInput)
+    const localidad = em.create(Localidad, req.body.sanitizedInput)
     await em.flush()
     res.status(201).json({ message: 'localidad created', data: localidad })
   } catch (error: any) {
@@ -42,7 +42,7 @@ async function add(req: Request, res: Response) {
 async function update(req: Request, res: Response) {
   try {
     const id = Number.parseInt(req.params.id)
-    const localidadToUpdate = await em.findOneOrFail(Localidades, { id })
+    const localidadToUpdate = await em.findOneOrFail(Localidad, { id })
     em.assign(localidadToUpdate, req.body.sanitizedInput)
     await em.flush()
     res
@@ -56,7 +56,7 @@ async function update(req: Request, res: Response) {
 async function remove(req: Request, res: Response) {
   try {
     const id = Number.parseInt(req.params.id)
-    const localidad = em.getReference(Localidades, id)
+    const localidad = em.getReference(Localidad, id)
     await em.removeAndFlush(localidad)
   } catch (error: any) {
     res.status(500).json({ message: error.message })

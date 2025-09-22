@@ -1,6 +1,6 @@
 import { Entity, ManyToOne, Property, Rel, ManyToMany, Collection, Cascade } from '@mikro-orm/core'
 import { BaseEntity } from '../../DB/baseEntity.entity.js'
-import { Localidades } from "../localidad/localidades.entity.js";
+import { Localidad } from "../localidad/localidades.entity.js";
 import { Profesiones } from "../profesion/profesion.entity.js";
 import { Provincia } from "../provincia/provincia.entity.js";
 
@@ -24,8 +24,8 @@ export class Usuario extends BaseEntity {
   @Property({ length: 255, nullable: true })
   contacto?: number;
 
-  @ManyToOne(() => Localidades, { nullable: false })
-  localidad!: Rel<Localidades>;
+  @ManyToOne(() => Localidad, { nullable: false })
+  localidad!: Rel<Localidad>;
 
   @ManyToOne(() => Provincia, { nullable: false })
   provincia!: Rel<Provincia>;

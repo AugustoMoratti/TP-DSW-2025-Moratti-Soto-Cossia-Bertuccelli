@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express'
-import { administrador } from './admin.entity.js'
+import { administrador } from './admin.entitya.js'
 import { orm } from '../../DB/orm.js';
 
 const em = orm.em

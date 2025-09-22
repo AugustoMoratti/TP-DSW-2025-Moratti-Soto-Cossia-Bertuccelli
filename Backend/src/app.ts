@@ -5,7 +5,7 @@ import { RequestContext } from '@mikro-orm/core'
 import { Request, Response, NextFunction } from 'express'
 import { provinciaRouter } from './provincia/provincia.routes.js'
 import { profesionesRouter } from './profesion/profesion.routes.js'
-import { administradorRouter } from './admin/admin.routes.js'
+//import { administradorRouter } from './admin/admin.routes.js'
 import { localidadesRouter } from './localidad/localidad.routes.js'
 import { usuarioRouter } from './usuario/usuario.routes.js'
 import { trabajosRouter } from './trabajos/trabajos.routes.js'
@@ -21,7 +21,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 
 app.use('/api/provincia', provinciaRouter)
 app.use('/api/profesion', profesionesRouter)
-app.use('/api/admin', administradorRouter)
+//app.use('/api/admin', administradorRouter)
 app.use('/api/localidad', localidadesRouter)
 app.use('/api/usuario', usuarioRouter)
 app.use('/api/trabajos', trabajosRouter)

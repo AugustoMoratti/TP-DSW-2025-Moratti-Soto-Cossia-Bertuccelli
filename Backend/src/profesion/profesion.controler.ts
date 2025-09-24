@@ -3,6 +3,7 @@ import { Profesiones } from './profesion.entity.js';
 import { orm } from '../../DB/orm.js';
 
 
+const em = orm.em
 
 function sanitizeProfesionesInput(req: Request, res: Response, next: NextFunction) {
   req.body.sanitizedInput = {
@@ -19,7 +20,7 @@ function sanitizeProfesionesInput(req: Request, res: Response, next: NextFunctio
   next()
 }
 
-function findAll(req: Request, res: Response) {
+async function findAll(req: Request, res: Response) {
   try {
     const profesiones = await em.find(Profesiones, {})
     res
@@ -30,7 +31,7 @@ function findAll(req: Request, res: Response) {
   }
 }
 
-function findOne(req: Request, res: Response) {
+async function findOne(req: Request, res: Response) {
   try {
     const id = Number.parseInt(req.params.id)
     const profesiones = await em.findOneOrFail(Profesiones, { id })
@@ -42,7 +43,7 @@ function findOne(req: Request, res: Response) {
   }
 }
 
-function add(req: Request, res: Response) {
+async function add(req: Request, res: Response) {
   try {
     const profesion = em.create(Profesiones, req.body)
     await em.flush()
@@ -54,7 +55,7 @@ function add(req: Request, res: Response) {
   }
 }
 
-function update(req: Request, res: Response) {
+async function update(req: Request, res: Response) {
   try {
     const id = Number.parseInt(req.params.id)
     const profesion = em.getReference(Profesiones, id)
@@ -66,7 +67,7 @@ function update(req: Request, res: Response) {
   }
 }
 
-function remove(req: Request, res: Response) {
+async function remove(req: Request, res: Response) {
   try {
     const id = Number.parseInt(req.params.id)
     const profesion = em.getReference(Profesiones, id)

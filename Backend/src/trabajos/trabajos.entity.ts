@@ -34,3 +34,5 @@ export class Trabajo extends BaseEntity {
     @Property({ nullable: true })
     fechaFinalizado!: Date;
 }
+//La reseña va ligada al trabajo , cada trabajo puede tener 1 o ninguna reseña,
+//dependiendo si se termino el trabajo

@@ -20,23 +20,61 @@ function sanitizeProfesionesInput(req: Request, res: Response, next: NextFunctio
 }
 
 function findAll(req: Request, res: Response) {
-
+  try {
+    const profesiones = await em.find(Profesiones, {})
+    res
+      .status(200)
+      .json({ message: 'found all Profeciones', data: profesiones })
+  } catch (error: any) {
+    res.status(500).json({ message: error.message })
+  }
 }
 
 function findOne(req: Request, res: Response) {
-
+  try {
+    const id = Number.parseInt(req.params.id)
+    const profesiones = await em.findOneOrFail(Profesiones, { id })
+    res
+      .status(200)
+      .json({ message: 'found Profesion', data: profesiones })
+  } catch (error: any) {
+    res.status(500).json({ message: error.message })
+  }
 }
 
 function add(req: Request, res: Response) {
-
+  try {
+    const profesion = em.create(Profesiones, req.body)
+    await em.flush()
+    res
+      .status(201)
+      .json({ message: 'Profesion class created', data: profesion })
+  } catch (error: any) {
+    res.status(500).json({ message: error.message })
+  }
 }
 
 function update(req: Request, res: Response) {
-
+  try {
+    const id = Number.parseInt(req.params.id)
+    const profesion = em.getReference(Profesiones, id)
+    em.assign(profesion, req.body)
+    await em.flush()
+    res.status(200).json({ message: 'Profesion class updated' })
+  } catch (error: any) {
+    res.status(500).json({ message: error.message })
+  }
 }
 
 function remove(req: Request, res: Response) {
-
+  try {
+    const id = Number.parseInt(req.params.id)
+    const profesion = em.getReference(Profesiones, id)
+    await em.removeAndFlush(Profesiones)
+    res.status(200).send({ message: 'Profesion deleted' })
+  } catch (error: any) {
+    res.status(500).json({ message: error.message })
+  }
 }
 
 export {

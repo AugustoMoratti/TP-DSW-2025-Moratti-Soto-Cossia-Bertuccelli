@@ -3,6 +3,7 @@ import { Trabajo } from './trabajos.entity.js'
 import { orm } from '../../DB/orm.js';
 
 
+const em = orm.em
 
 
 function sanitizeTrabajoInput(req: Request, res: Response, next: NextFunction) {
@@ -19,7 +20,7 @@ function sanitizeTrabajoInput(req: Request, res: Response, next: NextFunction) {
     next()
 }
 
-function findAll(req: Request, res: Response) {
+async function findAll(req: Request, res: Response) {
   try {
     const trabajos = await em.find(Trabajo, {})
     res
@@ -30,7 +31,7 @@ function findAll(req: Request, res: Response) {
   }
 }
 
-function findOne(req: Request, res: Response) {
+async function findOne(req: Request, res: Response) {
   try {
     const id = Number.parseInt(req.params.id)
     const trabajo = await em.findOneOrFail(Trabajo, { id })
@@ -42,7 +43,7 @@ function findOne(req: Request, res: Response) {
   }
 }
 
-function add(req: Request, res: Response) {
+async function add(req: Request, res: Response) {
   try {
     const trabajo = em.create(Trabajo, req.body)
     await em.flush()
@@ -54,7 +55,7 @@ function add(req: Request, res: Response) {
   }
 }
 
-function update(req: Request, res: Response) {
+async function update(req: Request, res: Response) {
   try {
     const id = Number.parseInt(req.params.id)
     const trabajo = em.getReference(Trabajo, id)
@@ -66,7 +67,7 @@ function update(req: Request, res: Response) {
   }
 }
 
-function remove(req: Request, res: Response) {
+async function remove(req: Request, res: Response) {
   try {
     const id = Number.parseInt(req.params.id)
     const trabajo = em.getReference(Trabajo, id)

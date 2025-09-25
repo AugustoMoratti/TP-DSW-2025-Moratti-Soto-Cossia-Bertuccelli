@@ -1,20 +1,22 @@
 import { Request, Response, NextFunction } from 'express';
 import { Localidad } from './localidades.entity.js';
+import { Provincia } from '../provincia/provincia.entity.js';
 import { orm } from '../../DB/orm.js';
 
 const em = orm.em
 
 function sanitizeLocalidadInput(req: Request, res: Response, next: NextFunction) {
-    req.body.sanitizedInput = {
-        nombre: req.body.nombre,
-        codPostal: req.body.codPostal,
+  req.body.sanitizedInput = {
+    nombre: req.body.nombre,
+    codPostal: req.body.codPostal,
+    provincia: req.body.provincia
+  }
+  Object.keys(req.body.sanitizedInput).forEach((key) => {
+    if (req.body.sanitizedInput[key] === undefined) {
+      delete req.body.sanitizedInput[key]
     }
-    Object.keys(req.body.sanitizedInput).forEach((key) => {
-        if (req.body.sanitizedInput[key] === undefined) {
-            delete req.body.sanitizedInput[key]
-        }
-    })
-    next()
+  })
+  next()
 }
 
 async function findAll(req: Request, res: Response) {
@@ -44,9 +46,24 @@ async function findOne(req: Request, res: Response) {
 
 async function add(req: Request, res: Response) {
   try {
-    const localidad = em.create(Localidad, req.body.sanitizedInput)
+    const { nombre, codPostal, provincia } = req.body.sanitizedInput
+
+    if (!nombre || !codPostal || !provincia) {
+      return res.status(400).json({ message: 'Faltan campos requeridos' })
+    }
+    const provinciaRef = em.getReference(Provincia, Number(provincia))
+
+    const localidad = em.create(Localidad, {
+      nombre,
+      codPostal,
+      provincia: provinciaRef,
+    })
+
     await em.flush()
-    res.status(201).json({ message: 'localidad created', data: localidad })
+    res.status(201).json({ message: 'Localidad creada', data: localidad })
+    /*const localidad = em.create(Localidad, req.body.sanitizedInput)
+    await em.flush()
+    res.status(201).json({ message: 'localidad created', data: localidad })*/
   } catch (error: any) {
     res.status(500).json({ message: error.message })
   }
@@ -71,6 +88,9 @@ async function remove(req: Request, res: Response) {
     const id = Number.parseInt(req.params.id)
     const localidad = em.getReference(Localidad, id)
     await em.removeAndFlush(localidad)
+    res
+      .status(200)
+      .json({ message: 'Localidad deleted', data: localidad })
   } catch (error: any) {
     res.status(500).json({ message: error.message })
   }
@@ -82,5 +102,6 @@ export {
   findOne,
   add,
   update,
-  remove
+  remove,
+  sanitizeLocalidadInput
 };

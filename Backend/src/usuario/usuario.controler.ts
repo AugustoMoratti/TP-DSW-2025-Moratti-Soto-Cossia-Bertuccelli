@@ -1,26 +1,29 @@
 import { Request, Response, NextFunction } from 'express'
 import { Usuario } from './usuario.entity.js'
+import { Provincia } from '../provincia/provincia.entity.js'
+import { Localidad } from '../localidad/localidades.entity.js'
 import { orm } from '../../DB/orm.js';
 
 const em = orm.em
 
 function sanitizeUsuarioInput(req: Request, res: Response, next: NextFunction) {
-    req.body.sanitizedInput = {
-        nombre: req.body.nombre,
-        apellido: req.body.apellido,
-        clave: req.body.clave,
-        email: req.body.email,
-        descipcion: req.body.descipcion,
-        contacto: req.body.contacto,
-        horario: req.body.horario,
-
+  req.body.sanitizedInput = {
+    nombre: req.body.nombre,
+    apellido: req.body.apellido,
+    clave: req.body.clave,
+    email: req.body.email,
+    descipcion: req.body.descipcion,
+    contacto: req.body.contacto,
+    horario: req.body.horario,
+    provincia: req.body.provincia,
+    localidad: req.body.localidad
+  }
+  Object.keys(req.body.sanitizedInput).forEach((key) => {
+    if (req.body.sanitizedInput[key] === undefined) {
+      delete req.body.sanitizedInput[key]
     }
-    Object.keys(req.body.sanitizedInput).forEach((key) => {
-        if (req.body.sanitizedInput[key] === undefined) {
-            delete req.body.sanitizedInput[key]
-        }
-    })
-    next()
+  })
+  next()
 }
 
 async function findAll(req: Request, res: Response) {
@@ -48,7 +51,22 @@ async function findOne(req: Request, res: Response) {
 
 async function add(req: Request, res: Response) {
   try {
-    const usuario = em.create(Usuario, req.body)
+    //const usuario = em.create(Usuario, req.body)
+    const { nombre, apellido, clave, email, descripcion, contacto, horarios, provincia, localidad, profesiones } = req.body.sanitizedInput
+    const provinciaRef = em.getReference(Provincia, Number(provincia))
+    const localidadRef = em.getReference(Localidad, Number(localidad))
+    const usuario = em.create(Usuario, {
+      nombre,
+      apellido,
+      provincia: provinciaRef,
+      localidad: localidadRef,
+      clave,
+      email,
+      descripcion,
+      contacto,
+      horarios,
+      profesiones
+    })
     await em.flush()
     res
       .status(201)
@@ -81,4 +99,4 @@ async function remove(req: Request, res: Response) {
   }
 }
 
-export { findAll, findOne, add, update, remove }
+export { findAll, findOne, add, update, remove, sanitizeUsuarioInput }

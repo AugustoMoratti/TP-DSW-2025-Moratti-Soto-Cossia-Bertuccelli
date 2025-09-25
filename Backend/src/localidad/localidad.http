@@ -1,52 +1,44 @@
-GET http://localhost:3000/api/usuario
+### GET ALL
+GET http://localhost:3000/api/localidad
 
-### Obtener un usuario (Con el id o cualquier otro atributo de la class)
-GET http://localhost:3000/api/usuario/a02b91bc-3769-4221-beb1-d7a3aeba7dad
-
-### Crear un nuevo usuario (POST - crear recurso)
-POST http://localhost:3000/api/usuario
+### POST
+# @name createLocalidad
+POST http://localhost:3000/api/localidad
 Content-Type: application/json
 
-{
-  "nombre":"Valentin",
-  "apellido": "Bertucceli",
-  "clave":"aderf",
-  "email":"valen@gmail.com",
-  "descripcion":"Usuario No profesional",
-  "contacto": 3416526398,
-  "codigoPostal":"2000"
+{ 
+  "nombre": "Rosario",
+  "codPostal": "2000",
+  "provincia": 1
 }
 
-### Modifica una provincia (PUT - modificar recurso completo e idempotente)
-PUT http://localhost:3000/api/usuario/a02b91bc-3769-4221-beb1-d7a3aeba7dad
+### ID
+@id = {{createLocalidad.response.body.data.id}}
+### GET ONE
+GET http://localhost:3000/api/localidad/{{id}}
+
+
+### PUT
+PUT http://localhost:3000/api/localidad/{{id}}
 Content-Type: application/json
 
-{
-  "nombre":"Marcos",
-  "apellido": "Zencich",
-  "clave":"sdawfrg",
-  "email":"marc@gmail.com",
-  "descripcion":"Usuario No profesional",
-  "contacto": 3416526398,
-  "codigoPostal":"2000"
+{ 
+  "nombre": "Canada de Gomez",
+  "codPostal": "1900",
+  "provincia": 1
 }
 
-### Modificar una provincia (PATCH - modificar recurso parcialmente)
-PATCH http://localhost:3000/api/usuario/a02b91bc-3769-4221-beb1-d7a3aeba7dad
-Content-Type: application/json
+### PATCH
+PATCH http://localhost:3000/api/localidad/{{id}}
 
-{
-  "nombre":"Marcos",
-  "apellido": "Zencich",
-  "clave":"sdawfrg",
-  "email":"marc@gmail.com",
-  "descripcion":"Usuario No profesional",
-  "contacto": 3416526398,
-  "codigoPostal":"2000"
+{ 
+  "nombre": "Rosario",
+  "codPostal": "2000",
+  "provincia": 1
 }
 
 ### Eliminar una provicia (DELETE - eliminar recurso)
-DELETE http://localhost:3000/api/usuario/a02b91bc-3769-4221-beb1-d7a3aeba7dad
+DELETE http://localhost:3000/api/localidad/{{id}}
 
 
 /* La extension REST Client, nos permite hacer peticiones sin la 

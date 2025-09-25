@@ -20,9 +20,26 @@ function sanitizeProfesionesInput(req: Request, res: Response, next: NextFunctio
   next()
 }
 
-async function findAll(req: Request, res: Response) {
+async function findAllActive(req: Request, res: Response) {
   try {
-    const profesiones = await em.find(Profesiones, {})
+    const profesiones = await em.find(Profesiones, { estado: true })//Agregue filtro para que solo muestre si esta activo
+    if (profesiones.length === 0) {
+      return res.status(404).json({ message: 'No se han encontrado profesiones activas' })
+    }
+    res
+      .status(200)
+      .json({ message: 'found all Profeciones', data: profesiones })
+  } catch (error: any) {
+    res.status(500).json({ message: error.message })
+  }
+}
+
+async function findAllInactive(req: Request, res: Response) {
+  try {
+    const profesiones = await em.find(Profesiones, { estado: false })//Agregue filtro para que solo muestre si esta activo
+    if (profesiones.length === 0) { //find devuelve si o si un arreglo que puede estar vacio
+      return res.status(404).json({ message: 'No se han encontrado profesiones inactivas' })
+    }
     res
       .status(200)
       .json({ message: 'found all Profeciones', data: profesiones })
@@ -34,10 +51,19 @@ async function findAll(req: Request, res: Response) {
 async function findOne(req: Request, res: Response) {
   try {
     const id = Number.parseInt(req.params.id)
-    const profesiones = await em.findOneOrFail(Profesiones, { id })
+    const profesion = await em.findOneOrFail(Profesiones, { id })
+
+    if (!profesion) { //findOrFail devuelve la profesion o false basicamente un error
+      return res.status(404).json({ message: 'No se ha encontrado la profesion' })
+    }
+
+    if (!profesion.estado) {
+      return res.status(403).json({ message: 'La profesion existe pero aun no ha sido aceptada por el administrador' })
+    }
+
     res
       .status(200)
-      .json({ message: 'found Profesion', data: profesiones })
+      .json({ message: 'found Profesion', data: profesion })
   } catch (error: any) {
     res.status(500).json({ message: error.message })
   }
@@ -71,7 +97,7 @@ async function remove(req: Request, res: Response) {
   try {
     const id = Number.parseInt(req.params.id)
     const profesion = em.getReference(Profesiones, id)
-    await em.removeAndFlush(Profesiones)
+    await em.removeAndFlush(profesion)
     res.status(200).send({ message: 'Profesion deleted' })
   } catch (error: any) {
     res.status(500).json({ message: error.message })
@@ -80,7 +106,8 @@ async function remove(req: Request, res: Response) {
 
 export {
   sanitizeProfesionesInput,
-  findAll,
+  findAllActive,
+  findAllInactive,
   findOne,
   add,
   update,

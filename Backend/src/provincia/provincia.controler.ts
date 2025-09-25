@@ -5,16 +5,15 @@ import { orm } from '../../DB/orm.js';
 const em = orm.em
 
 function sanitizeProvinciaInput(req: Request, res: Response, next: NextFunction) {
-    req.body.sanitizedInput = {
-        nombre: req.body.nombre,
-        codProv: req.body.codProv,
+  req.body.sanitizedInput = {
+    nombre: req.body.nombre,
+  }
+  Object.keys(req.body.sanitizedInput).forEach((key) => {
+    if (req.body.sanitizedInput[key] === undefined) {
+      delete req.body.sanitizedInput[key]
     }
-    Object.keys(req.body.sanitizedInput).forEach((key) => {
-        if (req.body.sanitizedInput[key] === undefined) {
-            delete req.body.sanitizedInput[key]
-        }
-    })
-    next()
+  })
+  next()
 }
 
 async function findAll(req: Request, res: Response) {
@@ -71,11 +70,14 @@ async function remove(req: Request, res: Response) {
     const id = Number.parseInt(req.params.id)
     const provincia = em.getReference(Provincia, id)
     await em.removeAndFlush(provincia)
+    res
+      .status(200)
+      .json({ message: 'provincia deleted', data: provincia })
   } catch (error: any) {
     res.status(500).json({ message: error.message })
   }
 }
 
-export { findAll, findOne, add, update, remove }
+export { findAll, findOne, add, update, remove, sanitizeProvinciaInput }
 
 

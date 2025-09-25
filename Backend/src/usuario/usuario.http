@@ -1,9 +1,10 @@
 GET http://localhost:3000/api/usuario
 
 ### Obtener un usuario (Con el id o cualquier otro atributo de la class)
-GET http://localhost:3000/api/usuario/a02b91bc-3769-4221-beb1-d7a3aeba7dad
+GET http://localhost:3000/api/usuario/{{id}}
 
 ### Crear un nuevo usuario (POST - crear recurso)
+# @name createUsuario
 POST http://localhost:3000/api/usuario
 Content-Type: application/json
 
@@ -14,11 +15,15 @@ Content-Type: application/json
   "email":"valen@gmail.com",
   "descripcion":"Usuario No profesional",
   "contacto": 3416526398,
-  "codigoPostal":"2000"
+  "horarios":"08:00 a 12:00 y 15:00 a 19:00",
+  "provincia": 1,
+  "localidad":1,
+  "profesiones": [1]
 }
 
 ### Modifica una provincia (PUT - modificar recurso completo e idempotente)
-PUT http://localhost:3000/api/usuario/a02b91bc-3769-4221-beb1-d7a3aeba7dad
+@id = {{createUsuario.response.body.data.id}}
+PUT http://localhost:3000/api/usuario/{{id}}
 Content-Type: application/json
 
 {
@@ -28,11 +33,14 @@ Content-Type: application/json
   "email":"marc@gmail.com",
   "descripcion":"Usuario No profesional",
   "contacto": 3416526398,
-  "codigoPostal":"2000"
+  "horarios":"08:00 a 12:00 y 15:00 a 19:00",
+  "provincia": 1,
+  "localidad":1,
+  "profesiones": [1]
 }
 
 ### Modificar una provincia (PATCH - modificar recurso parcialmente)
-PATCH http://localhost:3000/api/usuario/a02b91bc-3769-4221-beb1-d7a3aeba7dad
+PATCH http://localhost:3000/api/usuario/{{id}}
 Content-Type: application/json
 
 {
@@ -42,11 +50,14 @@ Content-Type: application/json
   "email":"marc@gmail.com",
   "descripcion":"Usuario No profesional",
   "contacto": 3416526398,
-  "codigoPostal":"2000"
+  "horarios":"08:00 a 12:00 y 15:00 a 19:00",
+  "provincia": 1,
+  "localidad":1,
+  "profesiones": [1]
 }
 
 ### Eliminar una provicia (DELETE - eliminar recurso)
-DELETE http://localhost:3000/api/usuario/a02b91bc-3769-4221-beb1-d7a3aeba7dad
+DELETE http://localhost:3000/api/usuario/{{id}}
 
 
 /* La extension REST Client, nos permite hacer peticiones sin la 

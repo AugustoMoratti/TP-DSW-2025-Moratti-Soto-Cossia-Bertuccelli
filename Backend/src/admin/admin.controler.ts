@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express'
 import { Administrador } from './admin.entity.js'
 import { orm } from '../../DB/orm.js';
-
+//terminado
 const em = orm.em
 
 function sanitizeAdministradorInput(req: Request, res: Response, next: NextFunction) {

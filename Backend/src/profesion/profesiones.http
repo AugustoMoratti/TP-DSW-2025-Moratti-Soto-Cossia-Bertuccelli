@@ -1,37 +1,46 @@
+### GET ALL ACTIVE
 GET http://localhost:3000/api/profesion
 
-### Obtener una profesiones (Con el id o cualquier otro atributo de la class)
-GET http://localhost:3000/api/profesion/a02b91bc-3769-4221-beb1-d7a3aeba7dad
+### GET ALL INACTIVE
+GET http://localhost:3000/api/profesion/inactive
 
-### Crear una nueva profesiones (POST - crear recurso)
+### GET ONE ACTIVE
+@id = {{createProfesion.response.body.data.id}}
+GET http://localhost:3000/api/profesion/{{id}}
+
+### POST
+# @name createProfesion
 POST http://localhost:3000/api/profesion
 Content-Type: application/json
 
 { 
-  "nombreProf": "Plomero",
-  "estado": true
+  "nombreProfesion": "Plomero",
+  "descripcionProfesion": "...",
+  "estado": false
 }
 
-### Modifica una profesiones (PUT - modificar recurso completo e idempotente)
-PUT http://localhost:3000/api/profesion/a02b91bc-3769-4221-beb1-d7a3aeba7dad
+### PUT
+PUT http://localhost:3000/api/profesion/{{id}}
 Content-Type: application/json
 
 { 
-  "nombreProf": "Ingeniero",
+  "nombreProfesion": "Ingeniero",
+  "descripcionProfesion": "...",
   "estado": true
 }
 
-### Modificar una profesiones (PATCH - modificar recurso parcialmente)
-PATCH http://localhost:3000/api/profesion/a02b91bc-3769-4221-beb1-d7a3aeba7dad
+### PATCH
+PATCH http://localhost:3000/api/profesion/{{id}}
 Content-Type: application/json
 
 { 
-  "nombreProf": "Ingeniero",
-  "estado": true
+  "nombreProfesion": "Ingeniero",
+  "descripcionProfesion": "...",
+  "estado": false
 }
 
-### Eliminar una provicia (DELETE - eliminar recurso)
-DELETE http://localhost:3000/api/profesion/a02b91bc-3769-4221-beb1-d7a3aeba7dad
+### DELETE
+DELETE http://localhost:3000/api/profesion/{{id}}
 
 
 /* La extension REST Client, nos permite hacer peticiones sin la 

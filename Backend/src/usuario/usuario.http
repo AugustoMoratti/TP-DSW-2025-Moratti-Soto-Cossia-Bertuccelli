@@ -13,8 +13,8 @@ Content-Type: application/json
   "apellido": "Bertucceli",
   "clave":"aderf",
   "email":"valen@gmail.com",
-  "descripcion":"Usuario No profesional",
-  "contacto": 3416526398,
+  "descripcion":"Usuario profesional",
+  "contacto": "3416526398",
   "horarios":"08:00 a 12:00 y 15:00 a 19:00",
   "provincia": 1,
   "localidad":1,
@@ -23,16 +23,16 @@ Content-Type: application/json
 
 ### Modifica una provincia (PUT - modificar recurso completo e idempotente)
 @id = {{createUsuario.response.body.data.id}}
-PUT http://localhost:3000/api/usuario/{{id}}
+PUT http://localhost:3000/api/usuario/{{id}} 
 Content-Type: application/json
 
 {
-  "nombre":"Marcos",
-  "apellido": "Zencich",
-  "clave":"sdawfrg",
-  "email":"marc@gmail.com",
+  "nombre":"Augusto",
+  "apellido": "Moratti",
+  "clave":"aderf",
+  "email":"augus@gmail.com",
   "descripcion":"Usuario No profesional",
-  "contacto": 3416526398,
+  "contacto": "3416526398",
   "horarios":"08:00 a 12:00 y 15:00 a 19:00",
   "provincia": 1,
   "localidad":1,
@@ -46,14 +46,8 @@ Content-Type: application/json
 {
   "nombre":"Marcos",
   "apellido": "Zencich",
-  "clave":"sdawfrg",
-  "email":"marc@gmail.com",
   "descripcion":"Usuario No profesional",
-  "contacto": 3416526398,
-  "horarios":"08:00 a 12:00 y 15:00 a 19:00",
-  "provincia": 1,
-  "localidad":1,
-  "profesiones": [1]
+  "profesiones": []
 }
 
 ### Eliminar una provicia (DELETE - eliminar recurso)

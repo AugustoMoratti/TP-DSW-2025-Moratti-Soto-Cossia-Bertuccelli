@@ -21,8 +21,8 @@ export class Usuario extends BaseEntity {
   @Property({ length: 100, nullable: true })
   descripcion?: string;
 
-  @Property({ length: 255, nullable: false })
-  contacto?: number;
+  @Property({ length: 50, nullable: false })
+  contacto?: string;
 
   @ManyToOne(() => Localidad, { nullable: false })
   localidad!: Rel<Localidad>;

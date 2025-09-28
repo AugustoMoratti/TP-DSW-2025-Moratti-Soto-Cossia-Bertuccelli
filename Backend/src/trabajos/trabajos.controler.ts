@@ -7,17 +7,17 @@ const em = orm.em
 
 
 function sanitizeTrabajoInput(req: Request, res: Response, next: NextFunction) {
-    req.body.sanitizedInput = {
-        fecha_solicitud: req.body.fecha_solicitud,
-        fecha_realizado: req.body.fecha_realizado,
-        montoTotal: req.body.montoTotal,
+  req.body.sanitizedInput = {
+    fecha_solicitud: req.body.fecha_solicitud,
+    fecha_realizado: req.body.fecha_realizado,
+    montoTotal: req.body.montoTotal,
+  }
+  Object.keys(req.body.sanitizedInput).forEach((key) => {
+    if (req.body.sanitizedInput[key] === undefined) {
+      delete req.body.sanitizedInput[key]
     }
-    Object.keys(req.body.sanitizedInput).forEach((key) => {
-        if (req.body.sanitizedInput[key] === undefined) {
-            delete req.body.sanitizedInput[key]
-        }
-    })
-    next()
+  })
+  next()
 }
 
 async function findAll(req: Request, res: Response) {
@@ -71,7 +71,7 @@ async function remove(req: Request, res: Response) {
   try {
     const id = Number.parseInt(req.params.id)
     const trabajo = em.getReference(Trabajo, id)
-    await em.removeAndFlush(Trabajo)
+    await em.removeAndFlush(trabajo)
     res.status(200).send({ message: 'Trabajo deleted' })
   } catch (error: any) {
     res.status(500).json({ message: error.message })

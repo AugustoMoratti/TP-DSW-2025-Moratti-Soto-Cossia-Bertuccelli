@@ -22,7 +22,7 @@ function sanitizeTrabajoInput(req: Request, res: Response, next: NextFunction) {
 
 async function findAll(req: Request, res: Response) {
   try {
-    const trabajos = await em.find(Trabajo, {})
+    const trabajos = await em.find(Trabajo, {}, { populate: ['cliente', 'profesional'] })
     res
       .status(200)
       .json({ message: 'found all Trabajos', data: trabajos })
@@ -34,7 +34,7 @@ async function findAll(req: Request, res: Response) {
 async function findOne(req: Request, res: Response) {
   try {
     const id = Number.parseInt(req.params.id)
-    const trabajo = await em.findOneOrFail(Trabajo, { id })
+    const trabajo = await em.findOneOrFail(Trabajo, { id }, { populate: ['cliente', 'profesional'] })
     res
       .status(200)
       .json({ message: 'found Trabajo', data: trabajo })

@@ -8,8 +8,7 @@ POST http://localhost:3000/api/provincia
 Content-Type: application/json
 
 { 
-  "nombre": "Buenos Aires",
-  "estado": true
+  
 }
 
 ### Modifica una provincia (PUT - modificar recurso completo e idempotente)
@@ -17,8 +16,7 @@ PUT http://localhost:3000/api/provincia/a02b91bc-3769-4221-beb1-d7a3aeba7dad
 Content-Type: application/json
 
 { 
-  "nombre": "Cordoba",
-  "estado": true
+  
 }
 
 ### Modificar una provincia (PATCH - modificar recurso parcialmente)
@@ -26,8 +24,6 @@ PATCH http://localhost:3000/api/provincia/a02b91bc-3769-4221-beb1-d7a3aeba7dad
 Content-Type: application/json
 
 { 
-  "nombre": "Cordoba",
-  "estado": true
 }
 
 ### Eliminar una provicia (DELETE - eliminar recurso)

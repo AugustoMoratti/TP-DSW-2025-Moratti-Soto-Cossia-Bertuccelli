@@ -1,5 +1,7 @@
 import { Request, Response, NextFunction } from 'express'
 import { Trabajo } from './trabajos.entity.js'
+import { Resenia } from '../resenia/resenia.entity.js';
+import { Usuario } from '../usuario/usuario.entity.js';
 import { orm } from '../../DB/orm.js';
 
 
@@ -34,7 +36,7 @@ async function findAll(req: Request, res: Response) {
 async function findOne(req: Request, res: Response) {
   try {
     const id = Number.parseInt(req.params.id)
-    const trabajo = await em.findOneOrFail(Trabajo, { id }, { populate: ['cliente', 'profesional'] })
+    const trabajo = await em.findOneOrFail(Trabajo, { id }, { populate: ['cliente', 'profesional', 'resenia'] })
     res
       .status(200)
       .json({ message: 'found Trabajo', data: trabajo })
@@ -45,7 +47,36 @@ async function findOne(req: Request, res: Response) {
 
 async function add(req: Request, res: Response) {
   try {
-    const trabajo = em.create(Trabajo, req.body)
+    const { montoTotal, cliente, profesional, pagado, fechaPago, fechaSolicitud, fechaFinalizado, resenia } = req.body;
+
+    if (!montoTotal || !cliente || !profesional || !fechaSolicitud) {
+      res.status(400).json({ message: 'Faltan campos oblgiatorios' })
+    };
+
+    if (fechaFinalizado && !resenia) {
+      res.status(400).json({ message: 'Se debe realizar la reseña antes de finalizar el trabajo' })
+    };
+
+    const trabajo = new Trabajo();
+
+    trabajo.montoTotal = Number(montoTotal);
+    trabajo.cliente = em.getReference(Usuario, Number(cliente));
+    trabajo.profesional = em.getReference(Usuario, Number(profesional));
+    trabajo.fechaSolicitud = new Date(fechaSolicitud);
+
+    if (pagado !== undefined) {
+      trabajo.pagado = true
+    };
+
+    if (fechaPago) {
+      trabajo.fechaPago = new Date(fechaPago)
+    };
+
+    if (resenia) {
+      trabajo.resenia = em.getReference(Resenia, Number(resenia))
+    };
+
+    em.persist(trabajo);
     await em.flush()
     res
       .status(201)
@@ -59,6 +90,24 @@ async function update(req: Request, res: Response) {
   try {
     const id = Number.parseInt(req.params.id)
     const trabajo = em.getReference(Trabajo, id)
+
+    const { montoTotal, cliente, profesional, pagado, fechaPago, fechaSolicitud, fechaFinalizado, resenia } = req.body
+
+    // Validación: si hay fechaFinalizado debe venir reseña (id o objeto)
+    if (fechaFinalizado !== undefined && (resenia === undefined || resenia === null || resenia === '')) {
+      return res.status(400).json({ message: 'La reseña es obligatoria cuando se finaliza el trabajo' });
+    }
+
+    if (resenia) trabajo.resenia = em.getReference(Resenia, Number(resenia));
+    if (cliente) trabajo.cliente = em.getReference(Usuario, Number(cliente));
+    if (profesional) trabajo.profesional = em.getReference(Usuario, Number(profesional));
+    if (fechaFinalizado) trabajo.fechaFinalizado = new Date(fechaFinalizado);
+    if (montoTotal !== undefined) trabajo.montoTotal = Number(montoTotal);
+    if (pagado !== undefined) trabajo.pagado = pagado;
+    if (fechaPago) trabajo.fechaPago = new Date(fechaPago);
+    if (fechaSolicitud) trabajo.fechaSolicitud = new Date(fechaSolicitud);
+
+
     em.assign(trabajo, req.body)
     await em.flush()
     res.status(200).json({ message: 'Trabajo class updated' })

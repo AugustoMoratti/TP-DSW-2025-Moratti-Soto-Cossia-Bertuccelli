@@ -37,4 +37,6 @@ export class Usuario extends BaseEntity {
 
   @Property({ nullable: false })
   horarios!: string;
+
+  //Agregar foto de perfil
 }

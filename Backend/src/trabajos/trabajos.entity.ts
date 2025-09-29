@@ -2,10 +2,12 @@ import {
     Entity,
     Property,
     ManyToOne,
-    Rel
+    Rel,
+    OneToOne
 } from '@mikro-orm/core';
 import { BaseEntity } from '../../DB/baseEntity.entity.js';
 import { Usuario } from '../usuario/usuario.entity.js'
+import { Resenia } from '../resenia/resenia.entity.js';
 
 
 @Entity()
@@ -33,6 +35,9 @@ export class Trabajo extends BaseEntity {
 
     @Property({ nullable: true })
     fechaFinalizado!: Date;
+
+    @OneToOne(() => Resenia)
+    resenia!: Rel<Resenia>
 }
 //La reseña va ligada al trabajo , cada trabajo puede tener 1 o ninguna reseña,
 //dependiendo si se termino el trabajo

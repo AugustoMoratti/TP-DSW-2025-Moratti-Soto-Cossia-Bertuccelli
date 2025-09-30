@@ -41,7 +41,22 @@ async function findOne(req: Request, res: Response) {
 
 async function add(req: Request, res: Response) {
   try {
-    const resenia = em.create(Resenia, req.body)
+    const { valor, descripcion } = req.body.sanitizedInput
+
+    const resenia = new Resenia();
+
+    if (valor === undefined || valor === null || isNaN(valor)) {
+      return res.status(400).json({ message: 'Valor es un campo obligatorio y debe ser un number' });
+    }
+
+    if (descripcion === undefined || descripcion === null || typeof descripcion !== 'string') {
+      return res.status(400).json({ message: 'Descripcion es un campo obligatorio y debe ser un string' });
+    };
+
+    resenia.valor = Number(valor);
+    resenia.descripcion = descripcion;
+
+    em.persist(resenia)
     await em.flush()
     res
       .status(201)
@@ -59,17 +74,17 @@ async function update(req: Request, res: Response) {
     const { valor, descripcion } = req.body.sanitizedInput || {};
 
     // Validaciones de tipo para campos opcionales
-    if (valor !== undefined && typeof valor !== 'number') {
+    if (valor && typeof valor !== 'number') {
       return res.status(400).json({ message: 'valor debe ser un número' });
     }
 
-    if (descripcion !== undefined && typeof descripcion !== 'string') {
+    if (descripcion && typeof descripcion !== 'string') {
       return res.status(400).json({ message: 'descripcion debe ser un string' });
     }
 
     // Asignación solo si viene definido
-    if (valor !== undefined) resenia.valor = valor; // tu propiedad en la entidad es "number"
-    if (descripcion !== undefined) resenia.descripcion = descripcion;
+    if (valor) resenia.valor = valor; // tu propiedad en la entidad es "number"
+    if (descripcion) resenia.descripcion = descripcion;
 
     // Guardar cambios
     await em.flush();

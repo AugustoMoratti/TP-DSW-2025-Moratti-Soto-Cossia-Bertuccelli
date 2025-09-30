@@ -24,8 +24,8 @@ export class Trabajo extends BaseEntity {
     @ManyToOne(() => Usuario, { nullable: false })
     profesional!: Rel<Usuario>;
 
-    @Property({ nullable: true })
-    pagado!: boolean;
+    /*@Property({ nullable: true })
+    pagado!: boolean;*/   //No hace falta ya que con tener o no la fechaPago ya sabemos si esta pagado o no.
 
     @Property({ nullable: true })
     fechaPago!: Date;
@@ -34,7 +34,7 @@ export class Trabajo extends BaseEntity {
     fechaSolicitud!: Date;
 
     @Property({ nullable: true })
-    fechaFinalizado!: Date;
+    fechaFinalizado!: Date; //Fecha en que se finalizo el trabajo, es distinta a la fecha en que se pago el trabajo.
 
     @OneToOne(() => Resenia)
     resenia!: Rel<Resenia>

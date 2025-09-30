@@ -20,7 +20,7 @@ function sanitizeTrabajoInput(req: Request, res: Response, next: NextFunction) {
     resenia: req.body.montoTotal
   }
   Object.keys(req.body.sanitizedInput).forEach((key) => {
-    if (req.body.sanitizedInput[key] === undefined) {
+    if (req.body.sanitizedInput[key] === undefined || req.body.sanitizedInput[key] === null) {
       delete req.body.sanitizedInput[key]
     }
   })
@@ -52,7 +52,13 @@ async function findOne(req: Request, res: Response) {
 
 async function add(req: Request, res: Response) {
   try {
-    const { montoTotal, cliente, profesional, pagado, fechaPago, fechaSolicitud, fechaFinalizado, resenia } = req.body;
+    /*
+    Reglas de negocio = a tener en cuenta en la creacion de trabajos
+     1) No debe haber fechaPago sin haber fechaFinalizado
+     2) No debe haber fechaFinalizado sin haber resenia
+     3) montoTotal, cliente, profesional, fechaSolicitud son campos obligatorios.
+    */
+    const { montoTotal, cliente, profesional, fechaPago, fechaSolicitud, fechaFinalizado, resenia } = req.body;
 
     if (!montoTotal || !cliente || !profesional || !fechaSolicitud) {
       res.status(400).json({ message: 'Faltan campos oblgiatorios' })
@@ -62,6 +68,10 @@ async function add(req: Request, res: Response) {
       res.status(400).json({ message: 'Se debe realizar la reseña antes de finalizar el trabajo' })
     };
 
+    if (fechaPago && !fechaFinalizado) {
+      res.status(400).json({ message: 'Se debe finalizar un trabajo antes de ser pagado' })
+    };
+
     const trabajo = new Trabajo();
 
     trabajo.montoTotal = Number(montoTotal);
@@ -69,9 +79,6 @@ async function add(req: Request, res: Response) {
     trabajo.profesional = em.getReference(Usuario, Number(profesional));
     trabajo.fechaSolicitud = new Date(fechaSolicitud);
 
-    if (pagado !== undefined) {
-      trabajo.pagado = true
-    };
 
     if (fechaPago) {
       trabajo.fechaPago = new Date(fechaPago)
@@ -91,29 +98,50 @@ async function add(req: Request, res: Response) {
   }
 }
 
-async function update(req: Request, res: Response) {
+async function update(req: Request, res: Response) { //NO UTILIZAR PUT , SIEMPRE PATCH PARA UPDATE DE TRABAJOS
   try {
     const id = Number.parseInt(req.params.id)
     const trabajo = em.getReference(Trabajo, id)
+    /*
+    Reglas de negocio = a tener en cuenta en la modificacion de trabajos
+     1) No debe haber fechaPago sin haber fechaFinalizado
+     2) No debe haber fechaFinalizado sin haber resenia
+     3) montoTotal, cliente, profesional, fechaSolicitud son campos obligatorios.
+    */
 
-    const { montoTotal, cliente, profesional, pagado, fechaPago, fechaSolicitud, fechaFinalizado, resenia } = req.body
+    // Solo usamos los campos que vienen del sanitize
+    const {
+      montoTotal,
+      cliente,
+      profesional,
+      pagado,
+      fechaPago,
+      fechaSolicitud,
+      fechaFinalizado,
+      resenia
+    } = req.body.sanitizedInput || {};
 
-    // Validación: si hay fechaFinalizado debe venir reseña (id o objeto)
-    if (fechaFinalizado !== undefined && (resenia === undefined || resenia === null || resenia === '')) {
+    // Reglas de negocio
+    if (fechaFinalizado && !resenia) {
       return res.status(400).json({ message: 'La reseña es obligatoria cuando se finaliza el trabajo' });
     }
 
-    if (resenia) trabajo.resenia = em.getReference(Resenia, Number(resenia));
+    if (fechaPago && !fechaFinalizado) {
+      return res.status(400).json({ message: 'No puede haber fecha de pago sin fecha de finalización' });
+    }
+
+    // Asignación de valores con conversión de tipos
+    if (montoTotal) trabajo.montoTotal = Number(montoTotal);
     if (cliente) trabajo.cliente = em.getReference(Usuario, Number(cliente));
     if (profesional) trabajo.profesional = em.getReference(Usuario, Number(profesional));
-    if (fechaFinalizado) trabajo.fechaFinalizado = new Date(fechaFinalizado);
-    if (montoTotal !== undefined) trabajo.montoTotal = Number(montoTotal);
-    if (pagado !== undefined) trabajo.pagado = pagado;
-    if (fechaPago) trabajo.fechaPago = new Date(fechaPago);
     if (fechaSolicitud) trabajo.fechaSolicitud = new Date(fechaSolicitud);
+    if (fechaFinalizado) trabajo.fechaFinalizado = new Date(fechaFinalizado);
+    if (fechaPago) trabajo.fechaPago = new Date(fechaPago);
+    if (resenia) trabajo.resenia = em.getReference(Resenia, Number(resenia));
 
+    await em.flush();
 
-    await em.flush()
+    await em.flush();
     res.status(200).json({ message: 'Trabajo class updated' })
   } catch (error: any) {
     res.status(500).json({ message: error.message })

@@ -4,7 +4,7 @@ import { BaseEntity } from "../../DB/baseEntity.entity.js";
 @Entity()
 export class Resenia extends BaseEntity {
   @Property({ nullable: false })
-  number!: number; //el numero de estrellitas
+  valor!: number; //el numero de estrellitas
 
   @Property({ nullable: true })
   descripcion!: string

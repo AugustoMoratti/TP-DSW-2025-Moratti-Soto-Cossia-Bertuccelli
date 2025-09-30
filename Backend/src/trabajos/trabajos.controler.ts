@@ -10,9 +10,14 @@ const em = orm.em
 
 function sanitizeTrabajoInput(req: Request, res: Response, next: NextFunction) {
   req.body.sanitizedInput = {
-    fecha_solicitud: req.body.fecha_solicitud,
-    fecha_realizado: req.body.fecha_realizado,
-    montoTotal: req.body.montoTotal,
+    montoTotal: req.body.fecha_solicitud,
+    cliente: req.body.fecha_realizado,
+    profesional: req.body.montoTotal,
+    pagado: req.body.montoTotal,
+    fechaPago: req.body.montoTotal,
+    fechaSolicitud: req.body.montoTotal,
+    fechaFinalizado: req.body.montoTotal,
+    resenia: req.body.montoTotal
   }
   Object.keys(req.body.sanitizedInput).forEach((key) => {
     if (req.body.sanitizedInput[key] === undefined) {
@@ -108,7 +113,6 @@ async function update(req: Request, res: Response) {
     if (fechaSolicitud) trabajo.fechaSolicitud = new Date(fechaSolicitud);
 
 
-    em.assign(trabajo, req.body)
     await em.flush()
     res.status(200).json({ message: 'Trabajo class updated' })
   } catch (error: any) {

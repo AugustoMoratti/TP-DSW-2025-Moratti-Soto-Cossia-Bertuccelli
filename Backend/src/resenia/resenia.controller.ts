@@ -5,7 +5,7 @@ const em = orm.em
 
 function sanitizeReseniaInput(req: Request, res: Response, next: NextFunction) {
   req.body.sanitizedInput = {
-    number: req.body.number,
+    valor: req.body.valor,
     descripcion: req.body.descripcion,
   }
   Object.keys(req.body.sanitizedInput).forEach((key) => {
@@ -54,12 +54,27 @@ async function add(req: Request, res: Response) {
 async function update(req: Request, res: Response) {
   try {
     const id = Number.parseInt(req.params.id)
-    const resenia = em.getReference(Resenia, id)
-    em.assign(resenia, req.body)
-    await em.flush()
-    res
-      .status(201)
-      .json({ message: 'Resenia class updated', data: resenia })
+
+    const resenia = em.getReference(Resenia, id);
+    const { valor, descripcion } = req.body.sanitizedInput || {};
+
+    // Validaciones de tipo para campos opcionales
+    if (valor !== undefined && typeof valor !== 'number') {
+      return res.status(400).json({ message: 'valor debe ser un número' });
+    }
+
+    if (descripcion !== undefined && typeof descripcion !== 'string') {
+      return res.status(400).json({ message: 'descripcion debe ser un string' });
+    }
+
+    // Asignación solo si viene definido
+    if (valor !== undefined) resenia.valor = valor; // tu propiedad en la entidad es "number"
+    if (descripcion !== undefined) resenia.descripcion = descripcion;
+
+    // Guardar cambios
+    await em.flush();
+
+    res.status(200).json({ message: 'Resenia actualizada', data: resenia });
   } catch (error: any) {
     res.status(500).json({ message: error.message })
   }

@@ -43,8 +43,14 @@ async function findOne(req: Request, res: Response) {
 
 async function add(req: Request, res: Response) {
   try {
-    const provincia = em.create(Provincia, req.body.sanitizedInput)
-    await em.flush()
+    const { nombre } = req.body.sanitizedInput
+    if (typeof nombre !== 'string') {
+      return res.status(400).json({ message: 'El nombre es obligatorio y debe ser un string' })
+    };
+    const provincia = new Provincia();
+    provincia.nombre = nombre;
+    em.persist(provincia);
+    await em.flush();
     res.status(201).json({ message: 'provincia created', data: provincia })
   } catch (error: any) {
     res.status(500).json({ message: error.message })

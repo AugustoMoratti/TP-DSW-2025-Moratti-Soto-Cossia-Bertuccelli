@@ -53,10 +53,10 @@ async function add(req: Request, res: Response) {
     if (!nombre || !codPostal || !provincia) {
       return res.status(400).json({ message: 'Faltan campos requeridos' })
     };
-    if (typeof nombre !== 'string') {
+    if (typeof nombre !== 'string' || nombre === "") {
       return res.status(400).json({ message: 'El nombre debe ser un string' })
     };
-    if (typeof codPostal !== 'string') {
+    if (typeof codPostal !== 'string' || codPostal === "") {
       return res.status(400).json({ message: 'El codigo postal debe ser un string' })
     };
     const provinciaRef = em.getReference(Provincia, Number(provincia))
@@ -79,9 +79,21 @@ async function add(req: Request, res: Response) {
 
 async function update(req: Request, res: Response) {
   try {
-    const id = Number.parseInt(req.params.id)
-    const localidadToUpdate = await em.findOneOrFail(Localidad, { id })
-    em.assign(localidadToUpdate, req.body.sanitizedInput)
+    const id = Number.parseInt(req.params.id);
+    const { nombre, codPostal, provincia } = req.body.sanitizedInput;
+    if (typeof nombre !== 'string' || nombre === "") {
+      return res.status(400).json({ message: 'El nombre debe ser un string' })
+    };
+    if (typeof codPostal !== 'string' || codPostal === "") {
+      return res.status(400).json({ message: 'El codigo postal debe ser un string' })
+    };
+    const provinciaRef = em.getReference(Provincia, Number(provincia))
+    const localidadToUpdate = em.getReference(Localidad, id)
+
+    if (nombre) localidadToUpdate.nombre = nombre;
+    if (codPostal) localidadToUpdate.codPostal = codPostal;
+    if (provincia) localidadToUpdate.provincia = provinciaRef;
+
     await em.flush()
     res
       .status(200)

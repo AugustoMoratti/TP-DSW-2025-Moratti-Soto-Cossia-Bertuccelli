@@ -30,10 +30,11 @@ Content-Type: application/json
 
 ### PATCH
 PATCH http://localhost:3000/api/localidad/{{id}}
+Content-Type: application/json
 
 { 
-  "nombre": "Rosario",
-  "codPostal": "2000",
+  "nombre": "Canada de Gomez",
+  "codPostal": "2500",
   "provincia": 1
 }
 

@@ -44,7 +44,7 @@ async function findOne(req: Request, res: Response) {
 async function add(req: Request, res: Response) {
   try {
     const { nombre } = req.body.sanitizedInput
-    if (typeof nombre !== 'string') {
+    if (typeof nombre !== 'string' || nombre === "") {
       return res.status(400).json({ message: 'El nombre es obligatorio y debe ser un string' })
     };
     const provincia = new Provincia();
@@ -60,6 +60,10 @@ async function add(req: Request, res: Response) {
 async function update(req: Request, res: Response) {
   try {
     const id = Number.parseInt(req.params.id)
+    const { nombre } = req.body.sanitizedInput
+    if (typeof nombre !== 'string' || nombre === "") {
+      return res.status(400).json({ message: 'El nombre es obligatorio y debe ser un string' })
+    };
     const provinciaToUpdate = await em.findOneOrFail(Provincia, { id })
     em.assign(provinciaToUpdate, req.body.sanitizedInput)
     await em.flush()

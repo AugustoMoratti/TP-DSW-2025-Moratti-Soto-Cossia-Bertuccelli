@@ -1,12 +1,8 @@
-### GET ALL ACTIVE
-GET http://localhost:3000/api/profesion
-
 ### GET ALL INACTIVE
 GET http://localhost:3000/api/profesion/inactive
 
-### GET ONE ACTIVE
-@id = {{createProfesion.response.body.data.id}}
-GET http://localhost:3000/api/profesion/{{id}}
+### GET ALL ACTIVE
+GET http://localhost:3000/api/profesion
 
 ### POST
 # @name createProfesion
@@ -14,36 +10,38 @@ POST http://localhost:3000/api/profesion
 Content-Type: application/json
 
 { 
-  "nombreProfesion": "Plomero",
-  "descripcionProfesion": "...",
+  "nombreProfesion": "Ingeniero",
+  "descripcionProfesion": "hola",
   "estado": false
 }
+
+### ID
+@id = {{createProfesion.response.body.data.id}}
+### GET ONE
+GET http://localhost:3000/api/profesion/{{id}}
+
 
 ### PUT
 PUT http://localhost:3000/api/profesion/{{id}}
 Content-Type: application/json
 
 { 
-  "nombreProfesion": "Ingeniero",
+  "nombreProfesion": "Plomero",
   "descripcionProfesion": "...",
   "estado": true
 }
+
 
 ### PATCH
 PATCH http://localhost:3000/api/profesion/{{id}}
 Content-Type: application/json
 
 { 
-  "nombreProfesion": "Ingeniero",
+  "nombreProfesion": "Plomero",
   "descripcionProfesion": "...",
-  "estado": false
+  "estado": true
 }
 
-### DELETE
+### Eliminar una provicia (DELETE - eliminar recurso)
 DELETE http://localhost:3000/api/profesion/{{id}}
 
-
-/* La extension REST Client, nos permite hacer peticiones sin la 
-la necesidad del navegador, por ejemplo meter un archivo reversionado
-dentro del proyecto y realizarle peticiones y controlar que funcione
-todo correctamente */

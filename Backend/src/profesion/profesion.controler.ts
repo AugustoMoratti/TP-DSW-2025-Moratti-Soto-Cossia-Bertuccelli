@@ -5,15 +5,14 @@ import { orm } from '../../DB/orm.js';
 
 const em = orm.em
 
-function sanitizeProfesionesInput(req: Request, res: Response, next: NextFunction) {
+function sanitizeProfesionInput(req: Request, res: Response, next: NextFunction) {
   req.body.sanitizedInput = {
-    nombreProf: req.body.nombreProf,
-    descProf: req.body.descProf,
+    nombreProfesion: req.body.nombreProfesion,
+    descripcionProfesion: req.body.descripcionProfesion,
     estado: req.body.estado,
-    codProf: req.body.codProf,
   }
   Object.keys(req.body.sanitizedInput).forEach((key) => {
-    if (req.body.sanitizedInput[key] === undefined) {
+    if (req.body.sanitizedInput[key] === undefined || req.body.sanitizedInput[key] === null) {
       delete req.body.sanitizedInput[key]
     }
   })
@@ -71,7 +70,23 @@ async function findOne(req: Request, res: Response) {
 
 async function add(req: Request, res: Response) {
   try {
-    const profesion = em.create(Profesiones, req.body)
+    const { nombreProfesion, descripcionProfesion, estado } = req.body.sanitizedInput
+
+    const profesion = new Profesiones()
+    if (typeof nombreProfesion !== 'string' || nombreProfesion === "") {
+      return res.status(400).json({ message: 'El nombre debe ser un string y no debe estar vacio' })
+    };
+    if (typeof descripcionProfesion !== 'string' || descripcionProfesion === "") {
+      return res.status(400).json({ message: 'La descripcion debe ser un string' })
+    };
+    if (typeof estado !== 'boolean') {
+      return res.status(400).json({ message: 'El estado debe ser un booleano' })
+    };
+
+    profesion.nombreProfesion = nombreProfesion
+    profesion.descripcionProfesion = descripcionProfesion
+    profesion.estado = estado
+    em.persist(profesion);
     await em.flush()
     res
       .status(201)
@@ -105,7 +120,7 @@ async function remove(req: Request, res: Response) {
 }
 
 export {
-  sanitizeProfesionesInput,
+  sanitizeProfesionInput,
   findAllActive,
   findAllInactive,
   findOne,

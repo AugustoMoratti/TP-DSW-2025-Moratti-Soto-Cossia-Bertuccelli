@@ -4,10 +4,10 @@ import { findAll, findOne, add, update, remove, sanitizeUsuarioInput } from './u
 export const usuarioRouter = Router()
 
 usuarioRouter.get('/', findAll)
-usuarioRouter.get('/:id', sanitizeUsuarioInput, findOne)
+usuarioRouter.get('/:id', findOne)
 usuarioRouter.post('/', sanitizeUsuarioInput, add)
 usuarioRouter.put('/:id', sanitizeUsuarioInput, update)
-usuarioRouter.patch('/:id', update)
+usuarioRouter.patch('/:id', sanitizeUsuarioInput, update)
 usuarioRouter.delete('/:id', remove)
 
 export default usuarioRouter;

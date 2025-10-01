@@ -24,6 +24,7 @@ async function findAll(req: Request, res: Response) {
     const localidad = await em.find(
       Localidad,
       {},
+      { populate: ['provincia'] }
     )
     res.status(200).json({ message: 'found all localidades', data: localidad })
   } catch (error: any) {
@@ -37,6 +38,7 @@ async function findOne(req: Request, res: Response) {
     const localidad = await em.findOneOrFail(
       Localidad,
       { id },
+      { populate: ['provincia'] }
     )
     res.status(200).json({ message: 'found localidad', data: localidad })
   } catch (error: any) {
@@ -50,7 +52,13 @@ async function add(req: Request, res: Response) {
 
     if (!nombre || !codPostal || !provincia) {
       return res.status(400).json({ message: 'Faltan campos requeridos' })
-    }
+    };
+    if (typeof nombre !== 'string') {
+      return res.status(400).json({ message: 'El nombre debe ser un string' })
+    };
+    if (typeof codPostal !== 'string') {
+      return res.status(400).json({ message: 'El codigo postal debe ser un string' })
+    };
     const provinciaRef = em.getReference(Provincia, Number(provincia))
 
     const localidad = em.create(Localidad, {

@@ -24,7 +24,7 @@ Content-Type: application/json
 
 { 
   "nombre": "Canada de Gomez",
-  "codPostal": "1900",
+  "codPostal": "2500",
   "provincia": 1
 }
 

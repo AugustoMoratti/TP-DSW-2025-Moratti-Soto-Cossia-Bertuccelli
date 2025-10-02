@@ -1,1 +1,19 @@
 /*Este sera todo el diseño del cuerpo del HTML*/
+body {
+    background-color: #ff0000;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+}
+
+.barra{
+    background-color: #333;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: max-content;
+    border-radius: 100vh;
+}

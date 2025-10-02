@@ -21,7 +21,7 @@ function sanitizeUsuarioInput(req: Request, res: Response, next: NextFunction) {
     profesiones: req.body.profesiones
   }
   Object.keys(req.body.sanitizedInput).forEach((key) => {
-    if (req.body.sanitizedInput[key] === undefined) {
+    if (req.body.sanitizedInput[key] === undefined || req.body.sanitizedInput[key] === null) {
       delete req.body.sanitizedInput[key]
     }
   })
@@ -58,6 +58,7 @@ async function add(req: Request, res: Response) {
     /*if (!nombre || !apellido || !clave || !email || !provincia || !localidad) {
       return res.status(400).json({ message: 'Faltan campos requeridos: nombre, apellido, clave, email, provincia o localidad' })
     }*/
+
     const provinciaRef = em.getReference(Provincia, Number(provincia))
     const localidadRef = em.getReference(Localidad, Number(localidad))
 
@@ -72,19 +73,65 @@ async function add(req: Request, res: Response) {
         id: { $in: profesionesIds },
         estado: true
       })
+    };
+
+    if (typeof nombre !== 'string' || nombre === "") {
+      return res.status(400).json({ message: 'El nombre es obligatorio y debe ser un string' })
+    };
+
+    if (typeof apellido !== 'string' || apellido === "") {
+      return res.status(400).json({ message: 'El apellido es obligatorio y debe ser un string' })
+    };
+
+    if (typeof clave !== 'string' || clave === "") {
+      return res.status(400).json({ message: 'La clave es obligatoria y debe ser un string' })
+    };
+
+    if (typeof email !== 'string' || email === "") {
+      return res.status(400).json({ message: 'El email es obligatorio y debe ser un string' })
+    };
+
+    if (typeof contacto !== 'string') {
+      return res.status(400).json({ message: 'El numero de contacto es obligatorio y debe ser un string' })
+    };
+
+    if (typeof horarios !== 'string' || horarios === "") {
+      return res.status(400).json({ message: 'El horario es obligatorio y debe ser un string' })
+    };
+
+    if (typeof horarios !== 'string' || horarios === "") {
+      return res.status(400).json({ message: 'El horario es obligatorio y debe ser un string' })
+    };
+
+    if (descripcion && typeof descripcion !== 'string') {
+      return res.status(400).json({ message: 'La descripcion debe ser un string' })
+    };
+
+    const usuario = new Usuario()
+
+    usuario.nombre = nombre;
+    usuario.apellido = apellido;
+    usuario.clave = clave;
+    usuario.email = email;
+    usuario.contacto = contacto;
+    usuario.horarios = horarios;
+    if (descripcion) usuario.descripcion = descripcion;
+    usuario.provincia = provinciaRef;
+    usuario.localidad = localidadRef;
+
+    if (profesionesRef.length > 0) {
+      for (const p of profesionesRef) {
+        usuario.profesiones.add(p);
+      }
     }
-    const usuario = em.create(Usuario, {
-      nombre,
-      apellido,
+
+    /*const usuario = em.create(Usuario, {
+      
       provincia: provinciaRef,
       localidad: localidadRef,
-      clave,
-      email,
-      descripcion,
-      contacto,
-      horarios,
       profesiones: profesionesRef
-    })
+    })*/
+    em.persist(usuario)
     await em.flush()
     res
       .status(201)
@@ -102,7 +149,13 @@ async function update(req: Request, res: Response) {
     const id = Number.parseInt(req.params.id)
     const usuario = await em.findOneOrFail(Usuario, { id }, { populate: ['profesiones'] })
 
-    const { nombre, apellido, provincia, localidad, clave, email, descripcion, contacto, horarios, profesiones } = req.body
+    const { nombre, apellido, provincia, localidad, clave, email, descripcion, contacto, horarios, profesiones } = req.body.sanitizedInput
+
+    const profesionesIds: number[] = Array.isArray(req.body.profesiones)
+      ? req.body.profesiones
+        .map((x: any) => Number(x))
+        .filter((n: number) => Number.isFinite(n))
+      : [];
 
     if (provincia) usuario.provincia = em.getReference(Provincia, Number(provincia))
     if (localidad) usuario.localidad = em.getReference(Localidad, Number(localidad))
@@ -115,19 +168,19 @@ async function update(req: Request, res: Response) {
     if (contacto) usuario.contacto = contacto.toString()
     if (horarios) usuario.horarios = horarios
 
-    if (Array.isArray(profesiones)) {
-      if (profesiones.length > 0) {
-        // Asignar solo profesiones activas enviadas
-        const profesionesIds = profesiones.map((x: any) => Number(x)).filter((n: number) => Number.isFinite(n))
-        const profesionesRef = await em.find(Profesiones, { id: { $in: profesionesIds }, estado: true })
-        usuario.profesiones.set(profesionesRef)
-      } else {
-        // Si se envía array vacío, eliminar todas las profesiones
-        usuario.profesiones.removeAll()
+    const idExistentes = new Set(usuario.profesiones.getItems().map(p => Number(p.id)));
+
+    for (const pid of profesionesIds) {
+      if (!idExistentes.has(pid)) {
+        usuario.profesiones.add(em.getReference(Profesiones, pid));
+        idExistentes.add(pid)
       }
     }
 
-    em.assign(usuario, req.body)
+    if (Array.isArray(profesionesIds) && profesionesIds.length === 0) {
+      usuario.profesiones.removeAll();
+    }
+
     await em.flush()
     res.status(200).json({ message: 'Usuario class updated' })
   } catch (error: any) {

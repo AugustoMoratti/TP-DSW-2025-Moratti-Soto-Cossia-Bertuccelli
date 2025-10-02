@@ -26,7 +26,7 @@ PUT http://localhost:3000/api/profesion/{{id}}
 Content-Type: application/json
 
 { 
-  "nombreProfesion": "Plomero",
+  "nombreProfesion": "Ingeniero",
   "descripcionProfesion": "...",
   "estado": true
 }

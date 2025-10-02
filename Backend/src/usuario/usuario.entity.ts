@@ -19,10 +19,10 @@ export class Usuario extends BaseEntity {
   email!: string;
 
   @Property({ length: 100, nullable: true })
-  descripcion?: string;
+  descripcion!: string;
 
   @Property({ length: 50, nullable: false })
-  contacto?: string;
+  contacto!: string;
 
   @ManyToOne(() => Localidad, { nullable: false })
   localidad!: Rel<Localidad>;
@@ -34,6 +34,10 @@ export class Usuario extends BaseEntity {
   profesiones = new Collection<Profesiones>(this);
   //Un usuario puede tener muchas profesiones o ninguna, con esto se soluciona , es una ManyToMany unidireccional y no hace 
   // falta ponerla en el crud de profesion.
+
+  //Recordar que si no se envia ninguna profesion, pues se borran todas las que estan, asique cada vez que 
+  // actualizemos un usuario, debemos pedirle nuevamente la profesion para no tener problemas.
+  //Idea , para modificar un usuario realizar un form completo de todas las propiedades del usuario
 
   @Property({ nullable: false })
   horarios!: string;

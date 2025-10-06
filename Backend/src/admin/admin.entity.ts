@@ -14,6 +14,9 @@ export class Administrador extends BaseEntity2 {
     @Property({ length: 50, nullable: false })
     clave!: string;
 
+    @Property({ length: 100, unique: true, nullable: false })
+    email!: string;
+
     /*@Property({ length: 25 , nullable: false }) //Vamos a tener solo un administrador que pueda aceptar o denegar Profesiones nuevas
     estado!: string;*/
 

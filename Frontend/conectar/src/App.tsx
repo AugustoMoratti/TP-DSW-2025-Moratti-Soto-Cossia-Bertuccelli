@@ -1,19 +1,26 @@
 import React, { useState } from 'react';
 import './app.css';
-import StandardInput from './components/Form.tsx';
-import Button from './components/Button.tsx';
+import StandardInput, { Button } from './components/Form';
+import CheckIcon from '@mui/icons-material/Check';
 
 export default function App() {
-  const [name, setName] = useState("");
+  const [usuario, setUsuario] = useState("");
+  const [clave, setClave] = useState("");
 
   return (
-    <div className="bg-[#121212] min-h-screen flex flex-col items-center justify-center p-8 space-y-6">
-      <StandardInput label="User" value={name} onChange={setName} />
-      
-      <Button variant="contained" Icon={<span>➡️</span>}>
-      Send
-      </Button>
-
-    </div>
+    <section className="main-bg">
+      <div className="card">
+        <div className="card-header">
+          <span className="card-title">CONECTAR</span>
+        </div>
+        <div className="card-content">
+          <StandardInput label="Usuario" value={usuario} onChange={setUsuario} />
+          <StandardInput label="Clave" value={clave} onChange={setClave} type="password" />
+          <Button variant="contained" icon={<CheckIcon />}>
+            Enviar
+          </Button>
+        </div>
+      </div>
+    </section>
   );
 }

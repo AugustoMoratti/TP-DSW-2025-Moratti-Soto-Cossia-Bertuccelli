@@ -22,7 +22,6 @@ export const syncSchema = async () => {
     await generator.updateSchema()
     await generator.dropSchema()
     await generator.createSchema()
-
 }
 
 export const getEm = () => {

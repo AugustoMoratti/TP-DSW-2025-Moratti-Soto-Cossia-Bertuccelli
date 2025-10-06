@@ -10,13 +10,13 @@ const em = orm.em
 
 function sanitizeTrabajoInput(req: Request, res: Response, next: NextFunction) {
   req.body.sanitizedInput = {
-    montoTotal: req.body.fecha_solicitud,
-    cliente: req.body.fecha_realizado,
-    profesional: req.body.montoTotal,
-    fechaPago: req.body.montoTotal,
-    fechaSolicitud: req.body.montoTotal,
-    fechaFinalizado: req.body.montoTotal,
-    resenia: req.body.montoTotal
+    montoTotal: req.body.montoTotal,
+    cliente: req.body.cliente,
+    profesional: req.body.profesional,
+    fechaPago: req.body.fechaPago,
+    fechaSolicitud: req.body.fechaSolicitud,
+    fechaFinalizado: req.body.fechaFinalizado,
+    resenia: req.body.resenia
   }
   Object.keys(req.body.sanitizedInput).forEach((key) => {
     if (req.body.sanitizedInput[key] === undefined || req.body.sanitizedInput[key] === null) {
@@ -74,8 +74,8 @@ async function add(req: Request, res: Response) {
     const trabajo = new Trabajo();
 
     trabajo.montoTotal = Number(montoTotal);
-    trabajo.cliente = em.getReference(Usuario, Number(cliente));
-    trabajo.profesional = em.getReference(Usuario, Number(profesional));
+    trabajo.cliente = em.getReference(Usuario, cliente);
+    trabajo.profesional = em.getReference(Usuario, profesional);
     trabajo.fechaSolicitud = new Date(fechaSolicitud);
 
 
@@ -130,8 +130,8 @@ async function update(req: Request, res: Response) { //NO UTILIZAR PUT , SIEMPRE
 
     // Asignación de valores con conversión de tipos
     if (montoTotal) trabajo.montoTotal = Number(montoTotal);
-    if (cliente) trabajo.cliente = em.getReference(Usuario, Number(cliente));
-    if (profesional) trabajo.profesional = em.getReference(Usuario, Number(profesional));
+    if (cliente) trabajo.cliente = em.getReference(Usuario, cliente);
+    if (profesional) trabajo.profesional = em.getReference(Usuario, profesional);
     if (fechaSolicitud) trabajo.fechaSolicitud = new Date(fechaSolicitud);
     if (fechaFinalizado) trabajo.fechaFinalizado = new Date(fechaFinalizado);
     if (fechaPago) trabajo.fechaPago = new Date(fechaPago);

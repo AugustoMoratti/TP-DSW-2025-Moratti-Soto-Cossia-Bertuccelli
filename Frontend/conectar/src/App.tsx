@@ -1,9 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
+import './app.css';
+import StandardInput from './components/Form.tsx';
+import Button from './components/Button.tsx';
 
-const App: React.FC = () => (
-  <div>
-    <h1>Hello, world!</h1>
-  </div>
-);
+export default function App() {
+  const [name, setName] = useState("");
 
-export default App;
+  return (
+    <div className="bg-[#121212] min-h-screen flex flex-col items-center justify-center p-8 space-y-6">
+      <StandardInput label="User" value={name} onChange={setName} />
+      
+      <Button variant="contained" Icon={<span>➡️</span>}>
+      Send
+      </Button>
+
+    </div>
+  );
+}

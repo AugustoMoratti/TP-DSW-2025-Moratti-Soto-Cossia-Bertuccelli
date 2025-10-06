@@ -1,0 +1,45 @@
+.custom-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  padding: 0.5em 1.5em;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  transition: background 0.2s, color 0.2s, border 0.2s;
+}
+
+.custom-btn.contained {
+  background: #90caf9;
+  color: #222;
+  border: 2px solid #90caf9;
+}
+
+.custom-btn.contained:hover {
+  background: #42a5f5;
+  color: #fff;
+  border-color: #42a5f5;
+}
+
+.custom-btn.outlined {
+  background: transparent;
+  color: #90caf9;
+  border: 2px solid #90caf9;
+}
+
+.custom-btn.outlined:hover {
+  background: #e3f2fd;
+  color: #1976d2;
+  border-color: #1976d2;
+}
+
+.btn-icon {
+  display: flex;
+  align-items: center;
+}
+
+.btn-icon.end {
+  margin-left: 0.5em;
+}

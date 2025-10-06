@@ -1,0 +1,15 @@
+body {
+  margin: 0;
+  background: #222;
+  color: #fff;
+  font-family: system-ui;
+  display: grid;
+  place-content: center;
+  min-height: 100vh;
+}
+
+.App {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}

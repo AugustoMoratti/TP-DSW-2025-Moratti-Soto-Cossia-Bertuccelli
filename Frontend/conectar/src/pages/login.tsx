@@ -1,4 +1,4 @@
-import StandardInput, { Button } from '../../components/Form';
+import StandardInput, { Button } from '../components/Form';
 import CheckIcon from '@mui/icons-material/Check';
 import { useNavigate } from "react-router-dom";
 import React, { useState } from 'react';

@@ -22,5 +22,9 @@ export const syncSchema = async () => {
     await generator.updateSchema()
     await generator.dropSchema()
     await generator.createSchema()
-
 }
+
+export const getEm = () => {
+    if (!orm) throw new Error('ORM not initialized. Call initORM() first.');
+    return orm.em.fork();
+};

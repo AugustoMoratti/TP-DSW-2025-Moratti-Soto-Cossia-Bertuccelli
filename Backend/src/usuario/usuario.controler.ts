@@ -41,7 +41,7 @@ async function findAll(req: Request, res: Response) {
 
 async function findOne(req: Request, res: Response) {
   try {
-    const id = Number.parseInt(req.params.id)
+    const id = req.params.id
     const usuario = await em.findOneOrFail(Usuario, { id }, { populate: ['profesiones'] })
     res
       .status(200)
@@ -146,7 +146,7 @@ async function update(req: Request, res: Response) {
     /*const id = Number.parseInt(req.params.id)
     const usuario = em.getReference(Usuario, id)*/
 
-    const id = Number.parseInt(req.params.id)
+    const id = req.params.id
     const usuario = await em.findOneOrFail(Usuario, { id }, { populate: ['profesiones'] })
 
     const { nombre, apellido, provincia, localidad, clave, email, descripcion, contacto, horarios, profesiones } = req.body.sanitizedInput
@@ -190,7 +190,7 @@ async function update(req: Request, res: Response) {
 
 async function remove(req: Request, res: Response) {
   try {
-    const id = Number.parseInt(req.params.id)
+    const id = req.params.id
     const usuario = em.getReference(Usuario, id)
     await em.removeAndFlush(usuario)
     res.status(200).send({ message: 'Usuario deleted' })

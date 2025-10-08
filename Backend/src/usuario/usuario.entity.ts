@@ -1,11 +1,12 @@
 import { Entity, ManyToOne, Property, Rel, ManyToMany, Collection, Cascade } from '@mikro-orm/core'
-import { BaseEntity } from '../../DB/baseEntity.entity.js'
+import { BaseEntity2 } from '../../DB/baseEntity2.entity.js'
 import { Localidad } from "../localidad/localidades.entity.js";
 import { Profesiones } from "../profesion/profesion.entity.js";
 import { Provincia } from "../provincia/provincia.entity.js";
 
+
 @Entity()
-export class Usuario extends BaseEntity {
+export class Usuario extends BaseEntity2 {
   @Property({ length: 100, nullable: false })
   nombre!: string;
 

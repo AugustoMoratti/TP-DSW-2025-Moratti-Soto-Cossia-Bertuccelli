@@ -38,5 +38,3 @@ export default function Login() {
   );
 }
 
-
-//CAMBIAR COLOR DEL BOTON

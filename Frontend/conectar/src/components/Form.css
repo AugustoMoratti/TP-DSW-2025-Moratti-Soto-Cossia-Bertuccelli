@@ -1,3 +1,12 @@
+.logo{
+  width: 250px;
+  height: auto;
+  margin-bottom: 0;
+  margin-left: 0;
+  position: relative;
+}
+
+
 .input-container {
   position: relative;
   width: 100%;

@@ -12,15 +12,15 @@
 }
 
 .custom-btn.contained {
-  background: #90caf9;
-  color: #222;
-  border: 2px solid #90caf9;
+  background: #114f5a;
+  color: #ffffff;
+  border: 2px solid #114f5a;
 }
 
 .custom-btn.contained:hover {
-  background: #42a5f5;
+  background: #187788;
   color: #fff;
-  border-color: #42a5f5;
+  border-color: #187788;
 }
 
 .custom-btn.outlined {

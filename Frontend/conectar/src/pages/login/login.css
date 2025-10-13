@@ -103,3 +103,12 @@ body, html, .main-bg {
   text-decoration: underline;
 }
 
+.recuerdame-container {
+  display: flex;
+  color: #0B5357;
+  accent-color: #0B5357; 
+  align-items: center;
+  gap: 0.5em;
+  margin-bottom: 0.5em;
+  font-size: 1rem;
+}

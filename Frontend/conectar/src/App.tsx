@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import './app.css';
-import { useNavigate } from "react-router-dom"; // Usando react-router
+import { useNavigate } from "react-router-dom"; 
 
 export default function App() {
   const navigate = useNavigate();
@@ -11,7 +10,7 @@ export default function App() {
         <h1>Bienvenido a Conectar</h1>
         <p>Tu plataforma de conexión social.</p>
         <button onClick={() => navigate("/login")}>Iniciar Sesión</button>
-        <button onClick={() => navigate("/registro")}>Registrarse</button>
+        <button onClick={() => navigate("/register")}>Registrarse</button>
       </header>
     </div>
   );

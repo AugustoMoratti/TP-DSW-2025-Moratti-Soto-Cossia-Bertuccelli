@@ -1,0 +1,59 @@
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: auto;
+  background-color: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  z-index: 100;
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 0;
+  padding: 10px 30px;
+}
+
+.logo {
+  height: 35px;
+  /* podés ajustar este valor */
+  width: auto;
+  /* mantiene la proporción */
+  object-fit: contain;
+  /* evita que se deforme */
+  border-radius: 5px;
+}
+
+.header-btns {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 20px;
+  gap: 10px;
+}
+
+.header-btns {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 0;
+}
+
+.header-btn {
+  background: transparent;
+  color: #0b5357fa;
+  border: 1px solid #0b5357fa;
+  border-radius: 20px;
+  padding: 6px 18px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.header-btn:hover {
+  background-color: #0b5357a0;
+  color: #ffffff;
+}

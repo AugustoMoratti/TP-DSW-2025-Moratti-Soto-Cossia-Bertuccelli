@@ -35,7 +35,7 @@
 
 .header-btn2 {
   background: #0B5357;
-  color: #fff;
+  color: #0B5357;
   border: none;
   border-radius: 2px;
   padding: 0.75em 1.25em;
@@ -52,8 +52,8 @@
 
 .header-btn {
   background: transparent;
-  color: #f4ebd0;
-  border: 1px solid #f4ebd0b9;
+  color: #0B5357;
+  border: 1px solid #0B5357;
   border-radius: 20px;
   padding: 6px 18px;
   font-size: 14px;

@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import App from './App.tsx'
 import Login from './pages/login/login.tsx'
-import Registro from './pages/register.tsx'
+import Registro from './pages/register/register.tsx'
 import BusquedaProfesionales from './pages/BusquedaProfesionales/busqProf.tsx'
 import NotFound from './pages/error/notFound.tsx'
 

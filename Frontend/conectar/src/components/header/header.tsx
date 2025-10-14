@@ -1,19 +1,19 @@
 import "./header.css";
-import { useNavigate } from "react-router-dom";
+import type { ReactNode } from "react";
 
-export default function Header() {
-  const navigate = useNavigate();
+type HeaderProps = {
+  children?: ReactNode;
+};
 
+export default function Header({ children }: HeaderProps) {
   return (
     <header className="header">
       <div className="header-container">
         <img src="../../assets/conect_2_1.png" alt="Logo" className="logo" /> 
         <nav className="header-btns">
-          <button className="header-btn" type="button" onClick={() => navigate("/perfil")}>Mi Perfil</button>
-          <button className="header-btn" type="button" onClick={() => navigate("/admin")}>Admin</button>
+          {children}
         </nav>
       </div>
     </header>
-
-  )
-};
+  );
+}

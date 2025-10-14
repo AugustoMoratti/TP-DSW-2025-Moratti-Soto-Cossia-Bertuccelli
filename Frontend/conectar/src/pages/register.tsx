@@ -1,9 +1,10 @@
-import StandardInput, { Button } from '../components/Form';
+import StandardInput from '../components/form/Form.tsx';
+import { Button } from '../components/button/Button.tsx';
 import CheckIcon from '@mui/icons-material/Check';
 import { useNavigate } from "react-router-dom";
 import { useState } from 'react';
-import "../components/Button.css";
-import "../components/Form.css";
+import "../components/button/Button.css";
+import "../components/form/Form.css";
 
 export default function Registro() {
   const [nombre, setNombre] = useState("");

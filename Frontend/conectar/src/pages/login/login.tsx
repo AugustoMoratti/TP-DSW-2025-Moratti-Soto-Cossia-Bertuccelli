@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import StandardInput, { Button } from '../../components/Form';
+import StandardInput from '../../components/form/Form.tsx';
+import { Button } from '../../components/button/Button.tsx';
 import CheckIcon from '@mui/icons-material/Check';
 import { useNavigate } from "react-router-dom";
 import './login.css';
-import "../..//components/Button.css";
-import "../..//components/Form.css";
+import "../..//components/button/Button.css";
+import "../..//components/form/Form.css";
 
 export default function Login() {
   const [usuario, setUsuario] = useState("");

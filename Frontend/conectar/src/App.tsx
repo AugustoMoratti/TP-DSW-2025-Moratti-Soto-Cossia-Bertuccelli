@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom";
+import "./app.css"
 
 export default function App() {
   const navigate = useNavigate();
-  
+
   return (
     <div className="App">
       <header className="App-header">

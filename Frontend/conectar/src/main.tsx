@@ -7,6 +7,7 @@ import Registro from './pages/register/register.tsx'
 import BusquedaProfesionales from './pages/BusquedaProfesionales/busqProf.tsx'
 import NotFound from './pages/error/notFound.tsx'
 import Perfil from "./pages/perfil/perfil.tsx";
+import InternalServerError from './pages/error/error500.tsx';
 
 
 createRoot(document.getElementById('root')!).render(
@@ -19,6 +20,7 @@ createRoot(document.getElementById('root')!).render(
         <Route path="/busqProfesionales" element={<BusquedaProfesionales />} />
         <Route path="/perfil" element={<Perfil />} />
         <Route path="/*" element={<NotFound />} />
+        <Route path="/500" element={<InternalServerError />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>,

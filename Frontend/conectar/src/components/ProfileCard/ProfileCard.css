@@ -1,3 +1,8 @@
+h4{
+  margin-top: 0vh;
+  margin-bottom: 1rem;
+}
+
 .profile-container {
   width: 100%;
   max-width: 1000px;
@@ -33,11 +38,18 @@
 }
 
 .btn-secondary {
-  background: #e3f2f1;
+  background: #0B5357;
   border: none;
+  color: #f9f8f3;
   padding: 0.4rem 1rem;
   border-radius: 20px;
   cursor: pointer;
+}
+
+.btn-secondary:hover {
+  background: #06363a;
+  text-decoration: none;
+  color: #f9f8f3;
 }
 
 .btn-primary {

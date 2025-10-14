@@ -6,7 +6,7 @@ import "./perfil.css";
 const perfil: React.FC = () => {
   return (
     <div className="app-container">
-      <Header>
+      <Header bgColor="#ffffffff" logoSrc="/assets/conect_2_1.png">
         <button className="header-btn">Mi Perfil</button>
         <button className="header-btn">Admin</button>
       </Header>

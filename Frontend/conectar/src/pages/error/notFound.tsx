@@ -8,7 +8,7 @@ export default function NotFound() {
   return (
 
     <section className="notfound-bg">
-      <Header />
+      <Header bgColor="#ffffffff" logoSrc="/assets/conect_2_1.png"/>
       <div className="notfound-card">
         <p className="notfound-error">404 Error</p>
         <h1 className="notfound-title">No pudimos encontrar la pagina</h1>

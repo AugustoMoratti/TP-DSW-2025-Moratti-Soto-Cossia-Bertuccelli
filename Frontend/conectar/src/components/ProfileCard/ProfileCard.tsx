@@ -1,7 +1,19 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./ProfileCard.css";
 
 const ProfileCard: React.FC = () => {
+  const [profesional, setProfesional] = useState<boolean>(false);
+
+    //Persistimos el estado en localStorage
+  useEffect(() => {
+    const saved = localStorage.getItem("esProfesional");
+    if (saved) setProfesional(saved === "true");
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("esProfesional", String(profesional));
+  }, [profesional]);
+
   return (
     <div className="profile-container">
       <section className="profile-header">
@@ -9,8 +21,15 @@ const ProfileCard: React.FC = () => {
         <div className="profile-info">
           <h3>Nombre Apellido</h3>
           <p>Ubicación: Disponible</p>
-          <button className="btn-secondary">Soy profesional</button>
+
+          <button
+            className={`btn-secondary ${profesional ? "active" : ""}`}
+            onClick={() => setProfesional(!profesional)}
+          >
+            {profesional ? "Soy profesional ✅" : "Soy profesional"}
+          </button>
         </div>
+
         <button className="btn-primary">Solicitar profesión</button>
       </section>
 
@@ -22,9 +41,13 @@ const ProfileCard: React.FC = () => {
       <section className="profile-section">
         <h4>Habilidades & Servicios</h4>
         <div className="skills">
-          {["React", "TypeScript", "Diseño UI", "Prototipado", "Figma", "Node"].map(skill => (
-            <span key={skill} className="skill-tag">{skill}</span>
-          ))}
+          {["React", "TypeScript", "Diseño UI", "Prototipado", "Figma", "Node"].map(
+            (skill) => (
+              <span key={skill} className="skill-tag">
+                {skill}
+              </span>
+            )
+          )}
         </div>
       </section>
 

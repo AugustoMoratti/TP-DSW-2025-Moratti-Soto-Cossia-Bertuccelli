@@ -18,19 +18,12 @@
 }
 
 .logo {
-  height: 70px;
+  height: 65px;
   width: auto;
   object-fit: contain;
   border-radius: 5px;
 }
 
-.header-btns {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-right: 20px;
-  gap: 10px;
-}
 
 .header-btns {
   display: flex;
@@ -40,17 +33,17 @@
 }
 
 .header-btn {
-  background: #0B5357;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  padding: 0.75em 1.25em;
-  font-size: 1rem;
-  font-weight: 500;
-  margin-bottom: 0;
+  background: transparent;
+  color: #0b5357fa;
+  border: 1px solid #0b5357fa;
+  border-radius: 20px;
+  padding: 6px 18px;
+  font-size: 14px;
   cursor: pointer;
+  transition: all 0.2s ease-in-out;
 }
 
 .header-btn:hover {
-  background-color: #06363a;
+  background-color: #0b5357a0;
+  color: #ffffff;
 }

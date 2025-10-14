@@ -3,6 +3,9 @@ GET http://localhost:3000/api/usuario
 ### Obtener un usuario (Con el id o cualquier otro atributo de la class)
 GET http://localhost:3000/api/usuario/{{id}}
 
+### Obtener usuarios con filtro
+GET http://localhost:3000/api/usuario/buscar?q=rosario
+
 ### Crear un nuevo usuario (POST - crear recurso)
 # @name createUsuario
 POST http://localhost:3000/api/usuario

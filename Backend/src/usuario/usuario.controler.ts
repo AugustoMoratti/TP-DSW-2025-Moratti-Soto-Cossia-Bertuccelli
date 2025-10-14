@@ -28,6 +28,43 @@ function sanitizeUsuarioInput(req: Request, res: Response, next: NextFunction) {
   next()
 }
 
+async function buscarUsuarios(req: Request, res: Response) {
+  const em = orm.em.fork();
+
+  try {
+    const qRaw = String(req.query.q ?? '').trim().toLowerCase();
+
+    // Si no hay texto, devolvemos los primeros 30 usuarios
+    if (!qRaw) {
+      const lista = await em.find(Usuario, {}, {
+        limit: 10,
+        populate: ['provincia', 'localidad', 'profesiones'],
+      });
+      return res.json({ data: lista });
+    }
+
+    const qParam = `%${qRaw}%`;
+
+    const usuarios = await em.find(Usuario, {
+      $or: [
+        { nombre: { $like: qParam } },
+        { apellido: { $like: qParam } },
+        { provincia: { nombre: { $like: qParam } } },
+        { localidad: { nombre: { $like: qParam } } },
+        { profesiones: { nombreProfesion: { $in: [qParam] } } } // ManyToMany
+      ]
+    }, {
+      populate: ['provincia', 'localidad', 'profesiones'],
+      limit: 10
+    });
+
+    return res.json({ data: usuarios });
+  } catch (err) {
+    console.error('Error en buscarUsuarios:', err);
+    return res.status(500).json({ message: 'Error al buscar usuarios' });
+  }
+}
+
 async function findAll(req: Request, res: Response) {
   try {
     const usuarios = await em.find(Usuario, {}, { populate: ['profesiones'] })
@@ -199,4 +236,4 @@ async function remove(req: Request, res: Response) {
   }
 }
 
-export { findAll, findOne, add, update, remove, sanitizeUsuarioInput }
+export { findAll, findOne, add, update, remove, sanitizeUsuarioInput, buscarUsuarios }

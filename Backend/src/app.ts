@@ -1,4 +1,5 @@
 import express from 'express'
+import cors from 'cors'
 import 'reflect-metadata'
 import { orm, syncSchema } from '../DB/orm.js'
 import { RequestContext } from '@mikro-orm/core'
@@ -11,6 +12,7 @@ import { usuarioRouter } from './usuario/usuario.routes.js'
 import { trabajosRouter } from './trabajos/trabajos.routes.js'
 
 const app = express()
+app.use(cors());
 app.use(express.json())
 
 //Despues de los middlewares de express

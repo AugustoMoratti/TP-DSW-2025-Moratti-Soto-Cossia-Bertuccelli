@@ -1,0 +1,20 @@
+.app-container {
+  background-color: #0b5357;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 120px;
+  overflow-x: hidden; 
+}
+
+main {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.profile-wrapper {
+  width: 100%; 
+  max-width: 1200px; 
+}

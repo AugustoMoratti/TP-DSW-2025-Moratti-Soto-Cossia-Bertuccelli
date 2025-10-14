@@ -1,0 +1,92 @@
+.profile-container {
+  width: 100%;
+  max-width: 1000px;
+  margin: 2rem auto;
+  font-family: "Inter", sans-serif;
+  color: #0a2b2b;
+}
+
+.profile-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #f7faf9;
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.avatar {
+  width: 80px;
+  height: 80px;
+  background: #cfd8dc;
+  border-radius: 50%;
+}
+
+.profile-info h3 {
+  margin: 0;
+}
+
+.profile-info p {
+  margin: 0.3rem 0;
+  font-size: 0.9rem;
+}
+
+.btn-secondary {
+  background: #e3f2f1;
+  border: none;
+  padding: 0.4rem 1rem;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background: #0a2b2b;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.profile-section {
+  background: #fff;
+  margin-top: 1rem;
+  padding: 1.2rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+.profile-section h4 {
+  margin-bottom: 0.5rem;
+}
+
+.skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.skill-tag {
+  background: #f0f5f5;
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.reviews {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.review-item {
+  display: flex;
+  justify-content: space-between;
+}
+
+.stars {
+  color: #0a6630;
+  font-weight: bold;
+}

@@ -1,6 +1,8 @@
 import { useState } from "react";
 import Header from "../../components/header/header"
 import type { Usuario } from "../interfaces/usuario.ts";
+import CardProfesional from "./cardsProf.tsx";
+import "./busqProf.css";
 
 export default function BusquedaProfesionales() {
   const [query, setQuery] = useState('');
@@ -24,33 +26,27 @@ export default function BusquedaProfesionales() {
   };
 
   return (
-    <>
+    <div className="busprof-page">
       <Header>
         <button className="header-btn">Mi Perfil</button>
         <button className="header-btn">Admin</button>
       </Header>
-      <main>
+      <div className='main-container'>
         <input
           type="text"
-          placeholder="Busque su profesional adecuado"
+          className="buscador"
+          placeholder=" Busque su profesional adecuado"
           value={query}
           onChange={e => setQuery(e.target.value)}
-          onKeyDown={e => e.key === 'Enter' && handleBuscar()}>
-        </input>
+          onKeyDown={e => e.key === 'Enter' && handleBuscar()} />
 
-        <button onClick={handleBuscar}>Buscar</button>
 
         {cargando && <p>cargando...</p>}
 
-        <ul>
-          {usuarios.map(u => (
-            <li key={u.id}>
-              {u.nombre}
-            </li>
-          ))}
-        </ul>
-
-      </main>
-    </>
+        <div className="container-perfiles">
+          <CardProfesional usuarios={usuarios} />
+        </div>
+      </div>
+    </div>
   )
 }

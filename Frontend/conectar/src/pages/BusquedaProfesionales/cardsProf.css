@@ -1,0 +1,8 @@
+.profs-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(410px, 1fr));
+  background-color: #f5edf0;
+  width: 100%;
+  grid-row-gap: 20px;
+  grid-column-gap: 85px;
+}

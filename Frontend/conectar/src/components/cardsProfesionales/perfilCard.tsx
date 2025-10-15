@@ -1,4 +1,4 @@
-import type { Usuario } from "../interfaces/usuario";
+import type { Usuario } from "../../pages/interfaces/usuario";
 import "./perfilCard.css";
 
 interface Props {

@@ -1,4 +1,4 @@
-import type { Usuario } from "../interfaces/usuario.ts";
+import type { Usuario } from "../../pages/interfaces/usuario.ts";
 import "./cardsProf.css"
 interface UsuarioCardProps {
   usuarios: Usuario[];

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Header from "../../components/header/header"
 import type { Usuario } from "../interfaces/usuario.ts";
-import CardProfesional from "./cardsProf.tsx";
+import CardProfesional from "../../components/cardsProfesionales/cardsProf.tsx";
 import "./busqProf.css";
 
 export default function BusquedaProfesionales() {

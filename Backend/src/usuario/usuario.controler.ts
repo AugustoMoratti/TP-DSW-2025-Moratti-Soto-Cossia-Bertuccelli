@@ -34,14 +34,6 @@ async function buscarUsuarios(req: Request, res: Response) {
   try {
     const qRaw = String(req.query.q ?? '').trim().toLowerCase();
 
-    // Si no hay texto, devolvemos los primeros 30 usuarios
-    if (!qRaw) {
-      const lista = await em.find(Usuario, {}, {
-        limit: 10,
-        populate: ['provincia', 'localidad', 'profesiones'],
-      });
-      return res.json({ data: lista });
-    }
 
     const qParam = `%${qRaw}%`;
 

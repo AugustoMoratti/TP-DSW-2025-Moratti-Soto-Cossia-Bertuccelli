@@ -3,7 +3,7 @@ h4{
   margin-bottom: 1rem;
 }
 
-.profile-container {
+.profile_container {
   width: 100%;
   max-width: 1000px;
   margin: 2rem auto;
@@ -11,7 +11,7 @@ h4{
   color: #0a2b2b;
 }
 
-.profile-header {
+.profile_header {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -28,16 +28,16 @@ h4{
   border-radius: 50%;
 }
 
-.profile-info h3 {
+.profile_info h3 {
   margin: 0;
 }
 
-.profile-info p {
+.profile_info p {
   margin: 0.3rem 0;
   font-size: 0.9rem;
 }
 
-.btn-secondary {
+.btn_secondary {
   background: #0B5357;
   border: none;
   color: #f9f8f3;
@@ -46,13 +46,13 @@ h4{
   cursor: pointer;
 }
 
-.btn-secondary:hover {
+.btn_secondary:hover {
   background: #06363a;
   text-decoration: none;
   color: #f9f8f3;
 }
 
-.btn-primary {
+.btn_primary {
   background: #0a2b2b;
   color: white;
   border: none;
@@ -61,7 +61,7 @@ h4{
   cursor: pointer;
 }
 
-.profile-section {
+.profile_section {
   background: #fff;
   margin-top: 1rem;
   padding: 1.2rem;
@@ -69,7 +69,7 @@ h4{
   box-shadow: 0 2px 6px rgba(0,0,0,0.05);
 }
 
-.profile-section h4 {
+.profile_section h4 {
   margin-bottom: 0.5rem;
 }
 
@@ -79,7 +79,7 @@ h4{
   gap: 0.6rem;
 }
 
-.skill-tag {
+.skill_tag {
   background: #f0f5f5;
   padding: 0.4rem 0.8rem;
   border-radius: 20px;
@@ -93,7 +93,7 @@ h4{
   gap: 0.4rem;
 }
 
-.review-item {
+.review_item {
   display: flex;
   justify-content: space-between;
 }

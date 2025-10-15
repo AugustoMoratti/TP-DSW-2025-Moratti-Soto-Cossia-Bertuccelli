@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "./ProfileCard.css";
+import styles from "./ProfileCard.module.css";
 
 const ProfileCard: React.FC = () => {
   const [profesional, setProfesional] = useState<boolean>(false);
@@ -15,35 +15,34 @@ const ProfileCard: React.FC = () => {
   }, [profesional]);
 
   return (
-    <div className="profile-container">
-      <section className="profile-header">
-        <div className="avatar"></div>
-        <div className="profile-info">
+    <div className={styles.profile_container}>
+      <section className={styles.profile_header}>
+        <div className={styles.avatar}></div>
+        <div className={styles.profile_info}>
           <h3>Nombre Apellido</h3>
           <p>Ubicación: Disponible</p>
-
           <button
-            className={`btn-secondary ${profesional ? "active" : ""}`}
+            className={`${styles.btn_secondary} ${profesional ? "active" : ""}`}
             onClick={() => setProfesional(!profesional)}
           >
             {profesional ? "Soy profesional ✅" : "Soy profesional"}
           </button>
         </div>
 
-        <button className="btn-primary">Solicitar profesión</button>
+        <button className={styles.btn_primary}>Solicitar profesión</button>
       </section>
 
-      <section className="profile-section">
+      <section className={styles.profile_section}>
         <h4>Sobre mí</h4>
         <p>Breve descripción profesional...</p>
       </section>
 
-      <section className="profile-section">
+      <section className={styles.profile_section}>
         <h4>Habilidades & Servicios</h4>
-        <div className="skills">
+        <div className={styles.skills}>
           {["React", "TypeScript", "Diseño UI", "Prototipado", "Figma", "Node"].map(
             (skill) => (
-              <span key={skill} className="skill-tag">
+              <span key={skill} className={styles.skill_tag}>
                 {skill}
               </span>
             )
@@ -51,25 +50,25 @@ const ProfileCard: React.FC = () => {
         </div>
       </section>
 
-      <section className="profile-section">
+      <section className={styles.profile_section}>
         <h4>Educación</h4>
         <p>Institución: Título / Año</p>
       </section>
 
-      <section className="profile-section">
+      <section className={styles.profile_section}>
         <h4>Reseñas por servicio</h4>
-        <div className="reviews">
-          <div className="review-item">
+        <div className={styles.reviews}>
+          <div className={styles.review_item}>
             <span>Diseño landing</span>
-            <span className="stars">★★★★☆</span>
+            <span className={styles.stars}>★★★★☆</span>
           </div>
-          <div className="review-item">
+          <div className={styles.review_item}>
             <span>Implementación React</span>
-            <span className="stars">★★★★★</span>
+            <span className={styles.stars}>★★★★★</span>
           </div>
-          <div className="review-item">
+          <div className={styles.review_item}>
             <span>Auditoría UX</span>
-            <span className="stars">★★★★☆</span>
+            <span className={styles.stars}>★★★★☆</span>
           </div>
         </div>
       </section>

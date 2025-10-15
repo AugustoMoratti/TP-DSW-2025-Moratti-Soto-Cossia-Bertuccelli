@@ -4,8 +4,6 @@ import { Button } from '../../components/button/Button.tsx';
 import CheckIcon from '@mui/icons-material/Check';
 import { useNavigate } from "react-router-dom";
 import './login.css';
-import "../..//components/button/Button.css";
-import "../..//components/form/Form.css";
 
 export default function Login() {
   const [usuario, setUsuario] = useState("");

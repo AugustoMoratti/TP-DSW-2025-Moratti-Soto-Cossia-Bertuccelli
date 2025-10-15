@@ -2,7 +2,7 @@ import { useState } from "react";
 import Header from "../../components/header/header"
 import type { Usuario } from "../interfaces/usuario.ts";
 import CardProfesional from "./cardsProf.tsx";
-import "./busqProf.css";
+import styles from "./busqProf.css";
 
 export default function BusquedaProfesionales() {
   const [query, setQuery] = useState('');

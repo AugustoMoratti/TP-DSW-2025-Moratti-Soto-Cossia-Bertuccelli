@@ -8,6 +8,7 @@ import BusquedaProfesionales from './pages/BusquedaProfesionales/busqProf.tsx'
 import NotFound from './pages/error/notFound.tsx'
 import Perfil from "./pages/perfil/perfil.tsx";
 import InternalServerError from './pages/error/error500.tsx';
+import Dashboard from './pages/Dashboard/dashboard.tsx'
 
 
 createRoot(document.getElementById('root')!).render(
@@ -21,6 +22,7 @@ createRoot(document.getElementById('root')!).render(
         <Route path="/perfil" element={<Perfil />} />
         <Route path="/*" element={<NotFound />} />
         <Route path="/500" element={<InternalServerError />} />
+        <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>,

@@ -1,5 +1,5 @@
 import React from "react";
-import "./Hero.css";
+import "./hero.css";
 import { Button } from "../button/Button";
 
 const Hero: React.FC = () => {
@@ -10,7 +10,7 @@ const Hero: React.FC = () => {
           ¿Buscas un <br /> profesional confiable?
         </h2>
         <p>
-          Estás buscando <span>CONET<span>AR</span></span>
+          Estás buscando <span>CONECT<span>AR</span></span>
         </p>
         <div className="hero_buttons">
           <Button variant="contained">Get started</Button>

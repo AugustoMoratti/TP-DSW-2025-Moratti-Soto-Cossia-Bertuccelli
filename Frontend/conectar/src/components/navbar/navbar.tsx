@@ -1,9 +1,12 @@
 import React from "react";
 import logo from "../../../assets/conect.png";
 import { Button } from "../button/Button";
+import { useNavigate } from "react-router";
 import "./navbar.css";
 
 const Navbar: React.FC = () => {
+  const Navigate = useNavigate();
+
   return (
     <nav className="navbar">
       <div className="logo_container">
@@ -18,8 +21,8 @@ const Navbar: React.FC = () => {
       </ul>
 
       <div className="nav_buttons">
-        <Button variant="contained">Register</Button>
-        <Button variant="outlined">Login</Button>
+        <Button variant="contained" onClick={() => Navigate("/register")}>Register</Button>
+        <Button variant="outlined" onClick={() => Navigate("/login")}>Login</Button>
       </div>
     </nav>
   );

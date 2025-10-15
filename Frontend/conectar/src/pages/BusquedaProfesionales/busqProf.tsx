@@ -2,7 +2,7 @@ import { useState } from "react";
 import Header from "../../components/header/header"
 import type { Usuario } from "../interfaces/usuario.ts";
 import CardProfesional from "./cardsProf.tsx";
-import styles from "./busqProf.css";
+import "./busqProf.css";
 
 export default function BusquedaProfesionales() {
   const [query, setQuery] = useState('');
@@ -27,7 +27,7 @@ export default function BusquedaProfesionales() {
 
   return (
     <div className="busprof-page">
-      <Header>
+      <Header bgColor="#ffffff" logoSrc="/assets/conect_2_1.png">
         <button className="header-btn">Mi Perfil</button>
         <button className="header-btn">Admin</button>
       </Header>

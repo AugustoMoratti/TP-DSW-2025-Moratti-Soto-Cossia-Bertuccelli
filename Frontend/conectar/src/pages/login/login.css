@@ -1,22 +1,24 @@
-background{
+background {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   font-family: 'Arial', sans-serif;
-  background-color: #0B5357;
+  background-color: #114f5a;
   color: #ffffff;
 }
 
-body, html, .main-bg {
+body,
+html,
+.main-bg {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   font-family: 'Arial', sans-serif;
-  background-color: #0B5357;
+  background-color: #114f5a;
   min-height: 100vh;
 }
 
-.logo{
+.logo {
   width: 250px;
   height: auto;
   margin-bottom: 0;
@@ -29,14 +31,14 @@ body, html, .main-bg {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content:center;
+  justify-content: center;
   position: relative;
 }
 
 .card {
   background: #f9f8f3;
   border-radius: 16px;
-  box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.07);
   padding: 2.5rem 2rem;
   width: 350px;
   display: flex;
@@ -55,7 +57,7 @@ body, html, .main-bg {
 .card-title {
   font-family: 'Cormorant Garamond', serif;
   font-size: 2.2rem;
-  color: #0B5357;
+  color: #114f5a;
   letter-spacing: 2px;
 }
 
@@ -76,19 +78,19 @@ body, html, .main-bg {
   width: 100vw;
   background: #f9f8f3;
   border-radius: 0 0 16px 16px;
-  box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.07);
   padding: 1.2rem 2rem 1.2rem 2rem;
   display: flex;
   align-items: center;
   min-height: 80px;
   position: absolute;
-  top:0;
+  top: 0;
 }
 
 .cta-link {
   background: none;
   border: none;
-  color: #0B5357;
+  color: #114f5a;
   font-weight: 500;
   font-size: 1rem;
   cursor: pointer;
@@ -105,8 +107,8 @@ body, html, .main-bg {
 
 .recuerdame-container {
   display: flex;
-  color: #0B5357;
-  accent-color: #0B5357; 
+  color: #114f5a;
+  accent-color: #114f5a;
   align-items: center;
   gap: 0.5em;
   margin-bottom: 0.5em;

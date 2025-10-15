@@ -51,8 +51,8 @@
 
 .header-btn {
   background: transparent;
-  color: #0B5357;
-  border: 1px solid #0B5357;
+  color: #114f5a;
+  border: 1px solid #114f5a;
   border-radius: 20px;
   padding: 6px 18px;
   font-size: 14px;
@@ -63,6 +63,6 @@
 
 .header-btn:hover {
   background-color: #114f5a;
-  color: #f4ebd0b9;
-  border: 1px solid #f4ebd0b9;
+  color: #fff;
+  border: 1px solid #fff;
 }

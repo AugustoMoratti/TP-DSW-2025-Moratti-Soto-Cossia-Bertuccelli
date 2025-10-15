@@ -1,6 +1,6 @@
 .notfound-bg {
   min-height: 100vh;
-  background: #0B5357;
+  background: #114f5a;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -9,7 +9,7 @@
 .notfound-card {
   background: #fff;
   border-radius: 12px;
-  box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.07);
   padding: 2.5rem 2rem;
   width: 100%;
   max-width: 480px;
@@ -20,7 +20,7 @@
 }
 
 .notfound-error {
-  color: #0B5357;
+  color: #114f5a;
   font-weight: 600;
   font-size: 3vh;
   margin-bottom: 0.5rem;
@@ -44,7 +44,7 @@
 
 .notfound-btn {
   width: 100%;
-  background: #0B5357;
+  background: #114f5a;
   color: #fff;
   border: none;
   border-radius: 8px;

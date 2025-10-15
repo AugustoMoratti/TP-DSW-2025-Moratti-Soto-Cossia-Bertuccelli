@@ -2,7 +2,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #0B5357;
+  background-color: #114f5a;
   padding: 80px;
   color: white;
 }
@@ -11,16 +11,16 @@
   font-size: 2rem;
   font-weight: 700;
   margin-bottom: 20px;
-  letter-spacing: 1.5px;  
-  word-spacing: 4px;       
-  line-height: 1.4;      
+  letter-spacing: 1.5px;
+  word-spacing: 4px;
+  line-height: 1.4;
 }
 
 .hero_text p {
   font-size: 1.2rem;
   margin-bottom: 30px;
-  letter-spacing: 0.5px;   
-  word-spacing: 3px;       
+  letter-spacing: 0.5px;
+  word-spacing: 3px;
 }
 
 .hero_buttons {

@@ -1,4 +1,4 @@
-h4{
+h4 {
   margin-top: 0vh;
   margin-bottom: 1rem;
 }
@@ -6,7 +6,7 @@ h4{
 .profile_container {
   width: 100%;
   max-width: 1000px;
-  margin: 2rem auto;
+  margin: 0px auto;
   font-family: "Inter", sans-serif;
   color: #0a2b2b;
 }
@@ -18,7 +18,7 @@ h4{
   background: #f7faf9;
   border-radius: 16px;
   padding: 1.5rem;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 .avatar {
@@ -66,7 +66,7 @@ h4{
   margin-top: 1rem;
   padding: 1.2rem;
   border-radius: 12px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 }
 
 .profile_section h4 {
@@ -84,7 +84,7 @@ h4{
   padding: 0.4rem 0.8rem;
   border-radius: 20px;
   font-size: 0.9rem;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .reviews {

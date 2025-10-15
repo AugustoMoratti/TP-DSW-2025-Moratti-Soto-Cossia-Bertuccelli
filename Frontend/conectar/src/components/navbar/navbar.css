@@ -2,7 +2,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #0B5357;
+  background-color: #114f5a;
   padding: 15px 80px;
   color: white;
 }
@@ -13,7 +13,8 @@
 }
 
 .logo {
-  height: 50px; /* ajustá según tu logo */
+  height: 50px;
+  /* ajustá según tu logo */
   width: auto;
   cursor: pointer;
 }

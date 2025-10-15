@@ -3,12 +3,12 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  width: 410px;
+  min-width: 460px;
+  max-width: 460px;
   height: 160px;
-  max-width: 410px;
-  max-height: 160px;
-  background-color: #f5edf0;
+  background-color: #114f5a;
   border-radius: 35px;
+  border: 1px solid #fff;
   box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.3);
 }
 
@@ -16,15 +16,16 @@
   display: flex;
   flex-direction: row;
   padding: 20px 20px;
-  gap: 15px;
+  gap: 18px;
 }
 
 .img-perfil {
-  padding-top: 5px;
+  margin-top: 5px;
   height: 50px;
   border-radius: 50%;
   aspect-ratio: 1;
   object-fit: cover;
+  box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.3);
 }
 
 .parrafos {
@@ -34,6 +35,7 @@
 .name {
   font-weight: bold;
   font-size: 16px;
+  font-style: italic;
 }
 
 p {
@@ -57,13 +59,13 @@ p {
   height: 25px;
   width: 80px;
   border: none;
-  background-color: #f5edf0;
-  color: #114f5a;
+  background-color: #114f5a;
+  color: #f5edf0;
 }
 
 .ver-perfil-btn:hover {
   cursor: pointer;
-  border-radius: 20px;
-  background-color: #114f5a;
-  color: #f5edf0;
+  border-radius: 10px;
+  background-color: #f5edf0;
+  color: #114f5a;
 }

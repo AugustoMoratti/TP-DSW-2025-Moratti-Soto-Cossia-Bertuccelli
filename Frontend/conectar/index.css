@@ -3,8 +3,10 @@ body {
   background: #114f5a;
   color: #fff;
   font-family: system-ui;
-  display: grid;
-  place-content: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
   min-height: 100vh;
 }
 
@@ -12,4 +14,9 @@ body {
   display: flex;
   flex-direction: column;
   gap: 8px;
+}
+
+#root {
+  height: 100%;
+  background-color: #114f5a;
 }

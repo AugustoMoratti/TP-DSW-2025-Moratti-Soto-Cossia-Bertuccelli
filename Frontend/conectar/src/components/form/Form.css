@@ -1,4 +1,4 @@
-.logo{
+.logo {
   width: 250px;
   height: auto;
   margin-bottom: 0;
@@ -16,7 +16,7 @@
   position: absolute;
   left: 0;
   top: 2px;
-  color: #0B5357;
+  color: #114f5a;
   transition: all 0.2s;
   pointer-events: none;
 }
@@ -25,8 +25,8 @@
   width: 100%;
   background: transparent;
   border: none;
-  border-bottom: 2px solid #0B5357;
-  color: #0B5357;
+  border-bottom: 2px solid #114f5a;
+  color: #114f5a;
   padding: 12px 0 6px 0;
   font-size: 1rem;
   outline: none;

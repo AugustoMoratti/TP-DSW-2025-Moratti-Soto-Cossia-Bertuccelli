@@ -27,10 +27,12 @@ export default function BusquedaProfesionales() {
 
   return (
     <div className="busprof-page">
+
       <Header bgColor="#ffffff" logoSrc="/assets/conect_2_1.png">
         <button className="header-btn">Mi Perfil</button>
         <button className="header-btn">Admin</button>
       </Header>
+
       <div className='main-container'>
         <input
           type="text"

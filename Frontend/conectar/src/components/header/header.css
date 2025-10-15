@@ -62,7 +62,7 @@
 }
 
 .header-btn:hover {
-  background-color: #f4ebd0b9;
-  color: #114f5a;
-  border: 1px solid #114f5a;
+  background-color: #114f5a;
+  color: #f4ebd0b9;
+  border: 1px solid #f4ebd0b9;
 }

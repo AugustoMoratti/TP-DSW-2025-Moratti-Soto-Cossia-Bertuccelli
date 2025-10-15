@@ -1,0 +1,55 @@
+.maindash-container {
+  box-sizing: border-box;
+  width: 100vw;
+  padding: 120px 15px;
+  display: flex;
+  flex-direction: row;
+  gap: 40px;
+}
+
+.acciones-1 {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.action-btn {
+  box-sizing: border-box;
+  height: 45px;
+  width: 230px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding-left: 15px;
+  border-radius: 15px;
+}
+
+.acciones-2 {
+  box-sizing: border-box;
+  width: 1740px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.container-solic {
+  width: 100%;
+  min-width: 1000px;
+  height: auto;
+  background-color: #fff;
+  color: #114f5a;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.container-createperfiles {
+  width: 100%;
+  min-width: 1000px;
+  height: auto;
+  background-color: #fff;
+  color: #114f5a;
+  border-radius: 20px;
+}

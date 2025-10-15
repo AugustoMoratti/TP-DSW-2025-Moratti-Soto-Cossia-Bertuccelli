@@ -1,0 +1,77 @@
+.title-profesiones {
+  box-sizing: border-box;
+  font-size: 16px;
+}
+
+.container-table {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 20px 20px;
+}
+
+/* Tabla estilada */
+.table-profesiones {
+  width: 100%;
+  border-collapse: separate;
+  /* ajustá según columnas */
+  font-size: 14px;
+  margin-bottom: 30px;
+}
+
+.table-profesiones thead th {
+  text-align: left;
+  padding-bottom: 10px;
+  font-size: 16px;
+}
+
+.table-profesiones tbody td {
+  max-width: 70px;
+  text-align: left;
+  color: #0b3b3b;
+  vertical-align: middle;
+  border-top: 1px solid rgba(10, 30, 30, 0.04);
+}
+
+.btn-td {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
+
+.btn-rechazo {
+  color: red;
+  height: 25px;
+  min-width: 100px;
+  border-radius: 10px;
+  background-color: transparent;
+  border: 1px solid red;
+}
+
+.btn-aceptado {
+  color: rgb(131, 218, 0);
+  height: 25px;
+  min-width: 100px;
+  border-radius: 10px;
+  background-color: transparent;
+  border: 1px solid rgb(147, 237, 12);
+}
+
+.btn-rechazo:hover {
+  color: #fff;
+  height: 25px;
+  min-width: 100px;
+  border-radius: 10px;
+  background-color: red;
+  border: 1px solid #fff;
+  cursor: pointer;
+}
+
+.btn-aceptado:hover {
+  color: #fff;
+  height: 25px;
+  min-width: 100px;
+  border-radius: 10px;
+  background-color: rgb(131, 218, 0);
+  border: 1px solid #fff;
+  cursor: pointer;
+}

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Header from "../../components/header/header"
-import type { Usuario } from "../interfaces/usuario.ts";
+import type { Usuario } from "../../interfaces/usuario.ts";
 import CardProfesional from "../../components/cardsProfesionales/cardsProf.tsx";
 import "./busqProf.css";
 

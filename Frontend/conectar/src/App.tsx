@@ -1,18 +1,16 @@
-import { useNavigate } from "react-router-dom"; 
-import "./app.css"
+import React from "react";
+import Navbar from "./components/navbar/navbar";
+import Hero from "./components/hero/hero";
+import "./app.css";
 
-export default function App() {
-  const navigate = useNavigate();
-  
+const Home: React.FC = () => {
   return (
-    <div className='App'>
-      <header className='App_header'>
-        <h1>Bienvenido a Conectar</h1>
-        <p>Tu plataforma de conexión social.</p>
-        <button onClick={() => navigate("/login")}>Iniciar Sesión</button>
-        <button onClick={() => navigate("/register")}>Registrarse</button>
-      </header>
+    <div className="home-container">
+      <Navbar />
+      <Hero />
     </div>
   );
-}
+};
+
+export default Home;
 

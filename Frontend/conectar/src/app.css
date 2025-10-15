@@ -1,27 +1,8 @@
-body,
-html {
+.home-container {
+  font-family: "Poppins", sans-serif;
+  background-color: #0B5357; /* color del fondo principal */
+  min-height: 100vh;
+  color: white;
   margin: 0;
   padding: 0;
-  height: 100%;
-  background: #114f5a;
-  color: #fff;
-  font-family: system-ui, sans-serif;
-}
-
-#root {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  min-width: 100vw;
-}
-
-.App {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.app-container {
-  display: flex;
-  flex-direction: column;
 }

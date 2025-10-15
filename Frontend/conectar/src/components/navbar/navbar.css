@@ -1,0 +1,47 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #0B5357;
+  padding: 15px 80px;
+  color: white;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  height: 50px; /* ajustá según tu logo */
+  width: auto;
+  cursor: pointer;
+}
+
+.nav_links {
+  display: flex;
+  list-style: none;
+  gap: 30px;
+}
+
+.nav_buttons {
+  display: flex;
+  gap: 15px;
+}
+
+.login_btn {
+  background-color: #f8f0e3;
+  border: none;
+  border-radius: 20px;
+  padding: 8px 16px;
+  cursor: pointer;
+}
+
+.get_started_btn {
+  background-color: #5d7262;
+  border: none;
+  color: white;
+  border-radius: 20px;
+  padding: 8px 16px;
+  cursor: pointer;
+}

@@ -25,6 +25,13 @@
   border-radius: 15px;
 }
 
+.action-btn:hover {
+  background-color: #114f5a;
+  color: #fff;
+  border: 1px solid #fff;
+  cursor: pointer;
+}
+
 .acciones-2 {
   box-sizing: border-box;
   width: 1740px;

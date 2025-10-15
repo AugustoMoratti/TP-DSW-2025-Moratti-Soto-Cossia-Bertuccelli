@@ -1,9 +1,9 @@
 import React from "react";
 import ProfileCard from "../../components/ProfileCard/ProfileCard";
-import Header from "../../components/header/header";perfil
+import Header from "../../components/header/header";
 import "./perfil.css";
 
-const perfil: React.FC = () => {
+const Perfil: React.FC = () => {
   return (
     <div className="app-container">
       <Header bgColor="#ffffffff" logoSrc="/assets/conect_2_1.png">
@@ -20,5 +20,5 @@ const perfil: React.FC = () => {
   );
 };
 
-export default perfil;
+export default Perfil;
 

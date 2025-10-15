@@ -16,7 +16,7 @@
   position: absolute;
   left: 0;
   top: 2px;
-  color: #aaa;
+  color: #0B5357;
   transition: all 0.2s;
   pointer-events: none;
 }
@@ -25,7 +25,7 @@
   width: 100%;
   background: transparent;
   border: none;
-  border-bottom: 2px solid #666;
+  border-bottom: 2px solid #0B5357;
   color: #0B5357;
   padding: 12px 0 6px 0;
   font-size: 1rem;
@@ -34,11 +34,11 @@
 }
 
 .input_field:focus {
-  border-bottom: 2px solid #3498db;
+  border-bottom: 2px solid #2ab1b8;
 }
 
 .input_label.floating {
   top: -18px;
   font-size: 0.85rem;
-  color: #3498db;
+  color: #2ab1b8;
 }

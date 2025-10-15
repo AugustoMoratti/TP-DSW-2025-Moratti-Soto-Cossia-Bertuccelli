@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styles from "./Form.css";
+import "./Form.css";
 
 interface StandardInputProps {
   label: string;
@@ -18,8 +18,8 @@ const StandardInput: React.FC<StandardInputProps> = ({
   const [focused, setFocused] = useState(false);
 
   return (
-    <div className={styles.input_container}>
-      <label className={`${styles.input_label} ${focused || value ? " floating" : ""}`}>
+    <div className='input_container'>
+      <label className={`input_label ${focused || value ? " floating" : ""}`}>
         {label}
       </label>
       <input
@@ -28,7 +28,7 @@ const StandardInput: React.FC<StandardInputProps> = ({
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
         onChange={(e) => onChange(e.target.value)}
-        className={styles.input_field}
+        className='input_field'
       />
     </div>
   );

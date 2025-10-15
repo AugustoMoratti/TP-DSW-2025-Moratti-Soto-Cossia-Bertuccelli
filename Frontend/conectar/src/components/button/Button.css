@@ -18,9 +18,9 @@
 }
 
 .custom_btn.contained:hover {
-  background: #187788;
+  background: #2ab1b8;
   color: #fff;
-  border-color: #187788;
+  border-color: #2ab1b8;
 }
 
 .custom_btn.outlined {
@@ -31,8 +31,8 @@
 
 .custom_btn.outlined:hover {
   background: #e3f2fd;
-  color: #1976d2;
-  border-color: #1976d2;
+  color: #2ab1b8;
+  border-color: #2ab1b8;
 }
 
 .btn_icon {

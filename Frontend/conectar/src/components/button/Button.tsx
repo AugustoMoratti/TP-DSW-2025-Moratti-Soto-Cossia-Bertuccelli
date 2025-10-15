@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./Button.css";
+import styles from "./Button.css";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: "contained" | "outlined";
@@ -14,10 +14,10 @@ export const Button: React.FC<ButtonProps> = ({
   ...props
 }) => (
   <button
-    className={`custom-btn ${variant === "outlined" ? "outlined" : "contained"}`}
+    className={`${styles.custom_btn} ${variant === "outlined" ? "outlined" : "contained"}`}
     {...props}
   >
     <span>{children}</span>
-    {icon && <span className="btn-icon end">{icon}</span>}
+    {icon && <span className={styles.btn_icon.end}>{icon}</span>}
   </button>
 );

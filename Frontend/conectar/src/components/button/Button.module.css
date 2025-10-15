@@ -1,4 +1,4 @@
-.custom-btn {
+.custom_btn {
   display: inline-flex;
   align-items: center;
   gap: 0.5em;
@@ -11,35 +11,35 @@
   transition: background 0.2s, color 0.2s, border 0.2s;
 }
 
-.custom-btn.contained {
+.custom_btn.contained {
   background: #114f5a;
   color: #ffffff;
   border: 2px solid #114f5a;
 }
 
-.custom-btn.contained:hover {
+.custom_btn.contained:hover {
   background: #187788;
   color: #fff;
   border-color: #187788;
 }
 
-.custom-btn.outlined {
+.custom_btn.outlined {
   background: transparent;
   color: #90caf9;
   border: 2px solid #90caf9;
 }
 
-.custom-btn.outlined:hover {
+.custom_btn.outlined:hover {
   background: #e3f2fd;
   color: #1976d2;
   border-color: #1976d2;
 }
 
-.btn-icon {
+.btn_icon {
   display: flex;
   align-items: center;
 }
 
-.btn-icon.end {
+.btn_icon.end {
   margin-left: 0.5em;
 }

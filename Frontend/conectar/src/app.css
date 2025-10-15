@@ -13,3 +13,9 @@ body {
   flex-direction: column;
   gap: 8px;
 }
+
+.App_header{
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}

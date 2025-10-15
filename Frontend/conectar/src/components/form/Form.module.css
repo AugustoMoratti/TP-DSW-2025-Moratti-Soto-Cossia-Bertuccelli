@@ -6,14 +6,13 @@
   position: relative;
 }
 
-
-.input-container {
+.input_container {
   position: relative;
   width: 100%;
   margin-bottom: 25px;
 }
 
-.input-label {
+.input_label {
   position: absolute;
   left: 0;
   top: 2px;
@@ -22,7 +21,7 @@
   pointer-events: none;
 }
 
-.input-field {
+.input_field {
   width: 100%;
   background: transparent;
   border: none;
@@ -34,11 +33,11 @@
   transition: border-color 0.2s;
 }
 
-.input-field:focus {
+.input_field:focus {
   border-bottom: 2px solid #3498db;
 }
 
-.input-label.floating {
+.input_label.floating {
   top: -18px;
   font-size: 0.85rem;
   color: #3498db;

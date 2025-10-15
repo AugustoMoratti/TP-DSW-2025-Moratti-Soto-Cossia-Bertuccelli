@@ -1,6 +1,6 @@
 import React from "react";
 import ProfileCard from "../../components/ProfileCard/ProfileCard";
-import Header from "../../components/header/header";
+import Header from "../../components/header/header";perfil
 import "./perfil.css";
 
 const perfil: React.FC = () => {

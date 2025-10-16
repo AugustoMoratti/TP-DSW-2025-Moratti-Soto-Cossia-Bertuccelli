@@ -6,42 +6,58 @@
 .container-table {
   box-sizing: border-box;
   width: 100%;
-  padding: 20px 20px;
+  padding: 20px;
 }
 
 /* Tabla estilada */
 .table-profesiones {
   width: 100%;
-  border-collapse: separate;
-  /* ajustá según columnas */
-  font-size: 14px;
-  margin-bottom: 30px;
+  border-collapse: collapse;
 }
 
-.table-profesiones thead th {
-  text-align: left;
-  padding-bottom: 10px;
-  font-size: 16px;
+.table-profesiones th:nth-child(1),
+.table-profesiones td:nth-child(1) {
+  width: 22%;
 }
 
-.table-profesiones tbody td {
-  max-width: 70px;
+.table-profesiones th:nth-child(2),
+.table-profesiones td:nth-child(2) {
+  width: 46%;
+}
+
+.table-profesiones th:nth-child(3),
+.table-profesiones td:nth-child(3) {
+  width: 12%;
+}
+
+.table-profesiones th:nth-child(4),
+.table-profesiones td:nth-child(4) {
+  width: 10%;
+}
+
+.table-profesiones th:nth-child(5),
+.table-profesiones td:nth-child(5) {
+  width: 10%;
+}
+
+th,
+td {
+  padding: 8px 12px;
+  border-bottom: 1px solid #ccc;
   text-align: left;
-  color: #0b3b3b;
-  vertical-align: middle;
-  border-top: 1px solid rgba(10, 30, 30, 0.04);
 }
 
 .btn-td {
+  min-width: 100%;
   display: flex;
   flex-direction: row;
-  gap: 20px;
+  gap: 15px;
 }
 
 .btn-rechazo {
   color: red;
   height: 25px;
-  min-width: 100px;
+  width: 100px;
   border-radius: 10px;
   background-color: transparent;
   border: 1px solid red;
@@ -50,7 +66,7 @@
 .btn-aceptado {
   color: rgb(131, 218, 0);
   height: 25px;
-  min-width: 100px;
+  width: 100px;
   border-radius: 10px;
   background-color: transparent;
   border: 1px solid rgb(147, 237, 12);
@@ -59,8 +75,6 @@
 .btn-rechazo:hover {
   color: #fff;
   height: 25px;
-  min-width: 100px;
-  border-radius: 10px;
   background-color: red;
   border: 1px solid #fff;
   cursor: pointer;
@@ -69,8 +83,6 @@
 .btn-aceptado:hover {
   color: #fff;
   height: 25px;
-  min-width: 100px;
-  border-radius: 10px;
   background-color: rgb(131, 218, 0);
   border: 1px solid #fff;
   cursor: pointer;

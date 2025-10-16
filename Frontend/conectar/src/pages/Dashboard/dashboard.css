@@ -41,8 +41,9 @@
 }
 
 .container-solic {
+  box-sizing: border-box;
   width: 100%;
-  min-width: 1000px;
+  min-width: 1100px;
   height: auto;
   background-color: #fff;
   color: #114f5a;

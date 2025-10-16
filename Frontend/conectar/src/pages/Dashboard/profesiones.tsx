@@ -12,11 +12,12 @@ export default function SolicProfesiones() {
               <th>Descripcion</th>
               <th>Fecha</th>
               <th>Estado</th>
+              <th>Accion</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td>Profesion 1</td>
+              <td>Profesion 1 </td>
               <td>Descripcion...</td>
               <td>10/7/2025</td>
               <td>Pendiente</td>

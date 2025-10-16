@@ -22,7 +22,7 @@ const Navbar: React.FC = () => {
 
       <div className="nav_buttons">
         <Button variant="contained" onClick={() => Navigate("/register")}>Register</Button>
-        <Button variant="outlined">Login</Button>
+        <Button variant="outlined" onClick={() => Navigate("/login")}>Login</Button>
       </div>
     </nav>
   );

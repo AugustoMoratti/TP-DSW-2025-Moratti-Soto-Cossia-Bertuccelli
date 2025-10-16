@@ -42,3 +42,17 @@
   font-size: 0.85rem;
   color: #2ab1b8;
 }
+
+/* 🔹 Estilo especial solo para el input de tipo date */
+.input-date {
+  border: 1px solid #17a2b8;
+  border-radius: 4px;
+  padding: 6px 8px;
+  background-color: #fff;
+  color: #0b4b52;
+}
+
+/* Para evitar el salto del label */
+.date-input .input-label {
+  margin-bottom: 0.4rem;
+}

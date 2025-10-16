@@ -62,7 +62,7 @@ export default function Registro() {
     console.log("✅ Enviando formulario...");
 
     try {
-      const response = await fetch('http://localhost:3000/api/auth/register', {
+      const response = await fetch('http://localhost:3000/api/usuario/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -107,7 +107,7 @@ export default function Registro() {
         <div className="card-content">
           <StandardInput label="Nombre" value={nombre} onChange={setNombre} />
           <StandardInput label="Apellido" value={apel} onChange={setApel} />
-          <StandardInput label="Fecha de nacimiento" placeholder="" value={date} onChange={setDate} type="date"/>
+          <StandardInput label="Fecha de nacimiento" value={date} onChange={setDate} type="date"/>
           <StandardInput label="Provincia" value={prov} onChange={setProv} />
           <StandardInput label="Localidad" value={local} onChange={setLocal} />
           <StandardInput label="Direccion" value={dire} onChange={setDire} />

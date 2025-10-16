@@ -43,16 +43,33 @@
   color: #2ab1b8;
 }
 
-/* 🔹 Estilo especial solo para el input de tipo date */
-.input-date {
-  border: 1px solid #17a2b8;
-  border-radius: 4px;
-  padding: 6px 8px;
-  background-color: #fff;
-  color: #0b4b52;
+/* 🔹 Oculta el texto gris "dd / mm / yyyy" cuando no hay valor */
+input[type="date"]::-webkit-datetime-edit {
+  color: transparent;
+}
+input[type="date"]:focus::-webkit-datetime-edit,
+input[type="date"][value]:not([value=""])::-webkit-datetime-edit {
+  color: #f9f8f3;
 }
 
-/* Para evitar el salto del label */
-.date-input .input-label {
-  margin-bottom: 0.4rem;
+/* 🔹 Alineación vertical del input date */
+.input_field.input_date {
+  padding-top: 18px;
+  line-height: 1.2;
+}
+
+/* 🔹 Opcional: estiliza el icono del calendario */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  cursor: #000000;
+}
+
+/* 🔹 Compatibilidad con Firefox */
+@-moz-document url-prefix() {
+  input[type="date"] {
+    color: transparent;
+  }
+  input[type="date"]:focus,
+  input[type="date"]:valid {
+    color: #f9f8f3;
+  }
 }

@@ -8,8 +8,12 @@ import './register.css';
 export default function Registro() {
   const [nombre, setNombre] = useState("");
   const [apel, setApel] = useState("");
+  const [date, setDate] = useState<string>("")
+  const [prov, setProv] = useState("");
+  const [local, setLocal] = useState("");
   const [dire, setDire] = useState("");
   const [telef, setTelef] = useState("");
+  const [telefonoError, setTelefonoError] = useState("");
   const [email, setEmail] = useState("");
   const [clave, setClave] = useState("");
   const [term, setTerm] = useState(false);
@@ -18,9 +22,29 @@ export default function Registro() {
   const navigate = useNavigate();
 
   const control = async () => {
-    // 🔹 Validaciones previas
-    if (!nombre || !apel || !dire || !telef || !email || !clave || !confirmarClave) {
+    
+    const now = new Date();
+    const fechaMinima = new Date(
+      now.getFullYear() - 18,
+      now.getMonth(),
+      now.getDate()
+    );
+
+    const fechaNacimiento = new Date(date);
+
+    // Validaciones previas
+    if (!nombre || !apel || !date || !prov || !local || !dire || !telef || !email || !clave || !confirmarClave) {
       setError("⚠️ Por favor, completa todos los campos antes de continuar.");
+      return;
+    }
+
+    if (fechaNacimiento > fechaMinima) {
+      setError("⚠️ Necesitas ser mayor de 18 años.");
+      return;
+    }
+
+    if (telef.length < 7 || telef.length > 15) {
+      setError("⚠️ El número de teléfono debe tener entre 7 y 15 dígitos.");
       return;
     }
 
@@ -38,16 +62,19 @@ export default function Registro() {
     console.log("✅ Enviando formulario...");
 
     try {
-      const response = await fetch('http://localhost:3000/api/usuario/register', {
+      const response = await fetch('http://localhost:3000/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           nombre,
           apellido: apel,
           direccion: dire,
-          telefono: telef,
+          fechaNac: date,
+          contacto: telef,
           email,
-          clave
+          clave,
+          provincia: prov,
+          localidad: local
         })
       });
 
@@ -59,7 +86,7 @@ export default function Registro() {
         return;
       }
 
-      // ✅ Registro exitoso
+      // Registro exitoso
       navigate("/login");
 
     } catch (err) {
@@ -80,11 +107,30 @@ export default function Registro() {
         <div className="card-content">
           <StandardInput label="Nombre" value={nombre} onChange={setNombre} />
           <StandardInput label="Apellido" value={apel} onChange={setApel} />
+          <StandardInput label="Fecha de nacimiento" value={date} onChange={setDate} type="date"/>
+          <StandardInput label="Provincia" value={prov} onChange={setProv} />
+          <StandardInput label="Localidad" value={local} onChange={setLocal} />
           <StandardInput label="Direccion" value={dire} onChange={setDire} />
-          <StandardInput label="Telefono" value={telef} onChange={setTelef} type="number" />
+          <StandardInput
+            label="Teléfono"
+            value={telef}
+            onChange={(val) => {
+              if (/^\d*$/.test(val)) {
+                setTelef(val);
+                setTelefonoError("");
+              } else {
+                setTelefonoError("Solo se permiten números");
+              }
+            }}
+            type="tel"
+          />
           <StandardInput label="Email" value={email} onChange={setEmail} type="email" />
           <StandardInput label="Clave" value={clave} onChange={setClave} type="password" />
           <StandardInput label="Confirmar clave" value={confirmarClave} onChange={setConfirmarClave} type="password" />
+
+          {telefonoError && (
+            <div style={{ color: "red", fontSize: "0.9em" }}>{telefonoError}</div>
+          )}
 
           {confirmarClave && clave !== confirmarClave && (
             <div style={{ color: 'red', fontSize: '0.95em', marginBottom: '0.5em' }}>

@@ -23,7 +23,13 @@ export class Usuario extends BaseEntity2 {
   descripcion!: string;
 
   @Property({ length: 50, nullable: false })
+  fechaNac!: string;
+
+  @Property({ length: 50, nullable: false })
   contacto!: string;
+
+  @Property({ length: 50, nullable: false })
+  direccion!: string;
 
   @ManyToOne(() => Localidad, { nullable: false })
   localidad!: Rel<Localidad>;

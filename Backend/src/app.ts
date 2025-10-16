@@ -10,6 +10,7 @@ import { administradorRouter } from './admin/admin.routes.js'
 import { localidadesRouter } from './localidad/localidad.routes.js'
 import { usuarioRouter } from './usuario/usuario.routes.js'
 import { trabajosRouter } from './trabajos/trabajos.routes.js'
+import authRouter from './auth/auth.routes.js';
 
 const app = express()
 app.use(cors());
@@ -34,6 +35,12 @@ app.use('/api/admin', administradorRouter)
 app.use('/api/localidad', localidadesRouter)
 app.use('/api/usuario', usuarioRouter)
 app.use('/api/trabajos', trabajosRouter)
+app.use('/api/auth', authRouter);
+
+app.post("/api/usuario/register", (req, res) => {
+  console.log(req.body);
+  res.json({ mensaje: "Registro exitoso" });
+});
 
 app.use((_req: Request, res: Response, _next: NextFunction) => {
   return res.status(404).send({ message: 'Not found' })

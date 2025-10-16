@@ -18,7 +18,8 @@ function sanitizeUsuarioInput(req: Request, res: Response, next: NextFunction) {
     horarios: req.body.horarios,
     provincia: req.body.provincia,
     localidad: req.body.localidad,
-    profesiones: req.body.profesiones
+    profesiones: req.body.profesiones,
+    fechaNac: req.body.fechaNac
   }
   Object.keys(req.body.sanitizedInput).forEach((key) => {
     if (req.body.sanitizedInput[key] === undefined || req.body.sanitizedInput[key] === null) {
@@ -59,7 +60,7 @@ async function buscarUsuarios(req: Request, res: Response) {
 
 async function findAll(req: Request, res: Response) {
   try {
-    const usuarios = await em.find(Usuario, {}, { populate: ['profesiones'] })
+    const usuarios = await em.find(Usuario, {}, { populate: ['profesiones', 'localidad'] })
     res
       .status(200)
       .json({ message: 'found all Usuarios', data: usuarios })
@@ -71,7 +72,7 @@ async function findAll(req: Request, res: Response) {
 async function findOne(req: Request, res: Response) {
   try {
     const id = req.params.id
-    const usuario = await em.findOneOrFail(Usuario, { id }, { populate: ['profesiones'] })
+    const usuario = await em.findOneOrFail(Usuario, { id }, { populate: ['profesiones', 'localidad'] })
     res
       .status(200)
       .json({ message: 'found Usuario', data: usuario })
@@ -83,13 +84,13 @@ async function findOne(req: Request, res: Response) {
 async function add(req: Request, res: Response) {
   try {
     //const usuario = em.create(Usuario, req.body)
-    const { nombre, apellido, clave, email, descripcion, contacto, horarios, provincia, localidad, profesiones } = req.body.sanitizedInput
+    const { nombre, apellido, clave, email, descripcion, contacto, horarios, provincia, localidad, profesiones, fechaNac } = req.body.sanitizedInput
     /*if (!nombre || !apellido || !clave || !email || !provincia || !localidad) {
       return res.status(400).json({ message: 'Faltan campos requeridos: nombre, apellido, clave, email, provincia o localidad' })
     }*/
 
-    const provinciaRef = em.getReference(Provincia, Number(provincia))
-    const localidadRef = em.getReference(Localidad, Number(localidad))
+    const provinciaRef = em.getReference(Provincia, provincia)
+    const localidadRef = em.getReference(Localidad, localidad)
 
     const profesionesIds: number[] = Array.isArray(req.body.sanitizedInput.profesiones)
       ? req.body.sanitizedInput.profesiones.map((x: any) => Number(x)).filter((n: number) => Number.isFinite(n))
@@ -124,7 +125,7 @@ async function add(req: Request, res: Response) {
       return res.status(400).json({ message: 'El numero de contacto es obligatorio y debe ser un string' })
     };
 
-    if (typeof horarios !== 'string' || horarios === "") {
+    if (typeof fechaNac !== 'string' || fechaNac === "") {
       return res.status(400).json({ message: 'El horario es obligatorio y debe ser un string' })
     };
 
@@ -147,6 +148,7 @@ async function add(req: Request, res: Response) {
     if (descripcion) usuario.descripcion = descripcion;
     usuario.provincia = provinciaRef;
     usuario.localidad = localidadRef;
+    usuario.fechaNac = fechaNac;
 
     if (profesionesRef.length > 0) {
       for (const p of profesionesRef) {
@@ -186,8 +188,8 @@ async function update(req: Request, res: Response) {
         .filter((n: number) => Number.isFinite(n))
       : [];
 
-    if (provincia) usuario.provincia = em.getReference(Provincia, Number(provincia))
-    if (localidad) usuario.localidad = em.getReference(Localidad, Number(localidad))
+    if (provincia) usuario.provincia = em.getReference(Provincia, provincia)
+    if (localidad) usuario.localidad = em.getReference(Localidad, localidad)
 
     if (nombre) usuario.nombre = nombre
     if (apellido) usuario.apellido = apellido

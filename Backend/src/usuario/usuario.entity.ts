@@ -23,6 +23,9 @@ export class Usuario extends BaseEntity2 {
   descripcion!: string;
 
   @Property({ length: 50, nullable: false })
+  fechaNac!: string;
+
+  @Property({ length: 50, nullable: false })
   contacto!: string;
 
   @ManyToOne(() => Localidad, { nullable: false })

@@ -34,10 +34,10 @@ async function findAll(req: Request, res: Response) {
 
 async function findOne(req: Request, res: Response) {
   try {
-    const id = Number.parseInt(req.params.id)
+    const nombre = req.params.nombre
     const localidad = await em.findOneOrFail(
       Localidad,
-      { id },
+      { nombre },
       { populate: ['provincia'] }
     )
     res.status(200).json({ message: 'found localidad', data: localidad })
@@ -59,7 +59,7 @@ async function add(req: Request, res: Response) {
     if (typeof codPostal !== 'string' || codPostal === "") {
       return res.status(400).json({ message: 'El codigo postal debe ser un string' })
     };
-    const provinciaRef = em.getReference(Provincia, Number(provincia))
+    const provinciaRef = em.getReference(Provincia, provincia)
 
     const localidad = em.create(Localidad, {
       nombre,
@@ -79,16 +79,16 @@ async function add(req: Request, res: Response) {
 
 async function update(req: Request, res: Response) {
   try {
-    const id = Number.parseInt(req.params.id);
-    const { nombre, codPostal, provincia } = req.body.sanitizedInput;
-    if (typeof nombre !== 'string' || nombre === "") {
+    const nombre = req.params.nombre;
+    const { nombreNuevo, codPostal, provincia } = req.body.sanitizedInput;
+    if (typeof nombreNuevo !== 'string' || nombreNuevo === "") {
       return res.status(400).json({ message: 'El nombre debe ser un string' })
     };
     if (typeof codPostal !== 'string' || codPostal === "") {
       return res.status(400).json({ message: 'El codigo postal debe ser un string' })
     };
-    const provinciaRef = em.getReference(Provincia, Number(provincia))
-    const localidadToUpdate = em.getReference(Localidad, id)
+    const provinciaRef = em.getReference(Provincia, provincia)
+    const localidadToUpdate = await em.findOneOrFail(Localidad, { nombre })
 
     if (nombre) localidadToUpdate.nombre = nombre;
     if (codPostal) localidadToUpdate.codPostal = codPostal;
@@ -105,8 +105,12 @@ async function update(req: Request, res: Response) {
 
 async function remove(req: Request, res: Response) {
   try {
-    const id = Number.parseInt(req.params.id)
-    const localidad = em.getReference(Localidad, id)
+    const nombre = req.params.nombre
+    const localidad = await em.findOne(Localidad, { nombre });
+    if (!localidad) {
+      return res.status(404).json({ message: "Provincia no encontrada" });
+    }
+
     await em.removeAndFlush(localidad)
     res
       .status(200)

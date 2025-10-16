@@ -11,7 +11,7 @@ Content-Type: application/json
 }
 
 ### ID
-@id = {{createProvincia.response.body.data.id}}
+@id = {{createProvincia.response.body.data.nombre}}
 ### GET ONE
 GET http://localhost:3000/api/provincia/{{id}}
 

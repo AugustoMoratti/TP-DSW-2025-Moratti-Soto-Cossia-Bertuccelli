@@ -13,13 +13,13 @@ export const register = async (req: Request, res: Response) => {
   try {
     //const usuario = em.create(Usuario, req.body)
     const em = getEm();
-    const { nombre, apellido, clave, email, descripcion, contacto, horarios, provincia, localidad, profesiones } = req.body.sanitizedInput
+    const { nombre, apellido, clave, email, descripcion, contacto, horarios, provincia, localidad, profesiones, fechaNac } = req.body.sanitizedInput
     /*if (!nombre || !apellido || !clave || !email || !provincia || !localidad) {
       return res.status(400).json({ message: 'Faltan campos requeridos: nombre, apellido, clave, email, provincia o localidad' })
     }*/
 
-    const provinciaRef = em.getReference(Provincia, Number(provincia))
-    const localidadRef = em.getReference(Localidad, Number(localidad))
+    const provinciaRef = em.getReference(Provincia, provincia)
+    const localidadRef = em.getReference(Localidad, localidad)
 
     const profesionesIds: number[] = Array.isArray(req.body.sanitizedInput.profesiones)
       ? req.body.sanitizedInput.profesiones.map((x: any) => Number(x)).filter((n: number) => Number.isFinite(n))
@@ -66,6 +66,10 @@ export const register = async (req: Request, res: Response) => {
       return res.status(400).json({ message: 'La descripcion debe ser un string' })
     };
 
+    if (fechaNac && typeof fechaNac !== 'string') {
+      return res.status(400).json({ message: 'La fecha debe ser un string' })
+    };
+
     const usuario = new Usuario()
 
     usuario.nombre = nombre;
@@ -77,6 +81,8 @@ export const register = async (req: Request, res: Response) => {
     if (descripcion) usuario.descripcion = descripcion;
     usuario.provincia = provinciaRef;
     usuario.localidad = localidadRef;
+    usuario.fechaNac = fechaNac;
+
 
     if (profesionesRef.length > 0) {
       for (const p of profesionesRef) {

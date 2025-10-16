@@ -6,6 +6,25 @@ GET http://localhost:3000/api/usuario/{{id}}
 ### Obtener usuarios con filtro
 GET http://localhost:3000/api/usuario/buscar?q=rosario
 
+### Register
+POST http://localhost:3000/api/usuario/register
+Content-Type: application/json
+
+{
+  "nombre":"Valentin",
+  "apellido": "Bertucceli",
+  "clave":"aderf",
+  "email":"valen@gmail.com",
+  "descripcion":"Usuario profesional",
+  "contacto": "3416526398",
+  "horarios":"08:00 a 12:00 y 15:00 a 19:00",
+  "provincia": "Santa Fe",
+  "localidad": "Rosario",
+  "fechaNac": "08/04/2004",
+  "profesiones": []
+}
+
+
 ### Crear un nuevo usuario (POST - crear recurso)
 # @name createUsuario
 POST http://localhost:3000/api/usuario
@@ -21,6 +40,7 @@ Content-Type: application/json
   "horarios":"08:00 a 12:00 y 15:00 a 19:00",
   "provincia": 1,
   "localidad":1,
+  "fechaNac": "08/04/2004",
   "profesiones": [1]
 }
 

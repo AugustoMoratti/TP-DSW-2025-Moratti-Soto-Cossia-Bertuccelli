@@ -9,7 +9,7 @@ Content-Type: application/json
 { 
   "nombre": "Rosario",
   "codPostal": "2000",
-  "provincia": 1
+  "provincia": "Santa Fe"
 }
 
 ### ID

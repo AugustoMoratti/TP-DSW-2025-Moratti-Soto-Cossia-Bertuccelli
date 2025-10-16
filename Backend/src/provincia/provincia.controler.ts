@@ -30,10 +30,10 @@ async function findAll(req: Request, res: Response) {
 
 async function findOne(req: Request, res: Response) {
   try {
-    const id = Number.parseInt(req.params.id)
+    const nombre = req.params.nombre
     const provincia = await em.findOneOrFail(
       Provincia,
-      { id },
+      { nombre },
     )
     res.status(200).json({ message: 'found provincia', data: provincia })
   } catch (error: any) {
@@ -59,12 +59,12 @@ async function add(req: Request, res: Response) {
 
 async function update(req: Request, res: Response) {
   try {
-    const id = Number.parseInt(req.params.id)
-    const { nombre } = req.body.sanitizedInput
-    if (typeof nombre !== 'string' || nombre === "") {
+    const nombre = req.params.nombre
+    const { nombreNuevo } = req.body.sanitizedInput
+    if (typeof nombreNuevo !== 'string' || nombreNuevo === "") {
       return res.status(400).json({ message: 'El nombre es obligatorio y debe ser un string' })
     };
-    const provinciaToUpdate = await em.findOneOrFail(Provincia, { id })
+    const provinciaToUpdate = await em.findOneOrFail(Provincia, { nombre })
     em.assign(provinciaToUpdate, req.body.sanitizedInput)
     await em.flush()
     res
@@ -77,14 +77,16 @@ async function update(req: Request, res: Response) {
 
 async function remove(req: Request, res: Response) {
   try {
-    const id = Number.parseInt(req.params.id)
-    const provincia = em.getReference(Provincia, id)
-    await em.removeAndFlush(provincia)
-    res
-      .status(200)
-      .json({ message: 'provincia deleted', data: provincia })
+    const nombre = req.params.nombre;
+    // buscar la entidad primero
+    const provincia = await em.findOne(Provincia, { nombre });
+    if (!provincia) {
+      return res.status(404).json({ message: "Provincia no encontrada" });
+    }
+    await em.removeAndFlush(provincia);
+    res.status(200).json({ message: "provincia deleted", data: provincia });
   } catch (error: any) {
-    res.status(500).json({ message: error.message })
+    res.status(500).json({ message: error.message });
   }
 }
 

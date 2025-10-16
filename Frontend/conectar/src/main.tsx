@@ -9,6 +9,7 @@ import NotFound from './pages/error/notFound.tsx'
 import Perfil from "./pages/perfil/perfil.tsx";
 import InternalServerError from './pages/error/error500.tsx';
 import Dashboard from './pages/Dashboard/dashboard.tsx'
+import Terminos from './pages/terminos.tsx';
 
 
 createRoot(document.getElementById('root')!).render(
@@ -23,6 +24,7 @@ createRoot(document.getElementById('root')!).render(
         <Route path="/*" element={<NotFound />} />
         <Route path="/500" element={<InternalServerError />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/terminos" element={<Terminos />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>,

@@ -33,7 +33,7 @@ export const register = async (req: Request, res: Response) => {
         estado: true
       })
     };
-
+//REVISAR
     if (typeof nombre !== 'string' || nombre === "") {
       return res.status(400).json({ message: 'El nombre es obligatorio y debe ser un string' })
     };
@@ -53,7 +53,7 @@ export const register = async (req: Request, res: Response) => {
     if (typeof contacto !== 'string') {
       return res.status(400).json({ message: 'El numero de contacto es obligatorio y debe ser un string' })
     };
-
+/*
     if (typeof horarios !== 'string' || horarios === "") {
       return res.status(400).json({ message: 'El horario es obligatorio y debe ser un string' })
     };
@@ -65,16 +65,18 @@ export const register = async (req: Request, res: Response) => {
     if (descripcion && typeof descripcion !== 'string') {
       return res.status(400).json({ message: 'La descripcion debe ser un string' })
     };
-
+*/
     const usuario = new Usuario()
 
     usuario.nombre = nombre;
     usuario.apellido = apellido;
     usuario.clave = await hashPassword(clave);;
     usuario.email = email;
+    /*
     usuario.contacto = contacto;
     usuario.horarios = horarios;
     if (descripcion) usuario.descripcion = descripcion;
+    */
     usuario.provincia = provinciaRef;
     usuario.localidad = localidadRef;
 

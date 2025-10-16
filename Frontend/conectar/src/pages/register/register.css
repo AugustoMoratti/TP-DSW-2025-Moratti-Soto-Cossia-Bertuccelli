@@ -1,0 +1,21 @@
+.term {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  margin-bottom: 1em;
+}
+
+.term label {
+  color: #06363a;
+  font-size: 1rem;
+}
+
+.term input[type="checkbox"] {
+  accent-color: #06363a;
+}
+
+.term a {
+  color: #06363a;
+  text-decoration: underline;
+  font-weight: 600;
+}

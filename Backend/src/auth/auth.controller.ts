@@ -21,19 +21,6 @@ export const register = async (req: Request, res: Response) => {
     const provinciaRef = em.getReference(Provincia, provincia)
     const localidadRef = em.getReference(Localidad, localidad)
 
-    const profesionesIds: number[] = Array.isArray(req.body.sanitizedInput.profesiones)
-      ? req.body.sanitizedInput.profesiones.map((x: any) => Number(x)).filter((n: number) => Number.isFinite(n))
-      : []
-
-    let profesionesRef: Profesiones[] = []
-
-    if (Array.isArray(profesionesIds) && profesionesIds.length > 0) {
-      profesionesRef = await em.find(Profesiones, {
-        id: { $in: profesionesIds },
-        estado: true
-      })
-    };
-
     if (typeof nombre !== 'string' || nombre === "") {
       return res.status(400).json({ message: 'El nombre es obligatorio y debe ser un string' })
     };
@@ -82,13 +69,6 @@ export const register = async (req: Request, res: Response) => {
     usuario.provincia = provinciaRef;
     usuario.localidad = localidadRef;
     usuario.fechaNac = fechaNac;
-
-
-    if (profesionesRef.length > 0) {
-      for (const p of profesionesRef) {
-        usuario.profesiones.add(p);
-      }
-    }
 
     em.persist(usuario)
     await em.flush()

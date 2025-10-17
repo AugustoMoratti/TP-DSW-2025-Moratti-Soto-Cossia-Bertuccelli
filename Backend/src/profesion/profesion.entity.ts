@@ -1,13 +1,13 @@
 import {
     Entity,
+    PrimaryKey,
     Property
 } from '@mikro-orm/core';
 import { BaseEntity } from '../../DB/baseEntity.entity.js';
 
 @Entity()
-export class Profesiones extends BaseEntity {
-
-    @Property({ length: 50, nullable: false, unique: true })
+export class Profesiones {
+    @PrimaryKey({ length: 50, nullable: false, unique: true })
     nombreProfesion!: string;
 
     @Property({ length: 200, nullable: false })

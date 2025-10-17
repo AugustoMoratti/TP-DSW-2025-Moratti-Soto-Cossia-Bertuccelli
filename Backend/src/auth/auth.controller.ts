@@ -44,7 +44,7 @@ export const register = async (req: Request, res: Response) => {
     const token = signToken({ id: usuario.id!, email: usuario.email });
 
     // cookie HttpOnly
-    res.cookie('token', token, {
+    res.cookie('userToken', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
@@ -73,7 +73,7 @@ export const login = async (req: Request, res: Response) => {
 
     const token = signToken({ id: usuario.id!, email: usuario.email });
 
-    res.cookie('token', token, {
+    res.cookie('userToken', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',

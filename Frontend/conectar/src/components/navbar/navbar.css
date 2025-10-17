@@ -1,28 +1,35 @@
 .navbar {
   display: flex;
-  justify-content: space-between;
   align-items: center;
   background-color: #114f5a;
-  padding: 15px 80px;
+  padding: 20px 60px;
   color: white;
+  gap: 800px;
 }
 
-.logo-container {
+.logo_container {
   display: flex;
   align-items: center;
+  margin-left: 200px;
 }
 
 .logo {
   height: 75px;
-  /* ajustá según tu logo */
   width: auto;
   cursor: pointer;
+}
+
+.right_section {
+  display: flex;
+  align-items: center;
+  gap: 40px;
 }
 
 .nav_links {
   display: flex;
   list-style: none;
   gap: 30px;
+  margin: 0;
 }
 
 .nav_buttons {

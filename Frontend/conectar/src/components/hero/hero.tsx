@@ -1,6 +1,8 @@
 import React from "react";
 import "./hero.css";
-import { Button } from "../button/Button";
+import heroImage from "../../../assets/plomero.jpg";
+import avionImage from "../../../assets/avion.png";
+
 
 const Hero: React.FC = () => {
   return (
@@ -12,14 +14,14 @@ const Hero: React.FC = () => {
         <p>
           Estás buscando <span>CONECT<span>AR</span></span>
         </p>
-        <div className="hero_buttons">
-          <Button variant="contained">Get started</Button>
-          <Button variant="outlined">Talk to sales</Button>
-        </div>
-        <div className="paper_plane">✈️</div>
+        <div className="paper_plane">
+          <img src={avionImage} alt="Plane" />
+          </div>
       </div>
 
-      <div className="hero_image"></div>
+      <div className="hero_image">
+        <img src={heroImage} alt="Hero" />
+      </div>
     </section>
   );
 };

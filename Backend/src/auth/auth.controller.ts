@@ -8,18 +8,17 @@ import { hashPassword, comparePassword } from '../utils/bcryp.js';
 import { signToken } from '../utils/jwt.js';
 
 
-
 export const register = async (req: Request, res: Response) => {
   try {
     //const usuario = em.create(Usuario, req.body)
     const em = getEm();
-    const { nombre, apellido, clave, email, descripcion, contacto, horarios, provincia, localidad, profesiones, fechaNac } = req.body.sanitizedInput
+    const { nombre, apellido, clave, email, fechaNac, direccion, contacto, provincia, localidad } = req.body.sanitizedInput
     /*if (!nombre || !apellido || !clave || !email || !provincia || !localidad) {
       return res.status(400).json({ message: 'Faltan campos requeridos: nombre, apellido, clave, email, provincia o localidad' })
     }*/
 
-    const provinciaRef = em.getReference(Provincia, provincia)
-    const localidadRef = em.getReference(Localidad, localidad)
+    const provinciaRef = em.getReference(Provincia, Number(provincia))
+    const localidadRef = em.getReference(Localidad, Number(localidad))
 
     const profesionesIds: number[] = Array.isArray(req.body.sanitizedInput.profesiones)
       ? req.body.sanitizedInput.profesiones.map((x: any) => Number(x)).filter((n: number) => Number.isFinite(n))
@@ -34,60 +33,28 @@ export const register = async (req: Request, res: Response) => {
       })
     };
 
-    if (typeof nombre !== 'string' || nombre === "") {
-      return res.status(400).json({ message: 'El nombre es obligatorio y debe ser un string' })
-    };
-
-    if (typeof apellido !== 'string' || apellido === "") {
-      return res.status(400).json({ message: 'El apellido es obligatorio y debe ser un string' })
-    };
-
-    if (typeof clave !== 'string' || clave === "") {
-      return res.status(400).json({ message: 'La clave es obligatoria y debe ser un string' })
-    };
-
-    if (typeof email !== 'string' || email === "") {
-      return res.status(400).json({ message: 'El email es obligatorio y debe ser un string' })
-    };
-
-    if (typeof contacto !== 'string') {
-      return res.status(400).json({ message: 'El numero de contacto es obligatorio y debe ser un string' })
-    };
-
-    if (typeof horarios !== 'string' || horarios === "") {
-      return res.status(400).json({ message: 'El horario es obligatorio y debe ser un string' })
-    };
-
-    if (typeof horarios !== 'string' || horarios === "") {
-      return res.status(400).json({ message: 'El horario es obligatorio y debe ser un string' })
-    };
-
-    if (descripcion && typeof descripcion !== 'string') {
-      return res.status(400).json({ message: 'La descripcion debe ser un string' })
-    };
-
-    if (fechaNac && typeof fechaNac !== 'string') {
-      return res.status(400).json({ message: 'La fecha debe ser un string' })
-    };
-
     const usuario = new Usuario()
 
     usuario.nombre = nombre;
     usuario.apellido = apellido;
-    usuario.clave = await hashPassword(clave);;
+    usuario.clave = await hashPassword(clave);
     usuario.email = email;
+    usuario.fechaNac = fechaNac;
+    usuario.descripcion = "";
     usuario.contacto = contacto;
-    usuario.horarios = horarios;
-    if (descripcion) usuario.descripcion = descripcion;
+    usuario.direccion = direccion;
     usuario.provincia = provinciaRef;
     usuario.localidad = localidadRef;
-    usuario.fechaNac = fechaNac;
-
 
     if (profesionesRef.length > 0) {
       for (const p of profesionesRef) {
         usuario.profesiones.add(p);
       }
+    }
+
+    const usuarioExistente = await em.findOne(Usuario, { email });
+    if (usuarioExistente) {
+      return res.status(400).json({ message: 'Ya existe un usuario con ese email' });
     }
 
     em.persist(usuario)

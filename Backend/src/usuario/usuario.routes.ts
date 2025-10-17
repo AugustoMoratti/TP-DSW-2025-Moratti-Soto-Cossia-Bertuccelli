@@ -9,7 +9,7 @@ usuarioRouter.get('/', findAll)
 usuarioRouter.get('/buscar', buscarUsuarios);
 usuarioRouter.get('/:id', findOne)
 usuarioRouter.get('/me', authMiddleware, refreshCookieMiddleware, me)
-usuarioRouter.get('/login', login)
+usuarioRouter.post('/login', login)
 usuarioRouter.post('/register', sanitizeUsuarioInput, register)
 usuarioRouter.post('/', sanitizeUsuarioInput, add)
 usuarioRouter.put('/:id', sanitizeUsuarioInput, update)

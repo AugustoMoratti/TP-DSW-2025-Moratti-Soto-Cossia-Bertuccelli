@@ -43,7 +43,7 @@ export class Usuario extends BaseEntity2 {
   // actualizemos un usuario, debemos pedirle nuevamente la profesion para no tener problemas.
   //Idea , para modificar un usuario realizar un form completo de todas las propiedades del usuario
 
-  @Property({ nullable: false })
+  @Property({ nullable: true })
   horarios!: string;
 
   //Agregar foto de perfil

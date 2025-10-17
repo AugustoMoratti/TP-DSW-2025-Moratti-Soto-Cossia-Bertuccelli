@@ -10,7 +10,7 @@
   --shadow: 0 8px 30px rgba(2, 8, 23, 0.08);
 }
 
-.main-bg {
+.mainBg {
   min-height: 100vh;
   background: var(--bg);
   display: grid;
@@ -18,7 +18,7 @@
   padding: clamp(24px, 4vw, 48px);
 }
 
-.terms-card {
+.termsCard {
   width: min(1000px, 92vw);        
   min-height: 80vh;                
   background: var(--card-bg);
@@ -33,43 +33,56 @@
   margin-inline: auto;
 }
 
-.terms-header {
+.termsHeader {
   margin-bottom: 1.5rem;
   border-bottom: 1px solid var(--border);
   padding-bottom: 1rem;
 }
 
-.terms-title {
+.termsTitle {
   font-size: clamp(28px, 4vw, 40px);
   line-height: 1.2;
   margin: 0 0 12px 0;
 }
 
-.terms-intro {
+.termsIntro {
   margin: 0;
   color: var(--muted);
 }
 
-.terms-content {
+.termsContent {
   display: grid;
   gap: 1.25rem;
   margin-top: 1.25rem;
 }
 
-.terms-content h2 {
+.terms_content h2 {
   font-size: clamp(18px, 2.4vw, 22px);
   margin: 0 0 6px 0;
 }
 
-.terms-content p {
+.terms_content p {
   margin: 0;
+}
+
+.btn {
+  width: 100%;
+  background: #114f5a;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.9em 0;
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin-bottom: 1em;
+  cursor: pointer;
 }
 
 /* ===========================
    Responsivo
    =========================== */
 @media (max-width: 480px) {
-  .terms-card {
+  .terms_card {
     border-radius: 12px;
     padding: 16px;
   }

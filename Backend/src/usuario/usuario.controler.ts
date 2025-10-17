@@ -92,15 +92,15 @@ async function add(req: Request, res: Response) {
     const provinciaRef = em.getReference(Provincia, provincia)
     const localidadRef = em.getReference(Localidad, localidad)
 
-    const profesionesIds: number[] = Array.isArray(req.body.sanitizedInput.profesiones)
-      ? req.body.sanitizedInput.profesiones.map((x: any) => Number(x)).filter((n: number) => Number.isFinite(n))
+    const profesionesName: string[] = Array.isArray(req.body.sanitizedInput.profesiones)
+      ? req.body.sanitizedInput.profesiones.map((x: any) => (x)).filter((n: string) => Number.isFinite(n))
       : []
 
     let profesionesRef: Profesiones[] = []
 
-    if (Array.isArray(profesionesIds) && profesionesIds.length > 0) {
+    if (Array.isArray(profesionesName) && profesionesName.length > 0) {
       profesionesRef = await em.find(Profesiones, {
-        id: { $in: profesionesIds },
+        nombreProfesion: { $in: profesionesName },
         estado: true
       })
     };
@@ -182,10 +182,10 @@ async function update(req: Request, res: Response) {
 
     const { nombre, apellido, provincia, localidad, clave, email, descripcion, contacto, horarios, profesiones } = req.body.sanitizedInput
 
-    const profesionesIds: number[] = Array.isArray(req.body.profesiones)
+    const profesionesName: string[] = Array.isArray(req.body.profesiones)
       ? req.body.profesiones
-        .map((x: any) => Number(x))
-        .filter((n: number) => Number.isFinite(n))
+        .map((x: any) => (x == null ? '' : String(x).trim())) // normalizo todo a string y quito espacios
+        .filter((s: string) => s.length > 0)
       : [];
 
     if (provincia) usuario.provincia = em.getReference(Provincia, provincia)
@@ -199,18 +199,23 @@ async function update(req: Request, res: Response) {
     if (contacto) usuario.contacto = contacto.toString()
     if (horarios) usuario.horarios = horarios
 
-    const idExistentes = new Set(usuario.profesiones.getItems().map(p => Number(p.id)));
+    const nombresEntrantes = [...new Set(profesionesName)]; // quitar duplicados entrantes
+    const nombresExistentes = new Set<string>(usuario.profesiones.getItems().map(p => p.nombreProfesion));
 
-    for (const pid of profesionesIds) {
-      if (!idExistentes.has(pid)) {
-        usuario.profesiones.add(em.getReference(Profesiones, pid));
-        idExistentes.add(pid)
+    // buscar en un solo query las profesiones que coincidan
+    const profesionesEncontradas = await em.find(Profesiones, {
+      nombreProfesion: { $in: nombresEntrantes },
+    });
+
+    // añadir las que el usuario no tiene
+    for (const prof of profesionesEncontradas) {
+      if (!nombresExistentes.has(prof.nombreProfesion)) {
+        usuario.profesiones.add(prof);
+        nombresExistentes.add(prof.nombreProfesion);
       }
     }
 
-    if (Array.isArray(profesionesIds) && profesionesIds.length === 0) {
-      usuario.profesiones.removeAll();
-    }
+
 
     await em.flush()
     res.status(200).json({ message: 'Usuario class updated' })

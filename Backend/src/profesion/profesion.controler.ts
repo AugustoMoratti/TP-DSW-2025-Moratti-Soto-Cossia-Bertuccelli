@@ -49,8 +49,8 @@ async function findAllInactive(req: Request, res: Response) {
 
 async function findOne(req: Request, res: Response) {
   try {
-    const id = Number.parseInt(req.params.id)
-    const profesion = await em.findOneOrFail(Profesiones, { id })
+    const nombreProfesion = req.params.nombreProfesion
+    const profesion = await em.findOneOrFail(Profesiones, { nombreProfesion })
 
     if (!profesion) { //findOrFail devuelve la profesion o false basicamente un error
       return res.status(404).json({ message: 'No se ha encontrado la profesion' })
@@ -98,9 +98,9 @@ async function add(req: Request, res: Response) {
 
 async function update(req: Request, res: Response) {
   try {
-    const id = Number.parseInt(req.params.id)
-    const profesion = em.getReference(Profesiones, id)
-    em.assign(profesion, req.body)
+    const nombreProfesion = req.params.nombreProfesion
+    const profesionToUpdate = await em.findOneOrFail(Profesiones, { nombreProfesion })
+    em.assign(profesionToUpdate, req.body)
     await em.flush()
     res.status(200).json({ message: 'Profesion class updated' })
   } catch (error: any) {
@@ -110,8 +110,11 @@ async function update(req: Request, res: Response) {
 
 async function remove(req: Request, res: Response) {
   try {
-    const id = Number.parseInt(req.params.id)
-    const profesion = em.getReference(Profesiones, id)
+    const nombreProfesion = req.params.nombreProfesion
+    const profesion = await em.findOne(Profesiones, { nombreProfesion });
+    if (!profesion) {
+      return res.status(404).json({ message: "Provincia no encontrada" });
+    }
     await em.removeAndFlush(profesion)
     res.status(200).send({ message: 'Profesion deleted' })
   } catch (error: any) {

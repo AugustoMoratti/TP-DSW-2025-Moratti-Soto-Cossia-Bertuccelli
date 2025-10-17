@@ -8,54 +8,31 @@ import { hashPassword, comparePassword } from '../utils/bcryp.js';
 import { signToken } from '../utils/jwt.js';
 
 
+
 export const register = async (req: Request, res: Response) => {
   try {
     //const usuario = em.create(Usuario, req.body)
     const em = getEm();
-    const { nombre, apellido, clave, email, fechaNac, direccion, contacto, provincia, localidad } = req.body.sanitizedInput
+    const { nombre, apellido, clave, email, descripcion, contacto, horarios, provincia, localidad, profesiones, fechaNac } = req.body.sanitizedInput
     /*if (!nombre || !apellido || !clave || !email || !provincia || !localidad) {
       return res.status(400).json({ message: 'Faltan campos requeridos: nombre, apellido, clave, email, provincia o localidad' })
     }*/
 
-    const provinciaRef = em.getReference(Provincia, Number(provincia))
-    const localidadRef = em.getReference(Localidad, Number(localidad))
-
-    const profesionesIds: number[] = Array.isArray(req.body.sanitizedInput.profesiones)
-      ? req.body.sanitizedInput.profesiones.map((x: any) => Number(x)).filter((n: number) => Number.isFinite(n))
-      : []
-
-    let profesionesRef: Profesiones[] = []
-
-    if (Array.isArray(profesionesIds) && profesionesIds.length > 0) {
-      profesionesRef = await em.find(Profesiones, {
-        id: { $in: profesionesIds },
-        estado: true
-      })
-    };
+    const provinciaRef = em.getReference(Provincia, provincia)
+    const localidadRef = em.getReference(Localidad, localidad)
 
     const usuario = new Usuario()
 
     usuario.nombre = nombre;
     usuario.apellido = apellido;
-    usuario.clave = await hashPassword(clave);
+    usuario.clave = await hashPassword(clave);;
     usuario.email = email;
-    usuario.fechaNac = fechaNac;
-    usuario.descripcion = "";
     usuario.contacto = contacto;
-    usuario.direccion = direccion;
+    usuario.horarios = horarios;
+    if (descripcion) usuario.descripcion = descripcion;
     usuario.provincia = provinciaRef;
     usuario.localidad = localidadRef;
-
-    if (profesionesRef.length > 0) {
-      for (const p of profesionesRef) {
-        usuario.profesiones.add(p);
-      }
-    }
-
-    const usuarioExistente = await em.findOne(Usuario, { email });
-    if (usuarioExistente) {
-      return res.status(400).json({ message: 'Ya existe un usuario con ese email' });
-    }
+    usuario.fechaNac = fechaNac;
 
     em.persist(usuario)
     await em.flush()

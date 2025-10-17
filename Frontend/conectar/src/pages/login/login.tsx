@@ -15,22 +15,22 @@ export default function Login() {
   const navigate = useNavigate();
 
 
-useEffect(() => {
-  const savedUser = getCookie("usuario");
-  const savedRecuerdame = getCookie("recuerdame") === "true";
-  if (savedRecuerdame && savedUser) {
-    setUsuario(savedUser);
-    setRecuerdame(true);
-  }
-}, []);
+  useEffect(() => {
+    const savedUser = getCookie("usuario");
+    const savedRecuerdame = getCookie("recuerdame") === "true";
+    if (savedRecuerdame && savedUser) {
+      setUsuario(savedUser);
+      setRecuerdame(true);
+    }
+  }, []);
 
 
   const onChangeStr =
     (setter: (v: string) => void) =>
-    (v: any) => {
-      if (typeof v === "string") setter(v);
-      else if (v?.target?.value !== undefined) setter(v.target.value as string);
-    };
+      (v: any) => {
+        if (typeof v === "string") setter(v);
+        else if (v?.target?.value !== undefined) setter(v.target.value as string);
+      };
 
   const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -40,11 +40,11 @@ useEffect(() => {
         sameSite: "Lax",
         secure: window.location.protocol === "https:", // true si estás en HTTPS
       });
-    
-    setCookie("recuerdame", "true", 30, {
-      sameSite: "Lax",
-      secure: window.location.protocol === "https:",
-    });
+
+      setCookie("recuerdame", "true", 30, {
+        sameSite: "Lax",
+        secure: window.location.protocol === "https:",
+      });
     } else {
       deleteCookie("usuario");
       deleteCookie("recuerdame");
@@ -78,7 +78,7 @@ useEffect(() => {
       let data: any = {};
       try {
         data = await res.json();
-      } catch {}
+      } catch { }
 
       if (!res.ok) {
         setError(data?.error || data?.message || "❌ Error en el login.");
@@ -90,7 +90,7 @@ useEffect(() => {
         await fetch("http://localhost:3000/api/usuario/me", {
           credentials: "include",
         });
-      } catch {}
+      } catch { }
 
       navigate("/busqProfesionales");
     } catch (err) {
@@ -164,5 +164,4 @@ useEffect(() => {
       </div>
     </section>
   );
-}
-``
+};

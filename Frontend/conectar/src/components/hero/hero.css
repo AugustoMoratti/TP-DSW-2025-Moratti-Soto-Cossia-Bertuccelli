@@ -1,10 +1,11 @@
 .hero {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   background-color: #114f5a;
   padding: 80px;
-  color: white;
+  color: white;gap: 60px; 
+  text-align: center;
 }
 
 .hero_text h2 {
@@ -25,15 +26,27 @@
 
 .hero_buttons {
   display: flex;
+  justify-content: center;
+  align-items: center;
   gap: 20px;
 }
 
 .hero_image {
   width: 400px;
   height: 350px;
-  background-color: #f9f9ff;
-  border-radius: 20px;
+  border-radius: 20px;       
+  overflow: hidden;           
+  border: 5px solid #fff;     
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); 
 }
+
+.hero_image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;           
+  display: block;
+}
+
 
 .paper_plane {
   font-size: 2rem;

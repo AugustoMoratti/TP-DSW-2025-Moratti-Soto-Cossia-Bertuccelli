@@ -7,8 +7,8 @@ export const usuarioRouter = Router()
 
 usuarioRouter.get('/', findAll)
 usuarioRouter.get('/buscar', buscarUsuarios);
-usuarioRouter.get('/:id', findOne)
 usuarioRouter.get('/me', authMiddleware, refreshCookieMiddleware, me)
+usuarioRouter.get('/:id', findOne)
 usuarioRouter.post('/login', login)
 usuarioRouter.post('/register', sanitizeUsuarioInput, register)
 usuarioRouter.post('/', sanitizeUsuarioInput, add)

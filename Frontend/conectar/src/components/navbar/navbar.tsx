@@ -13,6 +13,7 @@ const Navbar: React.FC = () => {
         <img src={logo} alt="Conetar Logo" className="logo" />
       </div>
 
+    <div className="right_section">
       <ul className="nav_links">
         <li>Home</li>
         <li>About</li>
@@ -20,9 +21,10 @@ const Navbar: React.FC = () => {
         <li>Contact</li>
       </ul>
 
-      <div className="nav_buttons">
-        <Button variant="contained" onClick={() => Navigate("/register")}>Register</Button>
-        <Button variant="outlined" onClick={() => Navigate("/login")}>Login</Button>
+        <div className="nav_buttons">
+          <Button variant="contained" onClick={() => Navigate("/register")}>Register</Button>
+          <Button variant="outlined" onClick={() => Navigate("/login")}>Login</Button>
+        </div>
       </div>
     </nav>
   );

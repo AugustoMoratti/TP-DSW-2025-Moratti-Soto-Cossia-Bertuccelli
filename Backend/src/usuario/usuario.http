@@ -15,6 +15,7 @@ Content-Type: application/json
   "apellido": "Bertucceli",
   "clave":"aderf",
   "email":"valen@gmail.com",
+  "direccion":"Crespo 1288",
   "descripcion":"Usuario profesional",
   "contacto": "3416526398",
   "horarios":"08:00 a 12:00 y 15:00 a 19:00",

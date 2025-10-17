@@ -13,7 +13,7 @@ export const register = async (req: Request, res: Response) => {
   try {
     //const usuario = em.create(Usuario, req.body)
     const em = getEm();
-    const { nombre, apellido, clave, email, descripcion, contacto, horarios, provincia, localidad, profesiones, fechaNac } = req.body.sanitizedInput
+    const { nombre, apellido, clave, email, descripcion, contacto, provincia, localidad, profesiones, fechaNac } = req.body.sanitizedInput
     /*if (!nombre || !apellido || !clave || !email || !provincia || !localidad) {
       return res.status(400).json({ message: 'Faltan campos requeridos: nombre, apellido, clave, email, provincia o localidad' })
     }*/
@@ -28,11 +28,15 @@ export const register = async (req: Request, res: Response) => {
     usuario.clave = await hashPassword(clave);;
     usuario.email = email;
     usuario.contacto = contacto;
-    usuario.horarios = horarios;
     if (descripcion) usuario.descripcion = descripcion;
     usuario.provincia = provinciaRef;
     usuario.localidad = localidadRef;
     usuario.fechaNac = fechaNac;
+
+    const usuarioExistente = await em.findOne(Usuario, { email });
+      if (usuarioExistente) {
+        return res.status(400).json({ message: 'Ya existe un usuario con ese email' });
+      }
 
     em.persist(usuario)
     await em.flush()

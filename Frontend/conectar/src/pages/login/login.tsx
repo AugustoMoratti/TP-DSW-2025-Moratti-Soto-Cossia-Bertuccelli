@@ -111,7 +111,7 @@ export default function Login() {
 
   return (
     <section className="main-bg">
-      <img src="../assets/conect_1.png" alt="Logo" className='logo' />
+      <img src="../assets/conect_1.png" alt="Logo" className='logo_login' />
       <div className="card">
         <form onSubmit={handleLogin}>
           <div className="card-header">

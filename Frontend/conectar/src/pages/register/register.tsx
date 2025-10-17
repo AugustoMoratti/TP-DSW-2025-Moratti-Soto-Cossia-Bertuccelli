@@ -1,4 +1,5 @@
 import StandardInput from '../../components/form/Form.tsx';
+import DateInput from '../../components/form/Form.tsx';
 import { Button } from '../../components/button/Button.tsx';
 import CheckIcon from '@mui/icons-material/Check';
 import { useNavigate } from "react-router-dom";
@@ -97,7 +98,7 @@ export default function Registro() {
 
   return (
     <section className="main-bg">
-      <img src="../assets/conect_1.png" alt="Logo" className='logo' />
+      <img src="../assets/conect_1.png" alt="Logo" className='logo' style={{ height: '150px' }}/>
 
       <div className="card">
         <div className="card-header">
@@ -105,16 +106,14 @@ export default function Registro() {
         </div>
 
         <div className="card-content">
-          <StandardInput label="Nombre" name="nombre" value={nombre} onChange={setNombre} autoComplete="given-name" />
-          <StandardInput label="Apellido" name="apel" value={apel} onChange={setApel} autoComplete="family-name" />
-          <StandardInput label="Fecha de nacimiento" name="fechaNac" value={date} onChange={setDate} type="date" />
-          <StandardInput label="Provincia" name="address1" value={prov} onChange={setProv} autoComplete="address-level1" />
-          <StandardInput label="Localidad" name="address2" value={local} onChange={setLocal} autoComplete="address-level2" />
-          <StandardInput label="Direccion" name="address3" value={dire} onChange={setDire} autoComplete="street-address" />
-
+          <StandardInput label="Nombre" value={nombre} onChange={setNombre} />
+          <StandardInput label="Apellido" value={apel} onChange={setApel} />
+          <StandardInput label="Fecha de nacimiento" value={date} onChange={setDate} type='date'/>
+          <StandardInput label="Provincia" value={prov} onChange={setProv} />
+          <StandardInput label="Localidad" value={local} onChange={setLocal} />
+          <StandardInput label="Direccion" value={dire} onChange={setDire} />
           <StandardInput
             label="Teléfono"
-            name="tel"
             value={telef}
             onChange={(val) => {
               if (/^\d*$/.test(val)) {
@@ -125,13 +124,10 @@ export default function Registro() {
               }
             }}
             type="tel"
-            autoComplete="tel"
           />
-          
-          <StandardInput label="Email" name="email" value={email} onChange={setEmail} type="email" autoComplete="email" />
-          <StandardInput label="Clave" name="clave" value={clave} onChange={setClave} type="password" autoComplete="clave" />
-          <StandardInput label="Confirmar clave" name="clave" value={confirmarClave} onChange={setConfirmarClave} type="password" autoComplete="clave" />
-
+          <StandardInput label="Email" value={email} onChange={setEmail} type="email" />
+          <StandardInput label="Clave" value={clave} onChange={setClave} type="password" />
+          <StandardInput label="Confirmar clave" value={confirmarClave} onChange={setConfirmarClave} type="password" />
 
           {telefonoError && (
             <div style={{ color: "red", fontSize: "0.9em" }}>{telefonoError}</div>

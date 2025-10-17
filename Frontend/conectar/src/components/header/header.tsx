@@ -19,7 +19,7 @@ export default function Header({
   return (
     <header className="header" style={{ backgroundColor: bgColor }}>
       <div className="header-container" onClick={() => Navigate("/")}>
-        <img src={logoSrc} alt="Logo" className="logo" />
+        <img src={logoSrc} alt="Logo" className="logo_header" />
         <nav className="header-btns">
           {children}
         </nav>

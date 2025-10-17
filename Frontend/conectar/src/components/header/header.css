@@ -17,8 +17,8 @@
   padding: 10px 50px;
 }
 
-.logo {
-  height: 70px;
+.logo_header {
+  height: 100px;
   width: auto;
   object-fit: contain;
   border-radius: 5px;

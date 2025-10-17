@@ -10,6 +10,7 @@
   position: relative;
   width: 100%;
   margin-bottom: 25px;
+  color: #f9f8f3
 }
 
 .input_label {
@@ -43,33 +44,30 @@
   color: #2ab1b8;
 }
 
-/* 🔹 Oculta el texto gris "dd / mm / yyyy" cuando no hay valor */
-input[type="date"]::-webkit-datetime-edit {
-  color: transparent;
-}
-input[type="date"]:focus::-webkit-datetime-edit,
-input[type="date"][value]:not([value=""])::-webkit-datetime-edit {
-  color: #f9f8f3;
+.input_field.input_date::-webkit-datetime-edit {
+  color: transparent;                    /* invisible por defecto */
 }
 
-/* 🔹 Alineación vertical del input date */
-.input_field.input_date {
-  padding-top: 18px;
-  line-height: 1.2;
+.input_field.input_date:focus::-webkit-datetime-edit {
+  color: #114f5a;                           /* visible en negro con foco */
 }
 
-/* 🔹 Opcional: estiliza el icono del calendario */
-input[type="date"]::-webkit-calendar-picker-indicator {
-  cursor: #000000;
+
+.input_field.input_date:valid::-webkit-datetime-edit {
+  color: #114f5a;
 }
 
-/* 🔹 Compatibilidad con Firefox */
+.input_field.input_date::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+}
+
+/* Firefox */
 @-moz-document url-prefix() {
-  input[type="date"] {
-    color: transparent;
+  .input_field.input_date {
+    color: transparent;                  
   }
-  input[type="date"]:focus,
-  input[type="date"]:valid {
-    color: #f9f8f3;
+  .input_field.input_date:focus,
+  .input_field.input_date:valid {
+    color: #114f5a;                         
   }
 }

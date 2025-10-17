@@ -1,9 +1,10 @@
 import { Router } from "express"
 import { sanitizeProfesionInput, findAllActive, findAllInactive, findOne, add, update, remove } from './profesion.controler.js'
+import { authAdminMiddleware, refreshAdminCookieMiddleware } from "../middleware/authAdminMiddleware.js"
 
 export const profesionesRouter = Router()
 
-profesionesRouter.get('/', findAllActive)
+profesionesRouter.get('/', /*authAdminMiddleware, refreshAdminCookieMiddleware,*/ findAllActive) //agregarlo a la hora de probar la pagina de admin
 profesionesRouter.get('/inactive', findAllInactive)
 profesionesRouter.get('/:nombreProfesion', findOne)
 profesionesRouter.post('/', sanitizeProfesionInput, add)

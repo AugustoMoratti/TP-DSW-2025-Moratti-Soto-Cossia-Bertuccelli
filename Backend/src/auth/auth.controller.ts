@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
 import { Provincia } from '../provincia/provincia.entity.js';
 import { Localidad } from '../localidad/localidades.entity.js';
-import { Profesiones } from '../profesion/profesion.entity.js';
 import { getEm } from '../../DB/orm.js';
 import { Usuario } from '../usuario/usuario.entity.js';
 import { hashPassword, comparePassword } from '../utils/bcryp.js';
@@ -34,9 +33,9 @@ export const register = async (req: Request, res: Response) => {
     usuario.fechaNac = fechaNac;
 
     const usuarioExistente = await em.findOne(Usuario, { email });
-      if (usuarioExistente) {
-        return res.status(400).json({ message: 'Ya existe un usuario con ese email' });
-      }
+    if (usuarioExistente) {
+      return res.status(400).json({ message: 'Ya existe un usuario con ese email' });
+    }
 
     em.persist(usuario)
     await em.flush()
@@ -90,6 +89,6 @@ export const login = async (req: Request, res: Response) => {
 
 export const me = async (req: Request, res: Response) => {
   const usuario = req.user;
-  if (!usuario) return res.status(401).json({ error: 'No autorizado' });
+  if (!usuario) return res.status(401).json({ error: 'No autorizado (me)' });
   res.json({ usuario: { id: usuario.id, nombre: usuario.nombre, email: usuario.email ?? null } });
 };

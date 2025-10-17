@@ -16,28 +16,28 @@ Content-Type: application/json
 }
 
 ### ID
-@id = {{createProfesion.response.body.data.id}}
+@id = {{createProfesion.response.body.data.nombreProfesion}}
 ### GET ONE
 GET http://localhost:3000/api/profesion/{{id}}
 
 
 ### PUT
-PUT http://localhost:3000/api/profesion/{{id}}
+PUT http://localhost:3000/api/profesion/Ingeniero%20en%20sistemas
 Content-Type: application/json
 
 { 
-  "nombreProfesion": "Ingeniero",
+  "nombreProfesion": "Ingeniero en sistemas",
   "descripcionProfesion": "...",
   "estado": true
 }
 
 
 ### PATCH
-PATCH http://localhost:3000/api/profesion/{{id}}
+PATCH http://localhost:3000/api/profesion/Ingeniero%20en%20sistemas
 Content-Type: application/json
 
 { 
-  "nombreProfesion": "Plomero",
+  "nombreProfesion": "Ingeniero en sistemas",
   "descripcionProfesion": "...",
   "estado": true
 }

@@ -5,10 +5,10 @@ export const profesionesRouter = Router()
 
 profesionesRouter.get('/', findAllActive)
 profesionesRouter.get('/inactive', findAllInactive)
-profesionesRouter.get('/:id', findOne)
+profesionesRouter.get('/:nombreProfesion', findOne)
 profesionesRouter.post('/', sanitizeProfesionInput, add)
-profesionesRouter.put('/:id', sanitizeProfesionInput, update)
-profesionesRouter.patch('/:id', sanitizeProfesionInput, update)
-profesionesRouter.delete('/:id', remove)
+profesionesRouter.put('/:nombreProfesion', sanitizeProfesionInput, update)
+profesionesRouter.patch('/:nombreProfesion', sanitizeProfesionInput, update)
+profesionesRouter.delete('/:nombreProfesion', remove)
 
 export default profesionesRouter;

@@ -98,10 +98,12 @@ async function add(req: Request, res: Response) {
 
 async function update(req: Request, res: Response) {
   try {
-    const nombreProfesion = req.params.nombreProfesion
+    const nombreProfesion = (req.params.nombreProfesion).trim();
     const profesionToUpdate = await em.findOneOrFail(Profesiones, { nombreProfesion })
-    em.assign(profesionToUpdate, req.body)
-    await em.flush()
+    profesionToUpdate.descripcionProfesion = req.body.descripcionProfesion;
+    profesionToUpdate.estado = req.body.estado;
+
+    await em.persistAndFlush(profesionToUpdate);
     res.status(200).json({ message: 'Profesion class updated' })
   } catch (error: any) {
     res.status(500).json({ message: error.message })
@@ -113,7 +115,7 @@ async function remove(req: Request, res: Response) {
     const nombreProfesion = req.params.nombreProfesion
     const profesion = await em.findOne(Profesiones, { nombreProfesion });
     if (!profesion) {
-      return res.status(404).json({ message: "Provincia no encontrada" });
+      return res.status(404).json({ message: "Profesion no encontrada" });
     }
     await em.removeAndFlush(profesion)
     res.status(200).send({ message: 'Profesion deleted' })

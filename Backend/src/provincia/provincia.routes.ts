@@ -4,10 +4,10 @@ import { findAll, findOne, add, update, remove, sanitizeProvinciaInput } from '.
 export const provinciaRouter = Router()
 
 provinciaRouter.get('/', findAll)
-provinciaRouter.get('/:id', findOne)
+provinciaRouter.get('/:nombre', findOne)
 provinciaRouter.post('/', sanitizeProvinciaInput, add)
-provinciaRouter.put('/:id', sanitizeProvinciaInput, update)
-provinciaRouter.patch('/:id', sanitizeProvinciaInput, update)
-provinciaRouter.delete('/:id', remove)
+provinciaRouter.put('/:nombre', sanitizeProvinciaInput, update)
+provinciaRouter.patch('/:nombre', sanitizeProvinciaInput, update)
+provinciaRouter.delete('/:nombre', remove)
 
 export default provinciaRouter;

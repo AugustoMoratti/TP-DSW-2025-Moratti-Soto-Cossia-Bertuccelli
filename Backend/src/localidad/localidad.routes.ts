@@ -5,8 +5,8 @@ import { findOne, findAll, add, update, remove, sanitizeLocalidadInput } from ".
 export const localidadesRouter = Router()
 
 localidadesRouter.get('/', findAll)
-localidadesRouter.get('/:id', findOne)
+localidadesRouter.get('/:nombre', findOne)
 localidadesRouter.post('/', sanitizeLocalidadInput, add)
-localidadesRouter.put('/:id', sanitizeLocalidadInput, update)
-localidadesRouter.patch('/:id', sanitizeLocalidadInput, update)
-localidadesRouter.delete('/:id', remove)
+localidadesRouter.put('/:nombre', sanitizeLocalidadInput, update)
+localidadesRouter.patch('/:nombre', sanitizeLocalidadInput, update)
+localidadesRouter.delete('/:nombre', remove)

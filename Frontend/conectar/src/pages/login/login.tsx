@@ -1,60 +1,138 @@
-import React, { useState, useEffect } from "react";
-import StandardInput from '../../components/form/Form.tsx';
-import { Button } from '../../components/button/Button.tsx';
-import CheckIcon from '@mui/icons-material/Check';
+import React, { useState, useEffect, type FormEvent } from "react";
+import StandardInput from "../../components/form/Form.tsx";
+import { Button } from "../../components/button/Button.tsx";
+import CheckIcon from "@mui/icons-material/Check";
 import { useNavigate } from "react-router-dom";
-import './login.css';
+import { getCookie, setCookie, deleteCookie } from "../../utils/cookies.ts";
+import "./login.css";
 
 export default function Login() {
-  const [usuario, setUsuario] = useState("");
-  const [clave, setClave] = useState("");
-  const [recuerdame, setRecuerdame] = useState(false);
+  const [usuario, setUsuario] = useState<string>("");
+  const [clave, setClave] = useState<string>("");
+  const [recuerdame, setRecuerdame] = useState<boolean>(false);
+  const [error, setError] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
   const navigate = useNavigate();
 
-  // Al montar, intenta cargar los datos guardados
-  useEffect(() => {
-    const savedUser = localStorage.getItem("usuario");
-    const savedRecuerdame = localStorage.getItem("recuerdame") === "true";
-    if (savedRecuerdame && savedUser) {
-      setUsuario(savedUser);
-      setRecuerdame(true);
-    }
-  }, []);
 
-  // Función para manejar el login
-  const handleLogin = (e: React.FormEvent) => {
+useEffect(() => {
+  const savedUser = getCookie("usuario");
+  const savedRecuerdame = getCookie("recuerdame") === "true";
+  if (savedRecuerdame && savedUser) {
+    setUsuario(savedUser);
+    setRecuerdame(true);
+  }
+}, []);
+
+
+  const onChangeStr =
+    (setter: (v: string) => void) =>
+    (v: any) => {
+      if (typeof v === "string") setter(v);
+      else if (v?.target?.value !== undefined) setter(v.target.value as string);
+    };
+
+  const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     if (recuerdame) {
-      localStorage.setItem("usuario", usuario);
-      localStorage.setItem("recuerdame", "true");
+      setCookie("usuario", usuario, 30, {
+        sameSite: "Lax",
+        secure: window.location.protocol === "https:", // true si estás en HTTPS
+      });
+    
+    setCookie("recuerdame", "true", 30, {
+      sameSite: "Lax",
+      secure: window.location.protocol === "https:",
+    });
     } else {
-      localStorage.removeItem("usuario");
-      localStorage.removeItem("clave");
-      localStorage.setItem("recuerdame", "false");
+      deleteCookie("usuario");
+      deleteCookie("recuerdame");
     }
-    // Aca va la lógica de autenticación
+
+
+    // Validaciones
+    if (!usuario || !clave) {
+      setError("⚠️ Por favor, completá email y contraseña.");
+      return;
+    }
+    if (!usuario.toLowerCase().endsWith("@gmail.com")) {
+      setError("⚠️ Usá un correo @gmail.com");
+      return;
+    }
+
+    setError("");
+    setLoading(true);
+
+    try {
+      const res = await fetch("http://localhost:3000/api/usuario/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include", // cookie HttpOnly
+        body: JSON.stringify({
+          email: usuario.trim().toLowerCase(),
+          clave: clave,
+        }),
+      });
+
+      let data: any = {};
+      try {
+        data = await res.json();
+      } catch {}
+
+      if (!res.ok) {
+        setError(data?.error || data?.message || "❌ Error en el login.");
+        return;
+      }
+
+      // Verificar sesión con /me
+      try {
+        await fetch("http://localhost:3000/api/usuario/me", {
+          credentials: "include",
+        });
+      } catch {}
+
+      navigate("/busqProfesionales");
+    } catch (err) {
+      console.error(err);
+      setError("⚠️ Error de conexión con el servidor.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <section className="main-bg">
-      <img src="../../assets/conect_1.png" alt="Logo" className='logo' />
+      <img src="../assets/conect_1.png" alt="Logo" className='logo' />
       <div className="card">
         <form onSubmit={handleLogin}>
           <div className="card-header">
             <span className="card-title">INICIE SESIÓN</span>
           </div>
+
           <div className="card-content">
-            <StandardInput label="Usuario" value={usuario} onChange={setUsuario} />
-            <StandardInput label="Clave" value={clave} onChange={setClave} type="password" />
+            <StandardInput
+              label="Usuario"
+              value={usuario}
+              onChange={onChangeStr(setUsuario)}
+            />
+            <StandardInput
+              label="Clave"
+              type="password"
+              value={clave}
+              onChange={onChangeStr(setClave)}
+            />
+
             <div className="recuerdame-container">
               <input
                 type="checkbox"
                 id="recuerdame"
                 checked={recuerdame}
-                onChange={() => setRecuerdame(!recuerdame)}
+                onChange={() => setRecuerdame((v) => !v)}
               />
               <label htmlFor="recuerdame">Recuérdame</label>
             </div>
+
             <div className="card-actions">
               <button
                 className="cta-link"
@@ -63,9 +141,23 @@ export default function Login() {
               >
                 ¿No tiene cuenta? Cree una ahora mismo
               </button>
-              <Button type="submit" variant="contained" icon={<CheckIcon />}>
-                Enviar
+
+              <Button
+                type="submit"
+                variant="contained"
+                icon={<CheckIcon />}
+                disabled={loading}
+              >
+                {loading ? "Ingresando..." : "Enviar"}
               </Button>
+
+              {error && (
+                <div
+                  style={{ color: "red", marginTop: 10, textAlign: "center" }}
+                >
+                  {error}
+                </div>
+              )}
             </div>
           </div>
         </form>
@@ -73,4 +165,4 @@ export default function Login() {
     </section>
   );
 }
-
+``

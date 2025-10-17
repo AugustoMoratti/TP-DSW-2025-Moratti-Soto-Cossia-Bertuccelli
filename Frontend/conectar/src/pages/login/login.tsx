@@ -1,4 +1,4 @@
-import React, { useState, useEffect, type FormEvent } from "react";
+import { useState, useEffect, type FormEvent } from "react";
 import StandardInput from "../../components/form/Form.tsx";
 import { Button } from "../../components/button/Button.tsx";
 import CheckIcon from "@mui/icons-material/Check";
@@ -64,14 +64,17 @@ useEffect(() => {
     setError("");
     setLoading(true);
 
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 120000);
+
     try {
       const res = await fetch("http://localhost:3000/api/usuario/login", {
-        method: "POST",
+        method: 'POST',
         headers: { "Content-Type": "application/json" },
         credentials: "include", // cookie HttpOnly
         body: JSON.stringify({
           email: usuario.trim().toLowerCase(),
-          clave: clave,
+          clave,
         }),
       });
 
@@ -93,12 +96,17 @@ useEffect(() => {
       } catch {}
 
       navigate("/busqProfesionales");
-    } catch (err) {
-      console.error(err);
-      setError("⚠️ Error de conexión con el servidor.");
-    } finally {
-      setLoading(false);
-    }
+
+      } catch (err: any) {
+        if (err?.name === 'AbortError') {
+          setError('⏱️ Tiempo de espera agotado. Intentalo de nuevo.');
+        } else {
+          setError('⚠️ Error de conexión con el servidor.');
+        }
+      } finally {
+        clearTimeout(timeout);
+      }
+          setLoading(false);
   };
 
   return (

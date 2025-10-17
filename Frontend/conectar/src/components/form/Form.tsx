@@ -28,7 +28,7 @@ const StandardInput: React.FC<StandardInputProps> = ({
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
         onChange={(e) => onChange(e.target.value)}
-        className='input_field'
+        className={`input_field ${type === 'date' ? 'input_date' : ''}`}
       />
     </div>
   );

@@ -62,7 +62,7 @@ export default function Registro() {
     console.log("✅ Enviando formulario...");
 
     try {
-      const response = await fetch('http://localhost:3000/api/auth/register', {
+      const response = await fetch('http://localhost:3000/api/usuario/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

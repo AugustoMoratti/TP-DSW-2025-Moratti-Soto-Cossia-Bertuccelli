@@ -41,6 +41,7 @@ input:focus {
 }
 
 .createAdmin {
+  margin-left: 930px;
   width: 200px;
   height: 30px;
   border-radius: 10px;

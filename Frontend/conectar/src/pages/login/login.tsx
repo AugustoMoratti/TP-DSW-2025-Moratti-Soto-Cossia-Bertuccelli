@@ -95,18 +95,18 @@ export default function Login() {
         });
       } catch { }
 
-      navigate("/busqProfesionales");
+      navigate("/perfil");
 
-      } catch (err: any) {
-        if (err?.name === 'AbortError') {
-          setError('⏱️ Tiempo de espera agotado. Intentalo de nuevo.');
-        } else {
-          setError('⚠️ Error de conexión con el servidor.');
-        }
-      } finally {
-        clearTimeout(timeout);
+    } catch (err: any) {
+      if (err?.name === 'AbortError') {
+        setError('⏱️ Tiempo de espera agotado. Intentalo de nuevo.');
+      } else {
+        setError('⚠️ Error de conexión con el servidor.');
       }
-          setLoading(false);
+    } finally {
+      clearTimeout(timeout);
+    }
+    setLoading(false);
   };
 
   return (

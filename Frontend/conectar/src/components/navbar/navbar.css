@@ -11,10 +11,11 @@
   display: flex;
   align-items: center;
   margin-left: 200px;
+  height: 100px;
 }
 
 .logo {
-  height: 75px;
+  height: 100vh;
   width: auto;
   cursor: pointer;
 }

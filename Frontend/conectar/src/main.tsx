@@ -18,8 +18,8 @@ createRoot(document.getElementById('root')!).render(
         <Route path="/" element={<App />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Registro />} />
-        <Route path="/busqProfesionales" element={<BusquedaProfesionales />} />
         <Route path="/perfil" element={<Perfil />} />
+        <Route path="/busqProfesionales" element={<BusquedaProfesionales />} />
         <Route path="/*" element={<NotFound />} />
         <Route path="/500" element={<InternalServerError />} />
         <Route path="/dashboard" element={<Dashboard />} />

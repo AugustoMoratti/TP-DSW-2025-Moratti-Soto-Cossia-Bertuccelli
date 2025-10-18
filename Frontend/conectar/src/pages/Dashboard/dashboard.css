@@ -1,7 +1,7 @@
 .maindash-container {
   box-sizing: border-box;
   width: 100vw;
-  padding: 120px 15px;
+  padding: 150px 15px;
   display: flex;
   flex-direction: row;
   gap: 40px;

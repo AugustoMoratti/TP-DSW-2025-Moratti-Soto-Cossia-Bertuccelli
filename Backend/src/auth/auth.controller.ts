@@ -78,10 +78,11 @@ export const login = async (req: Request, res: Response) => {
       sameSite: 'lax',
       maxAge: 1000 * 60 * 60,
     });
-
+    console.log('Logueado Correctamente')
     res
       .status(201)
       .json({ message: 'Usuario logueado', data: usuario })
+
   } catch (error: any) {
     res.status(500).json({ message: error.message });
   };

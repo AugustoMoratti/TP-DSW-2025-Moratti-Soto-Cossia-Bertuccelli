@@ -1,7 +1,7 @@
 .maindash-container {
   box-sizing: border-box;
   width: 100vw;
-  padding: 150px 15px;
+  padding: 130px 15px;
   display: flex;
   flex-direction: row;
   gap: 40px;
@@ -54,10 +54,14 @@
 }
 
 .container-createperfiles {
+  box-sizing: border-box;
   width: 100%;
-  min-width: 1000px;
+  min-width: 1100px;
   height: auto;
   background-color: #fff;
   color: #114f5a;
   border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }

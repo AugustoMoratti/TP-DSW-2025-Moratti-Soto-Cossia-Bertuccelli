@@ -1,0 +1,59 @@
+.title-createAdmin {
+  box-sizing: border-box;
+  font-size: 16px;
+}
+
+.container-formAdmin {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 20px;
+}
+
+.formularioCreateAdmin {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+}
+
+.container-inputsCreateAdmin {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  gap: 40px;
+}
+
+input {
+  box-sizing: border-box;
+  width: 350px;
+  height: 35px;
+  border-radius: 10px;
+  border: 1px solid #114f5a;
+  padding-left: 20px;
+  box-shadow: 0px 1px 5px #b5b5b5;
+  color: #114f5a;
+}
+
+input:focus {
+  box-shadow: 0px 2px 10px #114f5a;
+}
+
+.createAdmin {
+  width: 200px;
+  height: 30px;
+  border-radius: 10px;
+  background-color: #fff;
+  color: #114f5a;
+  border: 1px solid #114f5a;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.createAdmin:hover {
+  background-color: #114f5a;
+  color: #fff;
+  border: none;
+  box-shadow: 0px 2px 10px #114f5a
+}

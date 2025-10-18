@@ -9,7 +9,7 @@ export default function BusquedaProfesionales() {
   const [cargando, setCargando] = useState(false);
   const [usuarios, setUsuarios] = useState<Usuario[]>([]);
 
-  const handleBuscar = () => {
+  const handleBuscarUsuarios = () => {
     if (!query.trim()) return;
 
     setCargando(true);
@@ -40,7 +40,7 @@ export default function BusquedaProfesionales() {
           placeholder=" Busque su profesional adecuado"
           value={query}
           onChange={e => setQuery(e.target.value)}
-          onKeyDown={e => e.key === 'Enter' && handleBuscar()} />
+          onKeyDown={e => e.key === 'Enter' && handleBuscarUsuarios()} />
 
 
         {cargando && <p>cargando...</p>}

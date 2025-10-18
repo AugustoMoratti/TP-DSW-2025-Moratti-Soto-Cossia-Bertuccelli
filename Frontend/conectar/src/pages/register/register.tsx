@@ -22,7 +22,7 @@ export default function Registro() {
   const navigate = useNavigate();
 
   const control = async () => {
-    
+
     const now = new Date();
     const fechaMinima = new Date(
       now.getFullYear() - 18,
@@ -97,7 +97,7 @@ export default function Registro() {
 
   return (
     <section className="main-bg">
-      <img src="../assets/conect_1.png" alt="Logo" className='logo' style={{ height: '150px' }}/>
+      <img src="../assets/conect_1.png" alt="Logo" className='logo' style={{ height: '150px' }} />
 
       <div className="card">
         <div className="card-header">
@@ -107,7 +107,7 @@ export default function Registro() {
         <div className="card-content">
           <StandardInput label="Nombre" value={nombre} onChange={setNombre} />
           <StandardInput label="Apellido" value={apel} onChange={setApel} />
-          <StandardInput label="Fecha de nacimiento" value={date} onChange={setDate} type='date'/>
+          <StandardInput label="Fecha de nacimiento" value={date} onChange={setDate} type='date' />
           <StandardInput label="Provincia" value={prov} onChange={setProv} />
           <StandardInput label="Localidad" value={local} onChange={setLocal} />
           <StandardInput label="Direccion" value={dire} onChange={setDire} />

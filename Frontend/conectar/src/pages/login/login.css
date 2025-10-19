@@ -71,6 +71,7 @@ background {
   justify-content: flex-end;
   margin-top: 1.2rem;
   align-items: center;
+  gap: 15px;
 }
 
 .header-card {
@@ -100,7 +101,7 @@ background {
 }
 
 .cta-link:hover {
-  color: #06363a;
+  color: #2ab1b8;
   text-decoration: underline;
 }
 
@@ -119,4 +120,8 @@ background {
   margin: 0;
   width: auto;
   height: 13px;
+}
+
+#recuerdame:hover {
+  cursor: pointer;
 }

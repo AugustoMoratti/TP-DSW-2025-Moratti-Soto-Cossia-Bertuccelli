@@ -7,6 +7,7 @@ export default function useProfesiones() {
   const [profesiones, setProfesiones] = useState<Profesion[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [reload, setReload] = useState(0);
 
   const fetchProfesiones = async () => {
     setLoading(true);
@@ -32,19 +33,19 @@ export default function useProfesiones() {
 
   useEffect(() => { //Para que se ejecute apenas se abre la pagina
     fetchProfesiones();
-  }, []);
+  }, [reload]);
 
   const aceptarProfesion = async (nombre: string) => {
     setError(null);
     const snapshot = profesiones;
 
-    setProfesiones(prev => prev.map(p => (p.nombreProfesion === nombre ? { ...p, estado: true } : p)));
-
+    setProfesiones(prev => prev.filter(p => (p.nombreProfesion !== nombre)));
+    const nombreEncoded = encodeURIComponent(nombre);
     try {
-      const res = await fetch(`http://localhost:3000/api/profesion/${nombre}`, {
+      const res = await fetch(`http://localhost:3000/api/profesion/${nombreEncoded}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ estado: true }),
+        body: JSON.stringify({ estado: true })
       });
       if (!res.ok) throw new Error(`HTTP ${res.status}`)
     } catch (err: unknown) {
@@ -58,6 +59,7 @@ export default function useProfesiones() {
         setProfesiones(snapshot);
       }
     }
+    setReload(prev => prev + 1);
   };
 
   const rechazarProfesion = async (nombre: string) => {
@@ -69,7 +71,8 @@ export default function useProfesiones() {
     setProfesiones(prev => prev.filter(p => (p.nombreProfesion !== nombre)))
 
     try {
-      const res = await fetch(`http://localhost:3000/api/profesion/${nombre}`, {
+      const nombreEncoded = encodeURIComponent(nombre);
+      const res = await fetch(`http://localhost:3000/api/profesion/${nombreEncoded}`, {
         method: "DELETE",
       });
       if (!res.ok) throw new Error(`HTPP ${res.status}`)
@@ -84,6 +87,7 @@ export default function useProfesiones() {
         setProfesiones(snapshot);
       }
     }
+    setReload(prev => prev + 1);
   };
 
   return {

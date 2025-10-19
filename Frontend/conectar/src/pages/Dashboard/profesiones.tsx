@@ -36,7 +36,7 @@ export default function SolicProfesiones() {
 
       {(!loading && profesiones.length < 1) && (
         <>
-          <h2 className="title-sinProfesiones">No hay profesiones pendientes para mostrar</h2>
+          <h2 className="title-profesiones">No hay profesiones pendientes para mostrar</h2>
           <div className="container-table">
             <table className="table-profesiones">
               <thead>
@@ -63,20 +63,18 @@ export default function SolicProfesiones() {
                   <th>Nombre Profesion</th>
                   <th>Descripcion</th>
                   <th>Fecha</th>
-                  <th>Estado</th>
                   <th>Accion</th>
                 </tr>
               </thead>
               <tbody>
                 {profesiones.map((p) =>
-                  <tr key={p.nombreProfesion}>
-                    <td>{p.nombreProfesion} </td>
-                    <td>{p.descripcionProfesion}</td>
-                    <td>{p.fechaSolicitud}</td>
-                    <td>{p.estado}</td>
-                    <td className="btn-td">
-                      <button className="btn-rechazo" >Rechazar</button>
-                      <button className="btn-aceptado">Aceptar</button>
+                  <tr key={p.nombreProfesion} className="tr-filas">
+                    <td className="normal-td">{p.nombreProfesion} </td>
+                    <td className="normal-td">{p.descripcionProfesion}</td>
+                    <td className="normal-td">{p.fechaSolicitud}</td>
+                    <td className="btn-td-container">
+                      <button className="btn-rechazo" onClick={() => rechazarProfesion(p.nombreProfesion)}>Rechazar</button>
+                      <button className="btn-aceptado" onClick={() => aceptarProfesion(p.nombreProfesion)}>Aceptar</button>
                     </td>
                   </tr>
                 )}

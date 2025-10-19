@@ -104,9 +104,15 @@ async function update(req: Request, res: Response) {
   try {
     const nombreProfesion = (req.params.nombreProfesion).trim();
     const profesionToUpdate = await em.findOneOrFail(Profesiones, { nombreProfesion })
-    profesionToUpdate.descripcionProfesion = req.body.descripcionProfesion;
-    profesionToUpdate.estado = req.body.estado;
-
+    if (req.body.descripcionProfesion !== undefined) {
+      profesionToUpdate.descripcionProfesion = req.body.descripcionProfesion;
+    }
+    if (req.body.estado !== undefined) {
+      profesionToUpdate.estado = req.body.estado;
+    }
+    if (req.body.fechaSolicitud !== undefined) {
+      profesionToUpdate.fechaSolicitud = req.body.fechaSolicitud;
+    }
     await em.persistAndFlush(profesionToUpdate);
     res.status(200).json({ message: 'Profesion class updated' })
   } catch (error: any) {

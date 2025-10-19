@@ -10,8 +10,8 @@ POST http://localhost:3000/api/profesion
 Content-Type: application/json
 
 { 
-  "nombreProfesion": "Ingeniero en sistemas",
-  "descripcionProfesion": "hola",
+  "nombreProfesion": "Ingeniero quimico",
+  "descripcionProfesion": "the prin150f ",
   "estado": false
 }
 
@@ -33,13 +33,11 @@ Content-Type: application/json
 
 
 ### PATCH
-PATCH http://localhost:3000/api/profesion/Ingeniero%20en%20sistemas
+PATCH http://localhost:3000/api/profesion/{{id}}
 Content-Type: application/json
 
 { 
-  "nombreProfesion": "Ingeniero en sistemas",
-  "descripcionProfesion": "...",
-  "estado": true
+  "estado": false
 }
 
 ### Eliminar una provicia (DELETE - eliminar recurso)

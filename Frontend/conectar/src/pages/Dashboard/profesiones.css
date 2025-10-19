@@ -40,19 +40,33 @@
   width: 10%;
 }
 
-th,
-td {
-  padding: 8px 12px;
-  border-bottom: 1px solid #ccc;
-  text-align: left;
-}
-
-.btn-td {
-  box-sizing: border-box;
+.btn-td-container {
   min-width: 100%;
   display: flex;
   flex-direction: row;
+  align-items: center;
+  justify-content: center;
   gap: 15px;
+  height: 50px;
+
+}
+
+tr {
+  height: 50px;
+  border-bottom: 1px solid #ccc;
+}
+
+th {
+  padding: 8px 12px;
+  text-align: left;
+  height: auto;
+}
+
+.normal-td {
+  box-sizing: border-box;
+  padding: 8px 12px;
+  text-align: left;
+  height: auto;
 }
 
 .btn-rechazo {

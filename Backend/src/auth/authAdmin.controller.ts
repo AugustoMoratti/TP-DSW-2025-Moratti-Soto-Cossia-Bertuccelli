@@ -10,10 +10,7 @@ export const registerAdmin = async (req: Request, res: Response) => {
   try {
     //const usuario = em.create(Usuario, req.body)
     const em = getEm();
-    const { user, clave, email } = req.body.sanitizedInput
-    if (!user || !clave || !email) {
-      return res.status(400).json({ message: 'Faltan campos requeridos: user, clave y email' })
-    }
+    const { user, clave, email } = req.body
 
     const administrador = new Administrador()
 

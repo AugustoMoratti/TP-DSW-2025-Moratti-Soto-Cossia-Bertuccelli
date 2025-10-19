@@ -9,5 +9,16 @@ Content-Type: application/json
 
 {
   "user": "admin",
+  "email" : "augus@gmail.com" ,
   "clave": "1234"
+}
+
+###
+POST http://localhost:3000/api/admin/register
+Content-Type: application/json
+
+{
+  "user":"admin",
+  "email":"augus@gmail.com",
+  "clave":"1234"
 }

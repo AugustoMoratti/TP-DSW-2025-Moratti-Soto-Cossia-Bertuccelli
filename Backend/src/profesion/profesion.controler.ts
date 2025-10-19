@@ -9,6 +9,7 @@ function sanitizeProfesionInput(req: Request, res: Response, next: NextFunction)
   req.body.sanitizedInput = {
     nombreProfesion: req.body.nombreProfesion,
     descripcionProfesion: req.body.descripcionProfesion,
+    fechaSolicitud: req.body.fechaSolicitud,
     estado: req.body.estado,
   }
   Object.keys(req.body.sanitizedInput).forEach((key) => {
@@ -37,7 +38,7 @@ async function findAllInactive(req: Request, res: Response) {
   try {
     const profesiones = await em.find(Profesiones, { estado: false })//Agregue filtro para que solo muestre si esta activo
     if (profesiones.length === 0) { //find devuelve si o si un arreglo que puede estar vacio
-      return res.status(404).json({ message: 'No se han encontrado profesiones inactivas' })
+      return res.status(200).json({ message: 'No se han encontrado profesiones inactivas', data: profesiones })
     }
     res
       .status(200)
@@ -83,6 +84,9 @@ async function add(req: Request, res: Response) {
       return res.status(400).json({ message: 'El estado debe ser un booleano' })
     };
 
+    const hoy = new Date();
+    const fechaSolo = hoy.toISOString().split('T')[0];
+    profesion.fechaSolicitud = fechaSolo
     profesion.nombreProfesion = nombreProfesion
     profesion.descripcionProfesion = descripcionProfesion
     profesion.estado = estado

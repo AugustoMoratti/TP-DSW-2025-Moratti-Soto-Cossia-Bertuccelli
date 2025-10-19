@@ -5,6 +5,7 @@ import "./dashboard.css";
 
 
 export default function Dashboard() {
+
   return (
     <div className="dashboard-page">
       <Header bgColor="#ffffff" logoSrc="/assets/conect_2_1.png" >

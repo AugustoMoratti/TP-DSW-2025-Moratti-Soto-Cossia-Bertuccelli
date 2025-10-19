@@ -13,6 +13,9 @@ export class Profesiones {
     @Property({ length: 200, nullable: false })
     descripcionProfesion!: string;
 
+    @Property({})
+    fechaSolicitud!: string;
+
     @Property({ nullable: false })
     estado!: boolean;  //True es activo y False es que se tiene que aceptar por el admin, si se rechaza se elimina
 }

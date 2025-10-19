@@ -13,7 +13,11 @@
   color: #f9f8f3
 }
 
+
+
 .input_label {
+  padding-left: 20px;
+  padding-top: 5px;
   position: absolute;
   left: 0;
   top: 2px;
@@ -23,12 +27,13 @@
 }
 
 .input_field {
+  box-sizing: border-box;
   width: 100%;
   background: transparent;
   border: none;
   border-bottom: 2px solid #114f5a;
   color: #114f5a;
-  padding: 12px 0 6px 0;
+  padding: 12px 0px 6px 20px;
   font-size: 1rem;
   outline: none;
   transition: border-color 0.2s;
@@ -39,17 +44,20 @@
 }
 
 .input_label.floating {
-  top: -18px;
+  top: -23px;
+  left: -20px;
   font-size: 0.85rem;
   color: #2ab1b8;
 }
 
 .input_field.input_date::-webkit-datetime-edit {
-  color: transparent;                    /* invisible por defecto */
+  color: transparent;
+  /* invisible por defecto */
 }
 
 .input_field.input_date:focus::-webkit-datetime-edit {
-  color: #114f5a;                           /* visible en negro con foco */
+  color: #114f5a;
+  /* visible en negro con foco */
 }
 
 
@@ -64,10 +72,11 @@
 /* Firefox */
 @-moz-document url-prefix() {
   .input_field.input_date {
-    color: transparent;                  
+    color: transparent;
   }
+
   .input_field.input_date:focus,
   .input_field.input_date:valid {
-    color: #114f5a;                         
+    color: #114f5a;
   }
 }

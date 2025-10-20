@@ -1,8 +1,9 @@
-import { Entity, ManyToOne, Property, Rel, ManyToMany, Collection, Cascade } from '@mikro-orm/core'
+import { Entity, ManyToOne, Property, Rel, ManyToMany, Collection, Cascade, OneToMany } from '@mikro-orm/core'
 import { BaseEntity2 } from '../../DB/baseEntity2.entity.js'
 import { Localidad } from "../localidad/localidades.entity.js";
 import { Profesiones } from "../profesion/profesion.entity.js";
 import { Provincia } from "../provincia/provincia.entity.js";
+import { Trabajo } from '../trabajos/trabajos.entity.js';
 
 
 @Entity()
@@ -48,6 +49,9 @@ export class Usuario extends BaseEntity2 {
 
   @Property({ nullable: true })
   horarios!: string;
+
+  @OneToMany(() => Trabajo, trabajo => trabajo.profesional, { cascade: [Cascade.PERSIST] })
+  trabajos = new Collection<Trabajo>(this);
 
   //Agregar foto de perfil
 }

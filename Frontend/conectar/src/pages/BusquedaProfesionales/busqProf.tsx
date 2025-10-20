@@ -3,12 +3,13 @@ import Header from "../../components/header/header"
 import type { Usuario } from "../../interfaces/usuario.ts";
 import CardProfesional from "../../components/cardsProfesionales/cardsProf.tsx";
 import "./busqProf.css";
+import { useNavigate } from "react-router";
 
 export default function BusquedaProfesionales() {
   const [query, setQuery] = useState('');
   const [cargando, setCargando] = useState(false);
   const [usuarios, setUsuarios] = useState<Usuario[]>([]);
-
+  const navigate = useNavigate();
   const handleBuscarUsuarios = () => {
     if (!query.trim()) return;
 
@@ -29,8 +30,8 @@ export default function BusquedaProfesionales() {
     <div className="busprof-page">
 
       <Header bgColor="#ffffff" logoSrc="/assets/conect_2_1.png">
-        <button className="header-btn">Mi Perfil</button>
-        <button className="header-btn">Admin</button>
+        <button className="header-btn" onClick={() => navigate("/perfil")}>Mi Perfil</button>
+        <button className="header-btn" onClick={() => navigate("/")}>Home</button>
       </Header>
 
       <div className='main-container'>

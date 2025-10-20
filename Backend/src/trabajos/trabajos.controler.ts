@@ -76,11 +76,11 @@ async function add(req: Request, res: Response) {
     trabajo.montoTotal = Number(montoTotal);
     trabajo.cliente = em.getReference(Usuario, cliente);
     trabajo.profesional = em.getReference(Usuario, profesional);
-    trabajo.fechaSolicitud = new Date(fechaSolicitud);
+    trabajo.fechaSolicitud = fechaSolicitud;
 
 
     if (fechaPago) {
-      trabajo.fechaPago = new Date(fechaPago)
+      trabajo.fechaPago = fechaPago
     };
 
     if (resenia) {
@@ -132,9 +132,9 @@ async function update(req: Request, res: Response) { //NO UTILIZAR PUT , SIEMPRE
     if (montoTotal) trabajo.montoTotal = Number(montoTotal);
     if (cliente) trabajo.cliente = em.getReference(Usuario, cliente);
     if (profesional) trabajo.profesional = em.getReference(Usuario, profesional);
-    if (fechaSolicitud) trabajo.fechaSolicitud = new Date(fechaSolicitud);
-    if (fechaFinalizado) trabajo.fechaFinalizado = new Date(fechaFinalizado);
-    if (fechaPago) trabajo.fechaPago = new Date(fechaPago);
+    if (fechaSolicitud) trabajo.fechaSolicitud = fechaSolicitud;
+    if (fechaFinalizado) trabajo.fechaFinalizado = fechaFinalizado;
+    if (fechaPago) trabajo.fechaPago = fechaPago;
     if (resenia) trabajo.resenia = em.getReference(Resenia, Number(resenia));
 
     await em.flush();

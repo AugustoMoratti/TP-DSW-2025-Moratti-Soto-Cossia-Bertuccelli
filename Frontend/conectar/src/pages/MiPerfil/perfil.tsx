@@ -8,8 +8,7 @@ const Perfil: React.FC = () => {
     <div className="app-container">
       <Header bgColor="#ffffff" logoSrc="/assets/conect_2_1.png" >
         <button className="header-btn">Home</button>
-        <button className="header-btn">Mi Perfil</button>
-        <button className="header-btn">Admin</button>
+        <button className="header-btn">Buscar Profesionales</button>
       </Header>
 
       <main>

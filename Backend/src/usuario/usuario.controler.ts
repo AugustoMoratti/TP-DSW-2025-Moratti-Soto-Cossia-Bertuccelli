@@ -187,7 +187,7 @@ async function update(req: Request, res: Response) {
     const id = req.params.id
     const usuario = await em.findOneOrFail(Usuario, { id }, { populate: ['profesiones'] })
 
-    const { nombre, apellido, provincia, localidad, clave, email, descripcion, contacto, horarios, profesiones } = req.body.sanitizedInput
+    const { nombre, apellido, provincia, localidad, clave, email, descripcion, contacto, horarios, profesiones, direccion } = req.body.sanitizedInput
 
     const profesionesName: string[] = Array.isArray(req.body.profesiones)
       ? req.body.profesiones
@@ -205,6 +205,7 @@ async function update(req: Request, res: Response) {
     if (descripcion) usuario.descripcion = descripcion
     if (contacto) usuario.contacto = contacto.toString()
     if (horarios) usuario.horarios = horarios
+    if (direccion) usuario.direccion = direccion
 
     const nombresEntrantes = [...new Set(profesionesName)]; // quitar duplicados entrantes
     const nombresExistentes = new Set<string>(usuario.profesiones.getItems().map(p => p.nombreProfesion));

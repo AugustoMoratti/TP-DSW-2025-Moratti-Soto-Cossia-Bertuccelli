@@ -7,16 +7,17 @@ GET http://localhost:3000/api/usuario/{{id}}
 GET http://localhost:3000/api/usuario/buscar?q=rosario
 
 ### Register
+# @name createUsuario
 POST http://localhost:3000/api/usuario/register
 Content-Type: application/json
 
 {
-  "nombre":"Valentin",
+  "nombre":"Valentino",
   "apellido": "Bertucceli",
   "clave":"aderf",
   "email":"valen@gmail.com",
   "direccion":"Crespo 1288",
-  "descripcion":"Usuario profesional",
+  "descripcion":"Usuario no profesional",
   "contacto": "3416526398",
   "horarios":"08:00 a 12:00 y 15:00 a 19:00",
   "provincia": "Santa Fe",
@@ -32,17 +33,18 @@ POST http://localhost:3000/api/usuario
 Content-Type: application/json
 
 {
-  "nombre":"Valentin",
-  "apellido": "Bertucceli",
+  "nombre":"Augusto",
+  "apellido": "Moratti",
   "clave":"aderf",
-  "email":"valen@gmail.com",
+  "email":"augus@gmail.com",
+  "direccion":"Crespo 1288",
   "descripcion":"Usuario profesional",
   "contacto": "3416526398",
   "horarios":"08:00 a 12:00 y 15:00 a 19:00",
-  "provincia": 1,
-  "localidad":1,
+  "provincia": "Santa Fe",
+  "localidad": "Rosario",
   "fechaNac": "08/04/2004",
-  "profesiones": [1]
+  "profesiones": ["Ingeniero quimico"]
 }
 
 ### Modifica una provincia (PUT - modificar recurso completo e idempotente)
@@ -68,10 +70,7 @@ PATCH http://localhost:3000/api/usuario/{{id}}
 Content-Type: application/json
 
 {
-  "nombre":"Marcos",
-  "apellido": "Zencich",
-  "descripcion":"Usuario No profesional",
-  "profesiones": []
+  "profesiones": ["Ingenieria en sistemas"]
 }
 
 ### Eliminar una provicia (DELETE - eliminar recurso)

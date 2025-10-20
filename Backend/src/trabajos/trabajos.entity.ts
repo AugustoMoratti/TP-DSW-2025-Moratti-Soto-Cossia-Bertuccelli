@@ -28,13 +28,13 @@ export class Trabajo extends BaseEntity {
     pagado!: boolean;*/   //No hace falta ya que con tener o no la fechaPago ya sabemos si esta pagado o no.
 
     @Property({ nullable: true })
-    fechaPago!: Date;
+    fechaPago!: string;
 
     @Property({ nullable: false })
-    fechaSolicitud!: Date;
+    fechaSolicitud!: string;
 
     @Property({ nullable: true })
-    fechaFinalizado!: Date; //Fecha en que se finalizo el trabajo, es distinta a la fecha en que se pago el trabajo.
+    fechaFinalizado!: string; //Fecha en que se finalizo el trabajo, es distinta a la fecha en que se pago el trabajo.
 
     @OneToOne(() => Resenia)
     resenia!: Rel<Resenia>

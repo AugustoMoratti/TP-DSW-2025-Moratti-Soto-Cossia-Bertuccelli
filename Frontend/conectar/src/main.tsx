@@ -6,7 +6,7 @@ import Login from './pages/login/login.tsx'
 import Registro from './pages/register/register.tsx'
 import BusquedaProfesionales from './pages/BusquedaProfesionales/busqProf.tsx'
 import NotFound from './pages/error/notFound.tsx'
-import Perfil from "./pages/MiPerfil/perfil.tsx";
+import Perfil from './pages/MiPerfil/perfil.tsx';
 import InternalServerError from './pages/error/error500.tsx';
 import Dashboard from './pages/Dashboard/dashboard.tsx'
 import Terminos from './pages/terminos/terminos.tsx';

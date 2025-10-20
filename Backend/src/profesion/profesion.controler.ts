@@ -50,7 +50,7 @@ async function findAllInactive(req: Request, res: Response) {
 
 async function findOne(req: Request, res: Response) {
   try {
-    const nombreProfesion = req.params.nombreProfesion
+    const nombreProfesion = (req.params.nombreProfesion).toLowerCase()
     const profesion = await em.findOneOrFail(Profesiones, { nombreProfesion })
 
     if (!profesion) { //findOrFail devuelve la profesion o false basicamente un error
@@ -87,7 +87,7 @@ async function add(req: Request, res: Response) {
     const hoy = new Date();
     const fechaSolo = hoy.toISOString().split('T')[0];
     profesion.fechaSolicitud = fechaSolo
-    profesion.nombreProfesion = nombreProfesion
+    profesion.nombreProfesion = nombreProfesion.toLowerCase()
     profesion.descripcionProfesion = descripcionProfesion
     profesion.estado = estado
     em.persist(profesion);
@@ -102,7 +102,7 @@ async function add(req: Request, res: Response) {
 
 async function update(req: Request, res: Response) {
   try {
-    const nombreProfesion = (req.params.nombreProfesion).trim();
+    const nombreProfesion = (req.params.nombreProfesion).trim().toLowerCase();
     const profesionToUpdate = await em.findOneOrFail(Profesiones, { nombreProfesion })
     if (req.body.descripcionProfesion !== undefined) {
       profesionToUpdate.descripcionProfesion = req.body.descripcionProfesion;
@@ -122,7 +122,7 @@ async function update(req: Request, res: Response) {
 
 async function remove(req: Request, res: Response) {
   try {
-    const nombreProfesion = req.params.nombreProfesion
+    const nombreProfesion = (req.params.nombreProfesion).toLowerCase()
     const profesion = await em.findOne(Profesiones, { nombreProfesion });
     if (!profesion) {
       return res.status(404).json({ message: "Profesion no encontrada" });

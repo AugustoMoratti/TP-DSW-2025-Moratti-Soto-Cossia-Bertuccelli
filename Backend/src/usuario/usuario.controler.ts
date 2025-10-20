@@ -46,7 +46,7 @@ async function buscarUsuarios(req: Request, res: Response) {
         { apellido: { $like: qParam } },
         { provincia: { nombre: { $like: qParam } } },
         { localidad: { nombre: { $like: qParam } } },
-        { profesiones: { nombreProfesion: { $in: [qParam] } } } // ManyToMany
+        { profesiones: { nombreProfesion: { $like: `%${qParam}%` } } } // ManyToMany
       ]
     }, {
       populate: ['provincia', 'localidad', 'profesiones'],
@@ -95,7 +95,7 @@ async function add(req: Request, res: Response) {
     const localidadRef = em.getReference(Localidad, localidad)
 
     const profesionesName: string[] = Array.isArray(req.body.sanitizedInput.profesiones)
-      ? req.body.sanitizedInput.profesiones
+      ? req.body.sanitizedInput.profesiones.map((p: string) => p.trim().toLowerCase())
       : []
 
     let profesionesRef: Profesiones[] = []

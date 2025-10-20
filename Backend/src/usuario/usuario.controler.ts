@@ -14,12 +14,14 @@ function sanitizeUsuarioInput(req: Request, res: Response, next: NextFunction) {
     clave: req.body.clave,
     email: req.body.email,
     descripcion: req.body.descripcion,
+    direccion: req.body.direccion,
     contacto: req.body.contacto,
     horarios: req.body.horarios,
     provincia: req.body.provincia,
     localidad: req.body.localidad,
     profesiones: req.body.profesiones,
-    fechaNac: req.body.fechaNac
+    fechaNac: req.body.fechaNac,
+    trabajos: req.body.trabajos
   }
   Object.keys(req.body.sanitizedInput).forEach((key) => {
     if (req.body.sanitizedInput[key] === undefined || req.body.sanitizedInput[key] === null) {
@@ -84,7 +86,7 @@ async function findOne(req: Request, res: Response) {
 async function add(req: Request, res: Response) {
   try {
     //const usuario = em.create(Usuario, req.body)
-    const { nombre, apellido, clave, email, descripcion, contacto, horarios, provincia, localidad, profesiones, fechaNac } = req.body.sanitizedInput
+    const { nombre, apellido, clave, email, descripcion, contacto, horarios, provincia, localidad, profesiones, fechaNac, direccion } = req.body.sanitizedInput
     /*if (!nombre || !apellido || !clave || !email || !provincia || !localidad) {
       return res.status(400).json({ message: 'Faltan campos requeridos: nombre, apellido, clave, email, provincia o localidad' })
     }*/
@@ -93,7 +95,7 @@ async function add(req: Request, res: Response) {
     const localidadRef = em.getReference(Localidad, localidad)
 
     const profesionesName: string[] = Array.isArray(req.body.sanitizedInput.profesiones)
-      ? req.body.sanitizedInput.profesiones.map((x: any) => (x)).filter((n: string) => Number.isFinite(n))
+      ? req.body.sanitizedInput.profesiones
       : []
 
     let profesionesRef: Profesiones[] = []
@@ -137,6 +139,10 @@ async function add(req: Request, res: Response) {
       return res.status(400).json({ message: 'La descripcion debe ser un string' })
     };
 
+    if (direccion && typeof direccion !== 'string') {
+      return res.status(400).json({ message: 'La direccion debe ser un string' })
+    };
+
     const usuario = new Usuario()
 
     usuario.nombre = nombre;
@@ -145,6 +151,7 @@ async function add(req: Request, res: Response) {
     usuario.email = email;
     usuario.contacto = contacto;
     usuario.horarios = horarios;
+    usuario.direccion = direccion;
     if (descripcion) usuario.descripcion = descripcion;
     usuario.provincia = provinciaRef;
     usuario.localidad = localidadRef;

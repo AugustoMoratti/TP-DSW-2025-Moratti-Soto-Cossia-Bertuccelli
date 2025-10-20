@@ -36,7 +36,7 @@ export class Trabajo extends BaseEntity {
     @Property({ nullable: true })
     fechaFinalizado!: string; //Fecha en que se finalizo el trabajo, es distinta a la fecha en que se pago el trabajo.
 
-    @OneToOne(() => Resenia)
+    @OneToOne(() => Resenia, { nullable: true })
     resenia!: Rel<Resenia>
 }
 //La reseña va ligada al trabajo , cada trabajo puede tener 1 o ninguna reseña,

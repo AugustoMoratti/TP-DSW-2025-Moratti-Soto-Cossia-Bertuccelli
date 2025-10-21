@@ -11,7 +11,7 @@ import SuPerfil from './pages/SuPefil/SuPerfil.tsx'
 import InternalServerError from './pages/error/error500.tsx';
 import Dashboard from './pages/Dashboard/dashboard.tsx'
 import Terminos from './pages/terminos/terminos.tsx';
-import About from './pages/about/about.tsx';
+import Contacto from './pages/contacto/contacto.tsx';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -27,7 +27,7 @@ createRoot(document.getElementById('root')!).render(
         <Route path="/500" element={<InternalServerError />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/terminos" element={<Terminos />} />
-        <Route path="/about" element={<About />} />
+        <Route path="/contact" element={<Contacto />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>,

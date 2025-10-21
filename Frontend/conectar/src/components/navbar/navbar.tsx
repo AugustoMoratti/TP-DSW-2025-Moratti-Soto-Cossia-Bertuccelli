@@ -10,20 +10,24 @@ const Navbar: React.FC = () => {
   return (
     <nav className="navbar">
       <div className="logo_container">
-        <img src={logo} alt="Conetar Logo" style={{ height: '100px' }} />
+        <img src={logo} alt="Conectar Logo" className="logo" />
       </div>
 
-    <div className="right_section">
-      <ul className="nav_links">
-        <Button onClick= {() => Navigate ("/contact")}>Contacto</Button>
-      </ul>
-
+      <div className="right_section">
+        <ul className="nav_links">
+          <li>
+            <Button onClick={() => Navigate("/contact")}>Contacto</Button>
+          </li>
+        </ul>
         <div className="nav_buttons">
-          <Button variant="contained" onClick={() => Navigate("/register")}>Register</Button>
-          <Button variant="outlined" onClick={() => Navigate("/login")}>Login</Button>
+          <Button variant="contained" onClick={() => Navigate("/register")}>
+            Register
+          </Button>
+          <Button variant="outlined" onClick={() => Navigate("/login")}>
+            Login
+          </Button>
         </div>
       </div>
-
     </nav>
   );
 };

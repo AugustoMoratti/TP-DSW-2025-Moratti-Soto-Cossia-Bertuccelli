@@ -124,3 +124,67 @@
   object-fit: cover;
 }
 
+@media (max-width: 768px) {
+  .hero {
+    flex-direction: column;
+    padding: 40px 20px;
+    text-align: center;
+  }
+
+  .hero_text h2 {
+    font-size: 1.5rem;
+    width: 100%;
+    letter-spacing: 5px;
+    word-spacing: 2px;
+  }
+
+  .hero_text p {
+    font-size: 1rem;
+  }
+
+  .text_logo {
+    flex-direction: column;
+    left: 0;
+    margin-top: 30px;
+  }
+
+  .logo {
+    height: 50px;
+  }
+
+  .paper_plane {
+    position: static;
+    margin-top: 20px;
+  }
+
+  .hero_image {
+    width: 100%;
+    height: auto;
+    border-width: 3px;
+  }
+
+  .card_info {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    max-width: 100%;
+    padding: 20px;
+  }
+
+  .img_work {
+    width: 100%;
+    max-width: 250px;
+    height: auto;
+    margin-top: 20px;
+  }
+
+  .text_info {
+    padding: 0 20px;
+    font-size: 1rem;
+    text-align: center;
+  }
+
+  .text_info p {
+    margin-bottom: 20px;
+  }
+}

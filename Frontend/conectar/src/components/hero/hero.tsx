@@ -19,9 +19,7 @@ const Hero: React.FC = () => {
           <div className="text_logo">
             <p>Estás buscando</p>
             <img src={logo} alt="Conectar Logo" className="logo" />
-          </div>
-          <div className="paper_plane">
-            <img src={avionImage} alt="Plane" />
+            <img src={avionImage} alt="Plane" style={{ position: 'relative', bottom: '90%'}}/>
           </div>
         </div>
 

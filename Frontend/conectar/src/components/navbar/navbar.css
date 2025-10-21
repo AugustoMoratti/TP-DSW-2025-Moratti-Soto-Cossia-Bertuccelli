@@ -1,20 +1,20 @@
 .navbar {
   display: flex;
+  justify-content: space-between;
   align-items: center;
   background-color: #114f5a;
   padding: 20px 60px;
   color: white;
-  gap: 800px;
+  height:fit-content;
 }
 
 .logo_container {
   display: flex;
   align-items: center;
-  height: 100px;
 }
 
 .logo {
-  height: 100vh;
+  height: 60px;
   width: auto;
   cursor: pointer;
 }
@@ -23,7 +23,6 @@
   display: flex;
   align-items: center;
   gap: 40px;
-  margin-left: 25vh;
 }
 
 .nav_links {
@@ -31,6 +30,12 @@
   list-style: none;
   gap: 30px;
   margin: 0;
+  padding: 0;
+}
+
+.nav_links li {
+  display: flex;
+  align-items: center;
 }
 
 .nav_buttons {
@@ -38,20 +43,39 @@
   gap: 15px;
 }
 
-.login_btn {
-  background-color: #f8f0e3;
-  border: none;
-  border-radius: 20px;
-  padding: 8px 16px;
-  cursor: pointer;
-}
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 20px;
+    gap: 20px;
+  }
 
-.get_started_btn {
-  background-color: #5d7262;
-  border: none;
-  color: white;
-  border-radius: 20px;
-  padding: 8px 16px;
-  cursor: pointer;
-}
+  .logo_container {
+    justify-content: center;
+    width: 100%;
+  }
 
+  .right_section {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+    width: 100%;
+  }
+
+  .nav_links {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .nav_buttons {
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+  }
+
+  .nav_buttons button {
+    width: 100%;
+    text-align: center;
+  }
+}

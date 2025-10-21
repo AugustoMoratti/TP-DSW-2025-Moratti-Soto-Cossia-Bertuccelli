@@ -33,8 +33,9 @@
 }
 
 .hero_image {
+  margin-left: 250px;
   width: 800px;
-  height: 350px;
+  height: 450px;
   border-radius: 20px;
   overflow: hidden;
   border: 5px solid #fff;

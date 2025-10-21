@@ -1,6 +1,6 @@
 import React from "react";
 import "./hero.css";
-import heroImage from "../../../assets/plomero.jpg";
+import heroImage from "../../../assets/plomero.png";
 import avionImage from "../../../assets/avion.png";
 
 
@@ -20,7 +20,7 @@ const Hero: React.FC = () => {
       </div>
 
       <div className="hero_image">
-        <img src={heroImage} alt="Hero" />
+        <img src={heroImage} alt="Hero" style={{ height: '450px' }} />
       </div>
     </section>
   );

@@ -10,7 +10,7 @@ const Navbar: React.FC = () => {
   return (
     <nav className="navbar">
       <div className="logo_container">
-        <img src={logo} alt="Conetar Logo" className="logo" />
+        <img src={logo} alt="Conetar Logo" style={{ height: '125px' }} />
       </div>
 
     <div className="right_section">

@@ -6,4 +6,5 @@ export interface Usuario {
   provincia?: { nombre: string };
   localidad?: { nombre: string };
   profesiones?: { nombreProfesion: string }[];
+  direccion: string;
 };

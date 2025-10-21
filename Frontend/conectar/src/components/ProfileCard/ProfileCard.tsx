@@ -12,7 +12,6 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
   nombre,
   email,
   direccion,
-  imagenPerfil,
 }) => {
   const [profesional, setProfesional] = useState<boolean>(false);
 
@@ -28,23 +27,6 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
   return (
     <div className={styles.profile_container}>
       <section className={styles.profile_header}>
-        <div className={styles.avatar}>
-          {imagenPerfil ? (
-            <img
-              src={imagenPerfil}
-              alt="Foto de perfil"
-              style={{
-                width: "120px",
-                height: "120px",
-                borderRadius: "50%",
-                objectFit: "cover",
-              }}
-            />
-          ) : (
-            <div className={styles.placeholder_avatar}></div>
-          )}
-        </div>
-
         <div className={styles.profile_info}>
           <h3>{nombre}</h3>
           <p>{direccion ? `Ubicación: ${direccion}` : "Ubicación no disponible"}</p>

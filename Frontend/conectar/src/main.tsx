@@ -11,7 +11,6 @@ import SuPerfil from './pages/SuPefil/SuPerfil.tsx'
 import InternalServerError from './pages/error/error500.tsx';
 import Dashboard from './pages/Dashboard/dashboard.tsx'
 import Terminos from './pages/terminos/terminos.tsx';
-import RequireAuth from "./components/RequireAuth";
 import About from './pages/about/about.tsx';
 
 createRoot(document.getElementById('root')!).render(
@@ -21,14 +20,7 @@ createRoot(document.getElementById('root')!).render(
         <Route path="/" element={<App />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Registro />} />
-        <Route
-          path="/perfil/:id"
-          element={
-            <RequireAuth>
-              <Perfil />
-            </RequireAuth>
-          }
-        />
+        <Route path="/perfil" element={<Perfil />} />
         <Route path="/SuPerfil" element={<SuPerfil />} />
         <Route path="/busqProfesionales" element={<BusquedaProfesionales />} />
         <Route path="/*" element={<NotFound />} />

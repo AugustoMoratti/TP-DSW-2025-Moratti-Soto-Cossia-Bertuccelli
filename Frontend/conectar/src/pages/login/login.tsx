@@ -1,4 +1,4 @@
-import { useState, useEffect, type FormEvent } from "react";
+import { useRef, useState, useEffect, type FormEvent } from "react";
 import StandardInput from "../../components/form/Form.tsx";
 import { Button } from "../../components/button/Button.tsx";
 import CheckIcon from "@mui/icons-material/Check";
@@ -13,7 +13,30 @@ export default function Login() {
   const [error, setError] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const navigate = useNavigate();
+  const errorTimerRef = useRef<number | null>(null);
 
+  // cleanup on unmount: limpiar timers
+  useEffect(() => {
+    return () => {
+      if (errorTimerRef.current) window.clearTimeout(errorTimerRef.current);
+    };
+  }, []);
+
+  const showError = (msg: string, ms = 5000) => {
+    // limpia timer anterior si existe
+    if (errorTimerRef.current) {
+      window.clearTimeout(errorTimerRef.current);
+      errorTimerRef.current = null;
+    }
+
+    setError(msg);
+
+    // autoocultar error después de ms
+    errorTimerRef.current = window.setTimeout(() => {
+      setError("");
+      errorTimerRef.current = null;
+    }, ms);
+  };
 
   useEffect(() => {
     const savedUser = getCookie("usuario");
@@ -21,6 +44,11 @@ export default function Login() {
     if (savedRecuerdame && savedUser) {
       setUsuario(savedUser);
       setRecuerdame(true);
+    } else {
+      // limpiar cualquier cookie usuario suelta si no está marcado
+      deleteCookie("usuario");
+      setUsuario("");
+      setRecuerdame(false);
     }
   }, []);
 
@@ -51,62 +79,64 @@ export default function Login() {
     }
 
 
-    // Validaciones
+    // Validaciones simples
     if (!usuario || !clave) {
-      setError("⚠️ Por favor, completá email y contraseña.");
+      showError("⚠️ Por favor, completá email y contraseña.");
       return;
     }
     if (!usuario.toLowerCase().endsWith("@gmail.com")) {
-      setError("⚠️ Usá un correo @gmail.com");
+      showError("⚠️ Usá un correo @gmail.com");
       return;
     }
-
     setError("");
     setLoading(true);
 
     const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 120000);
+    const abortTimeout = window.setTimeout(() => controller.abort(), 12000);
 
     try {
       const res = await fetch("http://localhost:3000/api/usuario/login", {
-        method: 'POST',
+        method: "POST",
         headers: { "Content-Type": "application/json" },
-        credentials: "include", // cookie HttpOnly
+        credentials: "include",
         body: JSON.stringify({
           email: usuario.trim().toLowerCase(),
           clave,
         }),
+        signal: controller.signal,
       });
 
-      let data: any = {};
+      // consumir JSON solo una vez
+      let data: any = null;
       try {
         data = await res.json();
-      } catch { }
+      } catch {
+        data = null;
+      }
 
       if (!res.ok) {
-        setError(data?.error || data?.message || "❌ Error en el login.");
+        // mostrar error y permitir reintento
+        showError(data?.error || "Usuario o contraseña incorrecta", 5000);
+        setLoading(false);
         return;
       }
 
+      console.log("Logueado Correctamente:", data);
+      setLoading(false);
       // Verificar sesión con /me
-      try {
-        await fetch("http://localhost:3000/api/usuario/me", {
-          credentials: "include",
-        });
-      } catch { }
+      navigate(`/perfil`);
 
-      navigate("/perfil");
-
-    } catch (err: any) {
-      if (err?.name === 'AbortError') {
-        setError('⏱️ Tiempo de espera agotado. Intentalo de nuevo.');
+    } catch (err: unknown) {
+      if (err instanceof DOMException && err.name === "AbortError") {
+        showError("⏱️ Tiempo de espera agotado. Inténtalo de nuevo.", 5000);
       } else {
-        setError('⚠️ Error de conexión con el servidor.');
+        showError("⚠️ Error de conexión con el servidor.", 5000);
       }
+      setLoading(false);
     } finally {
-      clearTimeout(timeout);
+      // limpiar timeout de abort si quedó
+      window.clearTimeout(abortTimeout);
     }
-    setLoading(false);
   };
 
   return (
@@ -122,12 +152,14 @@ export default function Login() {
             <StandardInput
               label="Usuario"
               value={usuario}
+              autoComplete="username"
               onChange={onChangeStr(setUsuario)}
             />
             <StandardInput
               label="Clave"
               type="password"
               value={clave}
+              autoComplete="current-password"
               onChange={onChangeStr(setClave)}
             />
 

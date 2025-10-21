@@ -47,6 +47,7 @@ export const refreshCookieMiddleware = (req: Request, res: Response, next: NextF
     });
   } catch (err) {
     // token expirado, no hacemos nada
+    console.log('token expirado')
   }
 
   next();

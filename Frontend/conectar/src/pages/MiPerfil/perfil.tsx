@@ -1,30 +1,29 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import ProfileCard from "../../components/ProfileCard/ProfileCard";
 import Header from "../../components/header/header";
 import "./perfil.css";
+import type { Usuario } from "../../interfaces/usuario.ts";
 
 
 const Perfil: React.FC = () => {
-  const { id } = useParams();
   const navigate = useNavigate();
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<Usuario>();
 
   useEffect(() => {
     (async () => {
-      try {
-        const res = await fetch(`http://localhost:3000/api/usuario/${id}`, {
-          credentials: "include",
-        });
-        if (res.ok) {
-          const data = await res.json();
-          setUser(data);
-        }
-      } catch (error) {
-        console.error("Error al cargar el perfil:", error);
+      const res = await fetch("http://localhost:3000/api/usuario/me", {
+        credentials: "include", // envía la cookie userToken automáticamente
+      });
+
+      if (!res.ok) {
+        navigate("/login"); // si no está logueado, lo mandamos al login
+        return;
       }
+      const data = await res.json();
+      setUser(data.usuario);
     })();
-  }, [id]);
+  }, [navigate]);
 
   if (!user) return <div className="loading">Cargando perfil...</div>;
 
@@ -45,7 +44,6 @@ const Perfil: React.FC = () => {
             nombre={user.nombre}
             email={user.email}
             direccion={user.direccion}
-            imagenPerfil={`http://localhost:3000${user.imagenPerfil}`}
           />
         </div>
       </main>

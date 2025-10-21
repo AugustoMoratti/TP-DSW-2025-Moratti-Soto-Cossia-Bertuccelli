@@ -6,6 +6,7 @@ interface StandardInputProps {
   value: string;
   onChange: (value: string) => void;
   type?: string;
+  autoComplete?: string;
 }
 
 const StandardInput: React.FC<StandardInputProps> = ({
@@ -13,6 +14,7 @@ const StandardInput: React.FC<StandardInputProps> = ({
   value,
   onChange,
   type,
+  autoComplete,
 }) => {
   const [focused, setFocused] = useState(false);
 
@@ -29,6 +31,7 @@ const StandardInput: React.FC<StandardInputProps> = ({
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
         onChange={(e) => onChange(e.target.value)}
+        autoComplete={autoComplete}
         className={`input_field ${type === "date" ? "input_date" : ""}`}
         required={type === "date"}            /* 👈 clave para que :valid funcione */
       />

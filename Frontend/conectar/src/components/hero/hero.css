@@ -1,4 +1,5 @@
 .hero {
+  position: relative; 
   display: flex;
   justify-content: center;
   align-items: center;
@@ -9,15 +10,6 @@
   text-align: center;
 }
 
-.hero_text h2 {
-  font-size: 2rem;
-  font-weight: 700;
-  margin-bottom: 20px;
-  letter-spacing: 1.5px;
-  word-spacing: 4px;
-  line-height: 1.4;
-}
-
 .hero_text p {
   font-size: 1.2rem;
   margin-bottom: 30px;
@@ -25,15 +17,46 @@
   word-spacing: 3px;
 }
 
-.hero_buttons {
+.hero_text h2 {
+  font-size: 2rem;
+  width: 100%;
+  font-weight: 700;
+  margin-top: 50px;
+  margin-bottom: 50px;
+  letter-spacing: 10px;
+  word-spacing: 4px;
+  line-height: 1.4;
+}
+
+.text_logo {
   display: flex;
-  justify-content: center;
   align-items: center;
   gap: 20px;
+  justify-content: center;
+  margin-bottom: 30px;
+  margin-top: 75px;
+}
+
+.logo_container {
+  position: relative;
+  display: inline-block;
+}
+
+.logo {
+  height: 60px;
+}
+
+.paper_plane {
+  position: relative;
+  bottom: 250px;
+  left: 235px;
+}
+
+.paper_plane img {
+  object-fit: contain;
 }
 
 .hero_image {
-  margin-left: 250px;
   width: 800px;
   height: 450px;
   border-radius: 20px;
@@ -47,10 +70,4 @@
   height: 100%;
   object-fit: cover;
   display: block;
-}
-
-
-.paper_plane {
-  font-size: 2rem;
-  margin-top: 20px;
 }

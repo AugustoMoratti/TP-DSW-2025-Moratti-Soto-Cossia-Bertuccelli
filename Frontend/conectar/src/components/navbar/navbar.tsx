@@ -15,10 +15,8 @@ const Navbar: React.FC = () => {
 
     <div className="right_section">
       <ul className="nav_links">
-        <li>Home</li>
-        <li>About</li>
-        <li>Resources ▾</li>
-        <li>Contact</li>
+        <Button onClick= {() => Navigate ("/about")}>Sobre nosotros</Button>
+        <Button onClick= {() => Navigate ("/contacto")}>Contacto</Button>
       </ul>
 
         <div className="nav_buttons">

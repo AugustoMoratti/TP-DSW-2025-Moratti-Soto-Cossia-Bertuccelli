@@ -3,10 +3,14 @@ import ProfileCard from "../../components/ProfileCard/ProfileCard";
 import Header from "../../components/header/header";
 import "./SuPerfil.css";
 import { useNavigate } from "react-router";
+import { useParams } from "react-router-dom";
+
+
 
 
 const SuPerfil: React.FC = () => {
   const navigate = useNavigate()
+  const { id } = useParams();
   return (
     <div className="app-container">
       <Header bgColor="#ffffff" logoSrc="/assets/conect_2_1.png" >
@@ -16,7 +20,6 @@ const SuPerfil: React.FC = () => {
 
       <main>
         <div className="profile-wrapper">
-          <ProfileCard />
         </div>
       </main>
     </div>

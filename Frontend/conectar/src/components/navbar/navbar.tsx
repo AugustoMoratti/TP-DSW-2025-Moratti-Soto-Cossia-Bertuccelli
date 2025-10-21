@@ -10,7 +10,7 @@ const Navbar: React.FC = () => {
   return (
     <nav className="navbar">
       <div className="logo_container">
-        <img src={logo} alt="Conetar Logo" style={{ height: '125px' }} />
+        <img src={logo} alt="Conetar Logo" style={{ height: '100px' }} />
       </div>
 
     <div className="right_section">
@@ -24,6 +24,7 @@ const Navbar: React.FC = () => {
           <Button variant="outlined" onClick={() => Navigate("/login")}>Login</Button>
         </div>
       </div>
+
     </nav>
   );
 };

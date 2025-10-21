@@ -7,6 +7,7 @@ const Home: React.FC = () => {
   return (
     <div className="home-container">
       <Navbar />
+      <div className="divisor"></div>
       <Hero />
     </div>
   );

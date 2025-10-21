@@ -1,0 +1,83 @@
+.content{
+  font-family: 'Arial', sans-serif;
+  font-size: 1rem;
+  color: #114f5a;
+}
+
+.card_about{
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.07);
+  padding: 2.5rem 2rem;
+  width: 75%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  align-items: stretch;
+}
+
+.card_about .content h1 {
+  font-size: 2rem;
+  color: #114f5a;
+  margin-bottom: 10px;
+}
+
+.card_about .content p {
+  font-size: 1.1rem;
+  color: #114f5a;
+  margin-bottom: 1.5vh;
+}
+
+.Muchacho {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between; /* opcional, para separar bien los elementos */
+  gap: 20px; /* espacio entre info e imagen */
+
+}
+
+.Muchacho h2 {
+  font-size: 1.5rem;
+  color: #114f5a;
+  margin-bottom: 30px;
+}
+
+.Muchacho p {
+  font-size: 1rem;
+  color: #114f5a;
+  margin: 4px 0;
+}
+
+.Muchacho a {
+  color: #2ab1b8;
+  text-decoration: none;
+}
+
+.Muchacho a:hover {
+  text-decoration: underline;
+}
+
+.Muchacho img {
+  width: 180px;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 5%;
+  border: 3px solid #114f5a;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .card_about {
+    padding: 20px;
+  }
+
+  .Muchacho img {
+    width: 140px;
+    height: 140px;
+  }
+
+  .card_about .content h1 {
+    font-size: 1.5rem;
+  }
+}

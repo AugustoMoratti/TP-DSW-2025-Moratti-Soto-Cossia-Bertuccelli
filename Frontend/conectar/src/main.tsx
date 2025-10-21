@@ -12,6 +12,7 @@ import InternalServerError from './pages/error/error500.tsx';
 import Dashboard from './pages/Dashboard/dashboard.tsx'
 import Terminos from './pages/terminos/terminos.tsx';
 import RequireAuth from "./components/RequireAuth";
+import About from './pages/about/about.tsx';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -34,6 +35,7 @@ createRoot(document.getElementById('root')!).render(
         <Route path="/500" element={<InternalServerError />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/terminos" element={<Terminos />} />
+        <Route path="/about" element={<About />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>,

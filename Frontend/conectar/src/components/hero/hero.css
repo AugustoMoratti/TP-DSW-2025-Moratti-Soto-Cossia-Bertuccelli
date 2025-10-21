@@ -19,7 +19,7 @@
 
 .hero_text h2 {
   font-size: 2rem;
-  width: 100%;
+  width: 75%;
   font-weight: 700;
   margin-top: 50px;
   margin-bottom: 50px;
@@ -35,6 +35,8 @@
   justify-content: center;
   margin-bottom: 30px;
   margin-top: 75px;
+  position: relative;
+  left: -100px;
 }
 
 .logo_container {
@@ -49,7 +51,9 @@
 .paper_plane {
   position: relative;
   bottom: 250px;
-  left: 235px;
+  left: 550px;
+  width: 100px;
+  height: 100px;
 }
 
 .paper_plane img {
@@ -57,7 +61,7 @@
 }
 
 .hero_image {
-  width: 800px;
+  width: 1500px;
   height: 450px;
   border-radius: 20px;
   overflow: hidden;

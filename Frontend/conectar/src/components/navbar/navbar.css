@@ -23,7 +23,7 @@
   display: flex;
   align-items: center;
   gap: 40px;
-  margin-left: 50px;
+  margin-left: 25vh;
 }
 
 .nav_links {
@@ -54,3 +54,4 @@
   padding: 8px 16px;
   cursor: pointer;
 }
+

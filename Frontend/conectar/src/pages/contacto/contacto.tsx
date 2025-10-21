@@ -34,7 +34,7 @@ const Contacto: React.FC = () => {
                 <h2>Augusto Moratti</h2>
                 <p>Legajo: <strong>52555</strong></p>
                 <p>Correo: <strong>Augus.m0804@gmail.com</strong></p>
-                <p>GitHub: <a href="https://github.com/AugusMoratti">Mi cuenta</a></p>
+                <p>GitHub: <a href="https://github.com/AugusMoratti" target="_blank">Mi cuenta</a></p>
               </div>
               <img src={fotoMora} alt="Foto De Moratti" />
             </div>
@@ -44,7 +44,7 @@ const Contacto: React.FC = () => {
                 <h2>Valentín Bertuccelli</h2>
                 <p>Legajo: <strong>52809</strong></p>
                 <p>Correo: <strong>valentinbertuccelli@gmail.com</strong></p>
-                <p>GitHub: <a href="https://github.com/ValenBertu">Mi cuenta</a></p>
+                <p>GitHub: <a href="https://github.com/ValenBertu" target="_blank">Mi cuenta</a></p>
               </div>
               <img src={fotoBertu} alt="Foto De Bertuccelli" />
             </div>
@@ -54,7 +54,7 @@ const Contacto: React.FC = () => {
                 <h2>Lucas Cossia Colagioia</h2>
                 <p>Legajo: <strong>52777</strong></p>
                 <p>Correo: <strong>luqui.cossia@gmail.com</strong></p>
-                <p>GitHub: <a href="https://github.com/CossiaLucas">Mi cuenta</a></p>
+                <p>GitHub: <a href="https://github.com/CossiaLucas" target="_blank">Mi cuenta</a></p>
               </div>
               <img src={fotoCossia} alt="Foto De Cossia" />
             </div>

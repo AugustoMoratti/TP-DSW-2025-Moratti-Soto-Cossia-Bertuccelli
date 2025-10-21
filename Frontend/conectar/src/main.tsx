@@ -21,7 +21,7 @@ createRoot(document.getElementById('root')!).render(
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Registro />} />
         <Route path="/perfil" element={<Perfil />} />
-        <Route path="/SuPerfil" element={<SuPerfil />} />
+        <Route path="/SuPerfil/:id" element={<SuPerfil />} />
         <Route path="/busqProfesionales" element={<BusquedaProfesionales />} />
         <Route path="/*" element={<NotFound />} />
         <Route path="/500" element={<InternalServerError />} />

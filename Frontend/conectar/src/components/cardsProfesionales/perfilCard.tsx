@@ -30,7 +30,7 @@ export default function PerfilCard({ usuario }: Props) {
       </div>
       <div className="pie-card">
         <p className="resenia">★★★☆☆</p>
-        <button className="ver-perfil-btn" onClick={() => navigate('/SuPerfil/:id')}>Ver perfil</button>
+        <button className="ver-perfil-btn" onClick={() => navigate(`/SuPerfil/${encodeURIComponent(usuario.id)}`)}>Ver perfil</button>
       </div>
     </section>
   );

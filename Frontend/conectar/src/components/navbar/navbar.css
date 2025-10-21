@@ -10,7 +10,6 @@
 .logo_container {
   display: flex;
   align-items: center;
-  margin-left: 200px;
   height: 100px;
 }
 
@@ -24,6 +23,7 @@
   display: flex;
   align-items: center;
   gap: 40px;
+  margin-left: 50px;
 }
 
 .nav_links {

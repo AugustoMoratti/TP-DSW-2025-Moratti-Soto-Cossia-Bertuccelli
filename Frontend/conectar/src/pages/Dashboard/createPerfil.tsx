@@ -53,13 +53,13 @@ export default function CreatePerfilAdmin() {
       <div className="container-formAdmin">
         <form action="donde va la info" method="POST" className="formularioCreateAdmin" onSubmit={addAdmin}>
           <div className="container-inputsCreateAdmin">
-            <input type="text" name="Username" value={user} id="" placeholder="Username" onChange={(e) => setUser(e.target.value)} required />
-            <input type="email" name="Email" value={email} id="" placeholder="Email" onChange={(e) => setEmail(e.target.value)} required />
-            <input type="password" name="Clave" value={clave} id="" placeholder="clave" onChange={(e) => setClave(e.target.value)} required />
+            <input className='input_dashboard' type="text" name="Username" value={user} id="" placeholder="Username" onChange={(e) => setUser(e.target.value)} required />
+            <input className='input_dashboard' type="email" name="Email" value={email} id="" placeholder="Email" onChange={(e) => setEmail(e.target.value)} required />
+            <input className='input_dashboard' type="password" name="Clave" value={clave} id="" placeholder="clave" onChange={(e) => setClave(e.target.value)} required />
           </div>
           <button type="submit" className="createAdmin">Crear Adminsitrador</button>
         </form>
       </div>
     </>
-  )
+  ) 
 }

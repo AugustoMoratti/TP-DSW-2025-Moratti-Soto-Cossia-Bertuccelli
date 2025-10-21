@@ -97,7 +97,7 @@ export default function Registro() {
 
   return (
     <section className="main-bg">
-      <img src="../assets/conect_1.png" alt="Logo" className='logo' style={{ height: '150px' }} />
+      <img src="../assets/conect_1.png" alt="Logo" style={{ height: '150px' }} />
 
       <div className="card">
         <div className="card-header">

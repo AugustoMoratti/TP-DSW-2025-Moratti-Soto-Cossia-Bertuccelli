@@ -1,6 +1,7 @@
 .custom_btn {
   display: inline-flex;
   align-items: center;
+  text-align: center;
   gap: 0.5em;
   padding: 0.5em 1.5em;
   border-radius: 6px;
@@ -15,6 +16,7 @@
   background: #114f5a;
   color: #ffffff;
   border: 2px solid #114f5a;
+  text-align: center;
 }
 
 .custom_btn.contained:hover {
@@ -27,6 +29,7 @@
   background: transparent;
   color: #90caf9;
   border: 2px solid #90caf9;
+  text-align: center;
 }
 
 .custom_btn.outlined:hover {

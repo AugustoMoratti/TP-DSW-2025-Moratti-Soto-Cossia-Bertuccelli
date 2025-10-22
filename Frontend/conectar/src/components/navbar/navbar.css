@@ -2,7 +2,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #114f5a;
+  background-color: white;
   padding: 20px 60px;
   color: white;
   height:fit-content;
@@ -13,8 +13,8 @@
   align-items: center;
 }
 
-.logo {
-  height: 60px;
+.logo_container img {
+  height: 75px;
   width: auto;
   cursor: pointer;
 }
@@ -23,19 +23,6 @@
   display: flex;
   align-items: center;
   gap: 40px;
-}
-
-.nav_links {
-  display: flex;
-  list-style: none;
-  gap: 30px;
-  margin: 0;
-  padding: 0;
-}
-
-.nav_links li {
-  display: flex;
-  align-items: center;
 }
 
 .nav_buttons {
@@ -53,26 +40,23 @@
 
   .logo_container {
     justify-content: center;
+    height: 50%;
     width: 100%;
+    align-items: center;
   }
 
   .right_section {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
     gap: 20px;
     width: 100%;
-  }
-
-  .nav_links {
-    flex-direction: column;
-    gap: 15px;
   }
 
   .nav_buttons {
     flex-direction: column;
     gap: 10px;
-    width: 100%;
-  }
+    text-align: left;
+}
 
   .nav_buttons button {
     width: 100%;

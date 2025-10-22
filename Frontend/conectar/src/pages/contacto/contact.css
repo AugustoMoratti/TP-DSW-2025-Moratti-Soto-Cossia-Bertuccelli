@@ -1,51 +1,80 @@
+:root {
+  --bg: #114f5a;
+  --card-bg: #ffffff;
+  --text: #114f5a;
+  --muted: #3c6c71;
+  --border: #e9f1f2;
+  --shadow: 0 2px 16px rgba(0, 0, 0, 0.07);
+
+  --fs-h1: clamp(1.6rem, 5.2vw, 2.25rem);
+  --fs-h2: clamp(1.125rem, 3.6vw, 1.5rem);
+  --fs-base: clamp(0.98rem, 2.8vw, 1.06rem);
+  --fs-small: clamp(0.9rem, 2.4vw, 0.98rem);
+
+  --sp-1: clamp(12px, 2.8vw, 16px);
+  --sp-2: clamp(16px, 3.6vw, 24px);
+  --sp-3: clamp(20px, 4.6vw, 32px);
+  --radius: 16px;
+}
+
+html { box-sizing: border-box; }
+*, *::before, *::after { box-sizing: inherit; }
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}
+
 .content{
-  font-family: 'Arial', sans-serif;
-  font-size: 1rem;
-  color: #114f5a;
+  font-family: 'Arial', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  font-size: var(--fs-base);
+  color: var(--text);
+  line-height: 1.65;
 }
 
 .card_about{
-  background: #ffffff;
-  border-radius: 16px;
-  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.07);
-  padding: 2.5rem 2rem;
-  width: 75%;
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: var(--sp-3) var(--sp-2);
+  width: min(100%, 900px);
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: var(--sp-2);
   align-items: stretch;
+  margin: 0 auto;
+  border: 1px solid var(--border);
 }
 
 .card_about .content h1 {
-  font-size: 2rem;
-  color: #114f5a;
-  margin-bottom: 10px;
+  font-size: var(--fs-h1);
+  color: var(--text);
+  margin: 0 0 8px 0;
+  line-height: 1.2;
+  letter-spacing: 0.02em;
 }
 
 .card_about .content p {
-  font-size: 1.1rem;
-  color: #114f5a;
-  margin-bottom: 1.5vh;
+  font-size: var(--fs-base);
+  color: var(--text);
+  margin: 0 0 1.1em 0;
 }
 
 .Muchacho {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between; /* opcional, para separar bien los elementos */
-  gap: 20px; /* espacio entre info e imagen */
-
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: start;
+  gap: var(--sp-2);
 }
 
 .Muchacho h2 {
-  font-size: 1.5rem;
-  color: #114f5a;
-  margin-bottom: 30px;
+  font-size: var(--fs-h2);
+  color: var(--text);
+  margin: 0 0 8px 0;
 }
 
 .Muchacho p {
-  font-size: 1rem;
-  color: #114f5a;
+  font-size: var(--fs-base);
+  color: var(--text);
   margin: 4px 0;
 }
 
@@ -59,25 +88,39 @@
 }
 
 .Muchacho img {
-  width: 180px;
-  height: 180px;
+  width: min(55vw, 220px);
+  aspect-ratio: 1 / 1;
   object-fit: cover;
-  border-radius: 5%;
-  border: 3px solid #114f5a;
+  border-radius: 6%;
+  border: 3px solid var(--bg);
+  justify-self: center;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-  .card_about {
-    padding: 20px;
+/* ===========================
+   Breakpoints
+   =========================== */
+@media (min-width: 540px) {
+  .card_about { padding: clamp(24px, 4vw, 36px); }
+}
+
+@media (min-width: 720px) {
+  .card_about { width: min(92vw, 960px); }
+
+  .Muchacho {
+    grid-template-columns: 1.2fr 0.8fr;
+    align-items: center;
   }
 
   .Muchacho img {
-    width: 140px;
-    height: 140px;
+    width: min(32vw, 200px);
+    justify-self: end;
   }
+}
 
-  .card_about .content h1 {
-    font-size: 1.5rem;
-  }
+@media (min-width: 1024px) {
+  .card_about { width: min(88vw, 1040px); }
+}
+
+@media (max-width: 360px) {
+  .Muchacho img { width: min(62vw, 200px); }
 }

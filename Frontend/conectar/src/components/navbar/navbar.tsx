@@ -1,5 +1,5 @@
 import React from "react";
-import logo from "../../../assets/conect.png";
+import logo from "../../../assets/conect_2_1.png";
 import { Button } from "../button/Button";
 import { useNavigate } from "react-router";
 import "./navbar.css";
@@ -10,20 +10,17 @@ const Navbar: React.FC = () => {
   return (
     <nav className="navbar">
       <div className="logo_container">
-        <img src={logo} alt="Conectar Logo" className="logo" />
+        <img src={logo} alt="Conectar Logo" />
       </div>
-
       <div className="right_section">
-        <ul className="nav_links">
-          <li>
-            <Button onClick={() => Navigate("/contact")}>Contacto</Button>
-          </li>
-        </ul>
+          <Button onClick={() => Navigate("/contact")}>
+            Contacto
+          </Button>
         <div className="nav_buttons">
           <Button variant="contained" onClick={() => Navigate("/register")}>
             Register
           </Button>
-          <Button variant="outlined" onClick={() => Navigate("/login")}>
+          <Button variant="contained" onClick={() => Navigate("/login")}>
             Login
           </Button>
         </div>

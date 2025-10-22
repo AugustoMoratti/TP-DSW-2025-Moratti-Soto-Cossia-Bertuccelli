@@ -12,11 +12,11 @@ const Contacto: React.FC = () => {
   return (
     <div className="app-container">
       <Header bgColor="#ffffff" logoSrc="/assets/conect_2_1.png">
-        <button className="header-btn" onClick={() => navigate("/busqProfesionales")}>
-          Quiero contratar un profesional!
+        <button className="header-btn" onClick={() => navigate("/register")}>
+          Register
         </button>
-        <button className="header-btn" onClick={() => navigate("/miPerfil")}>
-          Mi perfil
+        <button className="header-btn" onClick={() => navigate("/login")}>
+          Login
         </button>
       </Header>
 

@@ -1,0 +1,164 @@
+/* ===========================
+   Base y tokens
+   =========================== */
+:root {
+  --bg: #114f5a;
+  --card-bg: #ffffff;
+  --text: #06363a;
+  --text-strong: #114f5a;
+  --muted: #35565a;
+  --border: #e5eef0;
+  --shadow: 0 2px 16px rgba(0, 0, 0, 0.07);
+
+  /* Tipografía y ritmos (fluidos) */
+  --fs-title: clamp(1.6rem, 4.8vw, 2.4rem);
+  --fs-base: clamp(0.98rem, 2.6vw, 1.05rem);
+  --fs-small: clamp(0.9rem, 2.3vw, 0.98rem);
+  --lh: 1.6;
+
+  /* Espaciados fluidos */
+  --sp-1: clamp(12px, 2.8vw, 16px);
+  --sp-2: clamp(16px, 3.6vw, 24px);
+  --sp-3: clamp(20px, 4.2vw, 32px);
+  --radius: 16px;
+}
+
+/* Box-sizing global y tipografía base */
+html { box-sizing: border-box; }
+*, *::before, *::after { box-sizing: inherit; }
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans";
+  line-height: var(--lh);
+  color: var(--text);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Respeto por accesibilidad */
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}
+
+/* ===========================
+   Layout (mobile-first)
+   =========================== */
+
+.mainBg {
+  /* NO uses box-sizing o font en una clase específica */
+  min-height: 100svh;              /* mejor en móviles que 100vh */
+  display: grid;
+  place-items: start center;
+  padding: var(--sp-2);
+  background-color: var(--bg);
+}
+
+/* Tarjeta principal */
+.termsSection {
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: var(--sp-3) var(--sp-2);
+  width: min(100%, 860px);          /* límite natural en desktop */
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  align-items: stretch;
+  margin: auto;                     /* centra vertical/horizontal dentro de grid */
+  border: 1px solid var(--border);
+}
+
+/* Header */
+.termsHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: var(--sp-1);
+}
+
+.termsTitle {
+  font-family: "Cormorant Garamond", ui-serif, Georgia, "Times New Roman", serif;
+  font-size: var(--fs-title);
+  color: var(--text-strong);
+  letter-spacing: 0.06em;         /* ~ 1px–2px relativo: mejor en móviles */
+  margin: 0 0 1vh 0;
+  line-height: 1.2;
+  text-align: center;
+}
+
+.divisorTerm {
+  height: 3px;
+  background: var(--bg);
+  width: 100%;
+  border-radius: 2px;
+}
+
+/* Texto */
+.termsIntro {
+  font-size: var(--fs-base);
+  color: var(--muted);
+  text-align: center;
+  margin: 0;
+}
+
+.termsContent {
+  font-size: var(--fs-base);
+  color: var(--text);
+  line-height: var(--lh);
+  display: grid;
+  gap: var(--sp-1);
+}
+
+/* Botones */
+.btn {
+  background-color: #06363a;
+  color: #fff;
+  padding: 0.9em 1.1em;           /* mayor área táctil */
+  border: 1px solid transparent;
+  border-radius: 10px;
+  font-size: clamp(1rem, 3.4vw, 1.05rem);
+  cursor: pointer;
+  text-align: center;
+  transition: background-color .18s ease, color .18s ease, border-color .18s ease, box-shadow .18s ease, transform .06s ease;
+  touch-action: manipulation;
+}
+
+.btn:hover { background-color: #2ab1b8; }
+.btn:active { transform: translateY(1px); }
+
+/* Foco visible accesible */
+.btn:focus-visible,
+a:focus-visible,
+.termsSection:focus-within {
+  outline: none;
+  box-shadow: 0 0 0 3px color-mix(in srgb, #2ab1b8 45%, white);
+}
+
+/* ===========================
+   Breakpoints progresivos
+   =========================== */
+
+/* ≥ 480px: respira un poco más */
+@media (min-width: 480px) {
+  .mainBg { padding: var(--sp-3); }
+}
+
+/* ≥ 600px: tipografías y paddings crecen */
+@media (min-width: 600px) {
+  .termsSection {
+    padding: clamp(24px, 4vw, 36px);
+    gap: clamp(16px, 3vw, 24px);
+  }
+}
+
+@media (min-width: 840px) {
+  .termsSection { width: min(92vw, 900px); }
+}
+
+
+@media (max-width: 360px) {
+  .termsTitle { letter-spacing: 0.04em; }
+  .btn { padding: 1em; }
+}

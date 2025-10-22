@@ -1,15 +1,15 @@
-import styles from "./terminos.module.css";
+import  "./terminos.css";
 import { useNavigate } from "react-router-dom";
 
-export default function Terminos({ blendText = false }) {
+export default function Terminos() {
   const navigate = useNavigate();
 
   return (
-    <main className={styles.mainBg}>
-      <section className={`${styles.termsCard} ${blendText ? styles.textSameAsBg : ""}`}>
-        <header className={styles.termsHeader}>
-          <h1 className={styles.termsTitle}>Términos y Condiciones</h1>
-          <p className={styles.termsIntro}>
+    <main className='mainBg'>
+      <section className='termsSection'>
+        <header className='termsHeader'>
+          <h1 className='termsTitle'>Términos y Condiciones</h1>
+          <p className='termsIntro'>
             Estos son nuestros Términos y Condiciones que rigen el uso de la
             plataforma Conectar, operada por Conectar S.A. Al acceder o
             utilizar la Plataforma, usted acepta cumplir con estos Términos en su
@@ -18,7 +18,9 @@ export default function Terminos({ blendText = false }) {
           </p>
         </header>
 
-        <div className={styles.termsContent}>
+        <div className="divisorTerm"></div>
+
+        <div className='termsContent'>
           <section>
             <p>
               En el principio el mundo no tenía forma repleto de niebla solo había piedra
@@ -358,7 +360,7 @@ la vida luego de derrotar al demonio del asilo.
         </div>
 
         <br />
-        <button className={styles.btn} onClick={() => navigate("/register")}>
+        <button className='btn' onClick={() => navigate("/register")}>
           Volver al registro
         </button>
       </section>

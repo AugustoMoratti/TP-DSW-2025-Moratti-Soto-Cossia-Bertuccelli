@@ -12,6 +12,7 @@ import InternalServerError from './pages/error/error500.tsx';
 import Dashboard from './pages/Dashboard/dashboard.tsx'
 import Terminos from './pages/terminos/terminos.tsx';
 import Contacto from './pages/contacto/contacto.tsx';
+import Chat from './pages/chat/chat.tsx';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -28,6 +29,7 @@ createRoot(document.getElementById('root')!).render(
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/terminos" element={<Terminos />} />
         <Route path="/contact" element={<Contacto />} />
+        <Route path="/chat" element={<Chat />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>,

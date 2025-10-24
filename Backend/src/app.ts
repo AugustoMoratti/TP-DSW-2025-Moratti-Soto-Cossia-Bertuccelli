@@ -1,8 +1,10 @@
 import express from 'express'
 import cors from 'cors'
+import { Server as SocketServer } from "socket.io";
 import cookieParser from 'cookie-parser';
 import 'reflect-metadata'
 import path from 'path'
+import http from 'http'
 import { orm, syncSchema } from '../DB/orm.js'
 import { RequestContext } from '@mikro-orm/core'
 import { Request, Response, NextFunction } from 'express'
@@ -22,6 +24,24 @@ app.use(cors({
 
 app.use(express.json())
 app.use(cookieParser());
+
+const server = http.createServer(app);
+const io = new SocketServer(server, {
+  cors: {
+    origin: "http://localhost:5173",
+    methods: ["GET", "POST"]
+  }
+});
+
+io.on("connection", socket => {
+  socket.on('message', (body) => {
+      console.log(body)
+      socket.broadcast.emit('message', {
+        body,
+        from: "Usuario",
+      })
+  })
+})
 
 //Despues de los middlewares de express
 app.use((req: Request, res: Response, next: NextFunction) => {

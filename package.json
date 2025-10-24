@@ -29,6 +29,7 @@
     "react-dom": "^19.2.0",
     "react-router-dom": "^7.9.4",
     "reflect-metadata": "0.1.13",
+    "socket.io": "^4.8.1",
     "uuid": "^13.0.0"
   },
   "devDependencies": {

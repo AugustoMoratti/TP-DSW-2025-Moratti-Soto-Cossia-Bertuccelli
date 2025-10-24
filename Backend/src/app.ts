@@ -34,7 +34,7 @@ const io = new SocketServer(server, {
 });
 
 io.on("connection", socket => {
-  socket.on('message', (body) => {
+  socket.on('message', (body: unknown) => {
       console.log(body)
       socket.broadcast.emit('message', {
         body,

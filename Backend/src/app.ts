@@ -2,6 +2,7 @@ import express from 'express'
 import cors from 'cors'
 import cookieParser from 'cookie-parser';
 import 'reflect-metadata'
+import path from 'path'
 import { orm, syncSchema } from '../DB/orm.js'
 import { RequestContext } from '@mikro-orm/core'
 import { Request, Response, NextFunction } from 'express'
@@ -12,7 +13,6 @@ import { localidadesRouter } from './localidad/localidad.routes.js'
 import { usuarioRouter } from './usuario/usuario.routes.js'
 import { trabajosRouter } from './trabajos/trabajos.routes.js'
 
-
 const app = express()
 app.use(cors({
   origin: "http://localhost:5173", // El dominio del front
@@ -22,6 +22,7 @@ app.use(cors({
 
 app.use(express.json())
 app.use(cookieParser());
+
 //Despues de los middlewares de express
 app.use((req: Request, res: Response, next: NextFunction) => {
   RequestContext.create(orm.em, next)

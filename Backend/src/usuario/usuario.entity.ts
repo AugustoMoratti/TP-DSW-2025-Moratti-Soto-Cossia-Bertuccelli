@@ -32,6 +32,9 @@ export class Usuario extends BaseEntity2 {
   @Property({ length: 50, nullable: false })
   contacto!: string;
 
+  @Property({ length: 255, nullable: true}) //FOTO DE PERFIL DEL USUARIO
+  fotoUrl!: string;
+
   @ManyToOne(() => Localidad, { nullable: false })
   localidad!: Rel<Localidad>;
 
@@ -40,6 +43,7 @@ export class Usuario extends BaseEntity2 {
 
   @ManyToMany(() => Profesiones, undefined, { cascade: [Cascade.PERSIST] })
   profesiones = new Collection<Profesiones>(this);
+
   //Un usuario puede tener muchas profesiones o ninguna, con esto se soluciona , es una ManyToMany unidireccional y no hace 
   // falta ponerla en el crud de profesion.
 
@@ -53,5 +57,4 @@ export class Usuario extends BaseEntity2 {
   @OneToMany(() => Trabajo, trabajo => trabajo.profesional, { cascade: [Cascade.PERSIST] })
   trabajos = new Collection<Trabajo>(this);
 
-  //Agregar foto de perfil
 }

@@ -2,6 +2,8 @@ import { useRef, useState, useEffect, type FormEvent } from "react";
 import StandardInput from "../../components/form/Form.tsx";
 import { Button } from "../../components/button/Button.tsx";
 import CheckIcon from "@mui/icons-material/Check";
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { useNavigate } from "react-router-dom";
 import { getCookie, setCookie, deleteCookie } from "../../utils/cookies.ts";
 import "./login.css";
@@ -12,6 +14,7 @@ export default function Login() {
   const [recuerdame, setRecuerdame] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
+  const [showPsw, setShowPsw] = useState(false);
   const navigate = useNavigate();
   const errorTimerRef = useRef<number | null>(null);
 
@@ -155,13 +158,21 @@ export default function Login() {
               autoComplete="username"
               onChange={onChangeStr(setUsuario)}
             />
-            <StandardInput
-              label="Clave"
-              type="password"
-              value={clave}
-              autoComplete="current-password"
-              onChange={onChangeStr(setClave)}
-            />
+            <div className="password-container">
+              <StandardInput
+                label="Clave"
+                type={showPsw ? "text" : "password"}
+                value={clave}
+                autoComplete="current-password"
+                onChange={onChangeStr(setClave)}
+              />
+              {showPsw ? (
+                <VisibilityIcon className="psw-icon" onClick={() => setShowPsw(false)} />
+              ) : (
+                <VisibilityOffIcon className="psw-icon" onClick={() => setShowPsw(true)} />
+              )}
+            </div>
+          </div>
 
             <div className="recuerdame-container">
               <input
@@ -199,7 +210,6 @@ export default function Login() {
                 </div>
               )}
             </div>
-          </div>
         </form>
       </div>
     </section>

@@ -125,3 +125,17 @@ background {
 #recuerdame:hover {
   cursor: pointer;
 }
+
+.password-container {
+  position: relative;
+  width: 100%;
+}
+
+.psw-icon {
+  position: absolute;
+  right: 10px;
+  top: 30%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #114f5a;
+}

@@ -2,8 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { Profesiones } from './profesion.entity.js';
 import { orm } from '../../DB/orm.js';
 
-
-const em = orm.em
+const em = orm.em.fork();
 
 function sanitizeProfesionInput(req: Request, res: Response, next: NextFunction) {
   req.body.sanitizedInput = {

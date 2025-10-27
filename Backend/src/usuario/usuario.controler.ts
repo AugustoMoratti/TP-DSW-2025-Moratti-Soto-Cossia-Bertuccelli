@@ -6,7 +6,7 @@ import { Profesiones } from '../profesion/profesion.entity.js';
 import { orm } from '../../DB/orm.js';
 import { upload, UPLOADS_DIR } from '../utils/upload.js';
 
-const em = orm.em
+const em = orm.em.fork();
 
 function sanitizeUsuarioInput(req: Request, res: Response, next: NextFunction) {
   req.body.sanitizedInput = {
@@ -50,7 +50,7 @@ async function buscarUsuarios(req: Request, res: Response) {
         { profesiones: { nombreProfesion: { $like: `%${qParam}%` } } } // ManyToMany
       ]
     }, {
-      populate: ['provincia', 'localidad', 'profesiones'],
+      populate: ['provincia', 'localidad', 'profesiones', 'trabajos'],
       limit: 10
     });
 

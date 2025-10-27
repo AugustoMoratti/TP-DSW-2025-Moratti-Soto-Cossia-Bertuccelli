@@ -5,7 +5,7 @@ import { Usuario } from '../usuario/usuario.entity.js';
 import { orm } from '../../DB/orm.js';
 
 
-const em = orm.em
+const em = orm.em.fork();
 
 
 function sanitizeTrabajoInput(req: Request, res: Response, next: NextFunction) {
@@ -28,7 +28,7 @@ function sanitizeTrabajoInput(req: Request, res: Response, next: NextFunction) {
 
 async function findAll(req: Request, res: Response) {
   try {
-    const trabajos = await em.find(Trabajo, {}, { populate: ['cliente', 'profesional'] })
+    const trabajos = await em.find(Trabajo, {}, { populate: ['cliente', 'profesional', 'resenia'] })
     res
       .status(200)
       .json({ message: 'found all Trabajos', data: trabajos })

@@ -1,13 +1,13 @@
 import { Router } from "express";
 import { findOne, findAll, add, remove, update, sanitizeReseniaInput } from "./resenia.controller.js";
 
-export const routerResenia = Router()
+export const reseniaRouter = Router()
 
-routerResenia.get("/", findAll);
-routerResenia.get("/:id", findOne);
-routerResenia.post("/", sanitizeReseniaInput, add);
-routerResenia.put("/:id", sanitizeReseniaInput, update);
-routerResenia.patch("/:id", sanitizeReseniaInput, update);
-routerResenia.delete("/:id", remove);
+reseniaRouter.get("/", findAll);
+reseniaRouter.get("/:id", findOne);
+reseniaRouter.post("/", sanitizeReseniaInput, add);
+reseniaRouter.put("/:id", sanitizeReseniaInput, update);
+reseniaRouter.patch("/:id", sanitizeReseniaInput, update);
+reseniaRouter.delete("/:id", remove);
 
-export default routerResenia;
+export default reseniaRouter;

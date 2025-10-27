@@ -1,3 +1,5 @@
+import type { Trabajo } from "./trabajo.ts";
+
 export interface Usuario {
   id: string;
   nombre: string;
@@ -7,4 +9,5 @@ export interface Usuario {
   localidad?: { nombre: string };
   profesiones?: { nombreProfesion: string }[];
   direccion: string;
+  trabajos?: Trabajo[];
 };

@@ -3,7 +3,7 @@ import { Localidad } from './localidades.entity.js';
 import { Provincia } from '../provincia/provincia.entity.js';
 import { orm } from '../../DB/orm.js';
 
-const em = orm.em
+const em = orm.em.fork();
 
 function sanitizeLocalidadInput(req: Request, res: Response, next: NextFunction) {
   req.body.sanitizedInput = {

@@ -10,6 +10,7 @@ import { administradorRouter } from './admin/admin.routes.js'
 import { localidadesRouter } from './localidad/localidad.routes.js'
 import { usuarioRouter } from './usuario/usuario.routes.js'
 import { trabajosRouter } from './trabajos/trabajos.routes.js'
+import { reseniaRouter } from './resenia/resenia.routes.js';
 import { UPLOADS_DIR } from './utils/upload.js';
 
 const app = express()
@@ -84,6 +85,7 @@ app.use('/api/admin', administradorRouter)
 app.use('/api/localidad', localidadesRouter)
 app.use('/api/usuario', usuarioRouter)
 app.use('/api/trabajos', trabajosRouter)
+app.use('/api/resenia', reseniaRouter)
 
 app.use((_req: Request, res: Response, _next: NextFunction) => {
   return res.status(404).send({ message: 'Not found' })

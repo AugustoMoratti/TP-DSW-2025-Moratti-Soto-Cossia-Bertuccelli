@@ -10,9 +10,9 @@ Content-Type: application/json
 
 { 
   "montoTotal": 1500,
-  "cliente": "e7c98f61-ab75-4aaa-a66c-1a5cfeb8ae09",
-  "profesional": "5495f33f-d888-426c-bdf4-2ebd7bcf6dea",
-  "fechaSolicitud": "20/10/2025"
+  "cliente": "32fc1807-6d11-42dd-bdd9-3dd5e82147e0",
+  "profesional": "8bfc359b-40cc-4a49-924a-8182a98710ba",
+  "fechaSolicitud": "27/10/2025"
 }
 
 ### Modifica una provincia (PUT - modificar recurso completo e idempotente)
@@ -21,7 +21,12 @@ PUT http://localhost:3000/api/trabajos/{{id}}
 Content-Type: application/json
 
 { 
-  
+  "montoTotal": 1500,
+  "cliente": "32fc1807-6d11-42dd-bdd9-3dd5e82147e0",
+  "profesional": "8bfc359b-40cc-4a49-924a-8182a98710ba",
+  "fechaSolicitud": "27/10/2025",
+  "fechaPago": "",
+  "fechaFinalizado": "",
 }
 
 ### Modificar una provincia (PATCH - modificar recurso parcialmente)

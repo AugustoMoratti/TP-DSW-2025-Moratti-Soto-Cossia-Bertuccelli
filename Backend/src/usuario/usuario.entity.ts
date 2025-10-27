@@ -32,7 +32,7 @@ export class Usuario extends BaseEntity2 {
   @Property({ length: 50, nullable: false })
   contacto!: string;
 
-  @Property({ length: 255, nullable: true}) //FOTO DE PERFIL DEL USUARIO
+  @Property({ length: 255, nullable: true }) //FOTO DE PERFIL DEL USUARIO
   fotoUrl!: string;
 
   @ManyToOne(() => Localidad, { nullable: false })

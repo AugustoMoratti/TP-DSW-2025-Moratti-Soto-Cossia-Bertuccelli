@@ -6,13 +6,28 @@ interface Props {
   usuario: Usuario;
 }
 
+
 export default function PerfilCard({ usuario }: Props) {
   const navigate = useNavigate();
+  const estrellas = () => {
+    if (usuario.trabajos.length === 0) {
+      return ""
+    }
+    const sumaResenias = usuario.trabajos!.reduce(
+      (acum, trabajo) => acum + trabajo.resenia.valor, 0
+    );
+    const promedio = sumaResenias / usuario.trabajos.length;
+
+    const estrellasCompletas = Math.round(promedio);
+
+    return '★'.repeat(estrellasCompletas) + '☆'.repeat(5 - estrellasCompletas);
+
+  }
   return (
     <section className="card-user">
       <div className="user-info">
         <img
-          src="/assets/OIP.webp"
+          src={`http://localhost:3000${usuario.fotoUrl}`}//porque está fuera del frontend, fuera del alcance de react
           alt="imagen de perfil"
           className="img-perfil"
         />
@@ -29,7 +44,7 @@ export default function PerfilCard({ usuario }: Props) {
         </div>
       </div>
       <div className="pie-card">
-        <p className="resenia">★★★☆☆</p>
+        <p className="resenia">{estrellas()}</p>
         <button className="ver-perfil-btn" onClick={() => navigate(`/SuPerfil/${encodeURIComponent(usuario.id)}`)}>Ver perfil</button>
       </div>
     </section>

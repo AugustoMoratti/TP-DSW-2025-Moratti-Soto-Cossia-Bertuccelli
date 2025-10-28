@@ -50,7 +50,7 @@ async function buscarUsuarios(req: Request, res: Response) {
         { profesiones: { nombreProfesion: { $like: `%${qParam}%` } } } // ManyToMany
       ]
     }, {
-      populate: ['provincia', 'localidad', 'profesiones', 'trabajos'],
+      populate: ['provincia', 'localidad', 'profesiones', 'trabajos', 'trabajos.resenia'],
       limit: 10
     });
 

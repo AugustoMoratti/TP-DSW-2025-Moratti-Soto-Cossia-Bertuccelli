@@ -108,7 +108,7 @@ async function update(req: Request, res: Response) { //NO UTILIZAR PUT , SIEMPRE
      3) montoTotal, cliente, profesional, fechaSolicitud son campos obligatorios.
     */
 
-    // Solo usamos los campos que vienen del sanitize
+    // Solo usamos los campos que vienen del sanitized
     const {
       montoTotal,
       cliente,

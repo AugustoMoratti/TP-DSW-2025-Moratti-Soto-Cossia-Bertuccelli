@@ -104,7 +104,7 @@ async function update(req: Request, res: Response) {
   }
 }
 
-async function remove(req: Request, res: Response) {
+/*async function remove(req: Request, res: Response) {
   try {
     const id = Number.parseInt(req.params.id)
     const resenia = em.getReference(Resenia, id)
@@ -113,6 +113,6 @@ async function remove(req: Request, res: Response) {
   } catch (error: any) {
     res.status(500).json({ message: error.message })
   }
-}
+}*/
 
-export { findAll, findOne, add, remove, update, sanitizeReseniaInput }
+export { findAll, findOne, add, /*remove,*/ update, sanitizeReseniaInput }

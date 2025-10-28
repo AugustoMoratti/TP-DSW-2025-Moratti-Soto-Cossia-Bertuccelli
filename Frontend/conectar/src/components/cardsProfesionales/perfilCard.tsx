@@ -1,6 +1,7 @@
 import type { Usuario } from "../../interfaces/usuario";
 import "./perfilCard.css";
 import { useNavigate } from "react-router";
+import { estrellas } from "../../utils/reseniaNumber.ts";
 
 interface Props {
   usuario: Usuario;
@@ -9,20 +10,6 @@ interface Props {
 
 export default function PerfilCard({ usuario }: Props) {
   const navigate = useNavigate();
-  const estrellas = () => {
-    if (usuario.trabajos.length === 0) {
-      return ""
-    }
-    const sumaResenias = usuario.trabajos!.reduce(
-      (acum, trabajo) => acum + trabajo.resenia.valor, 0
-    );
-    const promedio = sumaResenias / usuario.trabajos.length;
-
-    const estrellasCompletas = Math.round(promedio);
-
-    return '★'.repeat(estrellasCompletas) + '☆'.repeat(5 - estrellasCompletas);
-
-  }
   return (
     <section className="card-user">
       <div className="user-info">
@@ -44,7 +31,7 @@ export default function PerfilCard({ usuario }: Props) {
         </div>
       </div>
       <div className="pie-card">
-        <p className="resenia">{estrellas()}</p>
+        <p className="resenia">{estrellas(usuario)}</p>
         <button className="ver-perfil-btn" onClick={() => navigate(`/SuPerfil/${encodeURIComponent(usuario.id)}`)}>Ver perfil</button>
       </div>
     </section>

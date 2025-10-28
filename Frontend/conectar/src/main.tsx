@@ -13,6 +13,27 @@ import Dashboard from './pages/Dashboard/dashboard.tsx'
 import Terminos from './pages/terminos/terminos.tsx';
 import Contacto from './pages/contacto/contacto.tsx';
 
+/*
+
+Rutas PROTEGIDAS APLICAR AL FINAL DEL PROYECTO
+
+import { UserProvider } from './providers/UserProvider.tsx'
+import PrivateRoute from './components/PrivateRoute';
+
+
+<Route element={<PrivateRoute />}>   
+    <Route path="/perfil" element={<Perfil />} />
+    <Route path="/SuPerfil/:id" element={<SuPerfil />} />
+    <Route path="/busqProfesionales" element={<BusquedaProfesionales />} />
+    <Route path="/*" element={<NotFound />} />
+    <Route path="/500" element={<InternalServerError />} />
+    <Route path="/dashboard" element={<Dashboard />} />
+    <Route path="/terminos" element={<Terminos />} />
+    <Route path="/contact" element={<Contacto />} />
+  </Route>
+  
+*/
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>

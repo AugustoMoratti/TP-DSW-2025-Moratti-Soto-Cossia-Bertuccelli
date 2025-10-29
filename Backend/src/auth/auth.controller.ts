@@ -6,6 +6,7 @@ import { getEm } from '../../DB/orm.js';
 import { Usuario } from '../usuario/usuario.entity.js';
 import { hashPassword, comparePassword } from '../utils/bcryp.js';
 import { signToken } from '../utils/jwt.js';
+import { upload, UPLOADS_DIR } from '../utils/upload.js';
 
 
 
@@ -36,6 +37,7 @@ export const register = async (req: Request, res: Response) => {
 
     const usuario = new Usuario()
 
+    usuario.fotoUrl = "/uploads/default.jpg";
     usuario.nombre = nombre;
     usuario.apellido = apellido;
     usuario.clave = await hashPassword(clave);;

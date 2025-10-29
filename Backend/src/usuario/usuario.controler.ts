@@ -4,8 +4,9 @@ import { Provincia } from '../provincia/provincia.entity.js';
 import { Localidad } from '../localidad/localidades.entity.js';
 import { Profesiones } from '../profesion/profesion.entity.js';
 import { orm } from '../../DB/orm.js';
+import { upload, UPLOADS_DIR } from '../utils/upload.js';
 
-const em = orm.em
+const em = orm.em.fork();
 
 function sanitizeUsuarioInput(req: Request, res: Response, next: NextFunction) {
   req.body.sanitizedInput = {
@@ -49,7 +50,7 @@ async function buscarUsuarios(req: Request, res: Response) {
         { profesiones: { nombreProfesion: { $like: `%${qParam}%` } } } // ManyToMany
       ]
     }, {
-      populate: ['provincia', 'localidad', 'profesiones'],
+      populate: ['provincia', 'localidad', 'profesiones', 'trabajos', 'trabajos.resenia'],
       limit: 10
     });
 
@@ -74,7 +75,7 @@ async function findAll(req: Request, res: Response) {
 async function findOne(req: Request, res: Response) {
   try {
     const id = req.params.id
-    const usuario = await em.findOneOrFail(Usuario, { id }, { populate: ['profesiones', 'localidad', 'trabajos'] })
+    const usuario = await em.findOneOrFail(Usuario, { id }, { populate: ['profesiones', 'trabajos', 'trabajos.resenia'] })
     res
       .status(200)
       .json({ message: 'found Usuario', data: usuario })
@@ -145,17 +146,17 @@ async function add(req: Request, res: Response) {
 
     const usuario = new Usuario()
 
-    usuario.nombre = nombre;
-    usuario.apellido = apellido;
+    usuario.nombre = nombre.trim();
+    usuario.apellido = apellido.trim();
     usuario.clave = clave;
-    usuario.email = email;
-    usuario.contacto = contacto;
-    usuario.horarios = horarios;
-    usuario.direccion = direccion;
-    if (descripcion) usuario.descripcion = descripcion;
+    usuario.email = email.trim().toLowerCase();
+    usuario.contacto = contacto.trim();
+    usuario.horarios = horarios.trim();
+    usuario.direccion = direccion.trim();
+    if (descripcion) usuario.descripcion = descripcion.trim();
     usuario.provincia = provinciaRef;
     usuario.localidad = localidadRef;
-    usuario.fechaNac = fechaNac;
+    usuario.fechaNac = fechaNac.trim();
 
     if (profesionesRef.length > 0) {
       for (const p of profesionesRef) {
@@ -163,12 +164,6 @@ async function add(req: Request, res: Response) {
       }
     }
 
-    /*const usuario = em.create(Usuario, {
-      
-      provincia: provinciaRef,
-      localidad: localidadRef,
-      profesiones: profesionesRef
-    })*/
     em.persist(usuario)
     await em.flush()
     res
@@ -181,13 +176,11 @@ async function add(req: Request, res: Response) {
 
 async function update(req: Request, res: Response) {
   try {
-    /*const id = Number.parseInt(req.params.id)
-    const usuario = em.getReference(Usuario, id)*/
 
     const id = req.params.id
     const usuario = await em.findOneOrFail(Usuario, { id }, { populate: ['profesiones'] })
 
-    const { nombre, apellido, provincia, localidad, clave, email, descripcion, contacto, horarios, profesiones, direccion } = req.body.sanitizedInput
+    const { provincia, localidad, clave, email, descripcion, contacto, horarios, direccion } = req.body.sanitizedInput
 
     const profesionesName: string[] = Array.isArray(req.body.profesiones)
       ? req.body.profesiones
@@ -197,15 +190,16 @@ async function update(req: Request, res: Response) {
 
     if (provincia) usuario.provincia = em.getReference(Provincia, provincia)
     if (localidad) usuario.localidad = em.getReference(Localidad, localidad)
-
-    if (nombre) usuario.nombre = nombre
-    if (apellido) usuario.apellido = apellido
+    const imagen = req.file
+      ? `/uploads/${req.file.filename}`
+      : usuario.fotoUrl;
+    usuario.fotoUrl = imagen
     if (clave) usuario.clave = clave
-    if (email) usuario.email = email
-    if (descripcion) usuario.descripcion = descripcion
-    if (contacto) usuario.contacto = contacto.toString()
-    if (horarios) usuario.horarios = horarios
-    if (direccion) usuario.direccion = direccion
+    if (email) usuario.email = email.trim().toLowerCase()
+    if (descripcion) usuario.descripcion = descripcion.trim()
+    if (contacto) usuario.contacto = contacto.toString().trim()
+    if (horarios) usuario.horarios = horarios.trim()
+    if (direccion) usuario.direccion = direccion.trim()
 
     const nombresEntrantes = [...new Set(profesionesName)]; // quitar duplicados entrantes
     const nombresExistentes = new Set<string>(usuario.profesiones.getItems().map(p => p.nombreProfesion));

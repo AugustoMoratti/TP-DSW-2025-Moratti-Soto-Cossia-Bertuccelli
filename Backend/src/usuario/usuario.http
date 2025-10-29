@@ -1,7 +1,7 @@
 GET http://localhost:3000/api/usuario
 
 ### Obtener un usuario (Con el id o cualquier otro atributo de la class)
-GET http://localhost:3000/api/usuario/{{id}}
+GET http://localhost:3000/api/usuario/8bfc359b-40cc-4a49-924a-8182a98710ba
 
 ### Obtener usuarios con filtro
 GET http://localhost:3000/api/usuario/buscar?q=rosario

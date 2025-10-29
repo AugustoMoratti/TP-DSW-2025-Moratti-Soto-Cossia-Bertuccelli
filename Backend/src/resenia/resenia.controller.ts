@@ -1,12 +1,14 @@
 import { Request, Response, NextFunction } from 'express';
 import { orm } from "../../DB/orm.js";
 import { Resenia } from "./resenia.entity.js";
-const em = orm.em
+import { Trabajo } from '../trabajos/trabajos.entity.js';
+const em = orm.em.fork();
 
 function sanitizeReseniaInput(req: Request, res: Response, next: NextFunction) {
   req.body.sanitizedInput = {
     valor: req.body.valor,
     descripcion: req.body.descripcion,
+    trabajo: req.body.trabajo
   }
   Object.keys(req.body.sanitizedInput).forEach((key) => {
     if (req.body.sanitizedInput[key] === undefined) {
@@ -41,7 +43,7 @@ async function findOne(req: Request, res: Response) {
 
 async function add(req: Request, res: Response) {
   try {
-    const { valor, descripcion } = req.body.sanitizedInput
+    const { valor, descripcion, trabajo } = req.body.sanitizedInput
 
     const resenia = new Resenia();
 
@@ -53,9 +55,16 @@ async function add(req: Request, res: Response) {
       return res.status(400).json({ message: 'Descripcion es un campo obligatorio y debe ser un string' });
     };
 
+    if (valor > 5 || valor < 0) {
+      return res.status(400).json({ message: 'El valor debe ser mayo que cero y menor que cinco' });
+    }
+    const trabajoEntero = em.getReference(Trabajo, trabajo)
+    if (!trabajo) {
+      return res.status(400).json({ message: 'La resenia debe estar vinculada a un trabajo' });
+    }
     resenia.valor = Number(valor);
     resenia.descripcion = descripcion;
-
+    resenia.trabajo = trabajoEntero
     em.persist(resenia)
     await em.flush()
     res
@@ -95,7 +104,7 @@ async function update(req: Request, res: Response) {
   }
 }
 
-async function remove(req: Request, res: Response) {
+/*async function remove(req: Request, res: Response) {
   try {
     const id = Number.parseInt(req.params.id)
     const resenia = em.getReference(Resenia, id)
@@ -104,6 +113,6 @@ async function remove(req: Request, res: Response) {
   } catch (error: any) {
     res.status(500).json({ message: error.message })
   }
-}
+}*/
 
-export { findAll, findOne, add, remove, update, sanitizeReseniaInput }
+export { findAll, findOne, add, /*remove,*/ update, sanitizeReseniaInput }

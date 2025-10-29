@@ -3,15 +3,21 @@ import styles from "./ProfileCard.module.css";
 
 interface ProfileCardProps {
   nombre: string;
+  apellido: string;
   email: string;
-  direccion?: string;
   imagenPerfil?: string;
+  localidad?: string;
+  provincia?: string;
+  fotoUrl?: string;
 }
 
 const ProfileCard: React.FC<ProfileCardProps> = ({
   nombre,
+  apellido,
   email,
-  direccion,
+  localidad,
+  provincia,
+  fotoUrl
 }) => {
   const [profesional, setProfesional] = useState<boolean>(false);
 
@@ -28,8 +34,14 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
     <div className={styles.profile_container}>
       <section className={styles.profile_header}>
         <div className={styles.profile_info}>
-          <h3>{nombre}</h3>
-          <p>{direccion ? `Ubicación: ${direccion}` : "Ubicación no disponible"}</p>
+          <div className={styles.nombre_foto_perfil}>
+            <img src={`http://localhost:3000${fotoUrl}`} alt="" className={styles.foto_perfil} />
+            <div className={styles.usuario_info}>
+              <h3>{nombre} {apellido}</h3>
+              <p className={styles.ubicacion}>Argentina, {provincia}, {localidad}</p>
+            </div>
+          </div>
+
           <p>Email: {email}</p>
           <button
             className={`${styles.btn_secondary} ${profesional ? "active" : ""}`}

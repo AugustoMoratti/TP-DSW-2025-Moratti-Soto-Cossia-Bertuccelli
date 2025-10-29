@@ -1,0 +1,43 @@
+GET http://localhost:3000/api/resenia
+### Obtener una provincia (Con el id o cualquier otro atributo de la class)
+GET http://localhost:3000/api/resenia/1
+
+### Crear una nueva provincia (POST - crear recurso)
+# @name createResenia
+POST http://localhost:3000/api/resenia
+Content-Type: application/json
+
+{ 
+  "valor": 4,
+  "descripcion": "Un trabajo realizado perfectamente",
+  "trabajo": 1
+}
+
+### Modifica una provincia (PUT - modificar recurso completo e idempotente)
+@id = {{createResenia.response.body.data.id}}
+PUT http://localhost:3000/api/resenia/{{id}}
+Content-Type: application/json
+
+{ 
+  "valor": 4,
+  "descripcion": "Un trabajo realizado perfectamente",
+  "trabajo": 1
+}
+
+### Modificar una provincia (PATCH - modificar recurso parcialmente)
+PATCH http://localhost:3000/api/resenia/1
+Content-Type: application/json
+
+{ 
+  "valor": 4,
+  "descripcion": "Un trabajo realizado perfectamente"
+}
+
+### Eliminar una provicia (DELETE - eliminar recurso)
+DELETE http://localhost:3000/api/resenia/1
+
+
+/* La extension REST Client, nos permite hacer peticiones sin la 
+la necesidad del navegador, por ejemplo meter un archivo reversionado
+dentro del proyecto y realizarle peticiones y controlar que funcione
+todo correctamente */

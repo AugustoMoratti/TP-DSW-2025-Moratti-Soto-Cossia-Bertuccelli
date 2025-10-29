@@ -3,7 +3,8 @@ import {
     Property,
     ManyToOne,
     Rel,
-    OneToOne
+    OneToOne,
+    Cascade
 } from '@mikro-orm/core';
 import { BaseEntity } from '../../DB/baseEntity.entity.js';
 import { Usuario } from '../usuario/usuario.entity.js'
@@ -36,8 +37,8 @@ export class Trabajo extends BaseEntity {
     @Property({ nullable: true })
     fechaFinalizado!: string; //Fecha en que se finalizo el trabajo, es distinta a la fecha en que se pago el trabajo.
 
-    @OneToOne(() => Resenia, { nullable: true })
-    resenia!: Rel<Resenia>
+    @OneToOne(() => Resenia, resenia => resenia.trabajo, { nullable: true, cascade: [Cascade.PERSIST, Cascade.REMOVE] })
+    resenia?: Rel<Resenia>;
 }
 //La reseña va ligada al trabajo , cada trabajo puede tener 1 o ninguna reseña,
 //dependiendo si se termino el trabajo

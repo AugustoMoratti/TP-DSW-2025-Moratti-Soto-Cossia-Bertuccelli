@@ -1,10 +1,12 @@
 import type { Usuario } from "../../interfaces/usuario";
 import "./perfilCard.css";
 import { useNavigate } from "react-router";
+import { estrellas } from "../../utils/reseniaNumber.ts";
 
 interface Props {
   usuario: Usuario;
 }
+
 
 export default function PerfilCard({ usuario }: Props) {
   const navigate = useNavigate();
@@ -12,7 +14,7 @@ export default function PerfilCard({ usuario }: Props) {
     <section className="card-user">
       <div className="user-info">
         <img
-          src="/assets/OIP.webp"
+          src={`http://localhost:3000${usuario.fotoUrl}`}//porque está fuera del frontend, fuera del alcance de react
           alt="imagen de perfil"
           className="img-perfil"
         />
@@ -29,7 +31,7 @@ export default function PerfilCard({ usuario }: Props) {
         </div>
       </div>
       <div className="pie-card">
-        <p className="resenia">★★★☆☆</p>
+        <p className="resenia">{estrellas(usuario)}</p>
         <button className="ver-perfil-btn" onClick={() => navigate(`/SuPerfil/${encodeURIComponent(usuario.id)}`)}>Ver perfil</button>
       </div>
     </section>

@@ -2,11 +2,7 @@ import express from 'express'
 import cors from 'cors'
 import cookieParser from 'cookie-parser';
 import 'reflect-metadata'
-import path from 'path'
-import multer from "multer";
-import { Usuario } from './usuario/usuario.entity.js'; // adapta según tu entidad
-import { orm, syncSchema } from '../DB/orm.js'
-import { RequestContext } from '@mikro-orm/core'
+import { syncSchema } from '../DB/orm.js'
 import { Request, Response, NextFunction } from 'express'
 import { provinciaRouter } from './provincia/provincia.routes.js'
 import { profesionesRouter } from './profesion/profesion.routes.js'
@@ -14,6 +10,8 @@ import { administradorRouter } from './admin/admin.routes.js'
 import { localidadesRouter } from './localidad/localidad.routes.js'
 import { usuarioRouter } from './usuario/usuario.routes.js'
 import { trabajosRouter } from './trabajos/trabajos.routes.js'
+import { reseniaRouter } from './resenia/resenia.routes.js';
+import { UPLOADS_DIR } from './utils/upload.js';
 
 const app = express()
 app.use(cors({
@@ -26,7 +24,7 @@ app.use(express.json())
 app.use(cookieParser());
 
 // configurar multer
-const uploadsDir = path.join(process.cwd(), "uploads");
+/*const uploadsDir = path.join(process.cwd(), "uploads");
 const storage = multer.diskStorage({
   destination: (req: Request, file: Express.Multer.File, cb: (err: Error | null, destination: string) => void) => {
     cb(null, uploadsDir);
@@ -78,6 +76,8 @@ app.use((req: Request, res: Response, next: NextFunction) => {
   RequestContext.create(orm.em, next)
 })
 //Antes de los middlewares de rutas
+*/
+app.use("/uploads", express.static(UPLOADS_DIR));
 
 app.use('/api/provincia', provinciaRouter)
 app.use('/api/profesion', profesionesRouter)
@@ -85,6 +85,7 @@ app.use('/api/admin', administradorRouter)
 app.use('/api/localidad', localidadesRouter)
 app.use('/api/usuario', usuarioRouter)
 app.use('/api/trabajos', trabajosRouter)
+app.use('/api/resenia', reseniaRouter)
 
 app.use((_req: Request, res: Response, _next: NextFunction) => {
   return res.status(404).send({ message: 'Not found' })

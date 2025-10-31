@@ -57,7 +57,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
         <div>
           {tipoPage === "miPerfil"
             ? <button className={styles.btn_direccion} onClick={() => Navigate("/modificarPerfil")}>Modificar Perfil</button>
-            : <button className={styles.btn_direccion} onClick={() => Navigate("/empezarTrabajo")}>Contratar</button>
+            : <button className={styles.btn_direccion} onClick={() => Navigate("/empezarTrabajo")}>Ver Trabajos / Contratar</button>
           }
         </div>
       </section>

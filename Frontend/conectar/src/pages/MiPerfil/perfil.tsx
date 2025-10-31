@@ -70,6 +70,7 @@ const Perfil: React.FC = () => {
               localidad={usuario.localidad}
               provincia={usuario.provincia}
               fotoUrl={usuario.fotoUrl}
+              tipoPage="miPerfil"
             />
           )}
         </div>

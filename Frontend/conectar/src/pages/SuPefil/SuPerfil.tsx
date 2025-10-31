@@ -54,6 +54,7 @@ const SuPerfil: React.FC = () => {
               localidad={user.localidad}
               provincia={user.provincia}
               fotoUrl={user.fotoUrl}
+              tipoPage="suPerfil"
             />
           )}
         </div>

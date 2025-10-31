@@ -3,6 +3,7 @@ h3 {
   margin-bottom: 0px;
 }
 
+
 .nombre_foto_perfil {
   display: flex;
   flex-direction: row;
@@ -77,9 +78,9 @@ h3 {
   color: #f9f8f3;
 }
 
-.btn_primary {
-  background: #0a2b2b;
-  color: white;
+.btn_direccion {
+  background: #114f5a;
+  color: #fff;
   border: none;
   padding: 0.5rem 1rem;
   border-radius: 12px;
@@ -126,4 +127,8 @@ h3 {
 .stars {
   color: #0a6630;
   font-weight: bold;
+}
+
+.btn_direccion:hover {
+  background-color: #0a2e34;
 }

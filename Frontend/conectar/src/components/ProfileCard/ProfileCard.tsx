@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styles from "./ProfileCard.module.css";
+import { useNavigate } from "react-router";
 
 interface ProfileCardProps {
   nombre: string;
@@ -9,6 +10,7 @@ interface ProfileCardProps {
   localidad?: string;
   provincia?: string;
   fotoUrl?: string;
+  tipoPage?: "miPerfil" | "suPerfil"
 }
 
 const ProfileCard: React.FC<ProfileCardProps> = ({
@@ -17,9 +19,11 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
   email,
   localidad,
   provincia,
-  fotoUrl
+  fotoUrl,
+  tipoPage
 }) => {
   const [profesional, setProfesional] = useState<boolean>(false);
+  const Navigate = useNavigate()
 
   useEffect(() => {
     const saved = localStorage.getItem("esProfesional");
@@ -50,8 +54,12 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
             {profesional ? "Soy profesional ✅" : "Soy profesional"}
           </button>
         </div>
-
-        <button className={styles.btn_primary}>Solicitar profesión</button>
+        <div>
+          {tipoPage === "miPerfil"
+            ? <button className={styles.btn_direccion} onClick={() => Navigate("/modificarPerfil")}>Modificar Perfil</button>
+            : <button className={styles.btn_direccion} onClick={() => Navigate("/empezarTrabajo")}>Contratar</button>
+          }
+        </div>
       </section>
 
       <section className={styles.profile_section}>

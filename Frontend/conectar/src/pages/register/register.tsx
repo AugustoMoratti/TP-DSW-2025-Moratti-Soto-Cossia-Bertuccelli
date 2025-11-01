@@ -146,7 +146,13 @@ export default function Registro() {
               onChange={() => setTerm(!term)}
             />
             <label htmlFor="term">
-              Acepto los <a href="/terminos" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'underline' }}>términos de Conectar</a>
+              Acepto los             <button
+              className="cta-link"
+              type="button"
+              onClick={() => navigate("/terminos")}
+            >
+              terminos de Conectar
+            </button>
             </label>
           </div>
 

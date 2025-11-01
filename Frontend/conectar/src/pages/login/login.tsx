@@ -144,7 +144,7 @@ export default function Login() {
 
   return (
     <section className="main-bg">
-      <img src="../assets/conect_1.png" alt="Logo" className='logo_login' />
+      <img src="../assets/conect_1.png" alt="Logo" style={{ height: '150px' , cursor: 'pointer'}} onClick={() => navigate("/")}/>
       <div className="card">
         <form onSubmit={handleLogin}>
           <div className="card-header">

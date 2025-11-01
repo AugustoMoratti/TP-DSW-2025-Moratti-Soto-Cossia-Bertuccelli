@@ -8,7 +8,7 @@ import { hashPassword, comparePassword } from '../utils/bcryp.js';
 import { signToken } from '../utils/jwt.js';
 import { upload, UPLOADS_DIR } from '../utils/upload.js';
 
-
+const adminBlockedDomains = ["@admin.com"];
 
 export const register = async (req: Request, res: Response) => {
   try {
@@ -53,6 +53,12 @@ export const register = async (req: Request, res: Response) => {
         usuario.profesiones.add(p);
       }
     }
+
+    const emailNorm = email.trim().toLowerCase();
+    if (adminBlockedDomains.some(d => emailNorm.endsWith(d))) {
+      return res.status(403).json({ error: "No se permite registrar cuentas de administrador" });
+    }
+
     const usuarioExistente = await em.findOne(Usuario, { email });
     if (usuarioExistente) {
       return res.status(400).json({ message: 'Ya existe un usuario con ese email' });

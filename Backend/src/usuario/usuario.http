@@ -27,24 +27,24 @@ Content-Type: application/json
 }
 
 
-### Crear un nuevo usuario (POST - crear recurso)
+### Crear al admin (POST - crear recurso)
 # @name createUsuario
 POST http://localhost:3000/api/usuario
 Content-Type: application/json
 
 {
-  "nombre":"Augusto",
-  "apellido": "Moratti",
-  "clave":"aderf",
-  "email":"augus@gmail.com",
+  "nombre":"Valentino",
+  "apellido": "Bertucceli",
+  "clave":"12345",
+  "email":"admin@host.com",
   "direccion":"Crespo 1288",
-  "descripcion":"Usuario profesional",
+  "descripcion":"Admin de Conectar",
   "contacto": "3416526398",
-  "horarios":"08:00 a 12:00 y 15:00 a 19:00",
+  "horarios":"",
   "provincia": "Santa Fe",
   "localidad": "Rosario",
   "fechaNac": "08/04/2004",
-  "profesiones": ["Ingeniero quimico"]
+  "profesiones": []
 }
 
 ### Modifica una provincia (PUT - modificar recurso completo e idempotente)

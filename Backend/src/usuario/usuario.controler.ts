@@ -22,7 +22,8 @@ function sanitizeUsuarioInput(req: Request, res: Response, next: NextFunction) {
     localidad: req.body.localidad,
     profesiones: req.body.profesiones,
     fechaNac: req.body.fechaNac,
-    trabajos: req.body.trabajos
+    trabajos: req.body.trabajos,
+    habilidades: req.body.habilidades
   }
   Object.keys(req.body.sanitizedInput).forEach((key) => {
     if (req.body.sanitizedInput[key] === undefined || req.body.sanitizedInput[key] === null) {
@@ -180,7 +181,7 @@ async function update(req: Request, res: Response) {
     const id = req.params.id
     const usuario = await em.findOneOrFail(Usuario, { id }, { populate: ['profesiones'] })
 
-    const { provincia, localidad, clave, email, descripcion, contacto, horarios, direccion } = req.body.sanitizedInput
+    const { provincia, localidad, clave, email, descripcion, contacto, horarios, direccion, habilidades } = req.body.sanitizedInput
 
     const profesionesName: string[] = Array.isArray(req.body.profesiones)
       ? req.body.profesiones
@@ -200,6 +201,11 @@ async function update(req: Request, res: Response) {
     if (contacto) usuario.contacto = contacto.toString().trim()
     if (horarios) usuario.horarios = horarios.trim()
     if (direccion) usuario.direccion = direccion.trim()
+
+    const habilidadesUnicas = habilidades.filter(
+      (hab: string) => !usuario.habilidades.includes(hab)
+    );
+    usuario.habilidades.push(...habilidadesUnicas);
 
     const nombresEntrantes = [...new Set(profesionesName)]; // quitar duplicados entrantes
     const nombresExistentes = new Set<string>(usuario.profesiones.getItems().map(p => p.nombreProfesion));

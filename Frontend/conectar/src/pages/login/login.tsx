@@ -65,7 +65,6 @@ export default function Login() {
 
   const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     if (recuerdame) {
       setCookie("usuario", usuario, 30, {
         sameSite: "Lax",
@@ -116,7 +115,7 @@ export default function Login() {
       } catch {
         data = null;
       }
-
+      setUsuarioActual(data);
       if (!res.ok) {
         // mostrar error y permitir reintento
         showError(data?.error || "Usuario o contraseña incorrecta", 5000);
@@ -144,7 +143,7 @@ export default function Login() {
 
   return (
     <section className="main-bg">
-      <img src="../assets/conect_1.png" alt="Logo" style={{ height: '150px' , cursor: 'pointer'}} onClick={() => navigate("/")}/>
+      <img src="../assets/conect_1.png" alt="Logo" style={{ height: '150px', cursor: 'pointer' }} onClick={() => navigate("/")} />
       <div className="card">
         <form onSubmit={handleLogin}>
           <div className="card-header">
@@ -174,42 +173,42 @@ export default function Login() {
             </div>
           </div>
 
-            <div className="recuerdame-container">
-              <input
-                type="checkbox"
-                id="recuerdame"
-                checked={recuerdame}
-                onChange={() => setRecuerdame((v) => !v)}
-              />
-              <label htmlFor="recuerdame">Recuérdame</label>
-            </div>
+          <div className="recuerdame-container">
+            <input
+              type="checkbox"
+              id="recuerdame"
+              checked={recuerdame}
+              onChange={() => setRecuerdame((v) => !v)}
+            />
+            <label htmlFor="recuerdame">Recuérdame</label>
+          </div>
 
-            <div className="card-actions">
-              <button
-                className="cta-link"
-                type="button"
-                onClick={() => navigate("/register")}
+          <div className="card-actions">
+            <button
+              className="cta-link"
+              type="button"
+              onClick={() => navigate("/register")}
+            >
+              ¿No tiene cuenta? Cree una ahora mismo
+            </button>
+
+            <Button
+              type="submit"
+              variant="contained"
+              icon={<CheckIcon />}
+              disabled={loading}
+            >
+              {loading ? "Ingresando..." : "Enviar"}
+            </Button>
+
+            {error && (
+              <div
+                style={{ color: "red", marginTop: 10, textAlign: "center" }}
               >
-                ¿No tiene cuenta? Cree una ahora mismo
-              </button>
-
-              <Button
-                type="submit"
-                variant="contained"
-                icon={<CheckIcon />}
-                disabled={loading}
-              >
-                {loading ? "Ingresando..." : "Enviar"}
-              </Button>
-
-              {error && (
-                <div
-                  style={{ color: "red", marginTop: 10, textAlign: "center" }}
-                >
-                  {error}
-                </div>
-              )}
-            </div>
+                {error}
+              </div>
+            )}
+          </div>
         </form>
       </div>
     </section>

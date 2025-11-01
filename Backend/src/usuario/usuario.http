@@ -1,7 +1,7 @@
 GET http://localhost:3000/api/usuario
 
 ### Obtener un usuario (Con el id o cualquier otro atributo de la class)
-GET http://localhost:3000/api/usuario/8bfc359b-40cc-4a49-924a-8182a98710ba
+GET http://localhost:3000/api/usuario/740966f1-41b6-4827-bcc7-bf676fc8787b
 
 ### Obtener usuarios con filtro
 GET http://localhost:3000/api/usuario/buscar?q=rosario
@@ -12,18 +12,17 @@ POST http://localhost:3000/api/usuario/register
 Content-Type: application/json
 
 {
-  "nombre":"Valentino",
-  "apellido": "Bertucceli",
-  "clave":"aderf",
-  "email":"valen@gmail.com",
-  "direccion":"Crespo 1288",
-  "descripcion":"Usuario no profesional",
+  "nombre":"Lucas",
+  "apellido": "Cossia",
+  "clave":"1234",
+  "email":"lucas@gmail.com",
+  "direccion":"Lavalle 1120",
+  "descripcion":"Soy fan de uml y un crack",
   "contacto": "3416526398",
   "horarios":"08:00 a 12:00 y 15:00 a 19:00",
   "provincia": "Santa Fe",
   "localidad": "Rosario",
-  "fechaNac": "08/04/2004",
-  "profesiones": []
+  "fechaNac": "08/04/2004"
 }
 
 
@@ -70,7 +69,7 @@ PATCH http://localhost:3000/api/usuario/{{id}}
 Content-Type: application/json
 
 {
-  "profesiones": ["Ingenieria en sistemas"]
+  "habilidades": ["mikroOrm"]
 }
 
 ### Eliminar una provicia (DELETE - eliminar recurso)

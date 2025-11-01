@@ -8,10 +8,10 @@ import { Trabajo } from '../trabajos/trabajos.entity.js';
 
 @Entity()
 export class Usuario extends BaseEntity2 {
-  @Property({ length: 100, nullable: false })
+  @Property({ length: 50, nullable: false })
   nombre!: string;
 
-  @Property({ length: 100, nullable: false })
+  @Property({ length: 50, nullable: false })
   apellido!: string;
 
   @Property({ length: 100, nullable: false })
@@ -20,10 +20,10 @@ export class Usuario extends BaseEntity2 {
   @Property({ length: 100, unique: true, nullable: false })
   email!: string;
 
-  @Property({ length: 200, nullable: false })
+  @Property({ length: 80, nullable: false })
   direccion!: string;
 
-  @Property({ length: 100, nullable: true })
+  @Property({ length: 250, nullable: true })
   descripcion!: string;
 
   @Property({ length: 50, nullable: false })
@@ -56,5 +56,9 @@ export class Usuario extends BaseEntity2 {
 
   @OneToMany(() => Trabajo, trabajo => trabajo.profesional, { cascade: [Cascade.PERSIST] })
   trabajos = new Collection<Trabajo>(this);
+
+  @Property({ nullable: true })
+  habilidades: string[] = [];
+
 
 }

@@ -19,6 +19,7 @@ export default function Registro() {
   const [term, setTerm] = useState(false);
   const [confirmarClave, setConfirmarClave] = useState("");
   const [error, setError] = useState("");
+  const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
 
   const control = async () => {
@@ -101,12 +102,17 @@ export default function Registro() {
       }
 
       // Registro exitoso
-      navigate("/login");
-
+      setShowModal(true);
+      
     } catch (err) {
       console.error(err);
       setError("⚠️ Error de conexión con el servidor.");
     }
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+    navigate("/login");
   };
 
   return (
@@ -196,6 +202,19 @@ export default function Registro() {
           </div>
         </div>
       </div>
+
+      {showModal && (
+        <div className="modal-overlay">
+          <div className="modal-card">
+            <h2>✅ Usuario registrado</h2>
+            <p>Tu cuenta ha sido creada exitosamente.</p>
+            <button className="notfound-btn" onClick={handleCloseModal}>
+              Ir al login
+            </button>
+          </div>
+        </div>
+      )}
+
     </section>
   );
 }

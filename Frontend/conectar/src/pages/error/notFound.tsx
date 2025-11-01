@@ -17,9 +17,9 @@ export default function NotFound() {
         </p>
         <button
           className="notfound-btn"
-          onClick={() => navigate("/")}
+          onClick={() => navigate(-1)}
         >
-          Volver al inicio
+          Volver atrás
         </button>
       </div>
     </section>

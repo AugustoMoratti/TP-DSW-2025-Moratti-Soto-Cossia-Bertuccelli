@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ProfileCard from "../../components/ProfileCard/ProfileCard";
 import Header from "../../components/header/header";
+import { Button } from "../../components/button/Button";
 import "./perfil.css";
 import type { OtroUsuario } from "../../interfaces/otroUsuario.ts";
 import { useUser } from "../../Hooks/useUser.tsx";
@@ -52,12 +53,8 @@ const Perfil: React.FC = () => {
   return (
     <div className="app-container">
       <Header bgColor="#ffffff" logoSrc="/assets/conect_2_1.png">
-        <button className="header-btn" onClick={() => navigate("/")}>
-          Home
-        </button>
-        <button className="header-btn" onClick={() => navigate("/admin")}>
-          Admin
-        </button>
+      <Button onClick= {() => navigate("/solicitarProf")}>Quiero solicitar una nueva profesion</Button>
+        <Button onClick={() => navigate("/busqProfesionales")}>Quiero contratar un profesional!</Button>
       </Header>
 
       <main>

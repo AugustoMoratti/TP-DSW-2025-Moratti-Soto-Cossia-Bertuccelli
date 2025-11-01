@@ -36,6 +36,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
 
   return (
     <div className={styles.profile_container}>
+      <h2 className={styles.saludo}>Hola {nombre} 👋!</h2> 
       <section className={styles.profile_header}>
         <div className={styles.profile_info}>
           <div className={styles.nombre_foto_perfil}>
@@ -45,20 +46,19 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
               <p className={styles.ubicacion}>Argentina, {provincia}, {localidad}</p>
             </div>
           </div>
-
           <p>Email: {email}</p>
-          <button
-            className={`${styles.btn_secondary} ${profesional ? "active" : ""}`}
-            onClick={() => setProfesional(!profesional)}
-          >
-            {profesional ? "Soy profesional ✅" : "Soy profesional"}
-          </button>
         </div>
-        <div>
+        <div className={styles.botones_verticales}>
           {tipoPage === "miPerfil"
             ? <button className={styles.btn_direccion} onClick={() => Navigate("/modificarPerfil")}>Modificar Perfil</button>
             : <button className={styles.btn_direccion} onClick={() => Navigate("/empezarTrabajo")}>Ver Trabajos / Contratar</button>
           }
+          <button
+            className={`${styles.btn_direccion} ${profesional ? "active" : ""}`}
+            onClick={() => setProfesional(!profesional)}
+          >
+            {profesional ? "Soy profesional ✅" : "Soy profesional"}
+          </button>
         </div>
       </section>
 

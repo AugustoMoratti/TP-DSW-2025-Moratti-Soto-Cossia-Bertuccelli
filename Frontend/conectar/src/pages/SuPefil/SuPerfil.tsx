@@ -40,7 +40,6 @@ const SuPerfil: React.FC = () => {
   return (
     <div className="app-container">
       <Header bgColor="#ffffff" logoSrc="/assets/conect_2_1.png" >
-        <button className="header-btn" onClick={() => navigate("/")}>Home</button>
         <button className="header-btn" onClick={() => navigate("/busqProfesionales")}>Buscar Profesionales</button>
       </Header>
 

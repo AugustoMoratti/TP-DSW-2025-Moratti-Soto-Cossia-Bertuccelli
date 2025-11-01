@@ -38,6 +38,20 @@ export default function Registro() {
       return;
     }
 
+    if (!email || !email.includes("@")) {
+      setError("⚠️ Ingrese un email válido.");
+      return;
+    }
+
+    const emailNorm = email.trim().toLowerCase();
+
+    // si termina en algún dominio prohibido -> error
+    const adminBlockedDomains = ["@admin.com"];
+    if (adminBlockedDomains.some(d => emailNorm.endsWith(d))) {
+      setError("⚠️ No está permitido registrarse con un email de administrador.");
+      return;
+    }
+
     if (fechaNacimiento > fechaMinima) {
       setError("⚠️ Necesitas ser mayor de 18 años.");
       return;

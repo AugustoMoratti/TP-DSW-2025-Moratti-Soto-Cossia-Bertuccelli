@@ -53,8 +53,8 @@ const Perfil: React.FC = () => {
   return (
     <div className="app-container">
       <Header bgColor="#ffffff" logoSrc="/assets/conect_2_1.png">
-      <Button onClick= {() => navigate("/solicitarProf")}>Quiero solicitar una nueva profesion</Button>
-        <Button onClick={() => navigate("/busqProfesionales")}>Quiero contratar un profesional!</Button>
+        <Button className="header-btn" onClick={() => navigate("/solicitarProf")}>Quiero solicitar una nueva profesion</Button>
+        <Button className="header-btn" onClick={() => navigate("/busqProfesionales")}>Quiero buscar un profesional</Button>
       </Header>
 
       <main>

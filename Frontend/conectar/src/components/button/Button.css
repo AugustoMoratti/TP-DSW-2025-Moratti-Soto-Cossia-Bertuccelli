@@ -15,9 +15,12 @@
 
 .custom_btn.contained {
   background: #114f5a;
+  height: 50px;
   color: #ffffff;
   border: 2px solid #114f5a;
+  border-radius: 15px;
   text-align: center;
+  cursor: pointer;
 }
 
 .custom_btn.contained:hover {

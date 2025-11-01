@@ -37,7 +37,7 @@
   background: #0B5357;
   color: #0B5357;
   border: none;
-  border-radius: 2px;
+  border-radius: 10px;
   padding: 0.75em 1.25em;
   font-size: 1rem;
   font-weight: 500;
@@ -52,6 +52,7 @@
 
 .header-btn {
   background: transparent;
+  height: 50px;
   color: #114f5a;
   border: 1px solid #114f5a;
   border-radius: 20px;

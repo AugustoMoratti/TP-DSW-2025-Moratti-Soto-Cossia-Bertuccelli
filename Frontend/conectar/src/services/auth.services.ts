@@ -1,5 +1,6 @@
 export const fetchMe = async () => {
   const res = await fetch('http://localhost:3000/api/usuario/me', {
+    method: "GET",
     credentials: 'include', // importante si usás cookie HttpOnly
     headers: {
       'Content-Type': 'application/json',
@@ -7,6 +8,7 @@ export const fetchMe = async () => {
       // 'Authorization': `Bearer ${localStorage.getItem('token')}`
     },
   });
+  console.log("error en useProvider", res)
 
   if (!res.ok) {
     throw new Error('No autorizado');

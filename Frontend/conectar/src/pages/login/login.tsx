@@ -65,6 +65,7 @@ export default function Login() {
 
   const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     if (recuerdame) {
       setCookie("usuario", usuario, 30, {
         sameSite: "Lax",
@@ -115,7 +116,7 @@ export default function Login() {
       } catch {
         data = null;
       }
-      setUsuarioActual(data);
+
       if (!res.ok) {
         // mostrar error y permitir reintento
         showError(data?.error || "Usuario o contraseña incorrecta", 5000);

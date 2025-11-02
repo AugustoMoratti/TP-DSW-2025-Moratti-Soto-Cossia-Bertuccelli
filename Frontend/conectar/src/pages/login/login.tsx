@@ -128,6 +128,7 @@ export default function Login() {
 
       setLoading(false);
 
+      // Verificar sesión con /me
       try {
         await refreshUser(); // espera que el provider haga fetch /me
       } catch {
@@ -136,7 +137,7 @@ export default function Login() {
         setLoading(false);
         return;
       }
-      // Verificar sesión con /me
+
       Navigate('/perfil');
 
     } catch (err: unknown) {

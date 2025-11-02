@@ -8,7 +8,6 @@ export const fetchMe = async () => {
       // 'Authorization': `Bearer ${localStorage.getItem('token')}`
     },
   });
-  console.log("error en useProvider", res)
 
   if (!res.ok) {
     throw new Error('No autorizado');

@@ -7,6 +7,7 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { useNavigate } from "react-router-dom";
 import { getCookie, setCookie, deleteCookie } from "../../utils/cookies.ts";
 import "./login.css";
+import { useUser } from "../../Hooks/useUser.tsx";
 
 export default function Login() {
   const [usuario, setUsuario] = useState<string>("");
@@ -18,6 +19,7 @@ export default function Login() {
   const Navigate = useNavigate();
   const errorTimerRef = useRef<number | null>(null);
 
+  const { refreshUser } = useUser()
   // cleanup on unmount: limpiar timers
   useEffect(() => {
     return () => {
@@ -124,8 +126,16 @@ export default function Login() {
         return;
       }
 
-      console.log("Logueado Correctamente:", data);
       setLoading(false);
+
+      try {
+        await refreshUser(); // espera que el provider haga fetch /me
+      } catch {
+        // si refresh falla, no navegamos
+        showError("No se pudo verificar sesión después del login");
+        setLoading(false);
+        return;
+      }
       // Verificar sesión con /me
       Navigate('/perfil');
 

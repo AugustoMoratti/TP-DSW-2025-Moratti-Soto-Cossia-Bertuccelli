@@ -15,7 +15,7 @@ export default function Login() {
   const [error, setError] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [showPsw, setShowPsw] = useState(false);
-  const navigate = useNavigate();
+  const Navigate = useNavigate();
   const errorTimerRef = useRef<number | null>(null);
 
   // cleanup on unmount: limpiar timers
@@ -127,7 +127,7 @@ export default function Login() {
       console.log("Logueado Correctamente:", data);
       setLoading(false);
       // Verificar sesión con /me
-      navigate(`/perfil`);
+      Navigate('/perfil');
 
     } catch (err: unknown) {
       if (err instanceof DOMException && err.name === "AbortError") {
@@ -144,7 +144,7 @@ export default function Login() {
 
   return (
     <section className="main-bg">
-      <img src="../assets/conect_1.png" alt="Logo" style={{ height: '150px', cursor: 'pointer' }} onClick={() => navigate("/")} />
+      <img src="../assets/conect_1.png" alt="Logo" style={{ height: '150px', cursor: 'pointer' }} onClick={() => Navigate("/")} />
       <div className="card">
         <form onSubmit={handleLogin}>
           <div className="card-header">
@@ -188,7 +188,7 @@ export default function Login() {
             <button
               className="cta-link"
               type="button"
-              onClick={() => navigate("/register")}
+              onClick={() => Navigate("/register")}
             >
               ¿No tiene cuenta? Cree una ahora mismo
             </button>

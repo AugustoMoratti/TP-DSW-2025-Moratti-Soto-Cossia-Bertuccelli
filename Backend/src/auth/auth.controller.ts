@@ -14,7 +14,7 @@ export const register = async (req: Request, res: Response) => {
   try {
     //const usuario = em.create(Usuario, req.body)
     const em = getEm();
-    const { nombre, apellido, clave, email, descripcion, contacto, provincia, localidad, fechaNac, direccion, trabajos, habilidades } = req.body.sanitizedInput
+    const { nombre, apellido, clave, email, descripcion, contacto, provincia, localidad, profesiones, fechaNac, direccion, trabajos } = req.body.sanitizedInput
     /*if (!nombre || !apellido || !clave || !email || !provincia || !localidad) {
       return res.status(400).json({ message: 'Faltan campos requeridos: nombre, apellido, clave, email, provincia o localidad' })
     }*/
@@ -74,6 +74,7 @@ export const register = async (req: Request, res: Response) => {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
+      maxAge: 1000 * 60 * 60, // 1 hora
     });
 
     res
@@ -96,15 +97,13 @@ export const login = async (req: Request, res: Response) => {
     const ok = await comparePassword(clave, usuario.clave);
     if (!ok) return res.status(401).json({ error: 'Credenciales inválidas' });
 
-    res.clearCookie("token", { httpOnly: true, path: "/" });
-
     const token = signToken({ id: usuario.id!, email: usuario.email });
-    const EXPIRES_IN_SECONDS = 3600;
-    res.cookie("token", token, {
+
+    res.cookie('userToken', token, {
       httpOnly: true,
-      maxAge: EXPIRES_IN_SECONDS * 1000,
-      sameSite: "lax",
-      path: "/",
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 1000 * 60 * 60,
     });
     console.log('Logueado Correctamente')
     res
@@ -120,14 +119,4 @@ export const me = async (req: Request, res: Response) => {
   const usuario = req.user;
   if (!usuario) return res.status(401).json({ error: 'No autorizado (me)' });
   res.json({ usuario: { id: usuario.id, nombre: usuario.nombre, email: usuario.email } });
-};
-
-export const logout = (req: Request, res: Response) => {
-  res.clearCookie("userToken", {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
-    path: "/",
-  });
-  res.status(200).json({ message: "Sesión cerrada" });
 };

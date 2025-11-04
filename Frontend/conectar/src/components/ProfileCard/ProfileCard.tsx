@@ -43,6 +43,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
     try {
       if (onUpdateDescripcion) {
         await onUpdateDescripcion(tempDesc);
+        setTempDesc(tempDesc);
         setIsEditingDesc(false); 
       }
     } catch (error) {
@@ -51,6 +52,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
     } finally {
       setIsSaving(false);
     }
+    setIsEditingDesc(false);
   };
 
   const handleCancelEdit = () => {
@@ -128,7 +130,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
                 </button>
               </div>
             ) : (
-              <p>{descripcion || 'No hay descripción'}</p>
+              <p>{tempDesc || 'No hay descripción'}</p>
             )}
           </section>
 

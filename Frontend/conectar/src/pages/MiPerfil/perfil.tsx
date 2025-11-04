@@ -6,14 +6,14 @@ import { Button } from "../../components/button/Button";
 import "./perfil.css";
 import type { OtroUsuario } from "../../interfaces/otroUsuario.ts";
 import { useUser } from "../../Hooks/useUser.tsx";
-
+import SolicitarProf from "../../components/solicitarProf.tsx";
 
 const Perfil: React.FC = () => {
   const navigate = useNavigate();
   const { user, loading: userLoading } = useUser(); // viene del UserProvider (me)
   const [usuario, setUsuario] = useState<OtroUsuario>();
   const [loadingUsuario, setLoadingUsuario] = useState(false);
-
+  const [showSolicitar, setShowSolicitar] = useState(false);
 
   // ✅ Todos los Hooks siempre van arriba
   useEffect(() => {
@@ -76,9 +76,25 @@ const Perfil: React.FC = () => {
   return (
     <div className="app-container">
       <Header bgColor="#ffffff" logoSrc="/assets/conect_2_1.png">
-        <Button className="header-btn" onClick={() => navigate("/solicitarProf")}>Quiero solicitar una nueva profesion</Button>
-        <Button className="header-btn" onClick={() => navigate("/busqProfesionales")}>Quiero buscar un profesional</Button>
+        {/* Abrir modal en vez de pasar el componente como handler */}
+        <Button className="header-btn" onClick={() => setShowSolicitar(true)}>
+          Quiero solicitar una nueva profesion
+        </Button>
+        <Button className="header-btn" onClick={() => navigate("/busqProfesionales")}>
+          Quiero buscar un profesional
+        </Button>
       </Header>
+
+      {showSolicitar && (
+        <SolicitarProf
+          onClose={() => setShowSolicitar(false)}
+          onSuccess={(value) => {
+            // opcional: feedback, refresh, llamar API, etc.
+            console.log("Solicitud enviada:", value);
+            setShowSolicitar(false);
+          }}
+        />
+      )}
 
       <main>
         <div className="profile-wrapper">

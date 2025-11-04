@@ -17,7 +17,7 @@ const Perfil: React.FC = () => {
 
   // ✅ Todos los Hooks siempre van arriba
   useEffect(() => {
-    if (userLoading) return; // aún no sabemos si hay usuario
+    if (userLoading) return; // aún no sabemos si hay usuario 
     if (!user) {
       navigate("/login");
       return;

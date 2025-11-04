@@ -108,7 +108,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
 
       <section className={styles.profile_section}>
         {profesional ? <h4>Historial de Trabajos Realizados</h4> : <h4>Trabajos Contratados</h4>}
-        
+
         {trabajos && trabajos.length > 0 ? (
           <ul className={styles.historial_trabajo}>
             {trabajos.map((trabajo, index) => (
@@ -120,8 +120,8 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
           </ul>
         ) : (
           <p className={styles.no_trabajo}>
-            {profesional 
-              ? "Todavía no realizó ningún trabajo" 
+            {profesional
+              ? "Todavía no realizó ningún trabajo"
               : "Todavía no contrataste a ningún profesional"}
           </p>
         )}

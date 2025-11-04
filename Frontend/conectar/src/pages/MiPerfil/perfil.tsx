@@ -45,6 +45,30 @@ const Perfil: React.FC = () => {
     fetchDetalle();
   }, [user, userLoading, navigate]);
 
+  const ActDesc = async (newDesc: string) => {
+    if (!user) {
+      throw new Error('No authenticated user');
+    }
+
+    try {
+      const res = await fetch(`http://localhost:3000/api/usuario/${user.id}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ descripcion: newDesc }),
+        credentials: 'include'
+      });
+
+      if (!res.ok) throw new Error('Error al actualizar descripción');
+      
+      setUsuario(prev => prev ? {...prev, descripcion: newDesc} : prev);
+    } catch (err) {
+      console.error('Error:', err);
+      throw err;
+    }
+  };
+
   // ✅ A partir de acá, retornos normales
   if (userLoading || loadingUsuario) return <div>Cargando perfil...</div>;
   if (!user) return null; // en teoría ya redirigió
@@ -67,6 +91,8 @@ const Perfil: React.FC = () => {
               provincia={usuario.provincia}
               fotoUrl={usuario.fotoUrl}
               tipoPage="miPerfil"
+              descripcion={usuario?.descripcion}
+              onUpdateDescripcion={ActDesc}
             />
           )}
         </div>

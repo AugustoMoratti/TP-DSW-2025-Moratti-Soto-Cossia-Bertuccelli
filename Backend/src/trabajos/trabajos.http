@@ -1,4 +1,4 @@
-GET http://localhost:3000/api/trabajos
+GET http://localhost:3000/api/trabajos/pendientes/8bfc359b-40cc-4a49-924a-8182a98710ba
 
 ### Obtener una provincia (Con el id o cualquier otro atributo de la class)
 GET http://localhost:3000/api/trabajos/1

@@ -37,6 +37,42 @@ async function findAll(req: Request, res: Response) {
   }
 }
 
+async function trabajosFinalizados(req: Request, res: Response) {
+  try {
+    const { id } = req.params;
+    const profRef = em.getReference(Usuario, id);
+    const trabajos = await em.find(Trabajo, {
+      profesional: profRef,
+      $and: [{ fechaFinalizado: { $ne: null } }, { fechaFinalizado: { $ne: '' } }]
+    },
+      { populate: ['cliente', 'profesional', 'resenia'] });
+    res
+      .status(200)
+      .json({ message: 'found all Trabajos', data: trabajos })
+  } catch (error: any) {
+    res.status(500).json({ message: "error al obtener trabajos finalizados" })
+  }
+}
+
+async function trabajosPendientes(req: Request, res: Response) {
+  try {
+    const { id } = req.params
+    const trabajos = await em.find(Trabajo, {
+      profesional: id,
+      $or: [
+        { fechaFinalizado: null },
+        { fechaFinalizado: '' }
+      ]
+    },
+      { populate: ['cliente', 'profesional', 'resenia'] });
+    res
+      .status(200)
+      .json({ message: 'found all Trabajos', data: trabajos })
+  } catch (error: any) {
+    res.status(500).json({ message: error.message })
+  }
+}
+
 async function findOne(req: Request, res: Response) {
   try {
     const id = Number.parseInt(req.params.id)
@@ -59,7 +95,7 @@ async function add(req: Request, res: Response) {
     */
     const { montoTotal, cliente, profesional, fechaPago, fechaSolicitud, fechaFinalizado, resenia } = req.body;
 
-    if (!montoTotal || !cliente || !profesional || !fechaSolicitud) {
+    if (!cliente || !profesional || !fechaSolicitud) {
       res.status(400).json({ message: 'Faltan campos oblgiatorios' })
     };
 
@@ -73,11 +109,14 @@ async function add(req: Request, res: Response) {
 
     const trabajo = new Trabajo();
 
-    trabajo.montoTotal = Number(montoTotal);
+    if (montoTotal) trabajo.montoTotal = Number(montoTotal);
     trabajo.cliente = em.getReference(Usuario, cliente);
     trabajo.profesional = em.getReference(Usuario, profesional);
     trabajo.fechaSolicitud = fechaSolicitud;
 
+    if (fechaFinalizado) {
+      trabajo.fechaFinalizado = fechaFinalizado
+    };
 
     if (fechaPago) {
       trabajo.fechaPago = fechaPago
@@ -157,4 +196,4 @@ async function remove(req: Request, res: Response) {
   }
 }
 
-export { sanitizeTrabajoInput, findAll, findOne, add, update, remove }
+export { sanitizeTrabajoInput, findAll, findOne, add, update, remove, trabajosPendientes, trabajosFinalizados }

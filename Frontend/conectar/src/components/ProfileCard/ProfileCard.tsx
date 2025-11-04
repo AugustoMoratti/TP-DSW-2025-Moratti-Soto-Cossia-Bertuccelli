@@ -19,7 +19,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
   const [isEditingDesc, setIsEditingDesc] = useState(false);
   const [tempDesc, setTempDesc] = useState(descripcion);
   const [isSaving, setIsSaving] = useState(false);
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   useEffect(() => {
     const saved = localStorage.getItem("esProfesional");
@@ -31,20 +31,20 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
   }, [profesional]);
 
   useEffect(() => {
-    if (descripcion !== undefined) { 
+    if (descripcion !== undefined) {
       setTempDesc(descripcion);
     }
   }, [descripcion]);
 
   const handleSaveDesc = async () => {
     if (tempDesc.length > 250) return;
-    
+
     setIsSaving(true);
     try {
       if (onUpdateDescripcion) {
         await onUpdateDescripcion(tempDesc);
         setTempDesc(tempDesc);
-        setIsEditingDesc(false); 
+        setIsEditingDesc(false);
       }
     } catch (error) {
       console.error('Error al guardar:', error);
@@ -56,7 +56,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
   };
 
   const handleCancelEdit = () => {
-    setTempDesc(descripcion ?? ''); 
+    setTempDesc(descripcion ?? '');
     setIsEditingDesc(false);
   };
 
@@ -66,10 +66,10 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
       <section className={styles.profile_header}>
         <div className={styles.profile_info}>
           <div className={styles.nombre_foto_perfil}>
-            <img 
-              src={fotoUrl ? `http://localhost:3000${fotoUrl}` : '/default-avatar.png'} 
-              alt={`Foto de perfil de ${nombre}`} 
-              className={styles.foto_perfil} 
+            <img
+              src={fotoUrl ? `http://localhost:3000${fotoUrl}` : '/default-avatar.png'}
+              alt={`Foto de perfil de ${nombre}`}
+              className={styles.foto_perfil}
             />
             <div className={styles.usuario_info}>
               <h3>{nombre} {apellido}</h3>
@@ -100,7 +100,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
             <div className={styles.section_header}>
               <h4>Sobre mí</h4>
               {tipoPage === "miPerfil" && (
-                <button 
+                <button
                   className={styles.edit_btn}
                   onClick={isEditingDesc ? handleCancelEdit : () => setIsEditingDesc(true)}
                 >
@@ -121,7 +121,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
                   {tempDesc.length}/250
                   {tempDesc.length > 250 ? ' — Límite excedido' : ''}
                 </p>
-                <button 
+                <button
                   className={styles.save_btn}
                   onClick={handleSaveDesc}
                   disabled={tempDesc.length > 250 || isSaving}
@@ -188,7 +188,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
         )}
       </section>
       <div>
-        <button className={styles.btn_contratado} onClick={() => navigate("/misTrabajos")}> Mis Trabajos </button>
+        <button className={styles.btn_contratado} onClick={() => navigate("/trabajos")}> Mis Trabajos </button>
       </div>
     </div>
   );

@@ -16,7 +16,7 @@ export class Trabajo extends BaseEntity {
     /*@Property({ nullable: false })
     estado!: string;*/  //No hace falta ya que sabemos que si esta pago la fecha de pago no es null
 
-    @Property({ nullable: false })
+    @Property({ nullable: true })
     montoTotal!: number;
 
     @ManyToOne(() => Usuario, { nullable: false })

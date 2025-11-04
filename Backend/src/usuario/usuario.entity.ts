@@ -8,10 +8,10 @@ import { Trabajo } from '../trabajos/trabajos.entity.js';
 
 @Entity()
 export class Usuario extends BaseEntity2 {
-  @Property({ length: 50, nullable: false })
+  @Property({ length: 25, nullable: false })
   nombre!: string;
 
-  @Property({ length: 50, nullable: false })
+  @Property({ length: 25, nullable: false })
   apellido!: string;
 
   @Property({ length: 100, nullable: false })
@@ -26,10 +26,10 @@ export class Usuario extends BaseEntity2 {
   @Property({ length: 250, nullable: true })
   descripcion!: string;
 
-  @Property({ length: 50, nullable: false })
+  @Property({ length: 10, nullable: false })
   fechaNac!: string;
 
-  @Property({ length: 50, nullable: false })
+  @Property({ length: 15, nullable: false })
   contacto!: string;
 
   @Property({ length: 255, nullable: true }) //FOTO DE PERFIL DEL USUARIO

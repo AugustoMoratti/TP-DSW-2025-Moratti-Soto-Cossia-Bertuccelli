@@ -8,6 +8,7 @@ export interface OtroUsuario {
   email: string;
   provincia?: string;
   localidad?: string;
+  descripcion?: string;
   profesiones?: { nombreProfesion: string }[];
   direccion: string;
   trabajos: Trabajo[];

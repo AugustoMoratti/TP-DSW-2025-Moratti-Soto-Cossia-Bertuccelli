@@ -68,3 +68,31 @@
   color: #fff;
   border: 1px solid #fff;
 }
+
+
+
+@media (max-width: 768px) {
+  .header-container {
+    flex-direction: column;
+    align-items: center;
+    padding: 10px 20px;
+    gap: 10px;
+  }
+
+  .logo_header {
+    height: 60px;
+  }
+
+  .header-btns {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .header-btn,
+  .header-btn2 {
+    width: 100%;
+    max-width: 250px;
+    text-align: center;
+    margin-left: 0;
+  }
+}

@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from "react";
+import Modal from "react-modal";
 import styles from "./ProfileCard.module.css";
 import { useNavigate } from "react-router-dom";
-import type { ProfileCardProps } from "../../interfaces/profilaPropCard.ts";
+import type { ProfileCardProps } from "../../interfaces/profilaPropCard";
+import ManageProf from "../ManageProf";
+
 
 const ProfileCard: React.FC<ProfileCardProps> = ({
   nombre,
@@ -11,29 +14,32 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
   provincia,
   fotoUrl,
   tipoPage,
+  profesiones,
+  habilidades,
   trabajos,
-  descripcion = '',
+  descripcion = "",
   onUpdateDescripcion,
 }) => {
-  const [profesional, setProfesional] = useState<boolean>(false);
   const [isEditingDesc, setIsEditingDesc] = useState(false);
   const [tempDesc, setTempDesc] = useState(descripcion);
   const [isSaving, setIsSaving] = useState(false);
+  const [showProfesiones, setShowProfesiones] = useState(false);
+  const [showHabilidades, setShowHabilidades] = useState(false);
+
   const navigate = useNavigate();
 
   useEffect(() => {
-    const saved = localStorage.getItem("esProfesional");
-    if (saved) setProfesional(saved === "true");
+    try {
+      Modal.setAppElement("#root");
+
+    } catch {
+      // Ignorar errores en entornos sin DOM
+    }
   }, []);
 
-  useEffect(() => {
-    localStorage.setItem("esProfesional", String(profesional));
-  }, [profesional]);
 
   useEffect(() => {
-    if (descripcion !== undefined) {
-      setTempDesc(descripcion);
-    }
+    setTempDesc(descripcion ?? "");
   }, [descripcion]);
 
   const handleSaveDesc = async () => {
@@ -42,72 +48,96 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
     setIsSaving(true);
     try {
       if (onUpdateDescripcion) {
-        await onUpdateDescripcion(tempDesc);
-        setTempDesc(tempDesc);
-        setIsEditingDesc(false);
+        await onUpdateDescripcion(tempDesc.trim());
       }
+      setIsEditingDesc(false);
     } catch (error) {
-      console.error('Error al guardar:', error);
+      console.error("Error al guardar:", error);
       setIsEditingDesc(true);
     } finally {
       setIsSaving(false);
     }
-    setIsEditingDesc(false);
   };
 
   const handleCancelEdit = () => {
-    setTempDesc(descripcion ?? '');
+    setTempDesc(descripcion ?? "");
     setIsEditingDesc(false);
   };
+
+  const fotoSrc = fotoUrl ? `http://localhost:3000${fotoUrl}` : "/default-avatar.png";
 
   return (
     <div className={styles.profile_container}>
       <h2 className={styles.saludo}>Hola {nombre} 👋!</h2>
+
       <section className={styles.profile_header}>
         <div className={styles.profile_info}>
           <div className={styles.nombre_foto_perfil}>
             <img
-              src={fotoUrl ? `http://localhost:3000${fotoUrl}` : '/default-avatar.png'}
-              alt={`Foto de perfil de ${nombre}`}
+              src={fotoSrc}
+              alt={`Foto de perfil de ${nombre} ${apellido ?? ""}`}
               className={styles.foto_perfil}
             />
             <div className={styles.usuario_info}>
-              <h3>{nombre} {apellido}</h3>
-              <p className={styles.ubicacion}>Argentina, {provincia}, {localidad}</p>
+              <h3>
+                {nombre} {apellido}
+              </h3>
+              <p className={styles.ubicacion}>
+                Argentina, {provincia}, {localidad}
+              </p>
             </div>
           </div>
           <p>Email: {email}</p>
         </div>
+
         <div className={styles.botones_verticales}>
-          {tipoPage === "miPerfil"
-            ? <button className={styles.btn_direccion} onClick={() => navigate("/modificarPerfil")}>Modificar Perfil</button>
-            : <button className={styles.btn_direccion} onClick={() => navigate("/empezarTrabajo")}>Contratar</button>
-          }
-          {tipoPage === "miPerfil"
-            ? <button
-              className={`${styles.btn_direccion} ${profesional ? "active" : ""}`}
-              onClick={() => setProfesional(!profesional)}>
-              {profesional ? "Soy profesional ✅" : "Soy profesional"}
+          {tipoPage === "miPerfil" ? (
+            <button
+              type="button"
+              className={styles.btn_direccion}
+              onClick={() => navigate("/modificarPerfil")}
+            >
+              Modificar Perfil
             </button>
-            : <button className={styles.btn_direccion} onClick={() => navigate("/verTrabajos")}>Ver trabajos</button>
-          }
+          ) : (
+            <button
+              type="button"
+              className={styles.btn_direccion}
+              onClick={() => navigate("/empezarTrabajo")}
+            >
+              Contratar
+            </button>
+          )}
         </div>
       </section>
 
-      <section className={`${styles.slide_section} ${(profesional || isEditingDesc) ? styles.open : ''}`}>
-        <div className={`${styles.slide_content} ${(profesional || isEditingDesc) ? styles.visible : ''}`}>
+      <section
+        className={`${styles.slide_section} ${
+          tipoPage == 'miPerfil' || isEditingDesc ? styles.open : ""
+        }`}
+      >
+        <div
+          className={`${styles.slide_content} ${
+            tipoPage == 'miPerfil' || isEditingDesc ? styles.visible : ""
+          }`}
+        >
+
+
           <section className={styles.profile_section}>
             <div className={styles.section_header}>
               <h4>Sobre mí</h4>
               {tipoPage === "miPerfil" && (
                 <button
+                  type="button"
                   className={styles.edit_btn}
                   onClick={isEditingDesc ? handleCancelEdit : () => setIsEditingDesc(true)}
+                  disabled={isSaving}
                 >
-                  {isEditingDesc ? 'Cancelar' : 'Editar'}
+                  {isEditingDesc ? "Cancelar" : "Editar"}
                 </button>
               )}
             </div>
+
             {isEditingDesc ? (
               <div className={styles.edit_desc}>
                 <textarea
@@ -117,35 +147,117 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
                   rows={4}
                   disabled={isSaving}
                 />
-                <p style={{ color: tempDesc.length > 250 ? 'red' : undefined }}>
-                  {tempDesc.length}/250
-                  {tempDesc.length > 250 ? ' — Límite excedido' : ''}
+                <p style={{ color: tempDesc.length > 250 ? "red" : undefined }}>
+                  {tempDesc.length}/{250}
+                  {tempDesc.length > 250 ? " — Límite excedido" : ""}
                 </p>
                 <button
+                  type="button"
                   className={styles.save_btn}
                   onClick={handleSaveDesc}
                   disabled={tempDesc.length > 250 || isSaving}
                 >
-                  {isSaving ? 'Guardando...' : 'Guardar'}
+                  {isSaving ? "Guardando..." : "Guardar"}
                 </button>
               </div>
             ) : (
-              <p>{tempDesc || 'No hay descripción'}</p>
+              <p>{tempDesc || "No hay descripción"}</p>
             )}
           </section>
 
+
           <section className={styles.profile_section}>
-            <h4>Habilidades & Servicios</h4>
-            <div className={styles.skills}>
-              {["React", "TypeScript", "Diseño UI", "Prototipado", "Figma", "Node"].map(
-                (skill) => (
-                  <span key={skill} className={styles.skill_tag}>
-                    {skill}
-                  </span>
-                )
+            <h4>Profesiones</h4>
+
+            {profesiones && profesiones.length > 0 ? (
+              <ul className={styles.profesiones_list}>
+                {profesiones.map((profesion, index) => (
+                  <li key={index} className={styles.profesion_item}>
+                    {profesion}
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>No hay profesiones agregadas.</p>
+            )}
+
+            <button
+              type="button"
+              className={styles.btn_direccion}
+              style={{ marginTop: '20px' }}
+              onClick={() => setShowProfesiones(true)}
+            >
+              Agregar/Quitar Profesiones
+            </button>
+
+            <Modal
+              isOpen={showProfesiones}
+              onRequestClose={() => setShowProfesiones(false)}
+              contentLabel="Gestionar Profesiones"
+              className={styles.modal_content}
+              overlayClassName={styles.modal_overlay} 
+            >
+              <div>
+                <button
+                  type="button"
+                  className={styles.close}
+                  onClick={() => setShowProfesiones(false)}
+                  aria-label="Cerrar"
+                >
+                  &times;
+                </button>
+                <h2>Gestionar Profesiones</h2>
+                  <ManageProf/>
+              </div>
+            </Modal>
+            <div 
+            className={styles.divisor}
+            ></div>
+
+
+            <h4>Habilidades</h4>
+              {habilidades && habilidades.length > 0 ? (
+                <ul className={styles.habilidades_list}>
+                  {habilidades.map((habilidad, index) => (
+                    <li key={index} className={styles.habilidad_item}>
+                      {habilidad}
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p>No hay habilidades agregadas.</p>
               )}
-            </div>
+
+            <button
+              type="button"
+              className={styles.btn_direccion}
+              style={{ marginTop: '20px' }}
+              onClick={() => setShowHabilidades(true)}
+            >
+              Agregar/Quitar Habilidades
+            </button>
+            <Modal
+              isOpen={showHabilidades}
+              onRequestClose={() => setShowHabilidades(false)}
+              contentLabel="Gestionar Habilidades"
+              className={styles.modal_content}
+              overlayClassName={styles.modal_overlay}
+            >
+              <div>
+                <button
+                  type="button"
+                  className={styles.close}
+                  onClick={() => setShowHabilidades(false)}
+                  aria-label="Cerrar"
+                >
+                  &times;
+                </button>
+                <h2>Gestionar Habilidades</h2>
+                {/* Tu contenido acá */}
+              </div>
+            </Modal>
           </section>
+
 
           <section className={styles.profile_section}>
             <h4>Reseñas por servicio</h4>
@@ -167,28 +279,36 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
         </div>
       </section>
 
+
       <section className={styles.profile_section}>
-        {profesional ? <h4>Historial de Trabajos Realizados</h4> : <h4>Trabajos Contratados</h4>}
+        {tipoPage == 'miPerfil' ? <h4>Historial de Trabajos Realizados</h4> : <h4>Trabajos Contratados</h4>}
 
         {trabajos && trabajos.length > 0 ? (
           <ul className={styles.historial_trabajo}>
             {trabajos.map((trabajo, index) => (
               <React.Fragment key={index}>
                 <li>{trabajo}</li>
-                {index < trabajos.length - 1 && <div className={styles.divisor}></div>}
+                {index < trabajos.length - 1 && <div className={styles.divisor} />}
               </React.Fragment>
             ))}
           </ul>
         ) : (
           <p className={styles.no_trabajo}>
-            {profesional
-              ? "Todavía no realizó ningún trabajo"
-              : "Todavía no contrataste a ningún profesional"}
+            {tipoPage == 'miPerfil'
+              ? "Todavía no contrataste a ningún profesional"
+              : "Todavía no realizó ningún trabajo"}
           </p>
         )}
       </section>
+
       <div>
-        <button className={styles.btn_contratado} onClick={() => navigate("/trabajos")}> Mis Trabajos </button>
+        <button
+          type="button"
+          className={styles.btn_contratado}
+          onClick={() => navigate("/trabajos")}
+        >
+          Mis Trabajos
+        </button>
       </div>
     </div>
   );

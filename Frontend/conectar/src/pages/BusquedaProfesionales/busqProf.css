@@ -40,3 +40,66 @@ input:focus {
   background-color: #114f5a;
   width: 100%;
 }
+
+
+
+.busprof-page {
+  background-color: #114f5a;
+  min-height: 100vh; /* Mejor que height:100% para cubrir toda la pantalla */
+  width: 100%;
+  margin: 0;
+}
+
+.main-container {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 130px 50px;
+  gap: 20px;
+}
+
+/* Buscador */
+.buscador {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 60px;
+  border-radius: 20px;
+  padding-left: 20px;
+  color: #114f5a;
+  font-style: italic;
+  border: 1px solid #fff;
+  font-size: 1rem;
+}
+
+input::placeholder {
+  color: #114f5a84;
+}
+
+input:focus {
+  outline: none;
+  border: 1px solid #114f5aac;
+}
+
+.container-perfiles {
+  background-color: #114f5a;
+  width: 100%;
+}
+
+
+
+@media (max-width: 768px) {
+  .main-container {
+    padding: 60px 20px; /* Más compacto */
+    padding-top: 25vh;
+    gap: 15px;
+  }
+
+  .buscador {
+    min-width: auto; /* Elimina el min-width fijo */
+    font-size: 0.95rem;
+    padding-left: 15px;
+  }
+}
+

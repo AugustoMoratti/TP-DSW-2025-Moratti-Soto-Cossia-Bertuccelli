@@ -10,5 +10,7 @@ export interface ProfileCardProps {
   tipoPage?: "miPerfil" | "suPerfil"
   trabajos?: string[];
   descripcion?: string;
+  profesiones?: string[];
+  habilidades?: string[];
   onUpdateDescripcion?: (newDesc: string) => Promise<void>;
 }

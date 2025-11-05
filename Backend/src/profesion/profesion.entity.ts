@@ -3,7 +3,6 @@ import {
     PrimaryKey,
     Property
 } from '@mikro-orm/core';
-import { BaseEntity } from '../../DB/baseEntity.entity.js';
 
 @Entity()
 export class Profesiones {
@@ -16,6 +15,6 @@ export class Profesiones {
     @Property({})
     fechaSolicitud!: string;
 
-    @Property({ nullable: false })
+    @Property({ nullable: false, default: false })
     estado!: boolean;  //True es activo y False es que se tiene que aceptar por el admin, si se rechaza se elimina
 }

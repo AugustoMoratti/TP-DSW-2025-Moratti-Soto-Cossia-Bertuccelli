@@ -12,7 +12,7 @@ Content-Type: application/json
 { 
   "nombreProfesion": "Ingenieria en sistemas",
   "descripcionProfesion": "...",
-  "estado": true
+  "estado": false
 }
 
 ### ID
@@ -40,6 +40,6 @@ Content-Type: application/json
   "estado": true
 }
 
-### Eliminar una provicia (DELETE - eliminar recurso)
-DELETE http://localhost:3000/api/profesion/{{id}}
+### Eliminar una profesion (DELETE - eliminar recurso)
+DELETE http://localhost:3000/api/profesion/"ingenieria en sistemas"
 

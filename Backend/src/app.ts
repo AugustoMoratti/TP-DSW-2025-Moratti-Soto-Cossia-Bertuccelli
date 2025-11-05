@@ -77,6 +77,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 })
 //Antes de los middlewares de rutas
 */
+
 app.use("/uploads", express.static(UPLOADS_DIR));
 
 app.use('/api/provincia', provinciaRouter)

@@ -1,9 +1,9 @@
-import type { Usuario } from "../../interfaces/usuario.ts";
 import type { Trabajo } from "../../interfaces/trabajo.ts";
 import { useNavigate } from "react-router-dom";;
 import Header from "../../components/header/header";
 import { useState, useEffect } from "react";
 import { fetchMe } from "../../services/auth.services.ts";
+import TrabajoCard from "../../components/cardTrabajos/cardTrabajo.tsx";
 
 export default function Trabajos() {
   const navigate = useNavigate();
@@ -45,10 +45,13 @@ export default function Trabajos() {
 
       <main>
         <section className="trabajos_pendientes_container">
-
+          <h2>Trabajos Pendientes</h2>
         </section>
         <section className="trabajos_finalizados_container">
-
+          <h2>Trabajos Finalizados</h2>
+          {trabajosFinalizados.map(trabajo => (
+            <TrabajoCard key={trabajo.id} trabajo={trabajo} tipo={"finalizado"} />
+          ))}
         </section>
       </main>
     </div>

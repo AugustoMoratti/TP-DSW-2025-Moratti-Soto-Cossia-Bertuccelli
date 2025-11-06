@@ -1,0 +1,10 @@
+.profs-container {
+  display: grid;
+  place-items: center;
+  grid-template-columns: repeat(auto-fit, minmax(410px, 1fr));
+  background-color: #114f5a;
+  width: 100%;
+  grid-row-gap: 20px;
+  grid-column-gap: 20px;
+  align-items: center;
+}

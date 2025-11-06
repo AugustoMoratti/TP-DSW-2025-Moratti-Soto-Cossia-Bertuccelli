@@ -12,7 +12,7 @@ type Profesion = {
 
 export default function ManageProf() {
   const [profesiones, setProfesiones] = useState<Profesion[]>([]);
-  const [seleccionadas, setSeleccionadas] = useState<Set<string>>(new Set()); // guarda NOMBRES
+  const [seleccionadas, setSeleccionadas] = useState<Set<string>>(new Set()); 
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [mensajeOk, setMensajeOk] = useState<string | null>(null);
@@ -84,8 +84,7 @@ export default function ManageProf() {
         credentials: "include",
         body: JSON.stringify({
           userId: user.id,
-          profesiones: nombres, // <-- ahora son nombres puros
-          // o profesiones: nombres.map(nombre => ({ nombreProfesion: nombre }))
+          profesiones: nombres,
         }),
       });
 
@@ -108,9 +107,7 @@ export default function ManageProf() {
   };
 
   return (
-    <div style={{ padding: 16 }}>
-      <h3>Gestión de Profesiones</h3>
-
+    <div style={{ padding: 16, border: "1px solid #ccc", borderRadius: 8 }}>
       {loading && <p>Cargando profesiones…</p>}
       {error && <p style={{ color: "crimson" }}>{error}</p>}
       {mensajeOk && <p style={{ color: "green" }}>{mensajeOk}</p>}

@@ -174,8 +174,8 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
               {profesiones && profesiones.length > 0 ? (
                 profesiones.map((profesion) => (
                   <li key={ profesion.nombreProfesion } className={styles.profesion_item}>
-                    - {profesion.nombreProfesion}
-                        - {profesion.descripcionProfesion && (
+                    {profesion.nombreProfesion}
+                        {profesion.descripcionProfesion && (
                       <small style={{ opacity: 0.7 }}> — {profesion.descripcionProfesion}</small>
                     )}
                   </li>

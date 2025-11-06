@@ -89,7 +89,7 @@ async function findOne(req: Request, res: Response) {
 
 
 export async function addProfesiones(req: Request, res: Response) {
-  const em = RequestContext.getEntityManager(); 
+  const em = RequestContext.getEntityManager();
 
   try {
     const userId = req.body.userId as string | number | undefined;
@@ -269,13 +269,14 @@ async function update(req: Request, res: Response) {
     if (horarios) usuario.horarios = horarios.trim()
     if (direccion) usuario.direccion = direccion.trim()
 
-    const habilidadesArray = Array.isArray(habilidades) ? habilidades : [];
+    if (habilidades) {
+      const habilidadesArray = Array.isArray(habilidades) ? habilidades : [];
 
-    const habilidadesUnicas = habilidadesArray.filter(
-      (hab: string) => !usuario.habilidades.includes(hab)
-    );
-    usuario.habilidades.push(...habilidadesUnicas);
-
+      const habilidadesUnicas = habilidadesArray.filter(
+        (hab: string) => !usuario.habilidades.includes(hab)
+      );
+      usuario.habilidades.push(...habilidadesUnicas);
+    }
     const nombresEntrantes = [...new Set(profesionesName)]; // quitar duplicados entrantes
     const nombresExistentes = new Set<string>(usuario.profesiones.getItems().map(p => p.nombreProfesion));
 

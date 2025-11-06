@@ -1,4 +1,5 @@
 import type { Trabajo } from "./trabajo.ts";
+import type { Profesion } from "./profesion.ts";
 
 export interface OtroUsuario {
   fotoUrl: string;
@@ -9,7 +10,7 @@ export interface OtroUsuario {
   provincia?: string;
   localidad?: string;
   descripcion?: string;
-  profesiones?: { nombreProfesion: string }[];
+  profesiones?: Profesion[];
   direccion: string;
   trabajos: Trabajo[];
 };

@@ -66,8 +66,6 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
 
   const fotoSrc = fotoUrl ? `http://localhost:3000${fotoUrl}` : "/default-avatar.png";
 
-  console.log("Profesiones:", profesiones);
-
   return (
     <div className={styles.profile_container}>
       <h2 className={styles.saludo}>Hola {nombre} 👋!</h2>
@@ -114,14 +112,12 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
       </section>
 
       <section
-        className={`${styles.slide_section} ${
-          tipoPage == 'miPerfil' || isEditingDesc ? styles.open : ""
-        }`}
+        className={`${styles.slide_section} ${tipoPage == 'miPerfil' || isEditingDesc ? styles.open : ""
+          }`}
       >
         <div
-          className={`${styles.slide_content} ${
-            tipoPage == 'miPerfil' || isEditingDesc ? styles.visible : ""
-          }`}
+          className={`${styles.slide_content} ${tipoPage == 'miPerfil' || isEditingDesc ? styles.visible : ""
+            }`}
         >
 
 
@@ -175,7 +171,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
                 profesiones.map((profesion) => (
                   <li key={ profesion.nombreProfesion } className={styles.profesion_item}>
                     {profesion.nombreProfesion}
-                        {profesion.descripcionProfesion && (
+                    {profesion.descripcionProfesion && (
                       <small style={{ opacity: 0.7 }}> — {profesion.descripcionProfesion}</small>
                     )}
                   </li>
@@ -199,7 +195,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
               onRequestClose={() => setShowProfesiones(false)}
               contentLabel="Gestionar Profesiones"
               className={styles.modal_content}
-              overlayClassName={styles.modal_overlay} 
+              overlayClassName={styles.modal_overlay}
             >
               <div>
                 <button
@@ -211,26 +207,26 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
                   &times;
                 </button>
                 <h2>Gestionar Profesiones</h2>
-                  <ManageProf/>
+                <ManageProf />
               </div>
             </Modal>
-            <div 
-            className={styles.divisor}
+            <div
+              className={styles.divisor}
             ></div>
 
 
             <h4>Habilidades</h4>
-              {habilidades && habilidades.length > 0 ? (
-                <ul className={styles.habilidades_list}>
-                  {habilidades.map((habilidad, index) => (
-                    <li key={index} className={styles.habilidad_item}>
-                      {habilidad}
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <p>No hay habilidades agregadas.</p>
-              )}
+            {habilidades && habilidades.length > 0 ? (
+              <ul className={styles.habilidades_list}>
+                {habilidades.map((habilidad, index) => (
+                  <li key={index} className={styles.habilidad_item}>
+                    {habilidad}
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>No hay habilidades agregadas.</p>
+            )}
 
             <button
               type="button"

@@ -61,8 +61,9 @@ const Perfil: React.FC = () => {
       });
 
       if (!res.ok) throw new Error('Error al actualizar descripción');
-      
-      setUsuario(prev => prev ? {...prev, descripcion: newDesc} : prev);
+
+      const actualizado = await res.json();
+      setUsuario(prev => prev ? { ...prev, ...actualizado } : prev);
     } catch (err) {
       console.error('Error:', err);
       throw err;

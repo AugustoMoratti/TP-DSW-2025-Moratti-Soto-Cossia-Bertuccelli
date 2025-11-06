@@ -65,11 +65,11 @@ Content-Type: application/json
 }
 
 ### Modificar una provincia (PATCH - modificar recurso parcialmente)
-PATCH http://localhost:3000/api/usuario/{{id}}
+PATCH http://localhost:3000/api/usuario/740966f1-41b6-4827-bcc7-bf676fc8787b
 Content-Type: application/json
 
 {
-  "habilidades": ["mikroOrm"]
+  "descripcion":"Salame"
 }
 
 ### Eliminar una provicia (DELETE - eliminar recurso)

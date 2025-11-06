@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { fetchMe } from "../services/auth.services.ts";
 import style from "./ProfileCard/ProfileCard.module.css";
 
 type Profesion = {
@@ -11,11 +12,11 @@ type Profesion = {
 
 export default function ManageProf() {
   const [profesiones, setProfesiones] = useState<Profesion[]>([]);
-  const [seleccionadas, setSeleccionadas] = useState<Set<string>>(new Set()); 
+  const [seleccionadas, setSeleccionadas] = useState<Set<string>>(new Set()); // guarda NOMBRES
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [mensajeOk, setMensajeOk] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
-
 
   useEffect(() => {
     const ac = new AbortController();
@@ -31,7 +32,6 @@ export default function ManageProf() {
         });
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const data = await res.json();
-        console.log("JSON recibido (profesiones):", data);
 
         const lista: Profesion[] =
           Array.isArray(data) ? data :
@@ -39,7 +39,6 @@ export default function ManageProf() {
           Array.isArray(data?.data) ? data.data : [];
 
         setProfesiones(lista);
-
       } catch (e: any) {
         if (e.name !== "AbortError") setError("No se pudieron cargar las profesiones");
         console.error(e);
@@ -49,51 +48,57 @@ export default function ManageProf() {
     };
 
     fetchProfesiones();
-    return () => ac.abort();  
+    return () => ac.abort();
   }, []);
 
   const getItemKey = (p: Profesion) =>
     String(p.id ?? `${p.nombreProfesion}-${p.fechaSolicitud ?? ""}-${p.estado ?? ""}`);
 
-  const toggleSeleccion = (key: string) => {
+  const toggleSeleccion = (nombre: string) => {
     setSeleccionadas((prev) => {
       const next = new Set(prev);
-      if (next.has(key)) next.delete(key);
-      else next.add(key);
+      if (next.has(nombre)) next.delete(nombre);
+      else next.add(nombre);
       return next;
     });
   };
 
   const handleGuardar = async () => {
-
-
-    if (seleccionadas.size === 0) {
-      setError("Seleccioná al menos una profesión.");
-      return;
-    }
-
-    setSaving(true);
-    setError(null);
-
     try {
+      const user = await fetchMe();
 
-      const res = await fetch("http://localhost:3000/api/usuario/profesiones", {
+      if (seleccionadas.size === 0) {
+        setError("Seleccioná al menos una profesión.");
+        return;
+      }
+
+      setSaving(true);
+      setError(null);
+      setMensajeOk(null);
+
+      const nombres = Array.from(seleccionadas).map(n => n.trim());
+
+      const res = await fetch(`http://localhost:3000/api/usuario/${user.id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
+        body: JSON.stringify({
+          userId: user.id,
+          profesiones: nombres, // <-- ahora son nombres puros
+          // o profesiones: nombres.map(nombre => ({ nombreProfesion: nombre }))
+        }),
       });
 
+      const data = await res.json();
+      console.log("Respuesta del servidor:", data);
+
       if (!res.ok) {
-        let msg = `HTTP ${res.status}`;
-        try { msg = (await res.json())?.message || msg; } catch {}
-        throw new Error(msg);
+        setError(data.error || "❌ Error en el registro.");
+        return;
       }
 
-      // Si el backend devuelve algo, podés usarlo:
-      // const result = await res.json().catch(() => null);
-
-      console.log("Profesiones guardadas con éxito");
-      // Opcional: toast, cerrar modal, refetch, etc.
+      setMensajeOk("✅ Profesiones guardadas con éxito");
+      setSeleccionadas(new Set());
     } catch (e: any) {
       console.error(e);
       setError(e?.message || "No se pudieron guardar las profesiones");
@@ -108,6 +113,7 @@ export default function ManageProf() {
 
       {loading && <p>Cargando profesiones…</p>}
       {error && <p style={{ color: "crimson" }}>{error}</p>}
+      {mensajeOk && <p style={{ color: "green" }}>{mensajeOk}</p>}
 
       {!loading && !error && (
         <>
@@ -116,19 +122,20 @@ export default function ManageProf() {
           ) : (
             <ul style={{ listStyle: "none", padding: 0 }}>
               {profesiones.map((p) => {
-                const key = getItemKey(p);
-                const inputId = `prof-${key}`;
-                const isChecked = seleccionadas.has(key);
+                const reactKey = getItemKey(p);
+                const inputId = `prof-${reactKey}`;
+                const value = p.nombreProfesion;
+                const isChecked = seleccionadas.has(value);
 
                 return (
-                  <li key={key} style={{ marginBottom: 12 }}>
+                  <li key={reactKey} style={{ marginBottom: 12 }}>
                     <label htmlFor={inputId} style={{ display: "grid", gap: 4 }}>
                       <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                         <input
                           id={inputId}
                           type="checkbox"
                           checked={isChecked}
-                          onChange={() => toggleSeleccion(key)}
+                          onChange={() => toggleSeleccion(value)}
                           disabled={saving}
                         />
                         <strong>{p.nombreProfesion}</strong>

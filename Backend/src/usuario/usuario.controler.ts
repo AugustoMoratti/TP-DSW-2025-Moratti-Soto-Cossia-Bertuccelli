@@ -243,6 +243,8 @@ async function add(req: Request, res: Response) {
 async function update(req: Request, res: Response) {
   try {
 
+    console.log(req.body)
+
     const id = req.params.id
     const usuario = await em.findOneOrFail(Usuario, { id }, { populate: ['profesiones'] })
 
@@ -267,7 +269,9 @@ async function update(req: Request, res: Response) {
     if (horarios) usuario.horarios = horarios.trim()
     if (direccion) usuario.direccion = direccion.trim()
 
-    const habilidadesUnicas = habilidades.filter(
+    const habilidadesArray = Array.isArray(habilidades) ? habilidades : [];
+
+    const habilidadesUnicas = habilidadesArray.filter(
       (hab: string) => !usuario.habilidades.includes(hab)
     );
     usuario.habilidades.push(...habilidadesUnicas);

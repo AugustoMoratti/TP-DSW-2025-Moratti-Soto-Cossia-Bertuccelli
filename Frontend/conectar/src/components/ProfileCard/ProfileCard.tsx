@@ -66,6 +66,8 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
 
   const fotoSrc = fotoUrl ? `http://localhost:3000${fotoUrl}` : "/default-avatar.png";
 
+  console.log("Profesiones:", profesiones);
+
   return (
     <div className={styles.profile_container}>
       <h2 className={styles.saludo}>Hola {nombre} 👋!</h2>
@@ -168,18 +170,20 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
 
           <section className={styles.profile_section}>
             <h4>Profesiones</h4>
-
-            {profesiones && profesiones.length > 0 ? (
-              <ul className={styles.profesiones_list}>
-                {profesiones.map((profesion, index) => (
-                  <li key={index} className={styles.profesion_item}>
-                    {profesion}
+            <ul>
+              {profesiones && profesiones.length > 0 ? (
+                profesiones.map((profesion) => (
+                  <li key={ profesion.nombreProfesion } className={styles.profesion_item}>
+                    - {profesion.nombreProfesion}
+                        - {profesion.descripcionProfesion && (
+                      <small style={{ opacity: 0.7 }}> — {profesion.descripcionProfesion}</small>
+                    )}
                   </li>
-                ))}
-              </ul>
-            ) : (
-              <p>No hay profesiones agregadas.</p>
-            )}
+                ))
+              ) : (
+                <p>No hay profesiones agregadas.</p>
+              )}
+            </ul>
 
             <button
               type="button"

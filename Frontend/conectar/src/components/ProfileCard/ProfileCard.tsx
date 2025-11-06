@@ -256,10 +256,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
                 {/* Tu contenido acá */}
               </div>
             </Modal>
-          </section>
-
-
-          <section className={styles.profile_section}>
+          </section>          <section className={styles.profile_section}>
             <h4>Reseñas por servicio</h4>
             <div className={styles.reviews}>
               <div className={styles.review_item}>

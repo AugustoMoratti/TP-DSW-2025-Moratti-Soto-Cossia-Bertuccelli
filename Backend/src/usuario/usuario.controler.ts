@@ -4,6 +4,8 @@ import { Provincia } from '../provincia/provincia.entity.js';
 import { Localidad } from '../localidad/localidades.entity.js';
 import { Profesiones } from '../profesion/profesion.entity.js';
 import { orm } from '../../DB/orm.js';
+import { RequestContext } from '@mikro-orm/core';
+import { EntityManager } from '@mikro-orm/core';
 import { upload, UPLOADS_DIR } from '../utils/upload.js';
 
 const em = orm.em.fork();
@@ -84,6 +86,69 @@ async function findOne(req: Request, res: Response) {
     res.status(500).json({ message: error.message })
   }
 }
+
+
+export async function addProfesiones(req: Request, res: Response) {
+  const em = RequestContext.getEntityManager();
+
+  try {
+    const userId = req.body.userId as string | number | undefined;
+    if (!userId) {
+      return res.status(400).json({ message: "Falta userId" });
+    }
+
+    const raw = req.body.profesiones;
+    if (!Array.isArray(raw)) {
+      return res.status(400).json({ message: "El campo 'profesiones' debe ser un arreglo" });
+    }
+
+    const profesionesName = raw
+      .filter((p: unknown) => typeof p === "string")
+      .map((p: string) => p.trim())
+      .filter((p) => p.length > 0)
+      .map((p) => p.toLowerCase());
+
+    if (!em) {
+      return res.status(500).json({ message: 'EntityManager no inicializado' });
+    }
+
+    await em.transactional(async (tem: EntityManager) => {
+      const usuario = await tem.findOne(Usuario, { id: String(userId) }, { populate: ["profesiones"] });
+      if (!usuario) {
+        return res.status(404).json({ message: "Usuario no encontrado" });
+      }
+
+      if (profesionesName.length === 0) {
+        usuario.profesiones.set([]); // reemplaza toda la colección
+        await tem.flush();
+        return res.status(200).json({ message: "Profesiones eliminadas" });
+      }
+
+      const profesionesRef = await tem.find(Profesiones, {
+        nombreProfesion: { $in: profesionesName },
+        estado: true,
+      });
+
+      if (profesionesRef.length === 0) {
+        return res.status(400).json({ message: "Ninguna profesión válida encontrada" });
+      }
+
+      usuario.profesiones.set(profesionesRef);
+
+      await tem.flush();
+
+      return res.status(200).json({
+        message: "Profesiones actualizadas",
+        total: profesionesRef.length,
+        profesiones: profesionesRef.map((p) => ({ id: p.nombreProfesion })),
+      });
+    });
+  } catch (error: any) {
+    console.error(error);
+    return res.status(500).json({ message: error?.message ?? "Error interno" });
+  }
+}
+
 
 async function add(req: Request, res: Response) {
   try {
@@ -178,6 +243,8 @@ async function add(req: Request, res: Response) {
 async function update(req: Request, res: Response) {
   try {
 
+    console.log(req.body)
+
     const id = req.params.id
     const usuario = await em.findOneOrFail(Usuario, { id }, { populate: ['profesiones'] })
 
@@ -202,11 +269,14 @@ async function update(req: Request, res: Response) {
     if (horarios) usuario.horarios = horarios.trim()
     if (direccion) usuario.direccion = direccion.trim()
 
-    const habilidadesUnicas = habilidades.filter(
-      (hab: string) => !usuario.habilidades.includes(hab)
-    );
-    usuario.habilidades.push(...habilidadesUnicas);
+    if (habilidades) {
+      const habilidadesArray = Array.isArray(habilidades) ? habilidades : [];
 
+      const habilidadesUnicas = habilidadesArray.filter(
+        (hab: string) => !usuario.habilidades.includes(hab)
+      );
+      usuario.habilidades.push(...habilidadesUnicas);
+    }
     const nombresEntrantes = [...new Set(profesionesName)]; // quitar duplicados entrantes
     const nombresExistentes = new Set<string>(usuario.profesiones.getItems().map(p => p.nombreProfesion));
 

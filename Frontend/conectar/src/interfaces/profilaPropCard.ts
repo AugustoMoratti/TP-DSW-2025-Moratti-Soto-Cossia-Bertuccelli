@@ -1,14 +1,16 @@
+import type { Profesion } from "./profesion.ts";
 
-export interface ProfileCardProps {
+export type ProfileCardProps = {
   nombre: string;
   apellido: string;
   email: string;
-  imagenPerfil?: string;
   localidad?: string;
   provincia?: string;
-  fotoUrl?: string;
-  tipoPage?: "miPerfil" | "suPerfil"
+  fotoUrl?: string | null;
+  tipoPage: "miPerfil" | "otro";
+  profesiones?: Profesion[];     // <- array de objetos
+  habilidades?: string[];
   trabajos?: string[];
   descripcion?: string;
-  onUpdateDescripcion?: (newDesc: string) => Promise<void>;
-}
+  onUpdateDescripcion?: (desc: string) => Promise<void> | void;
+};

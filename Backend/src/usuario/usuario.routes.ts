@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { findAll, findOne, add, update, remove, sanitizeUsuarioInput, buscarUsuarios } from './usuario.controler.js'
+import { findAll, findOne, add, update, remove, sanitizeUsuarioInput, buscarUsuarios, addProfesiones} from './usuario.controler.js'
 import { login, register, me } from '../auth/auth.controller.js'
 import { authMiddleware, refreshCookieMiddleware } from '../middleware/authMiddleware.js'
 import { upload } from '../utils/upload.js'
@@ -13,6 +13,7 @@ usuarioRouter.get('/:id', findOne)
 usuarioRouter.post('/login', login)
 usuarioRouter.post('/register', sanitizeUsuarioInput, register)
 usuarioRouter.post('/', sanitizeUsuarioInput, add)
+usuarioRouter.post('/profesiones', authMiddleware, addProfesiones)
 usuarioRouter.put('/:id', sanitizeUsuarioInput, upload.single('imagen'), update)
 usuarioRouter.patch('/:id', sanitizeUsuarioInput, upload.single('imagen'), update)
 usuarioRouter.delete('/:id', remove)

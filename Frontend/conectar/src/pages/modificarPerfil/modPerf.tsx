@@ -31,14 +31,14 @@ export default function EditProfile() {
     const fetchUser = async () => {
       try {
         setLoading(true);
-        const res = await fetch('http://localhost:3000/api/usuario/me', {
+        const res = await fetch('http://localhost:3000/api/usuario/${user.id}', {
           method: 'GET',
           headers: {'Content-Type': 'application/json',},
           credentials: 'include'
         });
         const data = await res.json();
         if (!res.ok) {
-          setSaveError(data.error || "No se pudo obtener el usuario.");
+          navigate("/login");
           return;
         }
         setUser({
@@ -110,7 +110,7 @@ export default function EditProfile() {
 
     try {
       setLoading(true);
-      const res = await fetch('http://localhost:3000/api/usuario/update', {
+      const res = await fetch('http://localhost:3000/api/usuario/${user.id}', {
         method: 'PUT',
         headers: {'Content-Type': 'application/json',},
         credentials: 'include',

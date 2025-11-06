@@ -1,8 +1,14 @@
 import { useEffect, useState } from "react";
 import { fetchMe } from "../services/auth.services.ts";
 import style from "./ProfileCard/ProfileCard.module.css";
-import type { Profesion } from "../interfaces/profesion.ts";
 
+type Profesion = {
+  id?: number | string;
+  nombreProfesion: string;
+  descripcionProfesion?: string;
+  fechaSolicitud?: string;
+  estado?: string;
+};
 
 export default function ManageProf() {
   const [profesiones, setProfesiones] = useState<Profesion[]>([]);
@@ -29,8 +35,8 @@ export default function ManageProf() {
 
         const lista: Profesion[] =
           Array.isArray(data) ? data :
-            Array.isArray(data?.profesiones) ? data.profesiones :
-              Array.isArray(data?.data) ? data.data : [];
+          Array.isArray(data?.profesiones) ? data.profesiones :
+          Array.isArray(data?.data) ? data.data : [];
 
         setProfesiones(lista);
       } catch (e: any) {

@@ -1,25 +1,14 @@
 import React, { useEffect, useState } from "react";
 import StandardInput from '../../components/form/Form.tsx';
-import { Button } from '../../components/button/Button.tsx';
 import EditIcon from '@mui/icons-material/Edit';
 import SaveIcon from '@mui/icons-material/Save';
 import { useNavigate } from "react-router-dom";
+import { fetchMe } from "../../services/auth.services.ts";
+import type { ProfileCardProps as user} from "../../interfaces/profilaPropCard.tsx";
 import './modPerf.css';
 
-type UserData = {
-  id?: string;
-  nombre?: string;
-  apellido?: string;
-  fechaNac?: string;
-  provincia?: string;
-  localidad?: string;
-  direccion?: string;
-  contacto?: string;
-  email?: string;
-};
-
 export default function EditProfile() {
-  const [user, setUser] = useState<UserData>({});
+  const [user, setUser] = useState<user>({} as user);
   const [editable, setEditable] = useState<Record<string, boolean>>({});
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(false);
@@ -28,40 +17,34 @@ export default function EditProfile() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        setLoading(true);
-        const res = await fetch('http://localhost:3000/api/usuario/${user.id}', {
-          method: 'GET',
-          headers: {'Content-Type': 'application/json',},
-          credentials: 'include'
-        });
-        const data = await res.json();
-        if (!res.ok) {
-          navigate("/login");
-          return;
-        }
-        setUser({
-          id: data.id || data._id,
-          nombre: data.nombre || "",
-          apellido: data.apellido || "",
-          fechaNac: data.fechaNac || "",
-          provincia: data.provincia || "",
-          localidad: data.localidad || "",
-          direccion: data.direccion || "",
-          contacto: data.contacto || "",
-          email: data.email || ""
-        });
-      } catch (err) {
-        console.error(err);
-        setSaveError("Error de conexión al obtener usuario.");
-      } finally {
-        setLoading(false);
-      }
-    };
+  const fetchUser = async () => {
+    try {
+      setLoading(true);
+      
+      const me = await fetchMe();
 
-    fetchUser();
-  }, []);
+      const res = await fetch(`http://localhost:3000/api/usuario/${me.id}`, {
+        method: "GET",
+        credentials: 'include',
+      });
+
+      if (!res.ok) {
+        throw new Error("Error al obtener datos del usuario");
+      }
+
+      const data = await res.json();
+      setUser(data.data);
+    } catch (err) {
+      console.error("Error al cargar usuario:", err);
+      navigate("/login");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchUser();
+}, []);
+
 
   const toggleEdit = (field: string) => {
     setEditable(prev => ({ ...prev, [field]: !prev[field] }));
@@ -70,7 +53,7 @@ export default function EditProfile() {
     setSuccessMsg("");
   };
 
-  const handleChange = (field: keyof UserData, value: string) => {
+  const handleChange = (field: keyof user, value: string) => {
     if (field === "contacto") {
       if (!/^\d*$/.test(value)) {
         setErrors(prev => ({ ...prev, contacto: "Solo se permiten números" }));
@@ -110,7 +93,7 @@ export default function EditProfile() {
 
     try {
       setLoading(true);
-      const res = await fetch('http://localhost:3000/api/usuario/${user.id}', {
+      const res = await fetch(`http://localhost:3000/api/usuario/${user.id}`, {
         method: 'PUT',
         headers: {'Content-Type': 'application/json',},
         credentials: 'include',
@@ -123,7 +106,7 @@ export default function EditProfile() {
           localidad: user.localidad,
           direccion: user.direccion,
           contacto: user.contacto,
-          email: user.email
+          email: user.email,
         })
       });
 
@@ -157,7 +140,7 @@ export default function EditProfile() {
   return (
     <section className="main-bg">
       <div className="top-bar">
-        <img src="../assets/conect_1.png" alt="Logo" className="logo" onClick={() => navigate("/")} />
+        <img src="../assets/conect_1.png" alt="Logo" className="logoModPerf" onClick={() => navigate("/")} />
       </div>
 
       <div className="card">
@@ -167,16 +150,28 @@ export default function EditProfile() {
 
         <div className="card-content">
         <div className="fields-box">
-          <div className="field-with-action">
-            {editable.nombre ? (
-              <StandardInput label="Nombre" value={user.nombre || ""} onChange={(v) => handleChange("nombre", v)} />
-            ) : (
-              <StaticField label="Nombre" value={user.nombre} />
-            )}
-            <Button variant="outlined" className="edit-btn" icon={<EditIcon />} onClick={() => toggleEdit("nombre")}>
-              {editable.nombre ? "Cancelar" : "Editar"}
-            </Button>
-          </div>
+        <div className="field-with-action">
+          { editable.nombre ? (
+            <StandardInput label="Nombre" value={user.nombre || ""} onChange={(v) =>  handleChange("nombre", v)} />
+          ) : (
+            <StaticField label="Nombre" value={user.nombre} />
+          )}
+
+          <button className="btn_modPerf" onClick={() => toggleEdit("nombre")}>
+            {editable.nombre ? "Cancelar" : "Editar"}
+            <EditIcon />
+          </button>
+          {editable.nombre && (
+            <button
+              className={`btn_modPerf guardar-btn ${editable.nombre ? "visible" : ""}`}
+              onClick={handleSaveAll}
+              type="button"
+            >
+              Guardar
+              <SaveIcon />
+            </button>
+          )}
+        </div>
 
           <div className="field-with-action">
             {editable.apellido ? (
@@ -184,9 +179,20 @@ export default function EditProfile() {
             ) : (
               <StaticField label="Apellido" value={user.apellido} />
             )}
-            <Button variant="outlined" className="edit-btn" icon={<EditIcon />} onClick={() => toggleEdit("apellido")}>
+            <button className='btn_modPerf' onClick={() => toggleEdit("apellido")}>
               {editable.apellido ? "Cancelar" : "Editar"}
-            </Button>
+              <EditIcon />
+            </button>
+            {editable.apellido && (
+            <button
+              className={`btn_modPerf guardar-btn ${editable.apellido ? "visible" : ""}`}
+              onClick={handleSaveAll}
+              type="button"
+            >
+              Guardar
+              <SaveIcon />
+            </button>
+          )}
           </div>
 
           <div className="field-with-action">
@@ -195,9 +201,20 @@ export default function EditProfile() {
             ) : (
               <StaticField label="Fecha de nacimiento" value={user.fechaNac} />
             )}
-            <Button variant="outlined" className="edit-btn" icon={<EditIcon />} onClick={() => toggleEdit("fechaNac")}>
+            <button className='btn_modPerf' onClick={() => toggleEdit("fechaNac")}>
               {editable.fechaNac ? "Cancelar" : "Editar"}
-            </Button>
+              <EditIcon />
+            </button>
+            {editable.fechaNac && (
+            <button
+              className={`btn_modPerf guardar-btn ${editable.fechaNac ? "visible" : ""}`}
+              onClick={handleSaveAll}
+              type="button"
+            >
+              Guardar
+              <SaveIcon />
+            </button>
+          )}
           </div>
 
           <div className="field-with-action">
@@ -206,9 +223,20 @@ export default function EditProfile() {
             ) : (
               <StaticField label="Provincia" value={user.provincia} />
             )}
-            <Button variant="outlined" className="edit-btn" icon={<EditIcon />} onClick={() => toggleEdit("provincia")}>
+            <button className='btn_modPerf' onClick={() => toggleEdit("provincia")}>
               {editable.provincia ? "Cancelar" : "Editar"}
-            </Button>
+              <EditIcon />
+            </button>
+            {editable.provincia && (
+            <button
+              className={`btn_modPerf guardar-btn ${editable.provincia ? "visible" : ""}`}
+              onClick={handleSaveAll}
+              type="button"
+            >
+              Guardar
+              <SaveIcon />
+            </button>
+          )}
           </div>
 
           <div className="field-with-action">
@@ -217,9 +245,20 @@ export default function EditProfile() {
             ) : (
               <StaticField label="Localidad" value={user.localidad} />
             )}
-            <Button variant="outlined" className="edit-btn" icon={<EditIcon />} onClick={() => toggleEdit("localidad")}>
+            <button className='btn_modPerf' onClick={() => toggleEdit("localidad")}>
               {editable.localidad ? "Cancelar" : "Editar"}
-            </Button>
+              <EditIcon />
+            </button>
+            {editable.localidad && (
+            <button
+              className={`btn_modPerf guardar-btn ${editable.localidad ? "visible" : ""}`}
+              onClick={handleSaveAll}
+              type="button"
+            >
+              Guardar
+              <SaveIcon />
+            </button>
+          )}
           </div>
 
           <div className="field-with-action">
@@ -228,9 +267,20 @@ export default function EditProfile() {
             ) : (
               <StaticField label="Dirección" value={user.direccion} />
             )}
-            <Button variant="outlined" className="edit-btn" icon={<EditIcon />} onClick={() => toggleEdit("direccion")}>
+            <button className='btn_modPerf' onClick={() => toggleEdit("direccion")}>
               {editable.direccion ? "Cancelar" : "Editar"}
-            </Button>
+              <EditIcon />
+            </button>
+            {editable.direccion && (
+            <button
+              className={`btn_modPerf guardar-btn ${editable.direccion ? "visible" : ""}`}
+              onClick={handleSaveAll}
+              type="button"
+            >
+              Guardar
+              <SaveIcon />
+            </button>
+          )}
           </div>
 
           <div className="field-with-action">
@@ -239,9 +289,20 @@ export default function EditProfile() {
             ) : (
               <StaticField label="Teléfono" value={user.contacto} />
             )}
-            <Button variant="outlined" className="edit-btn" icon={<EditIcon />} onClick={() => toggleEdit("contacto")}>
+            <button className='btn_modPerf' onClick={() => toggleEdit("contacto")}>
               {editable.contacto ? "Cancelar" : "Editar"}
-            </Button>
+              <EditIcon />
+            </button>
+            {editable.contacto && (
+            <button
+              className={`btn_modPerf guardar-btn ${editable.contacto ? "visible" : ""}`}
+              onClick={handleSaveAll}
+              type="button"
+            >
+              Guardar
+              <SaveIcon />
+            </button>
+          )}
           </div>
           {errors.contacto && <div className="field-error">{errors.contacto}</div>}
 
@@ -251,24 +312,32 @@ export default function EditProfile() {
             ) : (
               <StaticField label="Email" value={user.email} />
             )}
-            <Button variant="outlined" className="edit-btn" icon={<EditIcon />} onClick={() => toggleEdit("email")}>
+            <button className='btn_modPerf' onClick={() => toggleEdit("email")}>
               {editable.email ? "Cancelar" : "Editar"}
-            </Button>
+              <EditIcon />
+            </button>
+            {editable.email && (
+            <button
+              className={`btn_modPerf guardar-btn ${editable.email ? "visible" : ""}`}
+              onClick={handleSaveAll}
+              type="button"
+            >
+              Guardar
+              <SaveIcon />
+            </button>
+          )}
           </div>
           {errors.email && <div className="field-error">{errors.email}</div>}
 
           <div className="card-actions">
-            <Button variant="contained" className="save-btn" icon={<SaveIcon />} onClick={handleSaveAll} type="button">
-              Guardar
-            </Button>
 
-            <Button variant="contained" className="back-btn" onClick={() => navigate("/")}>
+            <button className='btn_modPerf' onClick={() => navigate(-1)}>
               Volver
-            </Button>
+            </button>
           </div>
 
-          {saveError && <div className="global-error">{saveError}</div>}
-          {successMsg && <div className="global-success">{successMsg}</div>}
+          {saveError && <div className="global-error" style={{ color: 'red'}}>{saveError}</div>}
+          {successMsg && <div className="global-success" style={{ color: 'red'}}>{successMsg}</div>}
         </div>
       </div>
       </div>

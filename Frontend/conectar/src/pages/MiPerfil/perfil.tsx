@@ -73,7 +73,7 @@ const Perfil: React.FC = () => {
   // ✅ A partir de acá, retornos normales
   if (userLoading || loadingUsuario) return <div>Cargando perfil...</div>;
   if (!user) return null; // en teoría ya redirigió
-
+  
   return (
     <div className="app-container">
       <Header bgColor="#ffffff" logoSrc="/assets/conect_2_1.png">
@@ -101,6 +101,7 @@ const Perfil: React.FC = () => {
         <div className="profile-wrapper">
           {usuario && (
             <ProfileCard
+              id={user.id}
               nombre={usuario.nombre}
               apellido={usuario.apellido}
               email={usuario.email}

@@ -1,0 +1,39 @@
+.logoModPerf{
+    width: 200px;
+    margin-bottom: 20px;
+    cursor: pointer;
+}
+
+.btn_modPerf{
+  background-color: #114f5a; /* Green */
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  text-align: center;
+  gap: 0.5em;
+  margin-left: 1vh;
+  padding: 0.5em 1.5em;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  transition: background 0.2s, color 0.2s, border 0.2s;
+}
+
+.btn_modPerf:hover {
+    background-color: #2ab1b8;
+}
+
+.guardar-btn {
+  opacity: 0;
+  transform: translateX(40px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  pointer-events: none;
+}
+
+.guardar-btn.visible {
+  opacity: 1;
+  transform: translateX(0);
+  pointer-events: auto;
+}

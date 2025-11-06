@@ -5,8 +5,8 @@ import { useNavigate } from "react-router-dom";
 import type { ProfileCardProps } from "../../interfaces/profilaPropCard";
 import ManageProf from "../ManageProf";
 
-
 const ProfileCard: React.FC<ProfileCardProps> = ({
+  id,
   nombre,
   apellido,
   email,
@@ -95,7 +95,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
             <button
               type="button"
               className={styles.btn_direccion}
-              onClick={() => navigate("/modificarPerfil")}
+              onClick={() => navigate(`/ModPerfil/${id}`)}
             >
               Modificar Perfil
             </button>

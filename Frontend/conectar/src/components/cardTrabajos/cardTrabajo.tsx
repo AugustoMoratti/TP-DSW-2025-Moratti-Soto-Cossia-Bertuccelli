@@ -1,11 +1,10 @@
 import type { Trabajo } from "../../interfaces/trabajo.ts";
-import "./cardsProf.css"
+import "./cardTrabajo.css"
 
 interface TrabajoCardProps {
   trabajo: Trabajo;
   tipo: string;
 }
-
 
 export default function TrabajoCard({ trabajo, tipo }: TrabajoCardProps) {
   return (

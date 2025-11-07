@@ -57,8 +57,10 @@ export class Usuario extends BaseEntity2 {
   @OneToMany(() => Trabajo, trabajo => trabajo.profesional, { cascade: [Cascade.PERSIST] })
   trabajos = new Collection<Trabajo>(this);
 
+  @OneToMany(() => Trabajo, trabajo => trabajo.cliente, { cascade: [Cascade.PERSIST] })
+  trabajosContratados = new Collection<Trabajo>(this);
+
   @Property({ nullable: true })
   habilidades: string[] = [];
-
 
 }

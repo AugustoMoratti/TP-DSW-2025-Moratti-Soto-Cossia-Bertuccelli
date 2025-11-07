@@ -12,7 +12,8 @@ import InternalServerError from './pages/error/error500.tsx';
 import Dashboard from './pages/Dashboard/dashboard.tsx'
 import Terminos from './pages/terminos/terminos.tsx';
 import Contacto from './pages/contacto/contacto.tsx';
-import Trabajos from './pages/trabajo/trabajo.tsx'
+import TrabajosContratados from './pages/trabajo/trabajoContratados.tsx'
+import TrabajosPropios from './pages/trabajo/trabajoPropios.tsx'
 
 import { UserProvider } from './providers/UserProvider.tsx'
 import PrivateRoute from './components/PrivateRoute';
@@ -48,7 +49,8 @@ createRoot(document.getElementById('root')!).render(
         <Route path="/contact" element={<Contacto />} />
         <Route element={<PrivateRoute />}>
           <Route path="/perfil" element={<Perfil />} />
-          <Route path="/trabajos" element={<Trabajos />} />
+          <Route path="/trabajosContratados" element={<TrabajosContratados />} />
+          <Route path="/trabajosPropios" element={<TrabajosPropios />} />
         </Route>
       </Routes>
     </BrowserRouter>

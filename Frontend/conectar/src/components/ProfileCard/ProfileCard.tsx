@@ -169,7 +169,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
             <ul>
               {profesiones && profesiones.length > 0 ? (
                 profesiones.map((profesion) => (
-                  <li key={ profesion.nombreProfesion } className={styles.profesion_item}>
+                  <li key={profesion.nombreProfesion} className={styles.profesion_item}>
                     {profesion.nombreProfesion}
                     {profesion.descripcionProfesion && (
                       <small style={{ opacity: 0.7 }}> — {profesion.descripcionProfesion}</small>
@@ -256,7 +256,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
                 {/* Tu contenido acá */}
               </div>
             </Modal>
-          </section> 
+          </section>
         </div>
       </section>
 
@@ -285,10 +285,17 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
       <div>
         <button
           type="button"
-          className={styles.btn_contratado}
-          onClick={() => navigate("/trabajos")}
+          className={styles.btn_propios}
+          onClick={() => navigate("/trabajosPropios")}
         >
-          Mis Trabajos
+          Trabajos Propios
+        </button>
+        <button
+          type="button"
+          className={styles.btn_contratado}
+          onClick={() => navigate("/trabajosContratados")}
+        >
+          Trabajos Contratados
         </button>
       </div>
     </div>

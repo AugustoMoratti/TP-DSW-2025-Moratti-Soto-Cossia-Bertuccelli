@@ -13,4 +13,5 @@ export interface OtroUsuario {
   profesiones?: Profesion[];
   direccion: string;
   trabajos: Trabajo[];
+  trabajosContratados: Trabajo[];
 };

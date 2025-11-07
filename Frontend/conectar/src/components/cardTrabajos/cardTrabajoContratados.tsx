@@ -15,6 +15,7 @@ export default function TrabajoCardContratados({ trabajo, tipo }: TrabajoCardPro
             <p>Profesional : {trabajo.profesional.nombre}, {trabajo.profesional.apellido}</p>
             <p>Fecha Finalizado : {trabajo.fechaFinalizado}</p>
             <p>Fecha Pago : {trabajo.fechaPago}</p>
+            <p>Monto Final : ${trabajo.montoTotal}</p>
           </div>
           <hr></hr>
         </div>
@@ -23,7 +24,8 @@ export default function TrabajoCardContratados({ trabajo, tipo }: TrabajoCardPro
           <div className="trabajos_info_container_pendientes">
             <p>Profesional : {trabajo.profesional.nombre}, {trabajo.profesional.apellido}</p>
             <p>Fecha Solicitud : {trabajo.fechaSolicitud}</p>
-            <p>Monto Actualizado por Profesional : {trabajo.montoTotal}</p>
+            <p>Monto Actualizado : ${trabajo.montoTotal}</p>
+            <button className="btn_finalizar_trabajo">Finalizar Trabajo</button>
           </div>
           <hr></hr>
         </div>

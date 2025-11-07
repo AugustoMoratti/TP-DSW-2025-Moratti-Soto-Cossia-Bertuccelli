@@ -16,6 +16,7 @@ function sanitizeUsuarioInput(req: Request, res: Response, next: NextFunction) {
     apellido: req.body.apellido,
     clave: req.body.clave,
     email: req.body.email,
+    fotoUrl: req.body.fotoUrl,
     descripcion: req.body.descripcion,
     direccion: req.body.direccion,
     contacto: req.body.contacto,
@@ -242,50 +243,56 @@ async function add(req: Request, res: Response) {
 
 async function update(req: Request, res: Response) {
   try {
+    console.log(req.body);
 
-    console.log(req.body)
+    const id = req.params.id;
+    const usuario = await em.findOne(Usuario, { id }, { populate: ['profesiones'] });
+    if (!usuario) {
+      return res.status(404).json({ message: "Usuario no encontrado" });
+    }
 
-    const id = req.params.id
-    const usuario = await em.findOneOrFail(Usuario, { id }, { populate: ['profesiones'] })
+    const { nombre, apellido, fechaNac, provincia, localidad, clave, email, descripcion, contacto, horarios, direccion, habilidades } = req.body;
 
-    const { provincia, localidad, clave, email, descripcion, contacto, horarios, direccion, habilidades } = req.body.sanitizedInput
+    if (nombre) usuario.nombre = req.body.nombre.trim();
+    if (apellido) usuario.apellido = req.body.apellido.trim();
+    if (fechaNac) usuario.fechaNac = new Date(req.body.fechaNac).toISOString().split("T")[0];
+    if (provincia) usuario.provincia = em.getReference(Provincia, provincia);
+    if (localidad) usuario.localidad = em.getReference(Localidad, localidad);
 
-    const profesionesName: string[] = Array.isArray(req.body.profesiones)
-      ? req.body.profesiones
-        .map((x: any) => (x == null ? '' : String(x).trim())) // normalizo todo a string y quito espacios
-        .filter((s: string) => s.length > 0)
-      : [];
+    const imagen = req.file ? `/uploads/${req.file.filename}` : usuario.fotoUrl;
+    usuario.fotoUrl = imagen;
 
-    if (provincia) usuario.provincia = em.getReference(Provincia, provincia)
-    if (localidad) usuario.localidad = em.getReference(Localidad, localidad)
-    const imagen = req.file
-      ? `/uploads/${req.file.filename}`
-      : usuario.fotoUrl;
-    usuario.fotoUrl = imagen
-    if (clave) usuario.clave = clave
-    if (email) usuario.email = email.trim().toLowerCase()
-    if (descripcion) usuario.descripcion = descripcion.trim()
-    if (contacto) usuario.contacto = contacto.toString().trim()
-    if (horarios) usuario.horarios = horarios.trim()
-    if (direccion) usuario.direccion = direccion.trim()
+    if (clave) usuario.clave = clave;
+    if (email) usuario.email = email.trim().toLowerCase();
+    if (descripcion) usuario.descripcion = descripcion.trim();
+    if (contacto) usuario.contacto = contacto.toString().trim();
+    if (horarios) usuario.horarios = horarios.trim();
+    if (direccion) usuario.direccion = direccion.trim();
 
     if (habilidades) {
       const habilidadesArray = Array.isArray(habilidades) ? habilidades : [];
-
       const habilidadesUnicas = habilidadesArray.filter(
         (hab: string) => !usuario.habilidades.includes(hab)
       );
       usuario.habilidades.push(...habilidadesUnicas);
     }
-    const nombresEntrantes = [...new Set(profesionesName)]; // quitar duplicados entrantes
-    const nombresExistentes = new Set<string>(usuario.profesiones.getItems().map(p => p.nombreProfesion));
 
-    // buscar en un solo query las profesiones que coincidan
+    // Profesiones
+    const profesionesName: string[] = Array.isArray(req.body.profesiones)
+      ? req.body.profesiones
+          .map((x: any) => (x == null ? "" : String(x).trim()))
+          .filter((s: string) => s.length > 0)
+      : [];
+
+    const nombresEntrantes = [...new Set(profesionesName)];
+    const nombresExistentes = new Set<string>(
+      usuario.profesiones.getItems().map((p) => p.nombreProfesion)
+    );
+
     const profesionesEncontradas = await em.find(Profesiones, {
       nombreProfesion: { $in: nombresEntrantes },
     });
 
-    // añadir las que el usuario no tiene
     for (const prof of profesionesEncontradas) {
       if (!nombresExistentes.has(prof.nombreProfesion)) {
         usuario.profesiones.add(prof);
@@ -293,14 +300,14 @@ async function update(req: Request, res: Response) {
       }
     }
 
-
-
-    await em.flush()
-    res.status(200).json({ message: 'Usuario class updated' })
+    await em.flush();
+    res.status(200).json({ message: "Usuario actualizado correctamente", data: usuario });
   } catch (error: any) {
-    res.status(500).json({ message: error.message })
+    console.error(error);
+    res.status(500).json({ message: error.message });
   }
 }
+
 
 async function remove(req: Request, res: Response) {
   try {

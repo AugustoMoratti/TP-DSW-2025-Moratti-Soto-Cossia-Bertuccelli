@@ -3,7 +3,6 @@ import Modal from "react-modal";
 import styles from "./ProfileCard.module.css";
 import { useNavigate } from "react-router-dom";
 import type { ProfileCardProps } from "../../interfaces/profilaPropCard";
-import ManageProf from "../ManageProf";
 
 const ProfileCard: React.FC<ProfileCardProps> = ({
   id,
@@ -180,39 +179,6 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
                 <p>No hay profesiones agregadas.</p>
               )}
             </ul>
-
-            <button
-              type="button"
-              className={styles.btn_direccion}
-              style={{ marginTop: '20px' }}
-              onClick={() => setShowProfesiones(true)}
-            >
-              Agregar/Quitar Profesiones
-            </button>
-
-            <Modal
-              isOpen={showProfesiones}
-              onRequestClose={() => setShowProfesiones(false)}
-              contentLabel="Gestionar Profesiones"
-              className={styles.modal_content}
-              overlayClassName={styles.modal_overlay}
-            >
-              <div>
-                <button
-                  type="button"
-                  className={styles.close}
-                  onClick={() => setShowProfesiones(false)}
-                  aria-label="Cerrar"
-                >
-                  &times;
-                </button>
-                <h2>Gestionar Profesiones</h2>
-                <ManageProf />
-              </div>
-            </Modal>
-            <div
-              className={styles.divisor}
-            ></div>
 
 
             <h4>Habilidades</h4>

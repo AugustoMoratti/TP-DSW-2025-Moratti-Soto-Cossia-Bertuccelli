@@ -68,6 +68,32 @@ async function findOne(req: Request, res: Response) {
   }
 }
 
+async function busquedaProf(req: Request, res: Response) {
+  const em = orm.em.fork();
+
+  try {
+    const qRaw = String(req.query.q ?? '').trim().toLowerCase();
+
+
+    const qParam = `%${qRaw}%`;
+
+    const profesiones = await em.find(Profesiones, {
+      $or: [
+        { nombreProfesion: { $like: qParam } },
+        { descripcionProfesion: { $like: qParam } }
+      ]
+    }, {
+      populate: [],
+      limit: 10
+    });
+
+    return res.json({ data: profesiones });
+  } catch (err) {
+    console.error('Error en buscando las profesiones:', err);
+    return res.status(500).json({ message: 'Error al buscar profesiones' });
+  }
+}
+
 async function add(req: Request, res: Response) {
   try {
     const { nombreProfesion, descripcionProfesion, estado } = req.body.sanitizedInput
@@ -140,5 +166,6 @@ export {
   findOne,
   add,
   update,
-  remove
+  remove,
+  busquedaProf
 };

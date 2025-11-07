@@ -10,6 +10,7 @@ export default function BusquedaProfesionales() {
   const [cargando, setCargando] = useState(false);
   const [usuarios, setUsuarios] = useState<Usuario[]>([]);
   const navigate = useNavigate();
+  
   const handleBuscarUsuarios = () => {
     if (!query.trim()) return;
 

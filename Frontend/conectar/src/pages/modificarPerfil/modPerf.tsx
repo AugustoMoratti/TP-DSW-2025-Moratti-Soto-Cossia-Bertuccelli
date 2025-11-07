@@ -1,130 +1,204 @@
 import React, { useEffect, useState } from "react";
-import StandardInput from '../../components/form/Form.tsx';
-import EditIcon from '@mui/icons-material/Edit';
-import SaveIcon from '@mui/icons-material/Save';
+import Modal from "react-modal";
+import StandardInput from "../../components/form/Form.tsx";
+import EditIcon from "@mui/icons-material/Edit";
+import SaveIcon from "@mui/icons-material/Save";
+import DeleteIcon from '@mui/icons-material/Delete';
 import { useNavigate } from "react-router-dom";
 import { fetchMe } from "../../services/auth.services.ts";
-import type { ProfileCardProps as user} from "../../interfaces/profilaPropCard.tsx";
-import './modPerf.css';
+import type { ProfileCardProps as user } from "../../interfaces/profilaPropCard.tsx";
+import "./modPerf.css";
+
 
 export default function EditProfile() {
   const [user, setUser] = useState<user>({} as user);
+  const [clave, setClave] = useState('');
+  const [confirmarClave, setConfirmarClave] = useState('');
   const [editable, setEditable] = useState<Record<string, boolean>>({});
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(false);
-  const [saveError, setSaveError] = useState("");
-  const [successMsg, setSuccessMsg] = useState("");
+  const [saveError, setSaveError] = useState('');
+  const [successMsg, setSuccessMsg] = useState('');
+  const [showClavesModal, setShowClavesModal] = useState(false);
+  const [ShowProfModal, setShowProfModal] = useState(false);
+  const [query, setQuery] = useState('');
+  const [prof, setProf] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
-  const fetchUser = async () => {
     try {
-      setLoading(true);
-      
-      const me = await fetchMe();
+      Modal.setAppElement("#root");
 
-      const res = await fetch(`http://localhost:3000/api/usuario/${me.id}`, {
-        method: "GET",
-        credentials: 'include',
-      });
-
-      if (!res.ok) {
-        throw new Error("Error al obtener datos del usuario");
-      }
-
-      const data = await res.json();
-      setUser(data.data);
-    } catch (err) {
-      console.error("Error al cargar usuario:", err);
-      navigate("/login");
-    } finally {
-      setLoading(false);
+    } catch {
+      // Ignorar errores en entornos sin DOM
     }
-  };
+  }, []);
 
-  fetchUser();
-}, []);
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        setLoading(true);
+        const me = await fetchMe();
+        const res = await fetch(`http://localhost:3000/api/usuario/${me.id}`, {
+          method: "GET",
+          credentials: "include",
+        });
 
+        if (!res.ok) throw new Error("Error al obtener datos del usuario");
+
+        const data = await res.json();
+        setUser(data.data);
+      } catch (err) {
+        console.error("Error al cargar usuario:", err);
+        navigate("/login");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUser();
+  }, []);
 
   const toggleEdit = (field: string) => {
-    setEditable(prev => ({ ...prev, [field]: !prev[field] }));
-    setErrors(prev => ({ ...prev, [field]: "" }));
+    setEditable((prev) => ({ ...prev, [field]: !prev[field] }));
+    setErrors((prev) => ({ ...prev, [field]: "" }));
     setSaveError("");
     setSuccessMsg("");
+  };
+
+  const handleBuscarUsuarios = () => {
+    if (!query.trim()) return;
+
+    setLoading(true);
+    fetch(`http://localhost:3000/api/profeiones/buscar?q=${encodeURIComponent(query)}`)
+      .then(res => res.json())
+      .then(data => {
+        setProf(data.data);
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error('Error buscando usuarios:', err);
+        setLoading(false);
+      });
   };
 
   const handleChange = (field: keyof user, value: string) => {
     if (field === "contacto") {
       if (!/^\d*$/.test(value)) {
-        setErrors(prev => ({ ...prev, contacto: "Solo se permiten números" }));
+        setErrors((prev) => ({ ...prev, contacto: "Solo se permiten números" }));
         return;
       } else {
-        setErrors(prev => ({ ...prev, contacto: "" }));
+        setErrors((prev) => ({ ...prev, contacto: "" }));
       }
       if (value.length < 7 || value.length > 15) {
-        setErrors(prev => ({ ...prev, contacto: "Teléfono entre 7 y 15 dígitos" }));
+        setErrors((prev) => ({ ...prev, contacto: "Teléfono entre 7 y 15 dígitos" }));
       } else {
-        setErrors(prev => ({ ...prev, contacto: "" }));
+        setErrors((prev) => ({ ...prev, contacto: "" }));
       }
     }
 
     if (field === "email") {
       if (value && !value.includes("@")) {
-        setErrors(prev => ({ ...prev, email: "Ingrese un email válido" }));
+        setErrors((prev) => ({ ...prev, email: "Ingrese un email válido" }));
       } else {
-        setErrors(prev => ({ ...prev, email: "" }));
+        setErrors((prev) => ({ ...prev, email: "" }));
       }
     }
 
-    setUser(prev => ({ ...prev, [field]: value }));
+    setUser((prev) => ({ ...prev, [field]: value }));
   };
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const file = e.target.files?.[0];
+  if (!file) return;
+
+  const formData = new FormData();
+  formData.append("imagen", file); 
+
+  try {
+    setLoading(true);
+    const res = await fetch(`http://localhost:3000/api/usuario/${user.id}`, {
+      method: "PATCH",
+      credentials: "include",
+      body: formData, 
+    });
+
+    const data = await res.json();
+    if (!res.ok) {
+      console.error("Error al subir imagen:", data);
+      setSaveError(data.error || "Error al subir imagen.");
+      return;
+    }
+
+    setUser((prev) => ({ ...prev, fotoUrl: data.fotoUrl || prev.fotoUrl }));
+    setSuccessMsg("Imagen actualizada correctamente.");
+  } catch (err) {
+    console.error(err);
+    setSaveError("Error de conexión al subir imagen.");
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   const handleSaveAll = async () => {
-    setSaveError("");
-    setSuccessMsg("");
-    if (!user.nombre || !user.apellido || !user.email) {
-      setSaveError("Completa nombre, apellido y email antes de guardar.");
-      return;
-    }
-    if (errors.email || errors.contacto) {
-      setSaveError("Corrige los errores antes de guardar.");
-      return;
-    }
+  
+  setSaveError("");
+  setSuccessMsg("");
 
-    try {
-      setLoading(true);
-      const res = await fetch(`http://localhost:3000/api/usuario/${user.id}`, {
-        method: 'PUT',
-        headers: {'Content-Type': 'application/json',},
-        credentials: 'include',
-        body: JSON.stringify({
-          id: user.id,
-          nombre: user.nombre,
-          apellido: user.apellido,
-          fechaNac: user.fechaNac,
-          provincia: user.provincia,
-          localidad: user.localidad,
-          direccion: user.direccion,
-          contacto: user.contacto,
-          email: user.email,
-        })
-      });
+  if (clave !== confirmarClave) {
+    setSaveError("⚠️ Las claves no coinciden.");
+    return;
+  }
 
-      const data = await res.json();
-      if (!res.ok) {
-        setSaveError(data.error || "Error al guardar usuario.");
-        return;
-      }
-
-      setSuccessMsg("Datos actualizados correctamente.");
-      setEditable({});
-    } catch (err) {
-      console.error(err);
-      setSaveError("Error de conexión al guardar.");
-    } finally {
-      setLoading(false);
-    }
+  const payload = {
+    nombre: user.nombre,
+    apellido: user.apellido,
+    fechaNac: user.fechaNac,
+    provincia: user.provincia,
+    localidad: user.localidad,
+    direccion: user.direccion,
+    contacto: user.contacto,
+    email: user.email,
+    clave: clave || undefined,
   };
+
+  try {
+    setLoading(true);
+
+    const res = await fetch(`http://localhost:3000/api/usuario/${user.id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify(payload), 
+    });
+
+    const data = await res.json();
+    if (!res.ok) {
+      console.error("Error en respuesta del servidor:", data);
+      setSaveError(data.error || "Error al guardar usuario.");
+      return;
+    }
+
+    console.log("Respuesta guardado:", data);
+    setSuccessMsg("Datos actualizados correctamente.");
+
+    if (showClavesModal) {
+      setShowClavesModal(false);
+      setClave("");
+      setConfirmarClave("");
+    }
+
+    setEditable({});
+  } catch (err) {
+    console.error(err);
+    setSaveError("Error de conexión al guardar.");
+  } finally {
+    setLoading(false);
+  }
+};
+
+
 
   if (loading && !user.nombre) {
     return <div className="main-bg">Cargando datos del usuario...</div>;
@@ -137,210 +211,175 @@ export default function EditProfile() {
     </div>
   );
 
-  return (
-    <section className="main-bg">
-      <div className="top-bar">
-        <img src="../assets/conect_1.png" alt="Logo" className="logoModPerf" onClick={() => navigate("/")} />
+return (
+  <section className="main-bg">
+    <div className="top-bar">
+      <img
+        src="../assets/conect_1.png"
+        alt="Logo"
+        className="logoModPerf"
+        onClick={() => navigate("/")}
+      />
+      <button className="btn_modPerf"></button>
+    </div>
+
+    <div className="card-container-single-card">
+      <div className="card-header">
+        <span className="card-title">MI PERFIL</span>
       </div>
 
-      <div className="card">
-        <div className="card-header">
-          <span className="card-title">MI PERFIL</span>
-        </div>
+      <div className="card-content profile-grid-single">
+        <div className="profile-form">
+          <h3>Datos Personales</h3>
+          {renderField("nombre", "Nombre", user.nombre)}
+          {renderField("apellido", "Apellido", user.apellido)}
+          {renderField("fechaNac", "Fecha de nacimiento", user.fechaNac, "date")}
 
-        <div className="card-content">
-        <div className="fields-box">
-        <div className="field-with-action">
-          { editable.nombre ? (
-            <StandardInput label="Nombre" value={user.nombre || ""} onChange={(v) =>  handleChange("nombre", v)} />
-          ) : (
-            <StaticField label="Nombre" value={user.nombre} />
-          )}
+        <div className="divisor-mod-perf"></div>
 
-          <button className="btn_modPerf" onClick={() => toggleEdit("nombre")}>
-            {editable.nombre ? "Cancelar" : "Editar"}
-            <EditIcon />
-          </button>
-          {editable.nombre && (
-            <button
-              className={`btn_modPerf guardar-btn ${editable.nombre ? "visible" : ""}`}
-              onClick={handleSaveAll}
-              type="button"
-            >
-              Guardar
-              <SaveIcon />
-            </button>
-          )}
-        </div>
+          <h3>Datos de Ubicación</h3>
+          {renderField("provincia", "Provincia", user.provincia)}
+          {renderField("localidad", "Localidad", user.localidad)}
+          {renderField("direccion", "Dirección", user.direccion)}
 
-          <div className="field-with-action">
-            {editable.apellido ? (
-              <StandardInput label="Apellido" value={user.apellido || ""} onChange={(v) => handleChange("apellido", v)} />
-            ) : (
-              <StaticField label="Apellido" value={user.apellido} />
-            )}
-            <button className='btn_modPerf' onClick={() => toggleEdit("apellido")}>
-              {editable.apellido ? "Cancelar" : "Editar"}
-              <EditIcon />
-            </button>
-            {editable.apellido && (
-            <button
-              className={`btn_modPerf guardar-btn ${editable.apellido ? "visible" : ""}`}
-              onClick={handleSaveAll}
-              type="button"
-            >
-              Guardar
-              <SaveIcon />
-            </button>
-          )}
-          </div>
+        <div className="divisor-mod-perf"></div>
 
-          <div className="field-with-action">
-            {editable.fechaNac ? (
-              <StandardInput label="Fecha de nacimiento" value={user.fechaNac || ""} onChange={(v) => handleChange("fechaNac", v)} type="date" />
-            ) : (
-              <StaticField label="Fecha de nacimiento" value={user.fechaNac} />
-            )}
-            <button className='btn_modPerf' onClick={() => toggleEdit("fechaNac")}>
-              {editable.fechaNac ? "Cancelar" : "Editar"}
-              <EditIcon />
-            </button>
-            {editable.fechaNac && (
-            <button
-              className={`btn_modPerf guardar-btn ${editable.fechaNac ? "visible" : ""}`}
-              onClick={handleSaveAll}
-              type="button"
-            >
-              Guardar
-              <SaveIcon />
-            </button>
-          )}
-          </div>
-
-          <div className="field-with-action">
-            {editable.provincia ? (
-              <StandardInput label="Provincia" value={user.provincia || ""} onChange={(v) => handleChange("provincia", v)} />
-            ) : (
-              <StaticField label="Provincia" value={user.provincia} />
-            )}
-            <button className='btn_modPerf' onClick={() => toggleEdit("provincia")}>
-              {editable.provincia ? "Cancelar" : "Editar"}
-              <EditIcon />
-            </button>
-            {editable.provincia && (
-            <button
-              className={`btn_modPerf guardar-btn ${editable.provincia ? "visible" : ""}`}
-              onClick={handleSaveAll}
-              type="button"
-            >
-              Guardar
-              <SaveIcon />
-            </button>
-          )}
-          </div>
-
-          <div className="field-with-action">
-            {editable.localidad ? (
-              <StandardInput label="Localidad" value={user.localidad || ""} onChange={(v) => handleChange("localidad", v)} />
-            ) : (
-              <StaticField label="Localidad" value={user.localidad} />
-            )}
-            <button className='btn_modPerf' onClick={() => toggleEdit("localidad")}>
-              {editable.localidad ? "Cancelar" : "Editar"}
-              <EditIcon />
-            </button>
-            {editable.localidad && (
-            <button
-              className={`btn_modPerf guardar-btn ${editable.localidad ? "visible" : ""}`}
-              onClick={handleSaveAll}
-              type="button"
-            >
-              Guardar
-              <SaveIcon />
-            </button>
-          )}
-          </div>
-
-          <div className="field-with-action">
-            {editable.direccion ? (
-              <StandardInput label="Dirección" value={user.direccion || ""} onChange={(v) => handleChange("direccion", v)} />
-            ) : (
-              <StaticField label="Dirección" value={user.direccion} />
-            )}
-            <button className='btn_modPerf' onClick={() => toggleEdit("direccion")}>
-              {editable.direccion ? "Cancelar" : "Editar"}
-              <EditIcon />
-            </button>
-            {editable.direccion && (
-            <button
-              className={`btn_modPerf guardar-btn ${editable.direccion ? "visible" : ""}`}
-              onClick={handleSaveAll}
-              type="button"
-            >
-              Guardar
-              <SaveIcon />
-            </button>
-          )}
-          </div>
-
-          <div className="field-with-action">
-            {editable.contacto ? (
-              <StandardInput label="Teléfono" value={user.contacto || ""} onChange={(v) => handleChange("contacto", v)} type="tel" />
-            ) : (
-              <StaticField label="Teléfono" value={user.contacto} />
-            )}
-            <button className='btn_modPerf' onClick={() => toggleEdit("contacto")}>
-              {editable.contacto ? "Cancelar" : "Editar"}
-              <EditIcon />
-            </button>
-            {editable.contacto && (
-            <button
-              className={`btn_modPerf guardar-btn ${editable.contacto ? "visible" : ""}`}
-              onClick={handleSaveAll}
-              type="button"
-            >
-              Guardar
-              <SaveIcon />
-            </button>
-          )}
-          </div>
+          <h3>Datos de Contacto</h3>
+          {renderField("contacto", "Teléfono", user.contacto, "tel")}
           {errors.contacto && <div className="field-error">{errors.contacto}</div>}
 
-          <div className="field-with-action">
-            {editable.email ? (
-              <StandardInput label="Email" value={user.email || ""} onChange={(v) => handleChange("email", v)} type="email" />
-            ) : (
-              <StaticField label="Email" value={user.email} />
-            )}
-            <button className='btn_modPerf' onClick={() => toggleEdit("email")}>
-              {editable.email ? "Cancelar" : "Editar"}
-              <EditIcon />
-            </button>
-            {editable.email && (
-            <button
-              className={`btn_modPerf guardar-btn ${editable.email ? "visible" : ""}`}
-              onClick={handleSaveAll}
-              type="button"
-            >
-              Guardar
-              <SaveIcon />
-            </button>
-          )}
-          </div>
+          {renderField("email", "Email", user.email, "email")}
           {errors.email && <div className="field-error">{errors.email}</div>}
 
-          <div className="card-actions">
+        <div className="divisor-mod-perf"></div>
 
-            <button className='btn_modPerf' onClick={() => navigate(-1)}>
+          <div className="card-actions">
+            <button className="btn_modPerf" onClick={() => navigate(-1)}>
               Volver
             </button>
           </div>
 
-          {saveError && <div className="global-error" style={{ color: 'red'}}>{saveError}</div>}
-          {successMsg && <div className="global-success" style={{ color: 'red'}}>{successMsg}</div>}
+          {saveError && <div className="global-error">{saveError}</div>}
+          {successMsg && <div className="global-success">{successMsg}</div>}
+        </div>
+
+        <div className="profile-image-section">
+          <img
+            src={`http://localhost:3000${user.fotoUrl}`}
+            alt="Foto de perfil"
+            className="profile-image"
+          />
+          <input
+            id="fileInput"
+            style={{ display: 'none' }}
+            type="file"
+            accept=".jpg,.png"
+            onChange={handleFileChange}
+          />
+          <label htmlFor="fileInput" className="btn_modPerf change-photo-btn">
+            Cambiar imagen
+          </label>
+          <button className="btn_modPerf" style={{ marginTop: '40px'}} onClick={() => setShowClavesModal(true)}>
+            Quiero cambiar mi contraseña
+          </button>
+          <Modal
+            isOpen={showClavesModal}
+            onRequestClose={() => setShowClavesModal(false)}
+            contentLabel="Claves Modal"
+            className="modal"
+            overlayClassName="modal_overlay_modPeft"
+          >
+            <div className="card">
+            <h2>Claves de Seguridad</h2>
+            {<StandardInput label="Clave" value={clave} onChange={setClave} type="password" />}
+            {<StandardInput label="Confirmar clave" value={confirmarClave} onChange={setConfirmarClave} type="password" />}
+            {confirmarClave && clave !== confirmarClave && (
+              <div style={{ color: 'red', fontSize: '0.95em', marginBottom: '0.5em' }}>
+                Las claves no coinciden
+              </div>
+            )}
+            <div>
+            <button
+              className={'btn_modPerf'}
+              onClick={handleSaveAll}
+              disabled={clave !== confirmarClave}
+              type="button"
+            >
+              Guardar <SaveIcon />
+            </button>
+            <button 
+              className="btn_modPerf"
+              onClick={() => setShowClavesModal(false)}
+            >
+              Cerrar <DeleteIcon/>
+            </button>
+            </div>
+            </div>
+          </Modal>
+          <button className="btn_modPerf" style={{ marginTop: '40px'}} onClick={() => setShowProfModal(true)}>
+            Quiero agregar profesiones!
+          </button>
+          <Modal
+            isOpen={ShowProfModal}
+            onRequestClose={() => setShowProfModal(false)}
+            contentLabel="Gestionar Profesiones Modal"
+            className="modal"
+            overlayClassName="modal_overlay_modPeft"
+          >
+            <div>
+              <button
+                type="button"
+                className="close_modPerf"
+                onClick={() => setShowProfModal(false)}
+                aria-label="Cerrar"
+              >
+                &times;
+              </button>
+              <div className="card">
+              <h2>Gestionar Profesiones</h2>
+              <input
+                type="text"
+                className="buscador"
+                placeholder="Busque una profesion!"
+                value={query}
+                onChange={e => setQuery(e.target.value)}
+                onKeyDown={e => e.key === 'Enter' && handleBuscarUsuarios()} 
+              />
+              
+              {loading && <p>cargando...</p>}
+
+              </div>
+            </div>
+          </Modal>
         </div>
       </div>
-      </div>
-    </section>
+    </div>
+  </section>
+);
+
+
+function renderField(field: keyof user, label: string, value?: string, type = "text") {
+  return (
+    <div className="field-with-action">
+      {editable[field] ? (
+        <StandardInput label={label} value={value || ""} onChange={(v) => handleChange(field, v)} type={type} />
+      ) : (
+        <StaticField label={label} value={value} />
+      )}
+      <button className="btn_modPerf" onClick={() => toggleEdit(field)}>
+        {editable[field] ? "Cancelar" : "Editar"} <EditIcon />
+      </button>
+
+      {editable[field] && (
+        <button
+          className={`btn_modPerf guardar-btn ${editable[field] ? "visible" : ""}`}
+          onClick={handleSaveAll}
+          type="button"
+        >
+          Guardar <SaveIcon />
+        </button>
+      )}
+    </div>
   );
+} 
 }

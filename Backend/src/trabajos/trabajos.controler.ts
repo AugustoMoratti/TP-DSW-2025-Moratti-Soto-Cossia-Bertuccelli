@@ -41,11 +41,42 @@ async function trabajosFinalizados(req: Request, res: Response) {
   try {
     const { id } = req.params;
     const profRef = em.getReference(Usuario, id);
+    const limit = Number(req.query.limit) || 10;
+    const offset = Number(req.query.offset) || 0;
     const trabajos = await em.find(Trabajo, {
       profesional: profRef,
-      $and: [{ fechaFinalizado: { $ne: null } }, { fechaFinalizado: { $ne: '' } }]
+      $and: [{ fechaFinalizado: { $ne: null } }, { fechaFinalizado: { $ne: '' } }],
     },
-      { populate: ['cliente', 'profesional', 'resenia'] });
+      {
+        populate: ['cliente', 'profesional', 'resenia'],
+        limit,
+        offset,
+        orderBy: { fechaFinalizado: 'DESC' }
+      });
+    res
+      .status(200)
+      .json({ message: 'found all Trabajos', data: trabajos })
+  } catch (error: any) {
+    res.status(500).json({ message: "error al obtener trabajos finalizados" })
+  }
+}
+
+async function trabajosFinalizadosContratados(req: Request, res: Response) {
+  try {
+    const { id } = req.params;
+    const cliRef = em.getReference(Usuario, id);
+    const limit = Number(req.query.limit) || 10;
+    const offset = Number(req.query.offset) || 0;
+    const trabajos = await em.find(Trabajo, {
+      cliente: cliRef,
+      $and: [{ fechaFinalizado: { $ne: null } }, { fechaFinalizado: { $ne: '' } }],
+    },
+      {
+        populate: ['cliente', 'profesional', 'resenia'],
+        limit,
+        offset,
+        orderBy: { fechaFinalizado: 'DESC' }
+      });
     res
       .status(200)
       .json({ message: 'found all Trabajos', data: trabajos })
@@ -57,6 +88,8 @@ async function trabajosFinalizados(req: Request, res: Response) {
 async function trabajosPendientes(req: Request, res: Response) {
   try {
     const { id } = req.params
+    const limit = Number(req.query.limit) || 10;
+    const offset = Number(req.query.offset) || 0;
     const trabajos = await em.find(Trabajo, {
       profesional: id,
       $or: [
@@ -64,7 +97,36 @@ async function trabajosPendientes(req: Request, res: Response) {
         { fechaFinalizado: '' }
       ]
     },
-      { populate: ['cliente', 'profesional', 'resenia'] });
+      {
+        populate: ['cliente', 'profesional', 'resenia'],
+        limit,
+        offset
+      });
+    res
+      .status(200)
+      .json({ message: 'found all Trabajos', data: trabajos })
+  } catch (error: any) {
+    res.status(500).json({ message: error.message })
+  }
+}
+
+async function trabajosPendientesContratados(req: Request, res: Response) {
+  try {
+    const { id } = req.params
+    const limit = Number(req.query.limit) || 10;
+    const offset = Number(req.query.offset) || 0;
+    const trabajos = await em.find(Trabajo, {
+      cliente: id,
+      $or: [
+        { fechaFinalizado: null },
+        { fechaFinalizado: '' }
+      ]
+    },
+      {
+        populate: ['cliente', 'profesional', 'resenia'],
+        limit,
+        offset
+      });
     res
       .status(200)
       .json({ message: 'found all Trabajos', data: trabajos })
@@ -196,4 +258,4 @@ async function remove(req: Request, res: Response) {
   }
 }
 
-export { sanitizeTrabajoInput, findAll, findOne, add, update, remove, trabajosPendientes, trabajosFinalizados }
+export { sanitizeTrabajoInput, findAll, findOne, add, update, remove, trabajosPendientes, trabajosFinalizados, trabajosPendientesContratados, trabajosFinalizadosContratados }

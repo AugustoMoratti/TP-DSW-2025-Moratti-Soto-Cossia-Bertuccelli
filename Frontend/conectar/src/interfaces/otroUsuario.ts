@@ -14,4 +14,5 @@ export interface OtroUsuario {
   habilidades?: [];
   direccion: string;
   trabajos: Trabajo[];
+  trabajosContratados: Trabajo[];
 };

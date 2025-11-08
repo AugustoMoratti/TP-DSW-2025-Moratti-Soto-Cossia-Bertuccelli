@@ -12,7 +12,7 @@ export type ProfileCardProps = {
   provincia?: string;
   fotoUrl?: string | null;
   contacto?: string;
-  tipoPage: "miPerfil" | "otro";
+  tipoPage: "miPerfil" | "suPerfil";
   profesiones?: Profesion[];     // <- array de objetos
   habilidades?: string[];
   trabajos?: Trabajo[];

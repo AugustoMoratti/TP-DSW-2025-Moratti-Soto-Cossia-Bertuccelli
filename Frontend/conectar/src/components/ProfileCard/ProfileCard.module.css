@@ -55,6 +55,15 @@ h3 {
   margin: 0;
 }
 
+.modal_overlay {
+  background: rgba(0, 0, 0, .45);
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  z-index: 1000;
+}
+
 .habilidad_chip {
   background-color: #e0f2ff;
   color: #004a75;
@@ -176,6 +185,28 @@ h3 {
 
 .modify_profesiones_btn:hover {
   background-color: #2ab1b8;
+}
+
+.btn_propios {
+  box-sizing: border-box;
+  position: fixed;
+  left: 50px;
+  bottom: 50px;
+  height: 50px;
+  width: 140px;
+  background-color: #114f5a;
+  color: #fff;
+  border: 1px solid #fff;
+  box-shadow: 0px 0px 20px #9db7bd;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn_propios:hover {
+  background-color: #a3c1c0;
+  box-shadow: 0px 0px 20px #51737b;
+  color: #114f5a;
 }
 
 .btn_contratado {

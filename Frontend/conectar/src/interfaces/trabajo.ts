@@ -9,4 +9,5 @@ export interface Trabajo {
   fechaPago?: string;
   fechaSolicitud?: string;
   fechaFinalizado?: string;
+  profesional: Usuario;
 }

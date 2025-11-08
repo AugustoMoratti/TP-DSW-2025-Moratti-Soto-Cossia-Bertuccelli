@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Modal from "react-modal";
+import AddProf from "../../components/profesiones/AddProf.tsx";
 import StandardInput from "../../components/form/Form";
 import EditIcon from "@mui/icons-material/Edit";
 import SaveIcon from "@mui/icons-material/Save";
@@ -9,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { fetchMe } from "../../services/auth.services";
 import type { ProfileCardProps as User } from "../../interfaces/profilaPropCard";
 import "./modPerf.css";
+import RmProf from "../../components/profesiones/RmProf.tsx";
 
 export default function EditProfile() {
   const [user, setUser] = useState<User>({} as User);
@@ -21,20 +23,20 @@ export default function EditProfile() {
   const [successMsg, setSuccessMsg] = useState("");
   const [showClavesModal, setShowClavesModal] = useState(false);
   const [showProfModal, setShowProfModal] = useState(false);
-  const [query, setQuery] = useState("");
   const [prof, setProf] = useState<Profesion[]>([]);
   const [pestaña, setPestaña] = useState(false);
   const navigate = useNavigate();
 
+  // Configurar Modal
   useEffect(() => {
     try {
       Modal.setAppElement("#root");
     } catch {
-      /* ignorar */
+      /* ignorar error si ya está seteado */
     }
   }, []);
 
-  // CARGAR USUARIO
+  // Cargar datos del usuario
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -57,27 +59,15 @@ export default function EditProfile() {
     fetchUser();
   }, [navigate]);
 
-  // BUSCAR PROFESIONES
-  const handleBuscarProf = async () => {
-    if (!query.trim()) return;
-    try {
-      setLoading(true);
-      const res = await fetch(
-        `http://localhost:3000/api/profesion/busqueda?q=${encodeURIComponent(query)}`,
-        { credentials: "include" }
-      );
-      if (!res.ok) throw new Error(`Error HTTP ${res.status}`);
-      const data = await res.json();
-      setProf(data.data || []);
-    } catch (err) {
-      console.error("Error buscando profesiones:", err);
-      setSaveError("Error al buscar profesiones.");
-    } finally {
-      setLoading(false);
-    }
-  };
+  // Mostrar profesiones al abrir modal (placeholder para futura carga)
+  useEffect(() => {
+    if (!showProfModal) return;
+    // Ejemplo: podrías cargar profesiones del usuario aquí
+    // fetch(`http://localhost:3000/api/usuario/${user.id}/profesiones`)
+    //   .then(res => res.json())
+    //   .then(data => setProf(data.data));
+  }, [showProfModal, user.id]);
 
-  // MODO EDITAR
   const toggleEdit = (field: string) => {
     setEditable((prev) => ({ ...prev, [field]: !prev[field] }));
     setErrors((prev) => ({ ...prev, [field]: "" }));
@@ -85,13 +75,15 @@ export default function EditProfile() {
     setSuccessMsg("");
   };
 
-  // MANEJO LOS CAMPOS
   const handleChange = (field: keyof User, value: string) => {
     if (field === "contacto") {
       if (!/^\d*$/.test(value))
         return setErrors((p) => ({ ...p, contacto: "Solo números" }));
       if (value.length < 7 || value.length > 15)
-        return setErrors((p) => ({ ...p, contacto: "Teléfono entre 7 y 15 dígitos" }));
+        return setErrors((p) => ({
+          ...p,
+          contacto: "Teléfono entre 7 y 15 dígitos",
+        }));
       setErrors((p) => ({ ...p, contacto: "" }));
     }
     if (field === "email") {
@@ -103,7 +95,6 @@ export default function EditProfile() {
     setUser((prev) => ({ ...prev, [field]: value }));
   };
 
-  // GUARDO IMAGEN
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -128,7 +119,6 @@ export default function EditProfile() {
     }
   };
 
-  // GUARDO DATOS
   const handleSaveAll = async () => {
     setSaveError("");
     setSuccessMsg("");
@@ -172,17 +162,30 @@ export default function EditProfile() {
     }
   };
 
-  const StaticField: React.FC<{ label: string; value?: string }> = ({ label, value }) => (
+  const StaticField: React.FC<{ label: string; value?: string }> = ({
+    label,
+    value,
+  }) => (
     <div className="static-field" aria-label={label}>
       <div className="static-label">{label}</div>
       <div className="static-value">{value || "—"}</div>
     </div>
   );
 
-  const renderField = (field: keyof User, label: string, value?: string, type = "text") => (
+  const renderField = (
+    field: keyof User,
+    label: string,
+    value?: string,
+    type = "text"
+  ) => (
     <div className="field-with-action">
       {editable[field] ? (
-        <StandardInput label={label} value={value || ""} onChange={(v) => handleChange(field, v)} type={type} />
+        <StandardInput
+          label={label}
+          value={value || ""}
+          onChange={(v) => handleChange(field, v)}
+          type={type}
+        />
       ) : (
         <StaticField label={label} value={value} />
       )}
@@ -190,19 +193,25 @@ export default function EditProfile() {
         {editable[field] ? "Cancelar" : "Editar"} <EditIcon />
       </button>
       {editable[field] && (
-        <button className="btn_modPerf guardar-btn" onClick={handleSaveAll} type="button">
+        <button className="btn_modPerf guardar-btn" onClick={handleSaveAll}>
           Guardar <SaveIcon />
         </button>
       )}
     </div>
   );
 
-  if (loading && !user.nombre) return <div className="main-bg">Cargando datos del usuario...</div>;
+  if (loading && !user.nombre)
+    return <div className="main-bg">Cargando datos del usuario...</div>;
 
   return (
     <section className="main-bg">
       <div className="top-bar">
-        <img src="../assets/conect_1.png" alt="Logo" className="logoModPerf" onClick={() => navigate("/")} />
+        <img
+          src="../assets/conect_1.png"
+          alt="Logo"
+          className="logoModPerf"
+          onClick={() => navigate("/")}
+        />
       </div>
 
       <div className="card-container-single-card">
@@ -216,11 +225,11 @@ export default function EditProfile() {
             {renderField("nombre", "Nombre", user.nombre)}
             {renderField("apellido", "Apellido", user.apellido)}
             {renderField("fechaNac", "Fecha de nacimiento", user.fechaNac, "date")}
-            <h3>Datos de Ubicación</h3>
+            <h3>Ubicación</h3>
             {renderField("provincia", "Provincia", user.provincia)}
             {renderField("localidad", "Localidad", user.localidad)}
             {renderField("direccion", "Dirección", user.direccion)}
-            <h3>Datos de Contacto</h3>
+            <h3>Contacto</h3>
             {renderField("contacto", "Teléfono", user.contacto, "tel")}
             {renderField("email", "Email", user.email, "email")}
 
@@ -228,6 +237,7 @@ export default function EditProfile() {
             {successMsg && <div className="global-success">{successMsg}</div>}
           </div>
 
+          {/* Sección imagen + modales */}
           <div className="profile-image-section">
             <img
               src={`http://localhost:3000${user.fotoUrl}`}
@@ -245,7 +255,12 @@ export default function EditProfile() {
               Cambiar imagen
             </label>
 
-            <button className="btn_modPerf" style={{ marginTop: 40 }} onClick={() => setShowClavesModal(true)}>
+            {/* Cambiar contraseña */}
+            <button
+              className="btn_modPerf"
+              style={{ marginTop: 40 }}
+              onClick={() => setShowClavesModal(true)}
+            >
               Cambiar contraseña
             </button>
 
@@ -254,26 +269,49 @@ export default function EditProfile() {
               onRequestClose={() => setShowClavesModal(false)}
               className="modal"
               overlayClassName="modal_overlay_modPerf"
+              ariaHideApp={false}
             >
               <div className="card">
                 <h2>Claves de Seguridad</h2>
-                <StandardInput label="Clave" value={clave} onChange={setClave} type="password" />
-                <StandardInput label="Confirmar clave" value={confirmarClave} onChange={setConfirmarClave} type="password" />
+                <StandardInput
+                  label="Clave"
+                  value={clave}
+                  onChange={setClave}
+                  type="password"
+                />
+                <StandardInput
+                  label="Confirmar clave"
+                  value={confirmarClave}
+                  onChange={setConfirmarClave}
+                  type="password"
+                />
                 {clave !== confirmarClave && confirmarClave && (
                   <div style={{ color: "red" }}>Las claves no coinciden</div>
                 )}
                 <div>
-                  <button className="btn_modPerf" onClick={handleSaveAll} disabled={clave !== confirmarClave}>
+                  <button
+                    className="btn_modPerf"
+                    onClick={handleSaveAll}
+                    disabled={clave !== confirmarClave}
+                  >
                     Guardar <SaveIcon />
                   </button>
-                  <button className="btn_modPerf" onClick={() => setShowClavesModal(false)}>
+                  <button
+                    className="btn_modPerf"
+                    onClick={() => setShowClavesModal(false)}
+                  >
                     Cerrar <DeleteIcon />
                   </button>
                 </div>
               </div>
             </Modal>
 
-            <button className="btn_modPerf" style={{ marginTop: 40 }} onClick={() => setShowProfModal(true)}>
+            {/* Profesiones */}
+            <button
+              className="btn_modPerf"
+              style={{ marginTop: 40 }}
+              onClick={() => setShowProfModal(true)}
+            >
               ¡Quiero agregar profesiones!
             </button>
 
@@ -282,70 +320,43 @@ export default function EditProfile() {
               onRequestClose={() => setShowProfModal(false)}
               className="modal"
               overlayClassName="modal_overlay_modPerf"
+              ariaHideApp={false}
             >
               <div className="card-modProf">
-                <button type="button" className="close_modPerf" onClick={() => setShowProfModal(false)}>
+                <button
+                  type="button"
+                  className="close_modPerf"
+                  onClick={() => setShowProfModal(false)}
+                >
                   &times;
                 </button>
 
                 <h2>Gestionar Profesiones</h2>
                 <div className="pestañas-container">
-                  <button className={`btn-pestaña ${!pestaña ? "active" : ""}`} onClick={() => setPestaña(false)}>
+                  <button
+                    className={`btn-pestaña ${!pestaña ? "active" : ""}`}
+                    onClick={() => setPestaña(false)}
+                  >
                     ➕ Agregar
                   </button>
-                  <button className={`btn-pestaña ${pestaña ? "active" : ""}`} onClick={() => setPestaña(true)}>
+                  <button
+                    className={`btn-pestaña ${pestaña ? "active" : ""}`}
+                    onClick={() => setPestaña(true)}
+                  >
                     ➖ Quitar
                   </button>
                 </div>
 
-                {!pestaña ? (
-                  <div>
-                    <input
-                      type="text"
-                      className="buscador_modPerf"
-                      placeholder="Busque una profesión..."
-                      value={query}
-                      onChange={(e) => setQuery(e.target.value)}
-                      onKeyDown={(e) => e.key === "Enter" && handleBuscarProf()}
-                    />
-                    {loading && <p>Cargando...</p>}
-                    <div className="resultados-prof">
-                      {prof.map((p) => (
-                        <div key={p.nombreProfesion} className="prof-item">
-                          <span>{p.nombreProfesion}</span>
-                          <button className="btn_modPerf small">Agregar</button>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                ) : (
-                  <div>
-                    <h4>Profesiones actuales:</h4>
-                    {user.profesiones?.length ? (
-                      <ul className="prof-list">
-                        {user.profesiones.map((p) => (
-                          <li key={p.nombreProfesion}>
-                            {p.nombreProfesion}
-                            <button className="btn_modPerf small danger">Quitar</button>
-                          </li>
-                        ))}
-                      </ul>
-                    ) : (
-                      <p>No tienes profesiones asignadas.</p>
-                    )}
-                  </div>
-                )}
+                {!pestaña ? <AddProf /> : <RmProf />}
               </div>
             </Modal>
           </div>
-        <div>
-        <button
-          className="btn_modPerf"
-          onClick={() => navigate(-1)}
-        >
-          ← Volver
-        </button>
-      </div>
+
+          <div>
+            <button className="btn_modPerf" onClick={() => navigate(-1)}>
+              ← Volver
+            </button>
+          </div>
         </div>
       </div>
     </section>

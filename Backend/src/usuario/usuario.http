@@ -69,11 +69,9 @@ PATCH http://localhost:3000/api/usuario/4dd9e149-78d0-4fca-824f-1c7c57080411
 Content-Type: application/json
 
 {
-  "nombreProfesion": "politico",
-  "descripcionProfesion": "Robo mucho",
-  "fechaSolicitud": "2025-11-05",
-  "estado": true
+  "profesion": [1],
 }
+
 
 
 ### Eliminar una provicia (DELETE - eliminar recurso)

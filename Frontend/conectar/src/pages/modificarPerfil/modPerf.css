@@ -1,8 +1,15 @@
 .profile-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr; 
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 2rem;
   width: 100%;
+}
+
+.profile-grid-single {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 2rem;
+  align-items: start;
 }
 
 .card-title {
@@ -19,12 +26,11 @@
 }
 
 .logoModPerf {
-  width: 300px;
-  margin-top: 5vh;
+  width: 260px;
+  margin: 5vh auto 2rem;
   display: block;
   cursor: pointer;
-  margin-left: auto;
-  margin-right: auto;
+  transition: width 0.3s ease;
 }
 
 .profile-section {
@@ -51,10 +57,14 @@
   margin-bottom: 0.5rem;
 }
 
-.profile-image-section {
-  display: flex;
-  gap: 1rem;
-
+.profile-image {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ddd;
+  margin-bottom: 1rem;
+  transition: width 0.3s ease, height 0.3s ease;
 }
 
 .field-with-action {
@@ -98,13 +108,15 @@
   background-color: #2ab1b8;
 }
 
-.card-modProf{
+.card-modProf,
+.single-card {
   max-width: 900px;
   margin: 0 auto;
   background: #fff;
   border-radius: 1rem;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
   padding: 2rem;
+  transition: padding 0.3s ease;
 }
 
 .modal {
@@ -334,8 +346,101 @@
 
 
 
+@media (max-width: 1200px) {
+  .profile-grid-single {
+    grid-template-columns: 1fr 1fr;
+  }
+  .card-modProf {
+    padding: 1.5rem;
+  }
+}
+
+/* Tablets verticales */
 @media (max-width: 900px) {
   .profile-grid {
     grid-template-columns: 1fr;
+  }
+
+  .profile-grid-single {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .profile-image-section {
+    order: -1; /* Muestra la imagen arriba */
+  }
+
+  .logoModPerf {
+    width: 200px;
+  }
+
+  .card-modProf {
+    padding: 1.2rem;
+  }
+}
+
+/* Teléfonos grandes */
+@media (max-width: 600px) {
+  .btn_modPerf {
+    width: 100%;
+    margin-bottom: 20px;
+    font-size: 0.9rem;
+    padding: 0.6rem 1rem;
+  }
+
+  .field-with-action {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+  }
+
+  .profile-image {
+    width: 130px;
+    height: 130px;
+  }
+
+  .pestañas-container {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .btn-pestaña {
+    width: 100%;
+    text-align: center;
+    border-radius: 6px;
+  }
+
+  .card-title {
+    font-size: 1.1rem;
+  }
+
+  .profile-section {
+    padding: 1rem;
+  }
+}
+
+/* Teléfonos pequeños (≤400px) */
+@media (max-width: 400px) {
+  .logoModPerf {
+    width: 150px;
+  }
+
+  .btn_modPerf {
+    margin-bottom: 20px;
+    font-size: 0.8rem;
+  }
+
+  .profile-image {
+    width: 110px;
+    height: 110px;
+  }
+
+  .card-modProf,
+  .single-card {
+    padding: 1rem;
+  }
+
+  .tab-content {
+    padding: 0.8rem;
   }
 }

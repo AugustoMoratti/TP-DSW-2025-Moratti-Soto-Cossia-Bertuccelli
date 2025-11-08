@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Modal from "react-modal";
 import AddProf from "../../components/profesiones/AddProf.tsx";
+import RmProf from "../../components/profesiones/RmProf.tsx";
+import HandleHabi from "../../components/habilidades/HandleHabi.tsx";
 import StandardInput from "../../components/form/Form";
 import EditIcon from "@mui/icons-material/Edit";
 import SaveIcon from "@mui/icons-material/Save";
@@ -9,7 +11,6 @@ import { useNavigate } from "react-router-dom";
 import { fetchMe } from "../../services/auth.services";
 import type { ProfileCardProps as User } from "../../interfaces/profilaPropCard";
 import "./modPerf.css";
-import RmProf from "../../components/profesiones/RmProf.tsx";
 
 export default function EditProfile() {
   const [user, setUser] = useState<User>({} as User);
@@ -22,10 +23,10 @@ export default function EditProfile() {
   const [successMsg, setSuccessMsg] = useState("");
   const [showClavesModal, setShowClavesModal] = useState(false);
   const [showProfModal, setShowProfModal] = useState(false);
+  const [showHabiModal, setShowHabiModal] = useState(false);
   const [pestaña, setPestaña] = useState(false);
   const navigate = useNavigate();
 
-  // Configurar Modal
   useEffect(() => {
     try {
       Modal.setAppElement("#root");
@@ -34,7 +35,7 @@ export default function EditProfile() {
     }
   }, []);
 
-  // Cargar datos del usuario
+  // USUARIO
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -56,15 +57,6 @@ export default function EditProfile() {
     };
     fetchUser();
   }, [navigate]);
-
-  // Mostrar profesiones al abrir modal (placeholder para futura carga)
-  useEffect(() => {
-    if (!showProfModal) return;
-    // Ejemplo: podrías cargar profesiones del usuario aquí
-    // fetch(`http://localhost:3000/api/usuario/${user.id}/profesiones`)
-    //   .then(res => res.json())
-    //   .then(data => setProf(data.data));
-  }, [showProfModal, user.id]);
 
   const toggleEdit = (field: string) => {
     setEditable((prev) => ({ ...prev, [field]: !prev[field] }));
@@ -218,6 +210,7 @@ export default function EditProfile() {
         </div>
 
         <div className="card-content profile-grid-single">
+          {/* DATOS */}
           <div className="profile-form">
             <h3>Datos Personales</h3>
             {renderField("nombre", "Nombre", user.nombre)}
@@ -235,7 +228,7 @@ export default function EditProfile() {
             {successMsg && <div className="global-success">{successMsg}</div>}
           </div>
 
-          {/* Sección imagen + modales */}
+          {/* IMAGEN */}
           <div className="profile-image-section">
             <img
               src={`http://localhost:3000${user.fotoUrl}`}
@@ -253,7 +246,7 @@ export default function EditProfile() {
               Cambiar imagen
             </label>
 
-            {/* Cambiar contraseña */}
+            {/* CAMBIAR CLAVE */}
             <button
               className="btn_modPerf"
               style={{ marginTop: 40 }}
@@ -304,13 +297,13 @@ export default function EditProfile() {
               </div>
             </Modal>
 
-            {/* Profesiones */}
+            {/* PROFESIONES */}
             <button
               className="btn_modPerf"
               style={{ marginTop: 40 }}
               onClick={() => setShowProfModal(true)}
             >
-              ¡Quiero agregar profesiones!
+              ¡Quiero gestionar mis profesiones!
             </button>
 
             <Modal
@@ -328,7 +321,6 @@ export default function EditProfile() {
                 >
                   &times;
                 </button>
-
                 <h2>Gestionar Profesiones</h2>
                 <div className="pestañas-container">
                   <button
@@ -344,14 +336,40 @@ export default function EditProfile() {
                     ➖ Quitar
                   </button>
                 </div>
-
                 {!pestaña ? <AddProf /> : <RmProf />}
               </div>
             </Modal>
-          </div>
 
-          <div>
-            <button className="btn_modPerf" onClick={() => navigate(-1)}>
+            {/* HABILIDADES */}
+            <button
+              className="btn_modPerf"
+              style={{ marginTop: 40 }}
+              onClick={() => setShowHabiModal(true)}
+            >
+              ¡Quiero gestionar mis habilidades!
+            </button>
+
+            <Modal
+              isOpen={showHabiModal}
+              onRequestClose={() => setShowHabiModal(false)}
+              className="modal"
+              overlayClassName="modal_overlay_modPerf"
+              ariaHideApp={false}
+            >
+              <div className="card-modProf">
+                <button
+                  type="button"
+                  className="close_modPerf"
+                  onClick={() => setShowHabiModal(false)}
+                >
+                  &times;
+                </button>
+                <h2>Gestionar Habilidades</h2>
+                <HandleHabi />
+              </div>
+            </Modal>
+
+            <button className="btn_modPerf" style={{ marginTop: 40 }} onClick={() => navigate(-1)}>
               ← Volver
             </button>
           </div>
@@ -360,3 +378,4 @@ export default function EditProfile() {
     </section>
   );
 }
+

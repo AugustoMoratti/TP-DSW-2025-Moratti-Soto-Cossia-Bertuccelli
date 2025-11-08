@@ -19,6 +19,7 @@ function sanitizeProfesionInput(req: Request, res: Response, next: NextFunction)
   next()
 }
 
+
 async function findAllActive(req: Request, res: Response) {
   const em = orm.em.fork();
 
@@ -84,21 +85,16 @@ async function busquedaProf(req: Request, res: Response) {
     }
 
     const qParam = `%${qRaw}%`;
-    const profesiones = await em.find(
-      Profesiones,
-      {
-        $or: [
-          { nombreProfesion: { $like: qParam } },
-          { descripcionProfesion: { $like: qParam } },
-        ],
-      },
-      {
-        limit: 10,
-        orderBy: { nombreProfesion: 'ASC' },
-      }
-    );
+    const profesiones = await em.find(Profesiones, {
+      $or: [
+        { nombreProfesion: { $like: `%${qParam}%` } },
+        { descripcionProfesion: { $like: `%${qParam}%` } },
+      ],
+    }, {
+      limit: 10,
+    });
 
-    return res.status(200).json({ data: profesiones });
+    return res.status(200).json({ profesiones: profesiones });
   } catch (err: any) {
     console.error('🔥 Error buscando profesiones:', err);
     return res.status(500).json({ message: 'Error interno al buscar profesiones.' });
@@ -163,7 +159,7 @@ async function update(req: Request, res: Response) {
 
 async function remove(req: Request, res: Response) {
   const em = orm.em.fork();
-  
+
   try {
     const nombreProfesion = (req.params.nombreProfesion).toLowerCase()
     const profesion = await em.findOne(Profesiones, { nombreProfesion });
@@ -185,5 +181,5 @@ export {
   add,
   update,
   remove,
-  busquedaProf
+  busquedaProf,
 };

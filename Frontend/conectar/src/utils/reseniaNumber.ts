@@ -5,7 +5,7 @@ export const estrellas = (usuario: Usuario) => {
     return "0 trabajos"
   }
   const sumaResenias = usuario.trabajos!.reduce(
-    (acum, trabajo) => acum + trabajo.resenia.valor, 0
+    (acum, trabajo) => acum + (trabajo.resenia?.valor ?? 0), 0
   );
   const promedio = sumaResenias / usuario.trabajos.length;
 

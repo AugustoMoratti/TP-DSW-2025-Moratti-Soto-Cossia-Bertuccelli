@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { fetchMe } from "../../services/auth.services";
 import type { Profesion } from "../../interfaces/profesion";
-import "./AddProf.css"; 
+import "./AddProf.css";
 
 export default function AddProf() {
   const [prof, setProf] = useState<Profesion[]>([]);
@@ -14,17 +14,21 @@ export default function AddProf() {
 
   // Buscar profesiones
   const handleBuscarProf = async () => {
-    if (!query.trim()) return;
+    if (!query.trim().toLowerCase()) return;
     try {
       setLoading(true);
       setError("");
-      const res = await fetch(
-        `http://localhost:3000/api/profesion/busqueda?q=${encodeURIComponent(query)}`,
-        { credentials: "include" }
-      );
-      if (!res.ok) throw new Error(`Error HTTP ${res.status}`);
-      const data = await res.json();
-      setProf(data.data || []);
+      fetch(`http://localhost:3000/api/profesion/busqueda?q=${encodeURIComponent(query)}`)//encode lo que hace es verificar la correcta escritura, y quitar espacio y poner otros caracteres
+        .then(res => res.json())
+        .then(data => {
+          console.log(data.profesiones)
+          setProf(data.profesiones);
+          setLoading(false);
+        })
+        .catch(err => {
+          console.error('Error buscando profesiones:', err);
+          setLoading(false);
+        });
     } catch (err) {
       console.error("Error buscando profesiones:", err);
       setError("Error al buscar profesiones.");
@@ -100,11 +104,11 @@ export default function AddProf() {
       </div>
 
       {loading && <p className="loading">Cargando profesiones...</p>}
-      {error && <p style={{ color: '#c00'}}>{error}</p>}
-      {mensajeOk && <p style={{ color: '#2ab1b8'}}>{mensajeOk}</p>}
+      {error && <p style={{ color: '#c00' }}>{error}</p>}
+      {mensajeOk && <p style={{ color: '#2ab1b8' }}>{mensajeOk}</p>}
 
       <div className="manage-prof__list">
-        {prof.length === 0 && !loading && (
+        {!prof && !loading && (
           <p className="no-results">No hay resultados</p>
         )}
         {prof.map((p) => {

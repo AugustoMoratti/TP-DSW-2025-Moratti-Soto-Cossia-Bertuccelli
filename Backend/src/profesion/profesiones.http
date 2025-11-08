@@ -10,9 +10,9 @@ POST http://localhost:3000/api/profesion
 Content-Type: application/json
 
 { 
-  "nombreProfesion": "Ingenieria en sistemas",
-  "descripcionProfesion": "...",
-  "estado": false
+  "nombreProfesion": "Albañil",
+  "descripcionProfesion": "Amazame esta",
+  "estado": true
 }
 
 ### ID

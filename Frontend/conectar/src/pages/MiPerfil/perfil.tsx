@@ -108,8 +108,10 @@ const Perfil: React.FC = () => {
               localidad={usuario.localidad}
               provincia={usuario.provincia}
               profesiones={usuario.profesiones ?? []}
+              habilidades={usuario.habilidades ?? []}
               fotoUrl={usuario.fotoUrl}
               tipoPage="miPerfil"
+              trabajos={usuario.trabajos ?? []}
               descripcion={usuario?.descripcion}
               onUpdateDescripcion={ActDesc}
             />

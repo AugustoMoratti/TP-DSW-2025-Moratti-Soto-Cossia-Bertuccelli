@@ -46,35 +46,31 @@ h3 {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
-.modal_overlay {
-  background: rgba(0,0,0,.45);
-  position: fixed;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  z-index: 1000;
+.habilidades_list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
-.modal_content {
-  background: #fff;
-  border-radius: 8px;
-  padding: 16px 20px;
-  max-width: 640px;
-  width: 95%;
-  max-height: 80vh;
-  overflow: auto;
-  position: relative;
+.habilidad_chip {
+  background-color: #e0f2ff;
+  color: #004a75;
+  border-radius: 16px;
+  padding: 6px 12px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+  transition: all 0.2s ease-in-out;
 }
 
-.close {
-  position: absolute;
-  top: 8px;
-  right: 10px;
-  background: transparent;
-  border: 0;
-  font-size: 24px;
-  cursor: pointer;
+.habilidad_chip:hover {
+  background-color: #cbe9ff;
+  transform: scale(1.05);
 }
+
 
 .avatar {
   width: 80px;

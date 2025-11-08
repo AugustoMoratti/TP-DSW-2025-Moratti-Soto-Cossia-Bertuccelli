@@ -11,6 +11,7 @@ export interface OtroUsuario {
   localidad?: string;
   descripcion?: string;
   profesiones?: Profesion[];
+  habilidades?: [];
   direccion: string;
   trabajos: Trabajo[];
 };

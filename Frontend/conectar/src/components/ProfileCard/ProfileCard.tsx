@@ -22,20 +22,16 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
   const [isEditingDesc, setIsEditingDesc] = useState(false);
   const [tempDesc, setTempDesc] = useState(descripcion);
   const [isSaving, setIsSaving] = useState(false);
-  const [showProfesiones, setShowProfesiones] = useState(false);
-  const [showHabilidades, setShowHabilidades] = useState(false);
 
   const navigate = useNavigate();
 
   useEffect(() => {
     try {
       Modal.setAppElement("#root");
-
     } catch {
       // Ignorar errores en entornos sin DOM
     }
   }, []);
-
 
   useEffect(() => {
     setTempDesc(descripcion ?? "");
@@ -68,6 +64,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
   return (
     <div className={styles.profile_container}>
       <h2 className={styles.saludo}>Hola {nombre} 👋!</h2>
+
 
       <section className={styles.profile_header}>
         <div className={styles.profile_info}>
@@ -110,16 +107,17 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
         </div>
       </section>
 
+
       <section
-        className={`${styles.slide_section} ${tipoPage == 'miPerfil' || isEditingDesc ? styles.open : ""
-          }`}
+        className={`${styles.slide_section} ${
+          tipoPage === "miPerfil" || isEditingDesc ? styles.open : ""
+        }`}
       >
         <div
-          className={`${styles.slide_content} ${tipoPage == 'miPerfil' || isEditingDesc ? styles.visible : ""
-            }`}
+          className={`${styles.slide_content} ${
+            tipoPage === "miPerfil" || isEditingDesc ? styles.visible : ""
+          }`}
         >
-
-
           <section className={styles.profile_section}>
             <div className={styles.section_header}>
               <h4>Sobre mí</h4>
@@ -168,7 +166,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
             <ul>
               {profesiones && profesiones.length > 0 ? (
                 profesiones.map((profesion) => (
-                  <li key={ profesion.nombreProfesion } className={styles.profesion_item}>
+                  <li key={profesion.nombreProfesion} className={styles.profesion_item}>
                     {profesion.nombreProfesion}
                     {profesion.descripcionProfesion && (
                       <small style={{ opacity: 0.7 }}> — {profesion.descripcionProfesion}</small>
@@ -179,84 +177,69 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
                 <p>No hay profesiones agregadas.</p>
               )}
             </ul>
+          </section>
 
 
+          <section className={styles.profile_section}>
             <h4>Habilidades</h4>
             {habilidades && habilidades.length > 0 ? (
-              <ul className={styles.habilidades_list}>
-                {habilidades.map((habilidad, index) => (
-                  <li key={index} className={styles.habilidad_item}>
-                    {habilidad}
+              <ul>
+                {habilidades.map((hab, index) => (
+                  <li key={index} className={styles.profesion_item}>
+                    {hab}
                   </li>
                 ))}
               </ul>
             ) : (
               <p>No hay habilidades agregadas.</p>
             )}
+          </section>
 
+
+          <section className={styles.profile_section}>
+            {tipoPage === "miPerfil" ? (
+              <h4>Historial de Trabajos Realizados</h4>
+            ) : (
+              <h4>Trabajos Contratados</h4>
+            )}
+
+            {trabajos && trabajos.length > 0 ? (
+              <ul className={styles.historial_trabajo}>
+                {trabajos.map((trabajo, index) => (
+                  <React.Fragment key={index}>
+                    <li>
+                      <strong>{trabajo.fechaFinalizado || "Fecha no disponible"}</strong> —{" "}
+                      {trabajo.cliente?.nombre} {trabajo.cliente?.apellido} —{" "}
+                      {trabajo.resenia
+                        ? `"${trabajo.resenia.descripcion}" (${trabajo.resenia.valor}/5)`
+                        : "Sin reseña"}
+                    </li>
+                    {index < trabajos.length - 1 && <div className={styles.divisor} />}
+                  </React.Fragment>
+                ))}
+              </ul>
+
+            ) : (
+              <p className={styles.no_trabajo}>
+                {tipoPage === "miPerfil"
+                  ? "Todavía no contrataste a ningún profesional"
+                  : "Todavía no realizó ningún trabajo"}
+              </p>
+            )}
+          </section>
+
+
+          <div className={styles.bottom_section}>
             <button
               type="button"
-              className={styles.btn_direccion}
-              style={{ marginTop: '20px' }}
-              onClick={() => setShowHabilidades(true)}
+              className={styles.btn_contratado}
+              onClick={() => navigate("/trabajos")}
             >
-              Agregar/Quitar Habilidades
+              Mis Trabajos
             </button>
-            <Modal
-              isOpen={showHabilidades}
-              onRequestClose={() => setShowHabilidades(false)}
-              contentLabel="Gestionar Habilidades"
-              className={styles.modal_content}
-              overlayClassName={styles.modal_overlay}
-            >
-              <div>
-                <button
-                  type="button"
-                  className={styles.close}
-                  onClick={() => setShowHabilidades(false)}
-                  aria-label="Cerrar"
-                >
-                  &times;
-                </button>
-                <h2>Gestionar Habilidades</h2>
-                {/* Tu contenido acá */}
-              </div>
-            </Modal>
-          </section> 
+          </div>
         </div>
       </section>
-
-
-      <section className={styles.profile_section}>
-        {tipoPage == 'miPerfil' ? <h4>Historial de Trabajos Realizados</h4> : <h4>Trabajos Contratados</h4>}
-
-        {trabajos && trabajos.length > 0 ? (
-          <ul className={styles.historial_trabajo}>
-            {trabajos.map((trabajo, index) => (
-              <React.Fragment key={index}>
-                <li>{trabajo}</li>
-                {index < trabajos.length - 1 && <div className={styles.divisor} />}
-              </React.Fragment>
-            ))}
-          </ul>
-        ) : (
-          <p className={styles.no_trabajo}>
-            {tipoPage == 'miPerfil'
-              ? "Todavía no contrataste a ningún profesional"
-              : "Todavía no realizó ningún trabajo"}
-          </p>
-        )}
-      </section>
-
-      <div>
-        <button
-          type="button"
-          className={styles.btn_contratado}
-          onClick={() => navigate("/trabajos")}
-        >
-          Mis Trabajos
-        </button>
-      </div>
     </div>
   );
 };

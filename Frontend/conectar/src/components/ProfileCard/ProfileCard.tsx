@@ -22,32 +22,30 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
   const [isEditingDesc, setIsEditingDesc] = useState(false);
   const [tempDesc, setTempDesc] = useState(descripcion);
   const [isSaving, setIsSaving] = useState(false);
-
   const navigate = useNavigate();
 
+  // Evitar error de accesibilidad de react-modal en SSR o tests
   useEffect(() => {
     try {
       Modal.setAppElement("#root");
     } catch {
-      // Ignorar errores en entornos sin DOM
+      /* Ignorar errores en entornos sin DOM */
     }
   }, []);
 
+  // Actualiza la descripción temporal cuando cambia la original
   useEffect(() => {
     setTempDesc(descripcion ?? "");
   }, [descripcion]);
 
   const handleSaveDesc = async () => {
     if (tempDesc.length > 250) return;
-
     setIsSaving(true);
     try {
-      if (onUpdateDescripcion) {
-        await onUpdateDescripcion(tempDesc.trim());
-      }
+      if (onUpdateDescripcion) await onUpdateDescripcion(tempDesc.trim());
       setIsEditingDesc(false);
     } catch (error) {
-      console.error("Error al guardar:", error);
+      console.error("Error al guardar descripción:", error);
       setIsEditingDesc(true);
     } finally {
       setIsSaving(false);
@@ -65,7 +63,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
     <div className={styles.profile_container}>
       <h2 className={styles.saludo}>Hola {nombre} 👋!</h2>
 
-
+      {/* Header */}
       <section className={styles.profile_header}>
         <div className={styles.profile_info}>
           <div className={styles.nombre_foto_perfil}>
@@ -107,7 +105,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
         </div>
       </section>
 
-
+      {/* Contenido expandible */}
       <section
         className={`${styles.slide_section} ${
           tipoPage === "miPerfil" || isEditingDesc ? styles.open : ""
@@ -118,6 +116,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
             tipoPage === "miPerfil" || isEditingDesc ? styles.visible : ""
           }`}
         >
+          {/* Sobre mí */}
           <section className={styles.profile_section}>
             <div className={styles.section_header}>
               <h4>Sobre mí</h4>
@@ -143,7 +142,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
                   disabled={isSaving}
                 />
                 <p style={{ color: tempDesc.length > 250 ? "red" : undefined }}>
-                  {tempDesc.length}/{250}
+                  {tempDesc.length}/250
                   {tempDesc.length > 250 ? " — Límite excedido" : ""}
                 </p>
                 <button
@@ -160,27 +159,26 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
             )}
           </section>
 
-
+          {/* Profesiones */}
           <section className={styles.profile_section}>
             <h4>Profesiones</h4>
-            <ul>
-              {profesiones && profesiones.length > 0 ? (
-                profesiones.map((profesion) => (
-                  <li key={profesion.nombreProfesion} className={styles.profesion_item}>
+            {profesiones && profesiones.length > 0 ? (
+              <ul>
+                {profesiones.map((profesion) => (
                   <li key={profesion.nombreProfesion} className={styles.profesion_item}>
                     {profesion.nombreProfesion}
                     {profesion.descripcionProfesion && (
                       <small style={{ opacity: 0.7 }}> — {profesion.descripcionProfesion}</small>
                     )}
                   </li>
-                ))
-              ) : (
-                <p>No hay profesiones agregadas.</p>
-              )}
-            </ul>
+                ))}
+              </ul>
+            ) : (
+              <p>No hay profesiones agregadas.</p>
+            )}
           </section>
 
-
+          {/* Habilidades */}
           <section className={styles.profile_section}>
             <h4>Habilidades</h4>
             {habilidades && habilidades.length > 0 ? (
@@ -196,13 +194,9 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
             )}
           </section>
 
-
+          {/* Trabajos */}
           <section className={styles.profile_section}>
-            {tipoPage === "miPerfil" ? (
-              <h4>Historial de Trabajos Realizados</h4>
-            ) : (
-              <h4>Trabajos Contratados</h4>
-            )}
+            <h4>{tipoPage === "miPerfil" ? "Historial de Trabajos Realizados" : "Trabajos Contratados"}</h4>
 
             {trabajos && trabajos.length > 0 ? (
               <ul className={styles.historial_trabajo}>
@@ -219,7 +213,6 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
                   </React.Fragment>
                 ))}
               </ul>
-
             ) : (
               <p className={styles.no_trabajo}>
                 {tipoPage === "miPerfil"
@@ -229,7 +222,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
             )}
           </section>
 
-
+          {/* Botón inferior */}
           <div className={styles.bottom_section}>
             <button
               type="button"

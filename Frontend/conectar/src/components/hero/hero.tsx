@@ -8,6 +8,8 @@ import img2 from "../../../assets/laburante_2.png";
 import img3 from "../../../assets/laburante_3.png";
 
 const Hero: React.FC = () => {
+
+  
   return (
     <>
       <section className="hero">

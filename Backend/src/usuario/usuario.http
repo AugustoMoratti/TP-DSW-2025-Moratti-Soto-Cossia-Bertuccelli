@@ -64,13 +64,17 @@ Content-Type: application/json
   "profesiones": [1]
 }
 
-### Modificar una provincia (PATCH - modificar recurso parcialmente)
-PATCH http://localhost:3000/api/usuario/740966f1-41b6-4827-bcc7-bf676fc8787b
+### Modificar un usuario agregando una profesion (PATCH - modificar recurso parcialmente)
+PATCH http://localhost:3000/api/usuario/4dd9e149-78d0-4fca-824f-1c7c57080411
 Content-Type: application/json
 
 {
-  "descripcion":"Salame"
+  "nombreProfesion": "politico",
+  "descripcionProfesion": "Robo mucho",
+  "fechaSolicitud": "2025-11-05",
+  "estado": true
 }
+
 
 ### Eliminar una provicia (DELETE - eliminar recurso)
 DELETE http://localhost:3000/api/usuario/{{id}}

@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { Profesiones } from './profesion.entity.js';
 import { orm } from '../../DB/orm.js';
 
-const em = orm.em.fork();
+
 
 function sanitizeProfesionInput(req: Request, res: Response, next: NextFunction) {
   req.body.sanitizedInput = {
@@ -20,6 +20,8 @@ function sanitizeProfesionInput(req: Request, res: Response, next: NextFunction)
 }
 
 async function findAllActive(req: Request, res: Response) {
+  const em = orm.em.fork();
+
   try {
     const profesiones = await em.find(Profesiones, { estado: true })//Agregue filtro para que solo muestre si esta activo
     if (profesiones.length === 0) {
@@ -34,6 +36,8 @@ async function findAllActive(req: Request, res: Response) {
 }
 
 async function findAllInactive(req: Request, res: Response) {
+  const em = orm.em.fork();
+
   try {
     const profesiones = await em.find(Profesiones, { estado: false })//Agregue filtro para que solo muestre si esta activo
     if (profesiones.length === 0) { //find devuelve si o si un arreglo que puede estar vacio
@@ -48,6 +52,8 @@ async function findAllInactive(req: Request, res: Response) {
 }
 
 async function findOne(req: Request, res: Response) {
+  const em = orm.em.fork();
+
   try {
     const nombreProfesion = (req.params.nombreProfesion).toLowerCase()
     const profesion = await em.findOneOrFail(Profesiones, { nombreProfesion })
@@ -72,29 +78,37 @@ async function busquedaProf(req: Request, res: Response) {
   const em = orm.em.fork();
 
   try {
-    const qRaw = String(req.query.q ?? '').trim().toLowerCase();
-
+    const qRaw = String(req.query.q ?? '').trim();
+    if (!qRaw) {
+      return res.status(400).json({ message: 'Debe ingresar un término de búsqueda.' });
+    }
 
     const qParam = `%${qRaw}%`;
+    const profesiones = await em.find(
+      Profesiones,
+      {
+        $or: [
+          { nombreProfesion: { $like: qParam } },
+          { descripcionProfesion: { $like: qParam } },
+        ],
+      },
+      {
+        limit: 10,
+        orderBy: { nombreProfesion: 'ASC' },
+      }
+    );
 
-    const profesiones = await em.find(Profesiones, {
-      $or: [
-        { nombreProfesion: { $like: qParam } },
-        { descripcionProfesion: { $like: qParam } }
-      ]
-    }, {
-      populate: [],
-      limit: 10
-    });
-
-    return res.json({ data: profesiones });
-  } catch (err) {
-    console.error('Error en buscando las profesiones:', err);
-    return res.status(500).json({ message: 'Error al buscar profesiones' });
+    return res.status(200).json({ data: profesiones });
+  } catch (err: any) {
+    console.error('🔥 Error buscando profesiones:', err);
+    return res.status(500).json({ message: 'Error interno al buscar profesiones.' });
   }
 }
 
+
 async function add(req: Request, res: Response) {
+  const em = orm.em.fork();
+
   try {
     const { nombreProfesion, descripcionProfesion, estado } = req.body.sanitizedInput
 
@@ -126,6 +140,8 @@ async function add(req: Request, res: Response) {
 }
 
 async function update(req: Request, res: Response) {
+  const em = orm.em.fork();
+
   try {
     const nombreProfesion = (req.params.nombreProfesion).trim().toLowerCase();
     const profesionToUpdate = await em.findOneOrFail(Profesiones, { nombreProfesion })
@@ -146,6 +162,8 @@ async function update(req: Request, res: Response) {
 }
 
 async function remove(req: Request, res: Response) {
+  const em = orm.em.fork();
+  
   try {
     const nombreProfesion = (req.params.nombreProfesion).toLowerCase()
     const profesion = await em.findOne(Profesiones, { nombreProfesion });

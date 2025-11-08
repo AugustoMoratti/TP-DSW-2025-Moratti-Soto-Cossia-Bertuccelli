@@ -269,13 +269,7 @@ async function update(req: Request, res: Response) {
     if (horarios) usuario.horarios = horarios.trim();
     if (direccion) usuario.direccion = direccion.trim();
 
-    if (habilidades) {
-      const habilidadesArray = Array.isArray(habilidades) ? habilidades : [];
-      const habilidadesUnicas = habilidadesArray.filter(
-        (hab: string) => !usuario.habilidades.includes(hab)
-      );
-      usuario.habilidades.push(...habilidadesUnicas);
-    }
+    if (req.body.habilidades) { usuario.habilidades = req.body.habilidades; }
 
     // Profesiones
     const profesionesName: string[] = Array.isArray(req.body.profesiones)

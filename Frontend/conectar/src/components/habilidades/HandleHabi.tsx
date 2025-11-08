@@ -46,37 +46,41 @@ export default function HandleHabi() {
     return () => ac.abort();
   }, []);
 
-  // SAVE LOCAL PARA DESPUES GUARDAR EN SERVER
-  const handleAddHabilidad = () => {
+  // LOCAL PARA DESPUES GUARDAR
+  const handleAddHabilidad = async () => {
     const nueva = inputHabilidad.trim();
-    if (!nueva) return;
-    if (habilidades.includes(nueva)) return;
-    setHabilidades([...habilidades, nueva]);
+    if (!nueva || habilidades.includes(nueva)) return;
+
+    const nuevasHabs = [...habilidades, nueva];
+    setHabilidades(nuevasHabs);
     setInputHabilidad("");
+
+
+    await handleSave(nuevasHabs, "Habilidad agregada ✅");
   };
 
-  // DELETE
-  const handleRemoveHabilidad = (hab: string) => {
-    setHabilidades(habilidades.filter((h) => h !== hab));
+  // REMOVE
+  const HendleRemove = async (hab: string) => {
+    const nuevasHabs = habilidades.filter((h) => h !== hab);
+    setHabilidades(nuevasHabs);
+
+    await handleSave(nuevasHabs, `Habilidad "${hab}" eliminada`);
   };
 
-  // SAVE
-  const handleGuardar = async () => {
+  //SAVE
+  const handleSave = async (lista: string[], msgOk: string) => {
     if (!user.id) return;
-
     try {
       setSaving(true);
       const res = await fetch(`http://localhost:3000/api/usuario/${user.id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
-        body: JSON.stringify({ habilidades }),
+        body: JSON.stringify({ habilidades: lista }),
       });
-
       if (!res.ok) throw new Error(`Error HTTP ${res.status}`);
-
-      setMensajeOk("Habilidades guardadas correctamente ✅");
-      setTimeout(() => setMensajeOk(null), 2500);
+      setMensajeOk(msgOk);
+      setTimeout(() => setMensajeOk(null), 2000);
     } catch (e) {
       console.error(e);
       setError("No se pudieron guardar las habilidades");
@@ -85,7 +89,10 @@ export default function HandleHabi() {
     }
   };
 
-  // RENDER
+  const handleGuardar = async () => {
+    await handleSave(habilidades, "Habilidades guardadas correctamente ✅");
+  };
+
   if (loading) return <p>Cargando usuario...</p>;
   if (error) return <p style={{ color: '#dc2626' }}>{error}</p>;
 
@@ -113,8 +120,8 @@ export default function HandleHabi() {
           habilidades.map((hab) => (
             <span key={hab} className="chip">
               {hab}
-              <button className="remove-btn" onClick={() => handleRemoveHabilidad(hab)}>
-                <CloseIcon/>
+              <button className="remove-btn" onClick={() => HendleRemove(hab)}>
+                <CloseIcon />
               </button>
             </span>
           ))

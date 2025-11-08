@@ -5,7 +5,6 @@ import StandardInput from "../../components/form/Form";
 import EditIcon from "@mui/icons-material/Edit";
 import SaveIcon from "@mui/icons-material/Save";
 import DeleteIcon from "@mui/icons-material/Delete";
-import type { Profesion } from "../../interfaces/profesion";
 import { useNavigate } from "react-router-dom";
 import { fetchMe } from "../../services/auth.services";
 import type { ProfileCardProps as User } from "../../interfaces/profilaPropCard";
@@ -23,7 +22,6 @@ export default function EditProfile() {
   const [successMsg, setSuccessMsg] = useState("");
   const [showClavesModal, setShowClavesModal] = useState(false);
   const [showProfModal, setShowProfModal] = useState(false);
-  const [prof, setProf] = useState<Profesion[]>([]);
   const [pestaña, setPestaña] = useState(false);
   const navigate = useNavigate();
 

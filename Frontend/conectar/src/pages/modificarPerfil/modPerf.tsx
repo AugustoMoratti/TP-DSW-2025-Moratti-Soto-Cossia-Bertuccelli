@@ -16,7 +16,7 @@ export default function EditProfile() {
   const [user, setUser] = useState<User>({} as User);
   const [clave, setClave] = useState("");
   const [confirmarClave, setConfirmarClave] = useState("");
-  const [editable, setEditable] = useState<Record<string, boolean>>({});
+  const [editable, setEditable] = useState<Partial<Record<keyof User, boolean>>>({});
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(false);
   const [saveError, setSaveError] = useState("");
@@ -58,12 +58,23 @@ export default function EditProfile() {
     fetchUser();
   }, [navigate]);
 
-  const toggleEdit = (field: string) => {
-    setEditable((prev) => ({ ...prev, [field]: !prev[field] }));
-    setErrors((prev) => ({ ...prev, [field]: "" }));
+  const toggleEdit = (field: keyof User) => {
+    setEditable(prev => {
+      const newEditable: Partial<Record<keyof User, boolean>> = {};
+
+      Object.keys(prev).forEach(k => {
+        newEditable[k as keyof User] = false;
+      });
+
+      newEditable[field] = !prev[field];
+      return newEditable;
+    });
+
+    setErrors(prev => ({ ...prev, [field]: "" }));
     setSaveError("");
     setSuccessMsg("");
   };
+
 
   const handleChange = (field: keyof User, value: string) => {
     if (field === "contacto") {
@@ -110,47 +121,57 @@ export default function EditProfile() {
   };
 
   const handleSaveAll = async () => {
-    setSaveError("");
-    setSuccessMsg("");
-    if (clave !== confirmarClave) {
-      setSaveError("⚠️ Las claves no coinciden.");
-      return;
-    }
-    const payload = {
-      nombre: user.nombre,
-      apellido: user.apellido,
-      fechaNac: user.fechaNac,
-      provincia: user.provincia,
-      localidad: user.localidad,
-      direccion: user.direccion,
-      contacto: user.contacto,
-      email: user.email,
-      clave: clave || undefined,
-    };
-    try {
-      setLoading(true);
-      const res = await fetch(`http://localhost:3000/api/usuario/${user.id}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify(payload),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Error al guardar usuario");
-      setSuccessMsg("Datos actualizados correctamente.");
-      setEditable({});
-      if (showClavesModal) {
-        setShowClavesModal(false);
-        setClave("");
-        setConfirmarClave("");
-      }
-    } catch (err) {
-      console.error(err);
-      setSaveError("Error de conexión al guardar.");
-    } finally {
-      setLoading(false);
-    }
+  setSaveError("");
+  setSuccessMsg("");
+
+  if (clave !== confirmarClave) {
+    setSaveError("⚠️ Las claves no coinciden.");
+    return;
+  }
+
+  const payload = {
+    nombre: user.nombre,
+    apellido: user.apellido,
+    fechaNac: user.fechaNac,
+    provincia: user.provincia,
+    localidad: user.localidad,
+    direccion: user.direccion,
+    contacto: user.contacto,
+    email: user.email,
+    clave: clave || undefined,
   };
+
+  try {
+    setLoading(true);
+    const res = await fetch(`http://localhost:3000/api/usuario/${user.id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify(payload),
+    });
+
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || "Error al guardar usuario");
+
+    setSuccessMsg("Datos actualizados correctamente.");
+
+    setEditable(prev =>
+      Object.fromEntries(Object.keys(prev).map(k => [k, false])) as Record<keyof User, boolean>
+    );
+
+    if (showClavesModal) {
+      setShowClavesModal(false);
+      setClave("");
+      setConfirmarClave("");
+    }
+  } catch (err) {
+    console.error(err);
+    setSaveError("Error de conexión al guardar.");
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   const StaticField: React.FC<{ label: string; value?: string }> = ({
     label,
@@ -169,26 +190,41 @@ export default function EditProfile() {
     type = "text"
   ) => (
     <div className="field-with-action">
-      {editable[field] ? (
-        <StandardInput
-          label={label}
-          value={value || ""}
-          onChange={(v) => handleChange(field, v)}
-          type={type}
-        />
-      ) : (
-        <StaticField label={label} value={value} />
-      )}
-      <button className="btn_modPerf" onClick={() => toggleEdit(field)}>
-        {editable[field] ? "Cancelar" : "Editar"} <EditIcon />
-      </button>
-      {editable[field] && (
-        <button className="btn_modPerf guardar-btn" onClick={handleSaveAll}>
-          Guardar <SaveIcon />
+      <div className="field-input">
+        {editable[field] ? (
+          <StandardInput
+            label={label}
+            value={value || ""}
+            onChange={(v) => handleChange(field, v)}
+            type={type}
+          />
+        ) : (
+          <StaticField label={label} value={value} />
+        )}
+      </div>
+
+      <div className="field-buttons">
+        <button
+          type="button" 
+          className="btn_modPerf editar-btn"
+          onClick={() => toggleEdit(field)}
+        >
+          {editable[field] ? "Cancelar" : "Editar"} <EditIcon />
         </button>
-      )}
+
+        {editable[field] && (
+          <button
+            type="button" 
+            className="btn_modPerf guardar-btn.visible"
+            onClick={handleSaveAll}
+          >
+            Guardar <SaveIcon />
+          </button>
+        )}
+      </div>
     </div>
   );
+
 
   if (loading && !user.nombre)
     return <div className="main-bg">Cargando datos del usuario...</div>;
@@ -213,14 +249,17 @@ export default function EditProfile() {
           {/* DATOS */}
           <div className="profile-form">
             <h3>Datos Personales</h3>
+            <br />
             {renderField("nombre", "Nombre", user.nombre)}
             {renderField("apellido", "Apellido", user.apellido)}
             {renderField("fechaNac", "Fecha de nacimiento", user.fechaNac, "date")}
             <h3>Ubicación</h3>
+            <br />
             {renderField("provincia", "Provincia", user.provincia)}
             {renderField("localidad", "Localidad", user.localidad)}
             {renderField("direccion", "Dirección", user.direccion)}
             <h3>Contacto</h3>
+            <br />
             {renderField("contacto", "Teléfono", user.contacto, "tel")}
             {renderField("email", "Email", user.email, "email")}
 

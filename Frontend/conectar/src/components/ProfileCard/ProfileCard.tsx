@@ -107,14 +107,12 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
 
       {/* Contenido expandible */}
       <section
-        className={`${styles.slide_section} ${
-          tipoPage === "miPerfil" || isEditingDesc ? styles.open : ""
-        }`}
+        className={`${styles.slide_section} ${tipoPage === "miPerfil" || isEditingDesc ? styles.open : ""
+          }`}
       >
         <div
-          className={`${styles.slide_content} ${
-            tipoPage === "miPerfil" || isEditingDesc ? styles.visible : ""
-          }`}
+          className={`${styles.slide_content} ${tipoPage === "miPerfil" || isEditingDesc ? styles.visible : ""
+            }`}
         >
           {/* Sobre mí */}
           <section className={styles.profile_section}>
@@ -227,9 +225,18 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
             <button
               type="button"
               className={styles.btn_contratado}
-              onClick={() => navigate("/trabajos")}
+              onClick={() => navigate("/trabajosContratados")}
             >
-              Mis Trabajos
+              Trabajos Contratados
+            </button>
+          </div>
+          <div className={styles.bottom_section}>
+            <button
+              type="button"
+              className={styles.btn_propios}
+              onClick={() => navigate("/trabajosPropios")}
+            >
+              Trabajos Propios
             </button>
           </div>
         </div>

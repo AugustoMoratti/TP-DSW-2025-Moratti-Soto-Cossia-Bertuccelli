@@ -13,7 +13,7 @@ export default function AddProf() {
   const [mensajeOk, setMensajeOk] = useState<string | null>(null);
 
   // Buscar profesiones
-  const handleBuscarProf = async () => {
+  /*const handleBuscarProf = async () => {
     if (!query.trim().toLowerCase()) return;
     try {
       setLoading(true);
@@ -21,7 +21,7 @@ export default function AddProf() {
       fetch(`http://localhost:3000/api/profesion/busqueda?q=${encodeURIComponent(query)}`)//encode lo que hace es verificar la correcta escritura, y quitar espacio y poner otros caracteres
         .then(res => res.json())
         .then(data => {
-          console.log(data.profesiones)
+          console.log(`http://localhost:3000/api/profesion/busqueda?q=${encodeURIComponent(query)}`)
           setProf(data.profesiones);
           setLoading(false);
         })
@@ -35,6 +35,19 @@ export default function AddProf() {
     } finally {
       setLoading(false);
     }
+  };*/
+  const handleBuscarProf = () => {
+    setLoading(true);
+    fetch(`http://localhost:3000/api/profesion/busqueda/${encodeURIComponent(query)}`)//encode lo que hace es verificar la correcta escritura, y quitar espacio y poner otros caracteres
+      .then(res => res.json())
+      .then(data => {
+        setProf(data.data);
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error('Error buscando profesiones:', err);
+        setLoading(false);
+      });
   };
 
   const toggleSeleccion = (nombre: string) => {

@@ -8,7 +8,7 @@ export const profesionesRouter = Router()
 profesionesRouter.get('/', /*authAdminMiddleware, refreshAdminCookieMiddleware,*/ findAllActive) //agregarlo a la hora de probar la pagina de admin
 profesionesRouter.get('/inactive', findAllInactive)
 profesionesRouter.get('/:nombreProfesion', findOne)
-profesionesRouter.get('/busqueda', busquedaProf)
+profesionesRouter.get('/busqueda/:query', busquedaProf)
 profesionesRouter.post('/', sanitizeProfesionInput, add)
 profesionesRouter.put('/:nombreProfesion', sanitizeProfesionInput, update)
 profesionesRouter.patch('/:nombreProfesion', sanitizeProfesionInput, update)

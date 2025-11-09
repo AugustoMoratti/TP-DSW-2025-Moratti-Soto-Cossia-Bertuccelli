@@ -1,6 +1,9 @@
 ### GET ALL INACTIVE
 GET http://localhost:3000/api/profesion/inactive
 
+### Obtener usuarios con filtro
+GET http://localhost:3000/api/profesion/busqueda/ing
+
 ### GET ALL ACTIVE
 GET http://localhost:3000/api/profesion
 

@@ -241,6 +241,44 @@ async function add(req: Request, res: Response) {
   }
 }
 
+async function deleteProfesion(req: Request, res: Response) {
+  try {
+    const id = req.params.id;
+    const usuario = await em.findOne(Usuario, { id }, { populate: ['profesiones'] });
+    if (!usuario) {
+      return res.status(404).json({ message: "Usuario no encontrado" });
+    }
+
+    const profesionesName: string[] = Array.isArray(req.body.profesiones)
+      ? req.body.profesiones
+        .map((x: any) => (x == null ? "" : String(x).trim()))
+        .filter((s: string) => s.length > 0)
+      : [];
+
+    const nombresEntrantes = [...new Set(profesionesName)];
+    const nombresExistentes = new Set<string>(
+      usuario.profesiones.getItems().map((p) => p.nombreProfesion)
+    );
+
+    const profesionesEncontradas = await em.find(Profesiones, {
+      nombreProfesion: { $in: nombresEntrantes },
+    });
+
+
+    for (const prof of profesionesEncontradas) {
+      if (nombresExistentes.has(prof.nombreProfesion)) {
+        usuario.profesiones.remove(prof);
+      }
+    }
+
+    await em.flush();
+    res.status(200).json({ message: "Usuario actualizado correctamente", data: usuario });
+  } catch (error: any) {
+    console.error(error);
+    res.status(500).json({ message: error.message })
+  }
+}
+
 async function update(req: Request, res: Response) {
   try {
     console.log(req.body);
@@ -274,8 +312,8 @@ async function update(req: Request, res: Response) {
     // Profesiones
     const profesionesName: string[] = Array.isArray(req.body.profesiones)
       ? req.body.profesiones
-          .map((x: any) => (x == null ? "" : String(x).trim()))
-          .filter((s: string) => s.length > 0)
+        .map((x: any) => (x == null ? "" : String(x).trim()))
+        .filter((s: string) => s.length > 0)
       : [];
 
     const nombresEntrantes = [...new Set(profesionesName)];
@@ -286,6 +324,7 @@ async function update(req: Request, res: Response) {
     const profesionesEncontradas = await em.find(Profesiones, {
       nombreProfesion: { $in: nombresEntrantes },
     });
+
 
     for (const prof of profesionesEncontradas) {
       if (!nombresExistentes.has(prof.nombreProfesion)) {
@@ -314,4 +353,4 @@ async function remove(req: Request, res: Response) {
   }
 }
 
-export { findAll, findOne, add, update, remove, sanitizeUsuarioInput, buscarUsuarios }
+export { findAll, findOne, add, update, remove, sanitizeUsuarioInput, buscarUsuarios, deleteProfesion }

@@ -79,7 +79,8 @@ async function busquedaProf(req: Request, res: Response) {
   const em = orm.em.fork();
 
   try {
-    const qRaw = String(req.query.q ?? '').trim();
+    const qRaw = String(req.params.query).trim().toLowerCase();
+
     if (!qRaw) {
       return res.status(400).json({ message: 'Debe ingresar un término de búsqueda.' });
     }
@@ -94,7 +95,7 @@ async function busquedaProf(req: Request, res: Response) {
       limit: 10,
     });
 
-    return res.status(200).json({ profesiones: profesiones });
+    return res.json({ data: profesiones });
   } catch (err: any) {
     console.error('🔥 Error buscando profesiones:', err);
     return res.status(500).json({ message: 'Error interno al buscar profesiones.' });

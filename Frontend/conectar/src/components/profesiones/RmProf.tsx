@@ -41,10 +41,10 @@ export default function RmProf() {
           Array.isArray(profData)
             ? profData
             : Array.isArray(profData?.profesiones)
-            ? profData.profesiones
-            : Array.isArray(profData?.data)
-            ? profData.data
-            : [];
+              ? profData.profesiones
+              : Array.isArray(profData?.data)
+                ? profData.data
+                : [];
         setProf(lista);
       } catch (e: any) {
         if (e.name !== "AbortError") {
@@ -86,24 +86,28 @@ export default function RmProf() {
       setError("");
       setMensajeOk(null);
 
-      // Filtrar las profesiones que NO están seleccionadas → mantenerlas
-      const profesRestantes = user.profesiones?.filter(
+
+      const profesSeleccionadas = user.profesiones?.filter(
+        (p) => seleccionadas.has(p.nombreProfesion)
+      ) ?? [];
+      const profesSinSeleccionar = user.profesiones?.filter(
         (p) => !seleccionadas.has(p.nombreProfesion)
       ) ?? [];
-
-      const res = await fetch(`http://localhost:3000/api/usuario/${user.id}`, {
+      const profesionesEnviar = profesSeleccionadas.map((p) => p.nombreProfesion)
+      console.log(profesionesEnviar)
+      const res = await fetch(`http://localhost:3000/api/usuario/deletedProfesiones/${user.id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
         body: JSON.stringify({
-          profesiones: profesRestantes.map((p) => p.nombreProfesion),
+          profesiones: profesionesEnviar,
         }),
       });
 
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Error al actualizar profesiones");
 
-      setUser((prev) => ({ ...prev, profesiones: profesRestantes }));
+      setUser((prev) => ({ ...prev, profesiones: profesSinSeleccionar }));
       setSeleccionadas(new Set());
       setMensajeOk("✅ Profesiones quitadas correctamente.");
     } catch (e: any) {

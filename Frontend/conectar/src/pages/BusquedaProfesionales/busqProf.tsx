@@ -18,7 +18,6 @@ export default function BusquedaProfesionales() {
     fetch(`http://localhost:3000/api/usuario/buscar?q=${encodeURIComponent(query)}`)//encode lo que hace es verificar la correcta escritura, y quitar espacio y poner otros caracteres
       .then(res => res.json())
       .then(data => {
-        console.log(`http://localhost:3000/api/usuario/buscar?q=${encodeURIComponent(query)}`)
         setUsuarios(data.data);
         setCargando(false);
       })

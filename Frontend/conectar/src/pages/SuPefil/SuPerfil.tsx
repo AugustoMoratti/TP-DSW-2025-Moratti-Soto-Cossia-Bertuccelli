@@ -1,61 +1,65 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import Header from "../../components/header/header";
 import "./SuPerfil.css";
-import { useNavigate } from "react-router";
-import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
-import type { OtroUsuario } from "../../interfaces/otroUsuario.ts";
-import ProfileCard from "../../components/ProfileCard/ProfileCard.tsx";
-
-
-
+import ProfileCard from "../../components/ProfileCard/ProfileCard";
+import type { OtroUsuario } from "../../interfaces/otroUsuario";
 
 const SuPerfil: React.FC = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const { id } = useParams();
-  const [user, setUser] = useState<OtroUsuario>();
-
-  console.log(id)
+  const [user, setUser] = useState<OtroUsuario | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     (async () => {
       try {
-        const res = await fetch(`http://localhost:3000/api/usuario/${id}`, {
-          method: "GET",
-        });
-
+        const res = await fetch(`http://localhost:3000/api/usuario/${id}`);
         if (!res.ok) {
-          navigate("/busqProfesionales"); // si no está existe el usuario lo enviamos de vuelta a la pagina busqueda profesionales
+          navigate("/busqProfesionales");
           return;
         }
+
         const data = await res.json();
-        setUser(data.data); // 👈 solo si existe data.usuario
+        setUser(data.data);
       } catch (err) {
-        console.log("Error en el fetch", err);
+        console.error("Error en el fetch:", err);
+      } finally {
+        setLoading(false);
       }
     })();
   }, [id, navigate]);
 
+  if (loading) return <p>Cargando perfil...</p>;
+  if (!user) return <p>No se encontró el usuario.</p>;
 
   return (
     <div className="app-container">
-      <Header bgColor="#ffffff" logoSrc="/assets/conect_2_1.png" >
-        <button className="header-btn" onClick={() => navigate("/busqProfesionales")}>Buscar Profesionales</button>
+      <Header bgColor="#ffffff" logoSrc="/assets/conect_2_1.png">
+        <button
+          className="header-btn"
+          onClick={() => navigate("/busqProfesionales")}
+        >
+          Buscar Profesionales
+        </button>
       </Header>
 
       <main>
         <div className="profile-wrapper">
-          {user && (
-            <ProfileCard
-              nombre={user.nombre}
-              apellido={user.apellido}
-              email={user.email}
-              localidad={user.localidad}
-              provincia={user.provincia}
-              fotoUrl={user.fotoUrl}
-              tipoPage="suPerfil"
-            />
-          )}
+          <ProfileCard
+            id={user.id}
+            nombre={user.nombre}
+            apellido={user.apellido}
+            email={user.email}
+            localidad={user.localidad}
+            provincia={user.provincia}
+            profesiones={user.profesiones ?? []}
+            habilidades={user.habilidades ?? []}
+            fotoUrl={user.fotoUrl}
+            tipoPage="miPerfil"
+            trabajos={user.trabajos ?? []}
+            descripcion={user.descripcion ?? ""}
+          />
         </div>
       </main>
     </div>
@@ -63,4 +67,3 @@ const SuPerfil: React.FC = () => {
 };
 
 export default SuPerfil;
-

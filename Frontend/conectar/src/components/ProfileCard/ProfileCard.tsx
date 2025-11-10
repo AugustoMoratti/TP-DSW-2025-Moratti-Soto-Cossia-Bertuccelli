@@ -221,24 +221,28 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
           </section>
 
           {/* Botón inferior */}
-          <div className={styles.bottom_section}>
-            <button
-              type="button"
-              className={styles.btn_contratado}
-              onClick={() => navigate("/trabajosContratados")}
-            >
-              Trabajos Contratados
-            </button>
-          </div>
-          <div className={styles.bottom_section}>
-            <button
-              type="button"
-              className={styles.btn_propios}
-              onClick={() => navigate("/trabajosPropios")}
-            >
-              Trabajos Propios
-            </button>
-          </div>
+          {tipoPage === "miPerfil" && (
+            <>
+              <div className={styles.bottom_section}>
+                <button
+                  type="button"
+                  className={styles.btn_contratado}
+                  onClick={() => navigate("/trabajosContratados")}
+                >
+                  Trabajos Contratados
+                </button>
+              </div>
+              <div className={styles.bottom_section}>
+                <button
+                  type="button"
+                  className={styles.btn_propios}
+                  onClick={() => navigate("/trabajosPropios")}
+                >
+                  Trabajos Propios
+                </button>
+              </div>
+            </>
+          )}
         </div>
       </section>
     </div>

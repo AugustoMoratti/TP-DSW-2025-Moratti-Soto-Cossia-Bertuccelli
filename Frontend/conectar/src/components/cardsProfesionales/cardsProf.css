@@ -8,3 +8,20 @@
   grid-column-gap: 20px;
   align-items: center;
 }
+
+
+
+@media (max-width: 480px) {
+
+  .profs-container {
+  display: grid;
+  place-items: center;
+  grid-template-columns: repeat(auto-fit, minmax(410px, 1fr));
+  background-color: #114f5a;
+  width: 120%;
+  grid-row-gap: 20px;
+  grid-column-gap: 20px;
+  align-items: center;
+}
+
+}

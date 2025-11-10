@@ -489,7 +489,7 @@ h3 {
 }
 
 .edit_desc textarea {
-  width: 100%;
+  width: 480%;
   min-height: 100px;
   padding: 0.8rem;
   border: 1px solid #ddd;
@@ -626,6 +626,7 @@ h3 {
 @media (max-width: 480px) {
   .saludo {
     font-size: 1.4rem;
+    margin-top: 75px;
   }
 
   .edit_desc{
@@ -652,7 +653,7 @@ h3 {
 
   .btn_propios,
   .btn_contratado {
-    width: 90%;
+    width: 100%;
     left: 5%;
     right: 5%;
     bottom: 20px;
@@ -668,6 +669,7 @@ h3 {
   .save_btn {
     font-size: 0.8rem;
     padding: 0.4rem 0.8rem;
+    margin-right: -210px;
   }
 
   .skill_tag {

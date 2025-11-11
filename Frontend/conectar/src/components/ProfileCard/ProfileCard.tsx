@@ -85,6 +85,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
         </div>
 
         <div className={styles.botones_verticales}>
+
           {tipoPage === "miPerfil" ? (
             <button
               type="button"
@@ -102,16 +103,34 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
               Contratar
             </button>
           )}
+          {tipoPage !== 'suPerfil' && (
+            <button
+              type="button"
+              className={styles.btn_direccion}
+              onClick={() => navigate("/trabajosContratados")}
+            >
+              Trabajos Contratados
+            </button>
+          )}
+          {tipoPage !== 'suPerfil' && (
+            <button
+              type="button"
+              className={styles.btn_direccion}
+              onClick={() => navigate("/trabajosPropios")}
+            >
+              Trabajos Propios
+            </button>
+          )}
         </div>
       </section>
 
       {/* Contenido expandible */}
       <section
-        className={`${styles.slide_section} ${tipoPage === "miPerfil" || isEditingDesc ? styles.open : ""
+        className={`${styles.slide_section} ${tipoPage === "miPerfil" || tipoPage === "suPerfil" || isEditingDesc ? styles.open : ""
           }`}
       >
         <div
-          className={`${styles.slide_content} ${tipoPage === "miPerfil" || isEditingDesc ? styles.visible : ""
+          className={`${styles.slide_content} ${tipoPage === "miPerfil" || tipoPage === "suPerfil" || isEditingDesc ? styles.visible : ""
             }`}
         >
           {/* Sobre mí */}
@@ -219,26 +238,6 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
               </p>
             )}
           </section>
-
-          {/* Botón inferior */}
-          <div className={styles.bottom_section}>
-            <button
-              type="button"
-              className={styles.btn_contratado}
-              onClick={() => navigate("/trabajosContratados")}
-            >
-              Trabajos Contratados
-            </button>
-          </div>
-          <div className={styles.bottom_section}>
-            <button
-              type="button"
-              className={styles.btn_propios}
-              onClick={() => navigate("/trabajosPropios")}
-            >
-              Trabajos Propios
-            </button>
-          </div>
         </div>
       </section>
     </div>

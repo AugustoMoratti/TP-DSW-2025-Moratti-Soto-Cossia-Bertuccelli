@@ -47,13 +47,18 @@ const SuPerfil: React.FC = () => {
         <div className="profile-wrapper">
           {user && (
             <ProfileCard
+              id={user.id}
               nombre={user.nombre}
               apellido={user.apellido}
               email={user.email}
               localidad={user.localidad}
               provincia={user.provincia}
+              profesiones={user.profesiones ?? []}
+              habilidades={user.habilidades ?? []}
               fotoUrl={user.fotoUrl}
               tipoPage="suPerfil"
+              trabajos={user.trabajos ?? []}
+              descripcion={user?.descripcion}
             />
           )}
         </div>

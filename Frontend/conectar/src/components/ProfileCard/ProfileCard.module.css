@@ -178,48 +178,8 @@ h3 {
   background-color: #2ab1b8;
 }
 
-.btn_propios {
-  box-sizing: border-box;
-  position: fixed;
-  left: 50px;
-  bottom: 50px;
-  height: 50px;
-  width: 140px;
-  background-color: #114f5a;
-  color: #fff;
-  border: 1px solid #fff;
-  box-shadow: 0px 0px 20px #9db7bd;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.btn_propios:hover {
-  background-color: #a3c1c0;
-  box-shadow: 0px 0px 20px #51737b;
-  color: #114f5a;
-}
-
-.btn_contratado {
-  box-sizing: border-box;
-  position: fixed;
-  right: 50px;
-  bottom: 50px;
-  height: 50px;
-  width: 140px;
-  background-color: #114f5a;
-  color: #fff;
-  border: 1px solid #fff;
-  box-shadow: 0px 0px 20px #9db7bd;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.btn_contratado:hover {
-  background-color: #a3c1c0;
-  box-shadow: 0px 0px 20px #51737b;
-  color: #114f5a;
+.btns_trabajos {
+  gap: 20px;
 }
 
 .no_trabajo {
@@ -347,6 +307,7 @@ h3 {
   border-radius: 12px;
   cursor: pointer;
   transition: background 0.2s, color 0.2s, border 0.2s;
+  width: 150px;
 }
 
 .btn_direccion:hover {
@@ -520,7 +481,7 @@ h3 {
     padding: 1.5rem;
   }
 
-  .edit_desc{
+  .edit_desc {
     width: 60%;
   }
 
@@ -629,7 +590,7 @@ h3 {
     margin-top: 75px;
   }
 
-  .edit_desc{
+  .edit_desc {
     width: 20%;
   }
 

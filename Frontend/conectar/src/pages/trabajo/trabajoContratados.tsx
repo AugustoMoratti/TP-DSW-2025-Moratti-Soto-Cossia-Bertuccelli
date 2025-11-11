@@ -12,7 +12,6 @@ export default function TrabajosContratados() {
   const [page, setPage] = useState(0);
   const [page2, setPage2] = useState(0);
 
-
   useEffect(() => {
     (async () => {
       const usuario = await fetchMe();
@@ -37,7 +36,7 @@ export default function TrabajosContratados() {
     <div className="container_pagetrabajos">
       <Header bgColor="#ffffff" logoSrc="/assets/conect_2_1.png">
         <button className="header-btn" onClick={() => navigate("/perfil")}>
-          Mi perfil
+          Mi Perfil
         </button>
         <button className="header-btn" onClick={() => navigate("/busqProfesionales")}>
           Quiero buscar un profesional

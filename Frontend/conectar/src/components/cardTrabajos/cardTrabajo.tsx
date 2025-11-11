@@ -19,7 +19,7 @@ export default function TrabajoCard({ trabajo, tipo }: TrabajoCardProps) {
 
   useEffect(() => {
     setMontoActual(trabajo.montoTotal ?? null);
-  }, [trabajo.montoTotal]);
+  }, [montoActual, trabajo.montoTotal]);
 
   const handleMonto = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -35,11 +35,9 @@ export default function TrabajoCard({ trabajo, tipo }: TrabajoCardProps) {
     setLoading(true);
     try {
       const res = await fetch(`http://localhost:3000/api/trabajos/${trabajo.id}`, {
-        method: "PUT", // o "POST" si tu API así lo requiere
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          // si usás autenticación con token:
-          // "Authorization": `Bearer ${token}`,
         },
         body: JSON.stringify({ montoTotal: monto }),
       });

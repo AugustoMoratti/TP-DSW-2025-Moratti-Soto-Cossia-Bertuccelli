@@ -39,7 +39,7 @@ createRoot(document.getElementById('root')!).render(
         <Route path="/" element={<App />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Registro />} />
-        <Route path="/SuPerfil/:id" element={<SuPerfil />} />
+
         <Route path="/ModPerfil/:id" element={<ModPerfil />} />
         <Route path="/busqProfesionales" element={<BusquedaProfesionales />} />
         <Route path="/*" element={<NotFound />} />
@@ -51,6 +51,9 @@ createRoot(document.getElementById('root')!).render(
           <Route path="/perfil" element={<Perfil />} />
           <Route path="/trabajosContratados" element={<TrabajosContratados />} />
           <Route path="/trabajosPropios" element={<TrabajosPropios />} />
+          <Route path="/SuPerfil/:id" element={<SuPerfil />} />
+          <Route path="/ModPerfil/:id" element={<ModPerfil />} />
+          <Route path="/busqProfesionales" element={<BusquedaProfesionales />} />
         </Route>
       </Routes>
     </BrowserRouter>

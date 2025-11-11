@@ -1,0 +1,74 @@
+/* Fondo que cubre toda la pantalla */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(4px);
+  /* efecto borroso */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+/* Contenedor del modal */
+.modal {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  width: 100%;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+/* Header */
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #eaeaea;
+}
+
+.modal-header h3 {
+  margin: 0;
+}
+
+/* Cuerpo */
+.modal-body {
+  padding: 1rem;
+}
+
+/* Footer */
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0.75rem 1rem;
+  border-top: 1px solid #eaeaea;
+}
+
+/* Botón de cierre (la X) */
+.close-btn {
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  line-height: 1;
+}
+
+/* Animación al aparecer */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

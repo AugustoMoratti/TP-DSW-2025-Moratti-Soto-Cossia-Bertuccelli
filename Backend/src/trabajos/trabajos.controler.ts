@@ -241,7 +241,7 @@ async function update(req: Request, res: Response) { //NO UTILIZAR PUT , SIEMPRE
     await em.flush();
 
     await em.flush();
-    res.status(200).json({ message: 'Trabajo class updated' })
+    res.status(200).json({ message: 'Trabajo class updated', data: trabajo })
   } catch (error: any) {
     res.status(500).json({ message: error.message })
   }

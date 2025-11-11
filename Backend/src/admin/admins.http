@@ -1,15 +1,15 @@
 ### GET ALL
-GET http://localhost:3000/api/admin
+GET http://localhost:3000/api/admin/me
 
 
 ### POST
 # @name createAdmin
-POST http://localhost:3000/api/admin
+POST http://localhost:3000/api/admin/register
 Content-Type: application/json
 
 {
-  "user": "admin",
-  "email" : "augus@gmail.com" ,
+  "user": "admin3",
+  "email" : "lucas@gmail.com" ,
   "clave": "1234"
 }
 

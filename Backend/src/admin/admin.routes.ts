@@ -8,8 +8,8 @@ export const administradorRouter = Router()
 
 administradorRouter.get('/', findAll)
 administradorRouter.get('/:id', findOne)
-administradorRouter.post('/login', loginAdmin)
 administradorRouter.get('/me', authAdminMiddleware, refreshAdminCookieMiddleware, meAdmin)
+administradorRouter.post('/login', loginAdmin)
 administradorRouter.post('/', sanitizeAdministradorInput, add)
 administradorRouter.post('/register', sanitizeAdministradorInput, registerAdmin)
 

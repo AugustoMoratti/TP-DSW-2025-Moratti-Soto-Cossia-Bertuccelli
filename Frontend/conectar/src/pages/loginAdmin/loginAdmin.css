@@ -1,0 +1,141 @@
+background {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Arial', sans-serif;
+  background-color: #114f5a;
+  color: #ffffff;
+}
+
+.main-bg {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Arial', sans-serif;
+  background-color: #114f5a;
+  min-height: 100vh;
+}
+
+.logo_login {
+  width: 250px;
+  height: auto;
+  margin-bottom: 0;
+  margin-left: 0;
+  position: relative;
+}
+
+.main-bg {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.card {
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.07);
+  padding: 2.5rem 2rem;
+  width: 350px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  align-items: stretch;
+}
+
+.card-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.card-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.2rem;
+  color: #114f5a;
+  letter-spacing: 2px;
+  margin-bottom: 2vh;
+}
+
+.card-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.card-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1.2rem;
+  align-items: center;
+  gap: 15px;
+}
+
+.header-card {
+  width: 100vw;
+  background: #f9f8f3;
+  border-radius: 0 0 16px 16px;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.07);
+  padding: 1.2rem 2rem 1.2rem 2rem;
+  display: flex;
+  align-items: center;
+  min-height: 80px;
+  position: absolute;
+  top: 0;
+}
+
+.cta-link {
+  background: none;
+  border: none;
+  color: #114f5a;
+  font-weight: 500;
+  font-size: 1rem;
+  cursor: pointer;
+  text-decoration: underline;
+  margin-right: auto;
+  padding: 0;
+  transition: color 0.2s;
+}
+
+.cta-link:hover {
+  color: #2ab1b8;
+  text-decoration: underline;
+}
+
+.recuerdame-container {
+  display: flex;
+  flex-direction: row;
+  color: #114f5a;
+  accent-color: #114f5a;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5em;
+  font-size: 1rem;
+}
+
+#recuerdame {
+  margin: 0;
+  width: auto;
+  height: 13px;
+}
+
+#recuerdame:hover {
+  cursor: pointer;
+}
+
+.password-container {
+  position: relative;
+  width: 100%;
+}
+
+.psw-icon {
+  position: absolute;
+  right: 10px;
+  top: 30%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #114f5a;
+}

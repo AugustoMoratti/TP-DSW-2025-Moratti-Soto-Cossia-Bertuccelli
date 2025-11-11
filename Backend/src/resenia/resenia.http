@@ -34,7 +34,7 @@ Content-Type: application/json
 }
 
 ### Eliminar una provicia (DELETE - eliminar recurso)
-DELETE http://localhost:3000/api/resenia/1
+DELETE http://localhost:3000/api/resenia/7
 
 
 /* La extension REST Client, nos permite hacer peticiones sin la 

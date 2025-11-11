@@ -10,7 +10,7 @@ export const registerAdmin = async (req: Request, res: Response) => {
   try {
     //const usuario = em.create(Usuario, req.body)
     const em = getEm();
-    const { user, clave, email } = req.body
+    const { user, clave, email } = req.body.sanitizedInput
 
     const administrador = new Administrador()
 
@@ -61,7 +61,7 @@ export const loginAdmin = async (req: Request, res: Response) => {
       sameSite: 'lax',
       maxAge: 1000 * 60 * 60,
     });
-
+    console.log('Logueado Correctamente')
     res
       .status(201)
       .json({ message: 'Administrador logueado', data: administrador })
@@ -73,5 +73,5 @@ export const loginAdmin = async (req: Request, res: Response) => {
 export const meAdmin = async (req: Request, res: Response) => {
   const administrador = req.admin;
   if (!administrador) return res.status(401).json({ error: 'No autorizado' });
-  res.json({ admin: { id: administrador.id, email: administrador.email ?? null } });
+  res.json({ admin: { id: administrador.id, user: administrador.user, email: administrador.email ?? null } });
 };

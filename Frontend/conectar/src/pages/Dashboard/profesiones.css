@@ -1,54 +1,30 @@
 .title-profesiones {
   box-sizing: border-box;
-  font-size: 16px;
+  font-size: 18px;
+  text-align: center;
+  color: #114f5a;
+  margin: 15px 0;
 }
 
 .container-table {
   box-sizing: border-box;
   width: 100%;
   padding: 20px;
+  overflow-x: auto;
 }
 
-/* Tabla estilada */
+/* Tabla principal */
 .table-profesiones {
   width: 100%;
   border-collapse: collapse;
+  min-width: 600px; 
 }
 
-.table-profesiones th:nth-child(1),
-.table-profesiones td:nth-child(1) {
-  width: 22%;
-}
-
-.table-profesiones th:nth-child(2),
-.table-profesiones td:nth-child(2) {
-  width: 46%;
-}
-
-.table-profesiones th:nth-child(3),
-.table-profesiones td:nth-child(3) {
-  width: 12%;
-}
-
-.table-profesiones th:nth-child(4),
-.table-profesiones td:nth-child(4) {
-  width: 10%;
-}
-
-.table-profesiones th:nth-child(5),
-.table-profesiones td:nth-child(5) {
-  width: 10%;
-}
-
-.btn-td-container {
-  min-width: 100%;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  gap: 15px;
-  height: 50px;
-
+.table-profesiones th,
+.table-profesiones td {
+  padding: 8px 12px;
+  text-align: left;
+  height: auto;
 }
 
 tr {
@@ -56,49 +32,102 @@ tr {
   border-bottom: 1px solid #ccc;
 }
 
-th {
-  padding: 8px 12px;
-  text-align: left;
-  height: auto;
+.btn-td-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 10px;
+  height: 50px;
 }
 
 .normal-td {
   box-sizing: border-box;
   padding: 8px 12px;
   text-align: left;
-  height: auto;
+}
+
+/* Botones */
+.btn-rechazo,
+.btn-aceptado {
+  height: 25px;
+  width: 90px;
+  border-radius: 10px;
+  background-color: transparent;
+  transition: 0.3s;
 }
 
 .btn-rechazo {
   color: red;
-  height: 25px;
-  width: 100px;
-  border-radius: 10px;
-  background-color: transparent;
   border: 1px solid red;
 }
 
 .btn-aceptado {
   color: rgb(131, 218, 0);
-  height: 25px;
-  width: 100px;
-  border-radius: 10px;
-  background-color: transparent;
   border: 1px solid rgb(147, 237, 12);
 }
 
 .btn-rechazo:hover {
-  color: #fff;
-  height: 25px;
   background-color: red;
+  color: #fff;
   border: 1px solid #fff;
   cursor: pointer;
 }
 
 .btn-aceptado:hover {
-  color: #fff;
-  height: 25px;
   background-color: rgb(131, 218, 0);
+  color: #fff;
   border: 1px solid #fff;
   cursor: pointer;
+}
+
+/* ----------- Responsive ----------- */
+
+/* Tablets */
+@media (max-width: 1024px) {
+  .container-table {
+    padding: 10px;
+  }
+
+  .table-profesiones {
+    font-size: 14px;
+  }
+
+  .btn-td-container {
+    flex-wrap: wrap;
+    gap: 5px;
+  }
+
+  .btn-rechazo,
+  .btn-aceptado {
+    width: 80px;
+    font-size: 13px;
+  }
+}
+
+/* Celulares */
+@media (max-width: 600px) {
+  .container-table {
+    padding: 10px;
+  }
+
+  .table-profesiones {
+    display: block;
+    overflow-x: auto;
+    min-width: 500px;
+  }
+
+  th, td {
+    font-size: 12px;
+    padding: 6px 8px;
+  }
+
+  .btn-rechazo,
+  .btn-aceptado {
+    width: 75px;
+    font-size: 12px;
+  }
+
+  .title-profesiones {
+    font-size: 16px;
+  }
 }

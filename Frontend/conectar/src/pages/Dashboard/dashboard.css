@@ -1,67 +1,126 @@
 .maindash-container {
   box-sizing: border-box;
-  width: 100vw;
+  width: 100%;
+  margin-top: 120px;
   padding: 130px 15px;
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   gap: 40px;
 }
 
+/* Columna izquierda (botones) */
 .acciones-1 {
-  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   gap: 10px;
+  flex: 1 1 250px;
+  min-width: 200px;       
+  flex-shrink: 0;         
 }
 
 .action-btn {
-  box-sizing: border-box;
   height: 45px;
-  width: 230px;
+  width: 100%;
+  max-width: 230px;
   display: flex;
-  flex-direction: row;
   align-items: center;
-  padding-left: 15px;
+  justify-content: center;
   border-radius: 15px;
+  border: 1px solid #114f5a;
+  color: #114f5a;
+  background-color: #fff;
+  transition: 0.3s;
 }
 
 .action-btn:hover {
   background-color: #114f5a;
   color: #fff;
-  border: 1px solid #fff;
   cursor: pointer;
 }
 
+/* Contenedor derecho */
 .acciones-2 {
-  box-sizing: border-box;
-  width: 1740px;
   display: flex;
   flex-direction: column;
+  flex: 3 1 700px;
   gap: 15px;
 }
 
-.container-solic {
-  box-sizing: border-box;
+/* Secciones internas */
+.container-solic,
+.container-createperfiles {
   width: 100%;
-  min-width: 1100px;
-  height: auto;
   background-color: #fff;
   color: #114f5a;
   border-radius: 20px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  box-sizing: border-box;
 }
 
-.container-createperfiles {
-  box-sizing: border-box;
-  width: 100%;
-  min-width: 1100px;
-  height: auto;
-  background-color: #fff;
-  color: #114f5a;
-  border-radius: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+/* ----------- Responsive ----------- */
+
+/* Tablets (hasta 1024px) */
+@media (max-width: 1024px) {
+  .maindash-container {
+    flex-direction: column;
+    align-items: center;
+    padding: 80px 10px;
+  }
+
+  .acciones-1 {
+    flex: none;              
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .action-btn {
+    flex: 1 1 45%;              
+    max-width: 45%;
+    margin-bottom: 10px;
+  }
+
+  .acciones-2 {
+    width: 100%;
+  }
+}
+
+/* Celulares (hasta 600px) */
+@media (max-width: 600px) {
+  .maindash-container {
+    padding: 60px 5px;
+    gap: 20px;
+  }
+
+  .acciones-1 {
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+
+  .action-btn {
+    width: 100%;              
+    max-width: 100%;
+    font-size: 14px;
+  }
+
+  .acciones-2 {
+    width: 100%;
+  }
+
+  .container-solic,
+  .container-createperfiles {
+    border-radius: 12px;
+    padding: 15px;
+  }
+
+  h2 {
+    font-size: 18px;
+    text-align: center;
+  }
 }

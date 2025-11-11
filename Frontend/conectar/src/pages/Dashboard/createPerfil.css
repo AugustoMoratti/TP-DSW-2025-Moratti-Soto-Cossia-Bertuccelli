@@ -1,6 +1,9 @@
 .title-createAdmin {
   box-sizing: border-box;
-  font-size: 16px;
+  font-size: 18px;
+  text-align: center;
+  color: #114f5a;
+  margin: 20px 0;
 }
 
 .container-formAdmin {
@@ -19,15 +22,16 @@
 }
 
 .container-inputsCreateAdmin {
-  box-sizing: border-box;
   display: flex;
   flex-direction: row;
-  gap: 40px;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
 }
 
-input_dashboard {
+.input_dashboard {
   box-sizing: border-box;
-  width: 350px;
+  width: 320px;
   height: 35px;
   border-radius: 10px;
   border: 1px solid #114f5a;
@@ -41,20 +45,65 @@ input:focus {
 }
 
 .createAdmin {
-  margin-left: 930px;
   width: 200px;
-  height: 30px;
+  height: 35px;
   border-radius: 10px;
   background-color: #fff;
   color: #114f5a;
   border: 1px solid #114f5a;
   cursor: pointer;
-  transition: color 0.2s;
+  transition: all 0.3s ease;
 }
 
 .createAdmin:hover {
   background-color: #114f5a;
   color: #fff;
   border: none;
-  box-shadow: 0px 2px 10px #114f5a
+  box-shadow: 0px 2px 10px #114f5a;
+}
+
+/* ----------- Responsive ----------- */
+
+/* Tablets */
+@media (max-width: 1024px) {
+  .container-inputsCreateAdmin {
+    gap: 15px;
+  }
+
+  .input_dashboard {
+    width: 280px;
+  }
+
+  .createAdmin {
+    width: 180px;
+    font-size: 14px;
+  }
+}
+
+/* Celulares */
+@media (max-width: 600px) {
+  .formularioCreateAdmin {
+    gap: 20px;
+  }
+
+  .container-inputsCreateAdmin {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .input_dashboard {
+    width: 90%;
+    font-size: 14px;
+  }
+
+  .createAdmin {
+    width: 150px;
+    height: 32px;
+    font-size: 13px;
+  }
+
+  .title-createAdmin {
+    font-size: 16px;
+  }
 }

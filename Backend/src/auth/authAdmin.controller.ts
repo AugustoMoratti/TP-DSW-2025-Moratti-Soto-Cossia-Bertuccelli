@@ -36,7 +36,7 @@ export const registerAdmin = async (req: Request, res: Response) => {
       .status(201)
       .json({ message: 'Administrador class created', data: administrador })
   } catch (error: any) {
-    res.status(500).json({ message: error.message })
+    res.status(500).json({ message: "Error en register admin" })
   }
 }
 
@@ -45,6 +45,7 @@ export const loginAdmin = async (req: Request, res: Response) => {
     const em = getEm();
     const { email, clave } = req.body as { email: string; clave: string; };
     if (!email || !clave) return res.status(400).json({ error: 'falta email/clave' });
+
 
     const administrador = await em.findOne(Administrador, { email });
     if (!administrador) return res.status(401).json({ error: 'Credenciales inválidas' });
@@ -65,12 +66,12 @@ export const loginAdmin = async (req: Request, res: Response) => {
       .status(201)
       .json({ message: 'Administrador logueado', data: administrador })
   } catch (error: any) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ message: "Error en login admin" });
   };
 };
 
 export const meAdmin = async (req: Request, res: Response) => {
   const administrador = req.admin;
   if (!administrador) return res.status(401).json({ error: 'No autorizado' });
-  res.json({ administrador: { id: administrador.id, user: administrador.user, email: administrador.email ?? null } });
+  res.json({ admin: { id: administrador.id, email: administrador.email ?? null } });
 };

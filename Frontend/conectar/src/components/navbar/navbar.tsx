@@ -28,7 +28,7 @@ const Navbar: React.FC = () => {
         if (!res.ok) throw new Error("Error al obtener datos del usuario");
         const data = await res.json();
         setUser(data.data);
-      } catch (err) {
+      } catch {
         console.warn("Usuario no logueado o error al obtener datos");
         setUser(null);
       } finally {
@@ -69,6 +69,9 @@ const Navbar: React.FC = () => {
               </Button>
               <Button variant="contained" onClick={() => navigate("/login")}>
                 Iniciar sesión
+              </Button>
+              <Button variant="contained" onClick={() => navigate("/loginAdmin")}>
+                Iniciar sesión Administrador
               </Button>
             </>
           )}

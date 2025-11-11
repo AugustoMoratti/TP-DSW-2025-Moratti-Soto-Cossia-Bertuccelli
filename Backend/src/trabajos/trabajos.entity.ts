@@ -16,7 +16,7 @@ export class Trabajo extends BaseEntity {
     /*@Property({ nullable: false })
     estado!: string;*/  //No hace falta ya que sabemos que si esta pago la fecha de pago no es null
 
-    @Property({ nullable: true })
+    @Property({ nullable: false })
     montoTotal!: number;
 
     @ManyToOne(() => Usuario, { nullable: false })
@@ -28,11 +28,11 @@ export class Trabajo extends BaseEntity {
     /*@Property({ nullable: true })
     pagado!: boolean;*/   //No hace falta ya que con tener o no la fechaPago ya sabemos si esta pagado o no.
 
-    @Property({ nullable: true })
-    fechaPago!: string;
-
     @Property({ nullable: false })
     fechaSolicitud!: string;
+
+    @Property({ nullable: true })
+    fechaPago!: string;
 
     @Property({ nullable: true })
     fechaFinalizado!: string; //Fecha en que se finalizo el trabajo, es distinta a la fecha en que se pago el trabajo.

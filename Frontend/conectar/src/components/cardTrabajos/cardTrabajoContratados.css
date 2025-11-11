@@ -1,3 +1,27 @@
+.star-rating {
+  display: inline-flex;
+  font-size: 1.5rem;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.star-rating span {
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.star-rating .filled {
+  color: #1b7b8c;
+  transform: scale(1.1);
+}
+
+.star-rating .empty {
+  color: lightgray;
+}
+
+.star-rating span:hover {
+  transform: scale(1.2);
+}
+
 .trabajos_container_finalizados {
   display: flex;
   flex-direction: column;

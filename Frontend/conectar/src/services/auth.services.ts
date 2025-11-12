@@ -16,7 +16,7 @@ export const fetchMe = async () => {
 };
 
 export const fetchMeAdmin = async () => {
-  const resp = await fetch('http://localhost:3000/api/admin/me', {
+  const resp = await fetch("http://localhost:3000/api/admin/meAdmin", {
     credentials: 'include',
     headers: {
       'Content-Type': 'application/json',

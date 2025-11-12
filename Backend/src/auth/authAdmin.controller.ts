@@ -10,7 +10,7 @@ export const registerAdmin = async (req: Request, res: Response) => {
   try {
     //const usuario = em.create(Usuario, req.body)
     const em = getEm();
-    const { user, clave, email } = req.body.sanitizedInput
+    const { user, clave, email } = req.body
 
     const administrador = new Administrador()
 

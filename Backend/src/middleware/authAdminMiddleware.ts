@@ -33,7 +33,6 @@ export const authAdminMiddleware = async (req: Request, res: Response, next: Nex
 
 export const refreshAdminCookieMiddleware = (req: Request, res: Response, next: NextFunction) => {
   const token = req.cookies?.adminToken;
-
   if (!token) return next();
 
   try {

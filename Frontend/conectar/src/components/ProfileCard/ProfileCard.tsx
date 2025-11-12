@@ -6,6 +6,7 @@ import type { ProfileCardProps } from "../../interfaces/profilaPropCard";
 import ModalTrabajos from "../Modal-trabajos/Modal.tsx";
 import { fetchMe } from "../../services/auth.services.ts";
 import type { Usuario } from "../../interfaces/usuario.ts";
+import type { FormEvent } from "react";
 
 const ProfileCard: React.FC<ProfileCardProps> = ({
   id,
@@ -51,7 +52,10 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
     return `${day}/${month}/${year}`;
   }, [hoy]);
 
-  const handleEmpezarTrabajo = async () => {
+  const handleEmpezarTrabajo = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    alert("Formulario enviado");
+    setIsOpen(false);
     setError(null);
 
     const idProfesional = id
@@ -59,11 +63,15 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
     const cliente: Usuario = await fetchMe()
 
     const idCliente = cliente.id
+
     setLoading(true);
     try {
       const res = await fetch(`http://localhost:3000/api/trabajos`, {
         method: "POST",
         credentials: "include",
+        headers: {
+          "Content-Type": "application/json"
+        },
         body: JSON.stringify({
           montoTotal: monto,
           cliente: idCliente,
@@ -73,6 +81,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
       })
 
       if (!res.ok) {
+        console.log("Ocurrio un error al cargar un trabajo")
         const text = await res.text().catch(() => null);
         throw new Error(text || `Error ${res.status}`);
       }
@@ -169,7 +178,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
                 <input
                   type="number"
                   onChange={(e) => setMonto(Number(e.target.value))}
-                  max={0}
+                  min={0}
                   required
                   style={{ marginLeft: "10px" }} />
               </label>

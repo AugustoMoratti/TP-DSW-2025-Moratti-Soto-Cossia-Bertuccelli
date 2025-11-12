@@ -1,6 +1,7 @@
+### Obtener un trabajo (Con el id o cualquier otro atributo de la class)
 GET http://localhost:3000/api/trabajos/finalizados/contratados/32fc1807-6d11-42dd-bdd9-3dd5e82147e0
 
-### Obtener una provincia (Con el id o cualquier otro atributo de la class)
+### Obtener todos los trabajos
 GET http://localhost:3000/api/trabajos
 
 ### Crear una nueva provincia (POST - crear recurso)

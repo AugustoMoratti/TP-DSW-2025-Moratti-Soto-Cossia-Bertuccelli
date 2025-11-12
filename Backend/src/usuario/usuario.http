@@ -1,7 +1,7 @@
 GET http://localhost:3000/api/usuario
 
 ### Obtener un usuario (Con el id o cualquier otro atributo de la class)
-GET http://localhost:3000/api/usuario/740966f1-41b6-4827-bcc7-bf676fc8787b
+GET http://localhost:3000/api/usuario/6759802b-a911-4a05-80c8-0c9e0d06e03a
 
 ### Obtener usuarios con filtro
 GET http://localhost:3000/api/usuario/buscar?q=rosario
@@ -12,39 +12,19 @@ POST http://localhost:3000/api/usuario/register
 Content-Type: application/json
 
 {
-  "nombre":"Augusto",
-  "apellido": "Moratti",
+  "nombre":"Teo",
+  "apellido": "Bertucceli",
   "clave":"1234",
-  "email":"am@gmail.com",
+  "email":"rs@gmail.com",
   "direccion":"Lavalle 1120",
   "descripcion":"Soy fan de uml y un crack",
   "contacto": "3416526398",
   "horarios":"08:00 a 12:00 y 15:00 a 19:00",
   "provincia": "Santa Fe",
-  "localidad": "Rosario",
+  "localidad": "Cañada",
   "fechaNac": "08/04/2004"
 }
 
-
-### Crear al admin (POST - crear recurso)
-# @name createUsuario
-POST http://localhost:3000/api/usuario
-Content-Type: application/json
-
-{
-  "nombre":"Valentino",
-  "apellido": "Bertucceli",
-  "clave":"12345",
-  "email":"admin@host.com",
-  "direccion":"Crespo 1288",
-  "descripcion":"Admin de Conectar",
-  "contacto": "3416526398",
-  "horarios":"",
-  "provincia": "Santa Fe",
-  "localidad": "Rosario",
-  "fechaNac": "08/04/2004",
-  "profesiones": []
-}
 
 ### Modifica una provincia (PUT - modificar recurso completo e idempotente)
 @id = {{createUsuario.response.body.data.id}}
@@ -61,15 +41,15 @@ Content-Type: application/json
   "horarios":"08:00 a 12:00 y 15:00 a 19:00",
   "provincia": 1,
   "localidad":1,
-  "profesiones": [1]
+  "profesiones": []
 }
 
 ### Modificar un usuario agregando una profesion (PATCH - modificar recurso parcialmente)
-PATCH http://localhost:3000/api/usuario/4dd9e149-78d0-4fca-824f-1c7c57080411
+PATCH http://localhost:3000/api/usuario/da9a51e9-e69d-4e51-96f3-786bba97ac31
 Content-Type: application/json
 
 {
-  "profesion": [1],
+  "horarios": "08:00 a 12:00 y 15:00 a 19:00"
 }
 
 
@@ -78,7 +58,7 @@ Content-Type: application/json
 DELETE http://localhost:3000/api/usuario/{{id}}
 
 ### Eliminar un usuario (DELETE - eliminar recurso)
-DELETE http://localhost:3000/api/usuario/{{id}}
+DELETE http://localhost:3000/api/usuario/d20fad60-9055-4c07-8db3-d2e34ccc292a
 
 
 /* La extension REST Client, nos permite hacer peticiones sin la 

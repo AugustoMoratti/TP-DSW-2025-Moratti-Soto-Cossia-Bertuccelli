@@ -79,7 +79,7 @@ async function findAll(req: Request, res: Response) {
 async function findOne(req: Request, res: Response) {
   try {
     const id = req.params.id
-    const usuario = await em.findOneOrFail(Usuario, { id }, { populate: ['profesiones', 'trabajos', 'trabajos.resenia'] })
+    const usuario = await em.findOneOrFail(Usuario, { id }, { populate: ['profesiones', 'trabajos', 'trabajos.resenia', 'provincia', 'localidad'] })
     res
       .status(200)
       .json({ message: 'found Usuario', data: usuario })

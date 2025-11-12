@@ -15,8 +15,6 @@ const SuPerfil: React.FC = () => {
   const { id } = useParams();
   const [user, setUser] = useState<OtroUsuario>();
 
-  console.log(id)
-
   useEffect(() => {
     (async () => {
       try {
@@ -52,8 +50,8 @@ const SuPerfil: React.FC = () => {
               nombre={user.nombre}
               apellido={user.apellido}
               email={user.email}
-              localidad={user.localidad}
-              provincia={user.provincia}
+              localidad={user.localidad.nombre}
+              provincia={user.provincia.nombre}
               profesiones={user.profesiones ?? []}
               habilidades={user.habilidades ?? []}
               fotoUrl={user.fotoUrl}

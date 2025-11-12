@@ -20,13 +20,10 @@ export const authAdminMiddleware = async (req: Request, res: Response, next: Nex
     if (!payload?.id) return res.status(401).json({ error: 'Token inválido' });
 
     const em = getEm();
-
     const admin = await em.findOne(Administrador, { id: payload.id });
-
     if (!admin) return res.status(401).json({ error: 'Administrador no existe' });
 
     req.admin = admin;
-
     next();
   } catch (err) {
     console.error('authMiddleware error', err);
@@ -36,7 +33,6 @@ export const authAdminMiddleware = async (req: Request, res: Response, next: Nex
 
 export const refreshAdminCookieMiddleware = (req: Request, res: Response, next: NextFunction) => {
   const token = req.cookies?.adminToken;
-
   if (!token) return next();
 
   try {
@@ -50,8 +46,9 @@ export const refreshAdminCookieMiddleware = (req: Request, res: Response, next: 
       maxAge: 1000 * 60 * 60, // 1 hora
     });
   } catch (err) {
-    // token expirado, no hacemos nada
     console.log('token expirado')
+    res.clearCookie('adminToken');
+    return res.status(401).json({ error: 'Token inválido o expirado' });
   }
 
   next();

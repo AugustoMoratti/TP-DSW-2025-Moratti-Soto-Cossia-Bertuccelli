@@ -6,9 +6,13 @@ import { meAdmin } from '../auth/authAdmin.controller.js'
 
 export const administradorRouter = Router()
 
+
+administradorRouter.get('/meAdmin',
+  authAdminMiddleware,
+  refreshAdminCookieMiddleware,
+  meAdmin)
 administradorRouter.get('/', findAll)
 administradorRouter.get('/:id', findOne)
-administradorRouter.get('/me', authAdminMiddleware, refreshAdminCookieMiddleware, meAdmin)
 administradorRouter.post('/login', loginAdmin)
 administradorRouter.post('/', sanitizeAdministradorInput, add)
 administradorRouter.post('/register', sanitizeAdministradorInput, registerAdmin)

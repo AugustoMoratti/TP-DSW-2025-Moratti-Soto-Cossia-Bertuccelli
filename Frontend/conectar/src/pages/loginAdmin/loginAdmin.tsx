@@ -100,7 +100,7 @@ export default function LoginAdmin() {
 
       // Verificar sesión con /me
       try {
-        refreshAdmin(); // espera que el provider haga fetch /me
+        await refreshAdmin(); // espera que el provider haga fetch /me
       } catch {
         // si refresh falla, no navegamos
         showError("No se pudo verificar sesión después del login");

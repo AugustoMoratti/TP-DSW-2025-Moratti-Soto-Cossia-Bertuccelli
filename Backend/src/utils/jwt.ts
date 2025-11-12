@@ -12,7 +12,6 @@ const EXPIRES_IN_SECONDS: number = Number(process.env.JWT_EXPIRES_IN_SECONDS ?? 
 export interface JwtPayload {
   id: string;
   email?: string;
-  rol?: string;
   iat?: number;
   exp?: number;
 }

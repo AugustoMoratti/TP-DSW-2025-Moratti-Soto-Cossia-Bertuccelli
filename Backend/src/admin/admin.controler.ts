@@ -8,6 +8,7 @@ function sanitizeAdministradorInput(req: Request, res: Response, next: NextFunct
   req.body.sanitizedInput = {
     user: req.body.user,
     clave: req.body.clave,
+    email: req.body.email
   }
   Object.keys(req.body.sanitizedInput).forEach((key) => {
     if (req.body.sanitizedInput[key] === undefined) {
@@ -31,8 +32,8 @@ async function findAll(req: Request, res: Response) {
 
 async function findOne(req: Request, res: Response) {
   try {
-    const user = req.params.user
-    const admin = await em.findOneOrFail(Administrador, { user })
+    const id = req.params.id
+    const admin = await em.findOneOrFail(Administrador, { id })
     res
       .status(200)
       .json({ message: 'found Administrador', data: admin })

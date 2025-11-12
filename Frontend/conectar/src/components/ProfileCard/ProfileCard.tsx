@@ -1,8 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import Modal from "react-modal";
 import styles from "./ProfileCard.module.css";
 import { useNavigate } from "react-router-dom";
 import type { ProfileCardProps } from "../../interfaces/profilaPropCard";
+import ModalTrabajos from "../Modal-trabajos/Modal.tsx";
+import { fetchMe } from "../../services/auth.services.ts";
+import type { Usuario } from "../../interfaces/usuario.ts";
 
 const ProfileCard: React.FC<ProfileCardProps> = ({
   id,
@@ -22,6 +25,10 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
   const [isEditingDesc, setIsEditingDesc] = useState(false);
   const [tempDesc, setTempDesc] = useState(descripcion);
   const [isSaving, setIsSaving] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [monto, setMonto] = useState<number>();
   const navigate = useNavigate();
 
   // Evitar error de accesibilidad de react-modal en SSR o tests
@@ -37,6 +44,46 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
   useEffect(() => {
     setTempDesc(descripcion ?? "");
   }, [descripcion]);
+
+  const hoy = new Date().toISOString().slice(0, 10);
+  const fechaHoy = useMemo(() => {
+    const [year, month, day] = hoy.split("-");
+    return `${day}/${month}/${year}`;
+  }, [hoy]);
+
+  const handleEmpezarTrabajo = async () => {
+    setError(null);
+
+    const idProfesional = id
+
+    const cliente: Usuario = await fetchMe()
+
+    const idCliente = cliente.id
+    setLoading(true);
+    try {
+      const res = await fetch(`http://localhost:3000/api/trabajos`, {
+        method: "POST",
+        credentials: "include",
+        body: JSON.stringify({
+          montoTotal: monto,
+          cliente: idCliente,
+          profesional: idProfesional,
+          fechaSolicitud: fechaHoy
+        })
+      })
+
+      if (!res.ok) {
+        const text = await res.text().catch(() => null);
+        throw new Error(text || `Error ${res.status}`);
+      }
+    } catch (err: any) {
+      console.error("Error guardando monto:", err);
+      setError(err?.message ?? "Error al guardar la resenia")
+    } finally {
+      setLoading(false)
+    }
+  }
+
 
   const handleSaveDesc = async () => {
     if (tempDesc.length > 250) return;
@@ -98,20 +145,42 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
             <button
               type="button"
               className={styles.btn_direccion}
-              onClick={() => navigate("/empezarTrabajo")}
+              onClick={() => setIsOpen(true)}
             >
               Contratar
             </button>
+
           )}
           {tipoPage !== 'suPerfil' && (
             <button
               type="button"
               className={styles.btn_direccion}
-              onClick={() => navigate("/trabajosContratados")}
+              onClick={() => navigate(`/trabajosContratados/${id}`)}
             >
               Trabajos Contratados
             </button>
           )}
+
+          <ModalTrabajos isOpen={isOpen} onClose={() => setIsOpen(false)} title="Finalizar Trabajo">
+            <p>Ingresa datos para dar el trabajo como finalizado</p>
+            <form onSubmit={handleEmpezarTrabajo} style={{ display: "flex", flexDirection: "column", gap: "1rem", width: "300px" }}>
+              <label>
+                Monto
+                <input
+                  type="number"
+                  onChange={(e) => setMonto(Number(e.target.value))}
+                  max={0}
+                  required
+                  style={{ marginLeft: "10px" }} />
+              </label>
+              {error && <p style={{ color: "red", marginTop: 8 }}>{error}</p>}
+              <div style={{ marginTop: "10px" }}>
+                <button type="submit" disabled={loading}>Enviar</button>
+              </div>
+            </form>
+          </ModalTrabajos>
+
+
           {tipoPage !== 'suPerfil' && (
             <button
               type="button"

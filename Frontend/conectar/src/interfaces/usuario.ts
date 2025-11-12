@@ -7,8 +7,8 @@ export interface Usuario {
   nombre: string;
   apellido: string;
   email: string;
-  provincia?: { nombre: string };
-  localidad?: { nombre: string };
+  provincia: { nombre: string };
+  localidad: { nombre: string };
   profesiones?: Profesion[];
   direccion: string;
   trabajos: Trabajo[];

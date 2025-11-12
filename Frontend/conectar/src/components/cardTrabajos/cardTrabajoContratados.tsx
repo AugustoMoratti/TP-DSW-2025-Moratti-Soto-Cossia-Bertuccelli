@@ -125,7 +125,12 @@ export default function TrabajoCardContratados({ trabajo, tipo }: TrabajoCardPro
             <p>Profesional : {trabajo.profesional.nombre}, {trabajo.profesional.apellido}</p>
             <p>Fecha Solicitud : {trabajo.fechaSolicitud}</p>
             <p>Monto Actualizado : ${trabajo.montoTotal}</p>
-            <button className="btn_finalizar_trabajo" onClick={() => setIsOpen(true)}>Finalizar Trabajo</button>
+            {trabajo.montoTotal === undefined && (
+              <button className="btn_finalizar_trabajo" onClick={() => alert("Aun no hay un monto Final")}>Finalizar Trabajo</button>
+            )}
+            {trabajo.montoTotal !== undefined && (
+              <button className="btn_finalizar_trabajo" onClick={() => setIsOpen(true)}>Finalizar Trabajo</button>
+            )}
           </div>
 
           <ModalTrabajos isOpen={isOpen} onClose={() => setIsOpen(false)} title="Finalizar Trabajo">

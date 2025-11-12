@@ -6,6 +6,7 @@ import type { ProfileCardProps } from "../../interfaces/profilaPropCard";
 import ModalTrabajos from "../Modal-trabajos/Modal.tsx";
 import { fetchMe } from "../../services/auth.services.ts";
 import type { Usuario } from "../../interfaces/usuario.ts";
+import type { FormEvent } from "react";
 
 const ProfileCard: React.FC<ProfileCardProps> = ({
   id,
@@ -25,10 +26,8 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
   const [isEditingDesc, setIsEditingDesc] = useState(false);
   const [tempDesc, setTempDesc] = useState(descripcion);
   const [isSaving, setIsSaving] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [monto, setMonto] = useState<number>();
   const navigate = useNavigate();
 
   // Evitar error de accesibilidad de react-modal en SSR o tests
@@ -52,6 +51,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
   }, [hoy]);
 
   const handleEmpezarTrabajo = async () => {
+    alert("Profesional contratado");
     setError(null);
 
     const idProfesional = id
@@ -59,13 +59,16 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
     const cliente: Usuario = await fetchMe()
 
     const idCliente = cliente.id
+
     setLoading(true);
     try {
       const res = await fetch(`http://localhost:3000/api/trabajos`, {
         method: "POST",
         credentials: "include",
+        headers: {
+          "Content-Type": "application/json"
+        },
         body: JSON.stringify({
-          montoTotal: monto,
           cliente: idCliente,
           profesional: idProfesional,
           fechaSolicitud: fechaHoy
@@ -73,6 +76,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
       })
 
       if (!res.ok) {
+        console.log("Ocurrio un error al cargar un trabajo")
         const text = await res.text().catch(() => null);
         throw new Error(text || `Error ${res.status}`);
       }
@@ -145,7 +149,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
             <button
               type="button"
               className={styles.btn_direccion}
-              onClick={() => setIsOpen(true)}
+              onClick={() => handleEmpezarTrabajo()}
             >
               Contratar
             </button>
@@ -155,30 +159,11 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
             <button
               type="button"
               className={styles.btn_direccion}
-              onClick={() => navigate(`/trabajosContratados/${id}`)}
+              onClick={() => navigate(`/trabajosContratados`)}
             >
               Trabajos Contratados
             </button>
           )}
-
-          <ModalTrabajos isOpen={isOpen} onClose={() => setIsOpen(false)} title="Finalizar Trabajo">
-            <p>Ingresa datos para dar el trabajo como finalizado</p>
-            <form onSubmit={handleEmpezarTrabajo} style={{ display: "flex", flexDirection: "column", gap: "1rem", width: "300px" }}>
-              <label>
-                Monto
-                <input
-                  type="number"
-                  onChange={(e) => setMonto(Number(e.target.value))}
-                  max={0}
-                  required
-                  style={{ marginLeft: "10px" }} />
-              </label>
-              {error && <p style={{ color: "red", marginTop: 8 }}>{error}</p>}
-              <div style={{ marginTop: "10px" }}>
-                <button type="submit" disabled={loading}>Enviar</button>
-              </div>
-            </form>
-          </ModalTrabajos>
 
 
           {tipoPage !== 'suPerfil' && (

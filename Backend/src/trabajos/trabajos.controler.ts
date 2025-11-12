@@ -156,17 +156,18 @@ async function add(req: Request, res: Response) {
      3) montoTotal, cliente, profesional, fechaSolicitud son campos obligatorios.
     */
     const { montoTotal, cliente, profesional, fechaPago, fechaSolicitud, fechaFinalizado, resenia } = req.body;
+    console.log("Req body = ", req.body)
 
     if (!cliente || !profesional || !fechaSolicitud) {
-      res.status(400).json({ message: 'Faltan campos oblgiatorios' })
+      return res.status(400).json({ message: 'Faltan campos oblgiatorios' })
     };
 
     if (fechaFinalizado && !resenia) {
-      res.status(400).json({ message: 'Se debe realizar la reseña antes de finalizar el trabajo' })
+      return res.status(400).json({ message: 'Se debe realizar la reseña antes de finalizar el trabajo' })
     };
 
     if (fechaPago && !fechaFinalizado) {
-      res.status(400).json({ message: 'Se debe finalizar un trabajo antes de ser pagado' })
+      return res.status(400).json({ message: 'Se debe finalizar un trabajo antes de ser pagado' })
     };
 
     const trabajo = new Trabajo();
@@ -190,11 +191,12 @@ async function add(req: Request, res: Response) {
 
     em.persist(trabajo);
     await em.flush()
+
     res
       .status(201)
       .json({ message: 'Trabajo class created', data: trabajo })
   } catch (error: any) {
-    res.status(500).json({ message: error.message })
+    return res.status(500).json({ message: error.message })
   }
 }
 

@@ -4,6 +4,8 @@ interface UsuarioCardProps {
   usuarios: Usuario[];
 }
 import PerfilCard from "./perfilCard.tsx";
+import { useState, useEffect } from "react";
+import { fetchMe } from "../../services/auth.services.ts";
 
 interface UsuarioCardProps {
   usuarios: Usuario[];
@@ -11,11 +13,22 @@ interface UsuarioCardProps {
 
 
 export default function CardProfesional({ usuarios }: UsuarioCardProps) {
+  const [user, setUser] = useState<Usuario | null>(null)
+
+  useEffect(() => {
+    (async () => {
+      const u = await fetchMe()
+      setUser(u)
+    })()
+  }, []);
+
   return (
     <div className="profs-container">
-      {usuarios.map(us => (
-        <PerfilCard key={us.id} usuario={us} />
-      ))}
+      {usuarios
+        .filter(us => us.id !== user!.id)
+        .map(us => (
+          <PerfilCard key={us.id} usuario={us} />
+        ))}
     </div>
   );
 }

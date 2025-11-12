@@ -7,12 +7,12 @@ export interface OtroUsuario {
   nombre: string;
   apellido: string;
   email: string;
-  provincia?: string;
-  localidad?: string;
+  provincia: { nombre: string };
+  localidad: { nombre: string };
   descripcion?: string;
   profesiones?: Profesion[];
   habilidades?: [];
   direccion: string;
-  trabajos: Trabajo[];
-  trabajosContratados: Trabajo[];
+  trabajos?: Trabajo[];
+  trabajosContratados?: Trabajo[];
 };

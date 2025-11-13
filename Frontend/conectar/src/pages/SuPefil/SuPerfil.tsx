@@ -9,6 +9,7 @@ const SuPerfil: React.FC = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const [user, setUser] = useState<OtroUsuario>();
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     (async () => {

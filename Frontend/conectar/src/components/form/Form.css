@@ -67,6 +67,17 @@
   cursor: pointer;
 }
 
+.Standartinput[type=number]::-webkit-inner-spin-button,
+.StandardInput[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.Standartinput[type=number] {
+  -moz-appearance: textfield;
+}
+
+
 /* Firefox */
 @-moz-document url-prefix() {
   .input_field.input_date {

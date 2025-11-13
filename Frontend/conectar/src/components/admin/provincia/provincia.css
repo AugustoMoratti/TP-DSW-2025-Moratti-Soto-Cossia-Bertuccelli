@@ -1,0 +1,114 @@
+.divisor {
+  height: 2px;
+  background: #114f5a;
+  width: 100%;
+  border-radius: 20px;
+}
+
+.manage-prov-input{
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #aaa;
+  border-radius: 6px;
+}
+
+.provincia-list {
+  list-style: none;
+  padding: 0;
+  margin: 16px 0;
+  display: grid;
+  gap: 10px;
+}
+
+.provincia-list.two-columns {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.provincia-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 12px;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  background: #fff;
+}
+
+.prov-nombre {
+  font-size: 14px;
+  color: #333;
+}
+
+.prov-actions {
+  margin-left: 12px;
+}
+
+.delete-btn {
+  background: #ff4d4f;
+  color: #fff;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.delete-btn[disabled] {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.delete-btn:hover{
+  background: #ff0c10;
+}
+
+.pagination {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  margin-top: 12px;
+}
+
+.page-btn {
+  background-color: #114f5a;
+  color: #fff;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  border: none;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.page-btn[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.page-btn:hover{
+  background-color: #2ab1b8;
+}
+
+.page-info {
+  font-size: 13px;
+  color: #555;
+}
+
+.form-row {
+  display: flex;
+  gap: 12px;
+  align-items: flex-end; 
+  flex-wrap: wrap; 
+  margin-bottom: 12px;
+}
+
+.input-col {
+  flex: 1 1 220px; 
+  min-width: 220px;  
+}
+
+.input-col .StandardInput {
+  width: 100%; 
+}
+

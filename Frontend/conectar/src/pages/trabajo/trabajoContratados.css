@@ -12,6 +12,7 @@
   background-color: #fff;
   border-radius: 20px;
   box-shadow: 5px 5px 10px #2b2b2b;
+  padding: 20px;
 }
 
 hr {
@@ -19,67 +20,66 @@ hr {
 }
 
 .titulo_trabajos {
-  padding-left: 20px;
-}
-
-.btns_adelantar_atrasar {
-  margin-left: 20px;
-  gap: 5px;
-  display: flex;
-  flex-direction: row;
-}
-
-.btn_atrasar {
-  margin-bottom: 10px;
-  border-bottom-left-radius: 10px;
-  border-top-left-radius: 10px;
-  background-color: #114f5ac4;
-  color: #ffffff7d;
-  cursor: pointer;
-  transition: background 0.2s;
-  width: 40px;
-  height: 20px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.btn_adelantar {
-  margin-bottom: 10px;
-  border-bottom-right-radius: 10px;
-  border-top-right-radius: 10px;
-  background-color: #114f5ac4;
-  color: #ffffff7d;
-  cursor: pointer;
-  transition: background 0.2s;
-  width: 40px;
-  height: 20px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  padding-left: 5px;
 }
 
 .parrafo_aviso {
-  padding-left: 20px;
+  padding-left: 5px;
   padding-bottom: 10px;
 }
 
-.btn_atrasar:hover {
-  background-color: #114f5a;
-  color: #ffffff7d;
+/* ----------- BOTONES DE PAGINACIÓN ----------- */
+.btns_adelantar_atrasar {
+  margin-top: 10px;
+  display: flex;
+  gap: 10px;
 }
 
+.btn_atrasar,
+.btn_adelantar {
+  width: 40px;
+  height: 30px;
+  border-radius: 10px;
+  background-color: #114f5ac4;
+  color: #ffffffd7;
+  cursor: pointer;
+  transition: background 0.2s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn_atrasar:hover,
 .btn_adelantar:hover {
   background-color: #114f5a;
-  color: #ffffff7d;
 }
 
-.btn_atrasar:disabled {
-  background-color: #383c3c7f;
-  color: #ffffff7d;
-}
-
+.btn_atrasar:disabled,
 .btn_adelantar:disabled {
   background-color: #383c3c7f;
-  color: #ffffff7d;
+}
+
+/* ----------- RESPONSIVE ----------- */
+@media (max-width: 900px) {
+  .container_pagetrabajos {
+    padding: 120px 20px;
+  }
+
+  .trabajos_pendientes_finalizados_container {
+    padding: 15px;
+  }
+}
+
+@media (max-width: 600px) {
+  .container_pagetrabajos {
+    padding: 110px 10px;
+  }
+
+  .titulo_trabajos {
+    font-size: 1.1rem;
+  }
+
+  .btns_adelantar_atrasar {
+    justify-content: center;
+  }
 }

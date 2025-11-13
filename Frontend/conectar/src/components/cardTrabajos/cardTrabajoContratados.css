@@ -22,6 +22,12 @@
   transform: scale(1.2);
 }
 
+/* ----------- CARD CONTAINER ----------- */
+.container_trabajos_card {
+  width: 100%;
+}
+
+/* ----------- FINALIZADOS ----------- */
 .trabajos_container_finalizados {
   display: flex;
   flex-direction: column;
@@ -29,11 +35,13 @@
 
 .trabajos_info_container_finalizados {
   display: flex;
-  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 10px;
   justify-content: space-between;
-  padding: 0px 30px;
+  padding: 0px 20px;
 }
 
+/* ----------- PENDIENTES ----------- */
 .trabajos_container_pendientes {
   display: flex;
   flex-direction: column;
@@ -41,9 +49,10 @@
 
 .trabajos_info_container_pendientes {
   display: flex;
-  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 10px;
   justify-content: space-between;
-  padding: 0px 30px;
+  padding: 0px 20px;
 }
 
 .btn_finalizar_trabajo {
@@ -55,10 +64,33 @@
   border: 1px solid #114f5a;
   transition: 0.2s;
   cursor: pointer;
+  white-space: nowrap;
 }
 
 .btn_finalizar_trabajo:hover {
   background-color: #114f5a7a;
   color: #fff;
-  border: 1px solid #114f5a;
+}
+
+/* ----------- RESPONSIVE ----------- */
+
+@media (max-width: 900px) {
+  .trabajos_info_container_finalizados,
+  .trabajos_info_container_pendientes {
+    flex-direction: column;
+    gap: 5px;
+    padding: 0px 10px;
+  }
+}
+
+@media (max-width: 600px) {
+  .trabajos_info_container_finalizados p,
+  .trabajos_info_container_pendientes p {
+    font-size: 0.9rem;
+  }
+
+  .btn_finalizar_trabajo {
+    width: 100%;
+    text-align: center;
+  }
 }

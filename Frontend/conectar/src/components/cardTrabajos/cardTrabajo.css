@@ -38,3 +38,41 @@
   color: #fff;
   border: 1px solid #114f5a;
 }
+
+/* Tablets (≤ 1024px) */
+@media (max-width: 1024px) {
+  .trabajos_info_container_finalizados,
+  .trabajos_info_container_pendientes {
+    padding: 0px 20px;
+  }
+}
+
+/* Celulares grandes (≤ 768px) */
+@media (max-width: 768px) {
+  .trabajos_info_container_finalizados,
+  .trabajos_info_container_pendientes {
+    flex-direction: column;  /* ⬅ cambio clave */
+    align-items: flex-start;
+    gap: 8px;
+    padding: 0px 15px;
+  }
+
+  .btn_agregar_monto {
+    width: 100%;
+    height: 42px;
+    text-align: center;
+    margin-top: 8px;
+  }
+}
+
+/* Celulares chicos (≤ 480px) */
+@media (max-width: 480px) {
+  .trabajos_info_container_finalizados,
+  .trabajos_info_container_pendientes {
+    padding: 0px 10px;
+  }
+
+  .btn_agregar_monto {
+    font-size: 0.9rem;
+  }
+}

@@ -450,7 +450,7 @@ h3 {
 }
 
 .edit_desc textarea {
-  width: 480%;
+  width: 100%;
   min-height: 100px;
   padding: 0.8rem;
   border: 1px solid #ddd;

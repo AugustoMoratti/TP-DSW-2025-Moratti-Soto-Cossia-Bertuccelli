@@ -47,7 +47,18 @@ export default function EditProfile() {
         });
         if (!res.ok) throw new Error("Error al obtener datos del usuario");
         const data = await res.json();
-        setUser(data.data);
+        const u = data.data;
+        setUser({
+          ...u,
+          provincia:
+            typeof u?.provincia === "object"
+              ? u.provincia?.nombre ?? ""
+              : u?.provincia ?? "",
+          localidad:
+            typeof u?.localidad === "object"
+              ? u.localidad?.nombre ?? ""
+              : u?.localidad ?? "",
+        });
       } catch (err) {
         console.error("Error al cargar usuario:", err);
         navigate("/login");

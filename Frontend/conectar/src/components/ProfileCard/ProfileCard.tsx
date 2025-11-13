@@ -3,9 +3,11 @@ import Modal from "react-modal";
 import styles from "./ProfileCard.module.css";
 import { useNavigate } from "react-router-dom";
 import type { ProfileCardProps } from "../../interfaces/profilaPropCard";
+import TrabajoCardContratados from "../../components/cardTrabajos/cardTrabajoContratados.tsx"
 import ModalTrabajos from "../Modal-trabajos/Modal.tsx";
 import { fetchMe } from "../../services/auth.services.ts";
 import type { Usuario } from "../../interfaces/usuario.ts";
+import type { Trabajo } from "../../interfaces/trabajo.ts"
 import type { FormEvent } from "react";
 
 const ProfileCard: React.FC<ProfileCardProps> = ({
@@ -23,11 +25,15 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
   descripcion = "",
   onUpdateDescripcion,
 }) => {
+  const [trabaj, setTrabajos] = useState("");
   const [isEditingDesc, setIsEditingDesc] = useState(false);
   const [tempDesc, setTempDesc] = useState(descripcion);
   const [isSaving, setIsSaving] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [trabajosFinalizados, setTrabajosFinalizados] = useState<Trabajo[]>([])
+  const [page, setPage] = useState(0);
+  
   const navigate = useNavigate();
 
   // Evitar error de accesibilidad de react-modal en SSR o tests
@@ -38,6 +44,17 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
       /* Ignorar errores en entornos sin DOM */
     }
   }, []);
+
+  useEffect(() => {
+    (async () => {
+      const usuario = await fetchMe();
+      const res = await fetch(`http://localhost:3000/api/trabajos/finalizados/contratados/${usuario.id}?limit=10&offset=${page * 10}`)
+      const data = await res.json()
+      console.log(data.data)
+      setTrabajosFinalizados(data.data)
+    })()
+  }, [page]);
+
 
   // Actualiza la descripción temporal cuando cambia la original
   useEffect(() => {
@@ -265,31 +282,17 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
             )}
           </section>
 
-          {/* Trabajos */}
           <section className={styles.profile_section}>
             <h4>{tipoPage === "miPerfil" ? "Historial de Trabajos Realizados" : "Trabajos Contratados"}</h4>
+          </section>
 
-            {trabajos && trabajos.length > 0 ? (
-              <ul className={styles.historial_trabajo}>
-                {trabajos.map((trabajo, index) => (
-                  <React.Fragment key={index}>
-                    <li>
-                      <strong>{trabajo.fechaFinalizado || "Fecha no disponible"}</strong> —{" "}
-                      {trabajo.cliente?.nombre} {trabajo.cliente?.apellido} —{" "}
-                      {trabajo.resenia
-                        ? `"${trabajo.resenia.descripcion}" (${trabajo.resenia.valor}/5)`
-                        : "Sin reseña"}
-                    </li>
-                    {index < trabajos.length - 1 && <div className={styles.divisor} />}
-                  </React.Fragment>
-                ))}
-              </ul>
-            ) : (
-              <p className={styles.no_trabajo}>
-                {tipoPage === "miPerfil"
-                  ? "Todavía no contrataste a ningún profesional"
-                  : "Todavía no realizó ningún trabajo"}
-              </p>
+          <section className="trabajos_pendientes_finalizados_container">
+            <h2 className="titulo_trabajos" >TRABAJOS FINALIZADOS</h2>
+            <hr></hr>
+            {trabajosFinalizados.length > 0 ? (trabajosFinalizados.map(trabajo => (
+              <TrabajoCardContratados key={trabajo.id} trabajo={trabajo} tipo={"finalizado"} />
+            ))) : (
+              <p className="parrafo_aviso">No hay trabajos finalizados</p>
             )}
           </section>
         </div>

@@ -3,7 +3,7 @@ import Header from "../../components/header/header.tsx";
 import SolicProfesiones from "./profesiones.tsx";
 import Provincias from "../../components/admin/provincia/provincia.tsx"
 import Localidades from "../../components/admin/localidad/localidad.tsx"
-import Usuarios from "../../components/admin/provincia/provincia.tsx"
+import Usuarios from "../../components/admin/usuario.tsx"
 import "./dashboard.css";
 
 type Page = "provincias" | "localidades" | "usuarios" | "profesiones";

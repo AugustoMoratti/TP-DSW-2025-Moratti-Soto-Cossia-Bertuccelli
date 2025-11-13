@@ -83,3 +83,70 @@ hr {
   background-color: #383c3c7f;
   color: #ffffff7d;
 }
+
+/* Tablets (≤ 1024px) */
+@media (max-width: 1024px) {
+  .container_pagetrabajos {
+    padding: 120px 30px;
+  }
+
+  .trabajos_pendientes_finalizados_container {
+    padding-bottom: 10px;
+  }
+}
+
+/* Celulares grandes (≤ 768px) */
+@media (max-width: 768px) {
+  .container_pagetrabajos {
+    padding: 110px 20px;
+  }
+
+  .container_trabajos {
+  margin-top: 120px;
+}
+
+  .titulo_trabajos {
+    padding-left: 10px;
+    font-size: 1.3rem;
+  }
+
+  .btns_adelantar_atrasar {
+    justify-content: center;
+    margin-left: 0;
+    padding: 10px 0;
+  }
+
+  .trabajos_pendientes_finalizados_container {
+    border-radius: 15px;
+  }
+}
+
+/* Celulares chicos (≤ 480px) */
+@media (max-width: 480px) {
+  .container_pagetrabajos {
+    padding: 100px 10px;
+  }
+
+  .container_trabajos {
+  margin-top: 120px;
+}
+
+  .titulo_trabajos {
+    font-size: 1.15rem;
+  }
+
+  .parrafo_aviso {
+    padding-left: 10px;
+    font-size: 0.95rem;
+  }
+
+  .btn_atrasar,
+  .btn_adelantar {
+    width: 35px;
+    height: 22px;
+  }
+
+  .trabajos_pendientes_finalizados_container {
+    padding-bottom: 15px;
+  }
+}

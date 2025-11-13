@@ -1,4 +1,4 @@
-import type { Trabajo } from "../../interfaces/trabajo.ts";
+  import type { Trabajo } from "../../interfaces/trabajo.ts";
 import "./cardTrabajoContratados.css"
 import ModalTrabajos from "../Modal-trabajos/Modal.tsx";
 import "../Modal-trabajos/Modal.css"

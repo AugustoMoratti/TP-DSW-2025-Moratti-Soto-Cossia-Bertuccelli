@@ -4,11 +4,9 @@ import styles from "./ProfileCard.module.css";
 import { useNavigate } from "react-router-dom";
 import type { ProfileCardProps } from "../../interfaces/profilaPropCard";
 import TrabajoCardContratados from "../../components/cardTrabajos/cardTrabajoContratados.tsx"
-import ModalTrabajos from "../Modal-trabajos/Modal.tsx";
 import { fetchMe } from "../../services/auth.services.ts";
 import type { Usuario } from "../../interfaces/usuario.ts";
 import type { Trabajo } from "../../interfaces/trabajo.ts"
-import type { FormEvent } from "react";
 
 const ProfileCard: React.FC<ProfileCardProps> = ({
   id,
@@ -21,11 +19,9 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
   tipoPage,
   profesiones,
   habilidades,
-  trabajos,
   descripcion = "",
   onUpdateDescripcion,
 }) => {
-  const [trabaj, setTrabajos] = useState("");
   const [isEditingDesc, setIsEditingDesc] = useState(false);
   const [tempDesc, setTempDesc] = useState(descripcion);
   const [isSaving, setIsSaving] = useState(false);
@@ -284,11 +280,8 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
 
           <section className={styles.profile_section}>
             <h4>{tipoPage === "miPerfil" ? "Historial de Trabajos Realizados" : "Trabajos Contratados"}</h4>
-          </section>
-
-          <section className="trabajos_pendientes_finalizados_container">
-            <h2 className="titulo_trabajos" >TRABAJOS FINALIZADOS</h2>
-            <hr></hr>
+            <div className="divisor"></div>
+            <br />
             {trabajosFinalizados.length > 0 ? (trabajosFinalizados.map(trabajo => (
               <TrabajoCardContratados key={trabajo.id} trabajo={trabajo} tipo={"finalizado"} />
             ))) : (

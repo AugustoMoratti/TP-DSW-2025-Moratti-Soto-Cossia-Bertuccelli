@@ -139,3 +139,74 @@ background {
   cursor: pointer;
   color: #114f5a;
 }
+
+
+/* Tablets (≤ 1024px) */
+@media (max-width: 1024px) {
+  .card {
+    width: 380px;
+    padding: 2rem 1.5rem;
+  }
+
+  .card-title {
+    font-size: 2rem;
+  }
+
+  .header-card {
+    padding: 1rem 1.5rem;
+  }
+}
+
+/* Celulares grandes (≤ 768px) */
+@media (max-width: 768px) {
+  .main-bg {
+    padding: 20px;
+    justify-content: flex-start;
+    padding-top: 160px; /* push card away from top */
+  }
+
+  .card {
+    width: 90%;
+    max-width: 380px;
+    padding: 2rem 1.3rem;
+  }
+
+  .logo_login {
+    width: 200px;
+  }
+
+  .card-title {
+    font-size: 1.9rem;
+  }
+
+  .header-card {
+    height: auto;
+    min-height: 70px;
+    padding: 12px 18px;
+  }
+}
+
+/* Celulares chicos (≤ 480px) */
+@media (max-width: 480px) {
+  .main-bg {
+    padding-top: 130px;
+  }
+
+  .card {
+    width: 92%;
+    padding: 1.8rem 1.2rem;
+    gap: 1rem;
+  }
+
+  .card-title {
+    font-size: 1.7rem;
+  }
+
+  .password-container .psw-icon {
+    right: 6px;
+  }
+
+  .cta-link {
+    font-size: 0.9rem;
+  }
+}

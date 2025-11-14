@@ -51,7 +51,7 @@ export default function Dashboard() {
             onClick={() => setActive("usuarios")}
             aria-pressed={active === "usuarios"}
           >
-            Usuarios
+            Administradores
           </button>
 
           <button

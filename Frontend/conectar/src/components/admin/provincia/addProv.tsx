@@ -9,6 +9,7 @@ export default function AddProv () {
   const [loading, setLoading] = useState(false);
   const [provincia, setProvincia] = useState<Provincia[]>([]);
   const [reload, setReload] = useState(0);
+  const [showModal, setShowModal] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -41,8 +42,8 @@ export default function AddProv () {
       }
 
       setNombreProv("");
+      setShowModal(true);
       console.log("✅ Solicitud enviada");
-      alert("✅ Solicitud enviada correctamente");
     } catch (err: unknown) {
       if (err instanceof Error) {
         console.error(err.message);
@@ -54,6 +55,10 @@ export default function AddProv () {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
   };
 
   return(
@@ -70,6 +75,17 @@ export default function AddProv () {
               {loading ? "Enviando..." : "Enviar Solicitud"}
             </button>
           </div>
+          {showModal && (
+            <div className="modal-overlay">
+              <div className="modal-card">
+                <h2>✅ Provincia registrada</h2>
+                <p>Tu provincia ha sido creada exitosamente.</p>
+                <button className="notfound-btn" onClick={handleCloseModal}>
+                  Volver
+                </button>
+              </div>
+            </div>
+          )}
           {error && (
             <div style={{ color: "red", marginTop: "10px", textAlign: "center" }}>
               {error}

@@ -1,5 +1,5 @@
 ### GET ALL
-GET http://localhost:3000/api/admin/a73cba1d-2f43-4aeb-bbc4-17b564c31ce0
+GET http://localhost:3000/api/admin
 
 
 ### POST

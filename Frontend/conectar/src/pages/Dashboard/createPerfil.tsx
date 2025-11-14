@@ -8,6 +8,7 @@ export default function CreatePerfilAdmin() {
   const [user, setUser] = useState('');
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
+  const [showModal, setShowModal] = useState(false);
 
   const addAdmin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -39,12 +40,16 @@ export default function CreatePerfilAdmin() {
       setUser("");
       setEmail("");
       setClave("");
-      alert("Administrador creado correctamente!");
+      setShowModal(true);
 
     } catch (err) {
       console.error(err);
       setError("⚠️ Error de conexión con el servidor.");
     }
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
   };
 
   return (
@@ -58,6 +63,17 @@ export default function CreatePerfilAdmin() {
             <input className='input_dashboard' type="password" name="Clave" value={clave} id="" placeholder="Clave" onChange={(e) => setClave(e.target.value)} required />
           </div>
           <button type="submit" className="createAdmin">Crear Adminsitrador</button>
+          {showModal && (
+            <div className="modal-overlay">
+              <div className="modal-card">
+                <h2>✅ Administrador registrada</h2>
+                <p>El admin fue creado con exito.</p>
+                <button className="notfound-btn" onClick={handleCloseModal}>
+                  Volver
+                </button>
+              </div>
+            </div>
+          )}
         </form>
       </div>
     </>

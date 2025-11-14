@@ -11,6 +11,7 @@ export default function AddLoc () {
   const [loading, setLoading] = useState(false);
   const [localidad, setLocalidad] = useState<Localidad[]>([]);
   const [reload, setReload] = useState(0);
+  const [showModal, setShowModal] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
 
@@ -84,7 +85,7 @@ export default function AddLoc () {
 
     setNombreLoc("");
     console.log("✅ Localidad creada");
-    alert("✅ Localidad creada correctamente");
+    setShowModal(true);
   } catch (err: unknown) {
     if (err instanceof Error) {
       console.error("Error al crear localidad:", err.message);
@@ -97,6 +98,10 @@ export default function AddLoc () {
     setLoading(false);
   }
 };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
 
   return(
     <>
@@ -130,6 +135,17 @@ export default function AddLoc () {
               {loading ? "Enviando..." : "Enviar Solicitud"}
             </button>
           </div>
+          {showModal && (
+            <div className="modal-overlay">
+              <div className="modal-card">
+                <h2>✅ Localidad registrada</h2>
+                <p>Tu localidad ha sido creada exitosamente.</p>
+                <button className="notfound-btn" onClick={handleCloseModal}>
+                  Volver
+                </button>
+              </div>
+            </div>
+          )}
           {error && (
             <div style={{ color: "red", marginTop: "10px", textAlign: "center" }}>
               {error}

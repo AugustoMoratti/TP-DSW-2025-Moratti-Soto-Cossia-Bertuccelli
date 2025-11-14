@@ -172,7 +172,6 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
             </button>
           )}
 
-          {/* Modal de confirmación (fuera del ternario) */}
           {showModal && (
             <div className="modal-overlay">
               <div className="modal-card">

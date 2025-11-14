@@ -1,5 +1,9 @@
 import type { Profesion } from "./profesion.ts";
-import type { Trabajo } from "../interfaces/trabajo.ts";
+import type { Trabajo } from "./trabajo.ts";
+import type { Localidad } from "./localidad.ts"
+import type { Provincia } from './provincia.ts'
+
+
 
 export type ProfileCardProps = {
   id: string;
@@ -8,14 +12,14 @@ export type ProfileCardProps = {
   email: string;
   fechaNac?: string;
   direccion?: string;
-  localidad?: string;
-  provincia?: string;
+  localidad?: Localidad;
+  provincia?: Provincia;
   fotoUrl?: string | null;
   contacto?: string;
-  tipoPage: "miPerfil" | "suPerfil";
   profesiones?: Profesion[];     // <- array de objetos
   habilidades?: string[];
   trabajos?: Trabajo[];
   descripcion?: string;
+  tipoPage: "miPerfil" | "suPerfil";
   onUpdateDescripcion?: (desc: string) => Promise<void> | void;
 };

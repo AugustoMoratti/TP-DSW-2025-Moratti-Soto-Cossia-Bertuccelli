@@ -10,7 +10,7 @@ POST http://localhost:3000/api/trabajos
 Content-Type: application/json
 
 { 
-  "montoTotal": 20000,
+  "montoTotal": null,
   "cliente": "32fc1807-6d11-42dd-bdd9-3dd5e82147e0",
   "profesional": "8bfc359b-40cc-4a49-924a-8182a98710ba",
   "fechaSolicitud": "11/11/2025"
@@ -37,7 +37,7 @@ Content-Type: application/json
 }
 
 ### Eliminar una provicia (DELETE - eliminar recurso)
-DELETE http://localhost:3000/api/trabajos/1
+DELETE http://localhost:3000/api/trabajos/6
 
 /* La extension REST Client, nos permite hacer peticiones sin la 
 la necesidad del navegador, por ejemplo meter un archivo reversionado

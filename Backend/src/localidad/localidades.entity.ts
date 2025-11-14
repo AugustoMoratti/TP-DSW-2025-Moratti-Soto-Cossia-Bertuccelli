@@ -1,5 +1,4 @@
 import { Cascade, Rel, Collection, Entity, ManyToOne, OneToMany, Property, PrimaryKey } from "@mikro-orm/core";
-import { BaseEntity } from "../../DB/baseEntity.entity.js";
 import { Provincia } from "../provincia/provincia.entity.js";
 import { Usuario } from "../usuario/usuario.entity.js";
 

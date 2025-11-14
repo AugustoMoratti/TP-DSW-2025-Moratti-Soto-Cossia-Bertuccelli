@@ -1,5 +1,5 @@
 export interface Provincia {
-  id: string;
+  id?: string | number;
   nombre: string;
   localidades: string;
 };

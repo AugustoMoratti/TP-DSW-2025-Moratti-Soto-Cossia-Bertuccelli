@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import Modal from "react-modal";
 import AddProf from "../../components/profesiones/AddProf.tsx";
 import RmProf from "../../components/profesiones/RmProf.tsx";
@@ -12,8 +12,9 @@ import { fetchMe } from "../../services/auth.services";
 import type { ProfileCardProps as User } from "../../interfaces/profilaPropCard";
 import "./modPerf.css";
 
-export default function EditProfile() {
-  const [user, setUser] = useState<User>({} as User);
+export default function EditProfile () {
+  // usar Partial<User> porque al inicio el objeto puede no tener todas las props
+  const [user, setUser] = useState<Partial<User>>({});
   const [clave, setClave] = useState("");
   const [confirmarClave, setConfirmarClave] = useState("");
   const [editable, setEditable] = useState<Partial<Record<keyof User, boolean>>>({});
@@ -50,6 +51,7 @@ export default function EditProfile() {
         const u = data.data;
         setUser({
           ...u,
+          // aquí normalizo a string si venían como objeto
           provincia:
             typeof u?.provincia === "object"
               ? u.provincia?.nombre ?? ""
@@ -104,12 +106,16 @@ export default function EditProfile() {
         email: value.includes("@") ? "" : "Ingrese un email válido",
       }));
     }
-    setUser((prev) => ({ ...prev, [field]: value }));
+    setUser((prev) => ({ ...(prev ?? {}), [field]: value }));
   };
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
+    if (!user.id) {
+      setSaveError("Usuario no cargado todavía.");
+      return;
+    }
     const formData = new FormData();
     formData.append("imagen", file);
     try {
@@ -121,7 +127,7 @@ export default function EditProfile() {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Error al subir imagen");
-      setUser((prev) => ({ ...prev, fotoUrl: data.fotoUrl || prev.fotoUrl }));
+      setUser((prev) => ({ ...(prev ?? {}), fotoUrl: data.fotoUrl || prev?.fotoUrl }));
       setSuccessMsg("Imagen actualizada correctamente.");
     } catch (err) {
       console.error(err);
@@ -132,56 +138,61 @@ export default function EditProfile() {
   };
 
   const handleSaveAll = async () => {
-  setSaveError("");
-  setSuccessMsg("");
+    setSaveError("");
+    setSuccessMsg("");
 
-  if (clave !== confirmarClave) {
-    setSaveError("⚠️ Las claves no coinciden.");
-    return;
-  }
-
-  const payload = {
-    nombre: user.nombre,
-    apellido: user.apellido,
-    fechaNac: user.fechaNac,
-    provincia: user.provincia,
-    localidad: user.localidad,
-    direccion: user.direccion,
-    contacto: user.contacto,
-    email: user.email,
-    clave: clave || undefined,
-  };
-
-  try {
-    setLoading(true);
-    const res = await fetch(`http://localhost:3000/api/usuario/${user.id}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      credentials: "include",
-      body: JSON.stringify(payload),
-    });
-
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error || "Error al guardar usuario");
-
-    setSuccessMsg("Datos actualizados correctamente.");
-
-    setEditable(prev =>
-      Object.fromEntries(Object.keys(prev).map(k => [k, false])) as Record<keyof User, boolean>
-    );
-
-    if (showClavesModal) {
-      setShowClavesModal(false);
-      setClave("");
-      setConfirmarClave("");
+    if (clave !== confirmarClave) {
+      setSaveError("⚠️ Las claves no coinciden.");
+      return;
     }
-  } catch (err) {
-    console.error(err);
-    setSaveError("Error de conexión al guardar.");
-  } finally {
-    setLoading(false);
-  }
-};
+
+    if (!user.id) {
+      setSaveError("Usuario no cargado.");
+      return;
+    }
+
+    const payload = {
+      nombre: user.nombre,
+      apellido: user.apellido,
+      fechaNac: user.fechaNac,
+      provincia: user.provincia,
+      localidad: user.localidad,
+      direccion: user.direccion,
+      contacto: user.contacto,
+      email: user.email,
+      clave: clave || undefined,
+    };
+
+    try {
+      setLoading(true);
+      const res = await fetch(`http://localhost:3000/api/usuario/${user.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify(payload),
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Error al guardar usuario");
+
+      setSuccessMsg("Datos actualizados correctamente.");
+
+      setEditable(prev =>
+        Object.fromEntries(Object.keys(prev).map(k => [k, false])) as Record<keyof User, boolean>
+      );
+
+      if (showClavesModal) {
+        setShowClavesModal(false);
+        setClave("");
+        setConfirmarClave("");
+      }
+    } catch (err) {
+      console.error(err);
+      setSaveError("Error de conexión al guardar.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
 
   const StaticField: React.FC<{ label: string; value?: string }> = ({
@@ -216,7 +227,7 @@ export default function EditProfile() {
 
       <div className="field-buttons">
         <button
-          type="button" 
+          type="button"
           className="btn_modPerf editar-btn"
           onClick={() => toggleEdit(field)}
         >
@@ -225,7 +236,7 @@ export default function EditProfile() {
 
         {editable[field] && (
           <button
-            type="button" 
+            type="button"
             className="btn_modPerf guardar-btn.visible"
             onClick={handleSaveAll}
           >
@@ -236,6 +247,20 @@ export default function EditProfile() {
     </div>
   );
 
+  // Normalizar/extraer nombre de provincia/localidad de forma segura
+  const provinciaNombre = useMemo(() => {
+    if (!user.provincia) return "";
+    return typeof user.provincia === "string"
+      ? user.provincia
+      : (user.provincia as any)?.nombre ?? "";
+  }, [user.provincia]);
+
+  const localidadNombre = useMemo(() => {
+    if (!user.localidad) return "";
+    return typeof user.localidad === "string"
+      ? user.localidad
+      : (user.localidad as any)?.nombre ?? "";
+  }, [user.localidad]);
 
   if (loading && !user.nombre)
     return <div className="main-bg">Cargando datos del usuario...</div>;
@@ -266,8 +291,8 @@ export default function EditProfile() {
             {renderField("fechaNac", "Fecha de nacimiento", user.fechaNac, "date")}
             <h3>Ubicación</h3>
             <br />
-            {renderField("provincia", "Provincia", user.provincia)}
-            {renderField("localidad", "Localidad", user.localidad)}
+            {renderField("provincia", "Provincia", provinciaNombre)}
+            {renderField("localidad", "Localidad", localidadNombre)}
             {renderField("direccion", "Dirección", user.direccion)}
             <h3>Contacto</h3>
             <br />
@@ -281,7 +306,7 @@ export default function EditProfile() {
           {/* IMAGEN */}
           <div className="profile-image-section">
             <img
-              src={`http://localhost:3000${user.fotoUrl}`}
+              src={`http://localhost:3000${user.fotoUrl ?? ""}`}
               alt="Foto de perfil"
               className="profile-image"
             />
@@ -428,4 +453,3 @@ export default function EditProfile() {
     </section>
   );
 }
-

@@ -3,18 +3,17 @@ import Modal from "react-modal";
 import styles from "./ProfileCard.module.css";
 import { useNavigate } from "react-router-dom";
 import type { ProfileCardProps } from "../../interfaces/profilaPropCard";
-import TrabajoCardContratados from "../../components/cardTrabajos/cardTrabajoContratados.tsx"
 import { fetchMe } from "../../services/auth.services.ts";
 import type { Usuario } from "../../interfaces/usuario.ts";
-import type { Trabajo } from "../../interfaces/trabajo.ts"
+
 
 const ProfileCard: React.FC<ProfileCardProps> = ({
   id,
   nombre,
   apellido,
   email,
-  localidad,
-  provincia,
+  localidad = "",
+  provincia = "",
   fotoUrl,
   tipoPage,
   profesiones,
@@ -27,8 +26,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
   const [isSaving, setIsSaving] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [trabajosFinalizados, setTrabajosFinalizados] = useState<Trabajo[]>([])
-  const [page, setPage] = useState(0);
+  const [showModal, setShowModal] = useState(false);
   
   const navigate = useNavigate();
 
@@ -40,16 +38,6 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
       /* Ignorar errores en entornos sin DOM */
     }
   }, []);
-
-  useEffect(() => {
-    (async () => {
-      const usuario = await fetchMe();
-      const res = await fetch(`http://localhost:3000/api/trabajos/finalizados/contratados/${usuario.id}?limit=10&offset=${page * 10}`)
-      const data = await res.json()
-      console.log(data.data)
-      setTrabajosFinalizados(data.data)
-    })()
-  }, [page]);
 
 
   // Actualiza la descripción temporal cuando cambia la original
@@ -63,18 +51,23 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
     return `${day}/${month}/${year}`;
   }, [hoy]);
 
+  const provinciaNombre = useMemo(() => {
+    return typeof provincia === "string" ? provincia : provincia?.nombre ?? "";
+  }, [provincia]);
+
+  const localidadNombre = useMemo(() => {
+    return typeof localidad === "string" ? localidad : localidad?.nombre ?? "";
+  }, [localidad]);
+
   const handleEmpezarTrabajo = async () => {
-    alert("Profesional contratado");
     setError(null);
-
-    const idProfesional = id
-
-    const cliente: Usuario = await fetchMe()
-
-    const idCliente = cliente.id
-
     setLoading(true);
+
+    const idProfesional = id;
     try {
+      const cliente: Usuario = await fetchMe();
+      const idCliente = cliente.id;
+
       const res = await fetch(`http://localhost:3000/api/trabajos`, {
         method: "POST",
         credentials: "include",
@@ -84,23 +77,30 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
         body: JSON.stringify({
           cliente: idCliente,
           profesional: idProfesional,
-          fechaSolicitud: fechaHoy
+          fechaSolicitud: fechaHoy,
+          montoTotal: 0
         })
-      })
+      });
 
       if (!res.ok) {
-        console.log("Ocurrio un error al cargar un trabajo")
         const text = await res.text().catch(() => null);
         throw new Error(text || `Error ${res.status}`);
       }
-    } catch (err: any) {
-      console.error("Error guardando monto:", err);
-      setError(err?.message ?? "Error al guardar la resenia")
-    } finally {
-      setLoading(false)
-    }
-  }
 
+      // Si todo salió bien, muestro el modal de confirmación
+      setShowModal(true);
+    } catch (err: any) {
+      console.error("Error guardando trabajo:", err);
+      setError(err?.message ?? "Error al solicitar el trabajo");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+    navigate(-1);
+  };
 
   const handleSaveDesc = async () => {
     if (tempDesc.length > 250) return;
@@ -141,15 +141,18 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
                 {nombre} {apellido}
               </h3>
               <p className={styles.ubicacion}>
-                Argentina, {provincia}, {localidad}
+                Argentina, {provinciaNombre}, {localidadNombre}
               </p>
             </div>
           </div>
           <p>Email: {email}</p>
         </div>
-
+        {error && (
+          <div style={{ color: "red", marginTop: "10px", textAlign: "center" }}>
+            {error}
+          </div>
+        )}
         <div className={styles.botones_verticales}>
-
           {tipoPage === "miPerfil" ? (
             <button
               type="button"
@@ -162,12 +165,26 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
             <button
               type="button"
               className={styles.btn_direccion}
-              onClick={() => handleEmpezarTrabajo()}
+              onClick={handleEmpezarTrabajo}
+              disabled={loading}
             >
               Contratar
             </button>
-
           )}
+
+          {/* Modal de confirmación (fuera del ternario) */}
+          {showModal && (
+            <div className="modal-overlay">
+              <div className="modal-card">
+                <h2>✅ Usuario contratado</h2>
+                <p>Haz contratado a este profesional!</p>
+                <button className="notfound-btn" onClick={handleCloseModal}>
+                  Ir atrás
+                </button>
+              </div>
+            </div>
+          )}
+
           {tipoPage !== 'suPerfil' && (
             <button
               type="button"
@@ -278,16 +295,6 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
             )}
           </section>
 
-          <section className={styles.profile_section}>
-            <h4>{tipoPage === "miPerfil" ? "Historial de Trabajos Realizados" : "Trabajos Contratados"}</h4>
-            <div className="divisor"></div>
-            <br />
-            {trabajosFinalizados.length > 0 ? (trabajosFinalizados.map(trabajo => (
-              <TrabajoCardContratados key={trabajo.id} trabajo={trabajo} tipo={"finalizado"} />
-            ))) : (
-              <p className="parrafo_aviso">No hay trabajos finalizados</p>
-            )}
-          </section>
         </div>
       </section>
     </div>

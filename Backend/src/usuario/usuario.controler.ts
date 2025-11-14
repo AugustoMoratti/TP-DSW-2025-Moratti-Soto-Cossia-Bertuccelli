@@ -6,6 +6,7 @@ import { Profesiones } from '../profesion/profesion.entity.js';
 import { orm } from '../../DB/orm.js';
 import { RequestContext } from '@mikro-orm/core';
 import { EntityManager } from '@mikro-orm/core';
+import { hashPassword, comparePassword } from '../utils/bcryp.js';
 import { upload, UPLOADS_DIR } from '../utils/upload.js';
 
 const em = orm.em.fork();
@@ -300,7 +301,7 @@ async function update(req: Request, res: Response) {
     const imagen = req.file ? `/uploads/${req.file.filename}` : usuario.fotoUrl;
     usuario.fotoUrl = imagen;
 
-    if (clave) usuario.clave = clave;
+    if (clave) usuario.clave = await hashPassword(clave);
     if (email) usuario.email = email.trim().toLowerCase();
     if (descripcion) usuario.descripcion = descripcion.trim();
     if (contacto) usuario.contacto = contacto.toString().trim();

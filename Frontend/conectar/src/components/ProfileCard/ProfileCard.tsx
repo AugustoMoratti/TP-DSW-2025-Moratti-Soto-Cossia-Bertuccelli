@@ -131,6 +131,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
       <section className={styles.profile_header}>
         <div className={styles.profile_info}>
           <div className={styles.nombre_foto_perfil}>
+
             <img
               src={fotoSrc}
               alt={`Foto de perfil de ${nombre} ${apellido ?? ""}`}

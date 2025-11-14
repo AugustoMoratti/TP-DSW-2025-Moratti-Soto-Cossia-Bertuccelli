@@ -39,7 +39,7 @@ Content-Type: application/json
 }
 
 ### Eliminar una provicia (DELETE - eliminar recurso)
-DELETE http://localhost:3000/api/localidad/{{id}}
+DELETE http://localhost:3000/api/localidad/Rosario
 
 
 /* La extension REST Client, nos permite hacer peticiones sin la 

@@ -27,7 +27,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showModal, setShowModal] = useState(false);
-  
+
   const navigate = useNavigate();
 
   // Evitar error de accesibilidad de react-modal en SSR o tests
@@ -143,9 +143,10 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
               <p className={styles.ubicacion}>
                 Argentina, {provinciaNombre}, {localidadNombre}
               </p>
+              <p>Email: {email}</p>
             </div>
           </div>
-          <p>Email: {email}</p>
+
         </div>
         {error && (
           <div style={{ color: "red", marginTop: "10px", textAlign: "center" }}>

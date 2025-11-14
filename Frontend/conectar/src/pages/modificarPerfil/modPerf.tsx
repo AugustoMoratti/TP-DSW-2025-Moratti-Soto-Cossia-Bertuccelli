@@ -121,56 +121,56 @@ export default function EditProfile() {
   };
 
   const handleSaveAll = async () => {
-  setSaveError("");
-  setSuccessMsg("");
+    setSaveError("");
+    setSuccessMsg("");
 
-  if (clave !== confirmarClave) {
-    setSaveError("⚠️ Las claves no coinciden.");
-    return;
-  }
-
-  const payload = {
-    nombre: user.nombre,
-    apellido: user.apellido,
-    fechaNac: user.fechaNac,
-    provincia: user.provincia,
-    localidad: user.localidad,
-    direccion: user.direccion,
-    contacto: user.contacto,
-    email: user.email,
-    clave: clave || undefined,
-  };
-
-  try {
-    setLoading(true);
-    const res = await fetch(`http://localhost:3000/api/usuario/${user.id}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      credentials: "include",
-      body: JSON.stringify(payload),
-    });
-
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error || "Error al guardar usuario");
-
-    setSuccessMsg("Datos actualizados correctamente.");
-
-    setEditable(prev =>
-      Object.fromEntries(Object.keys(prev).map(k => [k, false])) as Record<keyof User, boolean>
-    );
-
-    if (showClavesModal) {
-      setShowClavesModal(false);
-      setClave("");
-      setConfirmarClave("");
+    if (clave !== confirmarClave) {
+      setSaveError("⚠️ Las claves no coinciden.");
+      return;
     }
-  } catch (err) {
-    console.error(err);
-    setSaveError("Error de conexión al guardar.");
-  } finally {
-    setLoading(false);
-  }
-};
+
+    const payload = {
+      nombre: user.nombre,
+      apellido: user.apellido,
+      fechaNac: user.fechaNac,
+      provincia: user.provincia,
+      localidad: user.localidad,
+      direccion: user.direccion,
+      contacto: user.contacto,
+      email: user.email,
+      clave: clave || undefined,
+    };
+
+    try {
+      setLoading(true);
+      const res = await fetch(`http://localhost:3000/api/usuario/${user.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify(payload),
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Error al guardar usuario");
+
+      setSuccessMsg("Datos actualizados correctamente.");
+
+      setEditable(prev =>
+        Object.fromEntries(Object.keys(prev).map(k => [k, false])) as Record<keyof User, boolean>
+      );
+
+      if (showClavesModal) {
+        setShowClavesModal(false);
+        setClave("");
+        setConfirmarClave("");
+      }
+    } catch (err) {
+      console.error(err);
+      setSaveError("Error de conexión al guardar.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
 
   const StaticField: React.FC<{ label: string; value?: string }> = ({
@@ -205,7 +205,7 @@ export default function EditProfile() {
 
       <div className="field-buttons">
         <button
-          type="button" 
+          type="button"
           className="btn_modPerf editar-btn"
           onClick={() => toggleEdit(field)}
         >
@@ -214,7 +214,7 @@ export default function EditProfile() {
 
         {editable[field] && (
           <button
-            type="button" 
+            type="button"
             className="btn_modPerf guardar-btn.visible"
             onClick={handleSaveAll}
           >

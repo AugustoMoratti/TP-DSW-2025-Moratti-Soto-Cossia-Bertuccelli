@@ -1,6 +1,9 @@
 import type { Profesion } from "./profesion.ts";
 import type { Trabajo } from "../interfaces/trabajo.ts";
 
+
+
+
 export type ProfileCardProps = {
   id: string;
   nombre: string;
@@ -12,10 +15,10 @@ export type ProfileCardProps = {
   provincia?: string;
   fotoUrl?: string | null;
   contacto?: string;
-  tipoPage: "miPerfil" | "suPerfil";
   profesiones?: Profesion[];     // <- array de objetos
   habilidades?: string[];
   trabajos?: Trabajo[];
   descripcion?: string;
+  tipoPage: "miPerfil" | "suPerfil";
   onUpdateDescripcion?: (desc: string) => Promise<void> | void;
 };

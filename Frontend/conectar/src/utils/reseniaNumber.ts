@@ -8,7 +8,9 @@ export const estrellas = (usuario: Usuario) => {
     (acum, trabajo) => acum + (trabajo.resenia?.valor ?? 0), 0
   );
   const promedio = sumaResenias / usuario.trabajos.length;
-
+  if (promedio === 0) {
+    return "Sin trabajos terminados"
+  }
   const estrellasCompletas = Math.round(promedio);
 
   return '★'.repeat(estrellasCompletas) + '☆'.repeat(5 - estrellasCompletas);

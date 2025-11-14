@@ -172,7 +172,7 @@ async function add(req: Request, res: Response) {
 
     const trabajo = new Trabajo();
 
-    if (montoTotal) trabajo.montoTotal = Number(montoTotal);
+    trabajo.montoTotal = Number(montoTotal);
     trabajo.cliente = em.getReference(Usuario, cliente);
     trabajo.profesional = em.getReference(Usuario, profesional);
     trabajo.fechaSolicitud = fechaSolicitud;

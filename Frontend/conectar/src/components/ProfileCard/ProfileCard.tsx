@@ -3,10 +3,9 @@ import Modal from "react-modal";
 import styles from "./ProfileCard.module.css";
 import { useNavigate } from "react-router-dom";
 import type { ProfileCardProps } from "../../interfaces/profilaPropCard";
-import ModalTrabajos from "../Modal-trabajos/Modal.tsx";
 import { fetchMe } from "../../services/auth.services.ts";
 import type { Usuario } from "../../interfaces/usuario.ts";
-import type { FormEvent } from "react";
+
 
 const ProfileCard: React.FC<ProfileCardProps> = ({
   id,
@@ -71,7 +70,8 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
         body: JSON.stringify({
           cliente: idCliente,
           profesional: idProfesional,
-          fechaSolicitud: fechaHoy
+          fechaSolicitud: fechaHoy,
+          montoTotal: 0
         })
       })
 
@@ -134,7 +134,11 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
           </div>
           <p>Email: {email}</p>
         </div>
-
+        {error && (
+          <div style={{ color: "red", marginTop: "10px", textAlign: "center" }}>
+            {error}
+          </div>
+        )}
         <div className={styles.botones_verticales}>
 
           {tipoPage === "miPerfil" ? (
@@ -150,6 +154,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
               type="button"
               className={styles.btn_direccion}
               onClick={() => handleEmpezarTrabajo()}
+              disabled={loading}
             >
               Contratar
             </button>
@@ -266,32 +271,34 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
           </section>
 
           {/* Trabajos */}
-          <section className={styles.profile_section}>
-            <h4>{tipoPage === "miPerfil" ? "Historial de Trabajos Realizados" : "Trabajos Contratados"}</h4>
+          {tipoPage !== "miPerfil" && (
+            <section className={styles.profile_section}>
+              <h4>Historial de Trabajos Realizados</h4>
 
-            {trabajos && trabajos.length > 0 ? (
-              <ul className={styles.historial_trabajo}>
-                {trabajos.map((trabajo, index) => (
-                  <React.Fragment key={index}>
-                    <li>
-                      <strong>{trabajo.fechaFinalizado || "Fecha no disponible"}</strong> —{" "}
-                      {trabajo.cliente?.nombre} {trabajo.cliente?.apellido} —{" "}
-                      {trabajo.resenia
-                        ? `"${trabajo.resenia.descripcion}" (${trabajo.resenia.valor}/5)`
-                        : "Sin reseña"}
-                    </li>
-                    {index < trabajos.length - 1 && <div className={styles.divisor} />}
-                  </React.Fragment>
-                ))}
-              </ul>
-            ) : (
-              <p className={styles.no_trabajo}>
-                {tipoPage === "miPerfil"
-                  ? "Todavía no contrataste a ningún profesional"
-                  : "Todavía no realizó ningún trabajo"}
-              </p>
-            )}
-          </section>
+              {trabajos && trabajos.length > 0 ? (
+                <ul className={styles.historial_trabajo}>
+                  {trabajos
+                    .map((trabajo, index) => (
+                      <React.Fragment key={index}>
+                        <li>
+                          <strong>{index + 1} | </strong>
+                          <strong>{trabajo.fechaFinalizado || "Trabajo sin Terminar"}</strong> —{" "}
+                          {trabajo.cliente?.nombre} {trabajo.cliente?.apellido} —{" "}
+                          {trabajo.resenia
+                            ? `"${trabajo.resenia.descripcion}" (${trabajo.resenia.valor}/5)`
+                            : "Sin reseña"}
+                        </li>
+                        {index < trabajos.length - 1 && <div className={styles.divisor} />}
+                      </React.Fragment>
+                    ))}
+                </ul>
+              ) : (
+                <p className={styles.no_trabajo}>
+                  Todavía no realizó ningún trabajo
+                </p>
+              )}
+            </section>
+          )}
         </div>
       </section>
     </div>

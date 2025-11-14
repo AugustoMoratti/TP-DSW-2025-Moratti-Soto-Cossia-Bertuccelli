@@ -93,10 +93,10 @@ export default function EditProfile () {
     if (field === "contacto") {
       if (!/^\d*$/.test(value))
         return setErrors((p) => ({ ...p, contacto: "Solo números" }));
-      if (value.length < 7 || value.length > 15)
+      if (value.length > 15)
         return setErrors((p) => ({
           ...p,
-          contacto: "Teléfono entre 7 y 15 dígitos",
+          contacto: "Máximo 15 dígitos",
         }));
       setErrors((p) => ({ ...p, contacto: "" }));
     }
@@ -140,6 +140,11 @@ export default function EditProfile () {
   const handleSaveAll = async () => {
     setSaveError("");
     setSuccessMsg("");
+
+    if (!user.contacto || user.contacto.length < 7) {
+      setSaveError("El teléfono debe tener al menos 7 dígitos.");
+      return;
+}
 
     if (clave !== confirmarClave) {
       setSaveError("⚠️ Las claves no coinciden.");

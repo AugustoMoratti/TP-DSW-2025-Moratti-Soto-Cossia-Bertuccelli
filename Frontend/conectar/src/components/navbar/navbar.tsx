@@ -58,9 +58,14 @@ const Navbar: React.FC = () => {
         <div className="nav_buttons">
           {user ? (
             // LOGEADO
-            <Button variant="contained" onClick={() => navigate("/perfil")}>
-              Mi Perfil
-            </Button>
+            <>
+              <Button variant="contained" onClick={() => navigate("/perfil")}>
+                Mi Perfil
+              </Button>
+              <Button variant="contained" onClick={() => navigate("/loginAdmin")}>
+                Iniciar sesión Administrador
+              </Button>
+            </>
           ) : (
             // NO LOGEADO
             <>

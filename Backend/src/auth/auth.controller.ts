@@ -119,4 +119,4 @@ export const me = async (req: Request, res: Response) => {
   const usuario = req.user;
   if (!usuario) return res.status(401).json({ error: 'No autorizado (me)' });
   res.json({ usuario: { id: usuario.id, nombre: usuario.nombre, email: usuario.email } });
-};
+};//Podemos quitar desde el token directamente sin pasar por el fetchMe

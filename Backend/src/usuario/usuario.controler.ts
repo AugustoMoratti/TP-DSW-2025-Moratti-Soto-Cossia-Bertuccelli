@@ -7,7 +7,6 @@ import { orm } from '../../DB/orm.js';
 import { RequestContext } from '@mikro-orm/core';
 import { EntityManager } from '@mikro-orm/core';
 import { hashPassword, comparePassword } from '../utils/bcryp.js';
-import { upload, UPLOADS_DIR } from '../utils/upload.js';
 
 const em = orm.em.fork();
 
@@ -64,7 +63,7 @@ async function buscarUsuarios(req: Request, res: Response) {
     console.error('Error en buscarUsuarios:', err);
     return res.status(500).json({ message: 'Error al buscar usuarios' });
   }
-}
+} //quiero en un futuro poder ordenarlos por resenia
 
 async function findAll(req: Request, res: Response) {
   try {
@@ -72,8 +71,9 @@ async function findAll(req: Request, res: Response) {
     res
       .status(200)
       .json({ message: 'found all Usuarios', data: usuarios })
-  } catch (error: any) {
-    res.status(500).json({ message: error.message })
+  } catch (err) {
+    console.error('Error en findAll:', err);
+    return res.status(500).json({ message: 'Error al buscar todos los usuarios' });
   }
 }
 
@@ -84,14 +84,16 @@ async function findOne(req: Request, res: Response) {
     res
       .status(200)
       .json({ message: 'found Usuario', data: usuario })
-  } catch (error: any) {
-    res.status(500).json({ message: error.message })
+  } catch (err) {
+    console.error('Error en findOne:', err);
+    return res.status(500).json({ message: 'Error al buscar el usuario' });
   }
 }
 
 
 export async function addProfesiones(req: Request, res: Response) {
   const em = RequestContext.getEntityManager();
+  //ver de cambiar por ( const em = orm.em.fork(); )
 
   try {
     const userId = req.body.userId as string | number | undefined;

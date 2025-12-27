@@ -1,7 +1,7 @@
 import type { Profesion } from "./profesion.ts";
 import type { Trabajo } from "./trabajo.ts";
-import type { Localidad } from "./localidad.ts"
-import type { Provincia } from './provincia.ts'
+//import type { Localidad } from "./localidad.ts"
+//import type { Provincia } from './provincia.ts'
 
 
 
@@ -12,8 +12,8 @@ export type ProfileCardProps = {
   email: string;
   fechaNac?: string;
   direccion?: string;
-  localidad?: Localidad;
-  provincia?: Provincia;
+  localidad?: string;
+  provincia?: string;
   fotoUrl?: string | null;
   contacto?: string;
   profesiones?: Profesion[];     // <- array de objetos

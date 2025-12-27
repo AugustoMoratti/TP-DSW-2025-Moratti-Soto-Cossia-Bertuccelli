@@ -4,7 +4,7 @@ import path from 'path';
 import { MikroORM } from '@mikro-orm/core'
 import { SqlHighlighter } from '@mikro-orm/sql-highlighter'
 
-const host = process.env.DB_HOST ?? 'conectar-conectar.i.aivencloud.com';
+const host = process.env.DB_HOST;
 const port = Number(process.env.DB_PORT ?? 26772);
 const db = process.env.DB_NAME ?? 'defaultdb';
 const user = process.env.DB_USER ?? 'avnadmin';

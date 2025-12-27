@@ -2,7 +2,6 @@ import express from 'express'
 import cors from 'cors'
 import cookieParser from 'cookie-parser';
 import 'reflect-metadata'
-import { syncSchema } from '../DB/orm.js'
 import { Request, Response, NextFunction } from 'express'
 import { provinciaRouter } from './provincia/provincia.routes.js'
 import { profesionesRouter } from './profesion/profesion.routes.js'
@@ -91,8 +90,6 @@ app.use('/api/resenia', reseniaRouter)
 app.use((_req: Request, res: Response, _next: NextFunction) => {
   return res.status(404).send({ message: 'Not found' })
 })
-
-await syncSchema() //never in production
 
 app.listen(3000, () => {
   console.log('Server runnning on http://localhost:3000/')

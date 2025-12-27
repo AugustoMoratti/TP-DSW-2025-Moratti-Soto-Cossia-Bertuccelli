@@ -1,3 +1,4 @@
+
 import 'dotenv/config';
 import fs from 'fs';
 import path from 'path';
@@ -11,7 +12,10 @@ const user = process.env.DB_USER ?? 'avnadmin';
 const pass = process.env.DB_PASS ?? '';
 const caPath = process.env.CA_PATH ?? './certs/ca.pem';
 
-const clientUrl = `mysql://${user}:${encodeURIComponent(pass)}@${host}:${port}/${db}?ssl-mode=REQUIRED`;
+const isProd = process.env.NODE_ENV === 'production';
+const clientUrl = isProd
+    ? `mysql://${user}:${encodeURIComponent(pass)}@${host}:${port}/${db}?ssl-mode=REQUIRED`
+    : `mysql://${user}:${encodeURIComponent(pass)}@${host}:${port}/${db}`;
 
 const sslExists = fs.existsSync(path.resolve(caPath));
 if (!sslExists) {
@@ -30,7 +34,7 @@ export const orm = await MikroORM.init({
     driverOptions: {
         connection: {
             // Si no existe el CA, esto puede fallar; preferible tenerlo.
-            ssl: sslExists
+            ssl: sslExists && isProd
                 ? {
                     // lee el PEM y pásalo como string o Buffer
                     ca: fs.readFileSync(path.resolve(caPath)).toString(),
@@ -48,12 +52,12 @@ export const orm = await MikroORM.init({
     },
 });
 
-export const syncSchema = async () => {
+/*export const syncSchema = async () => {
     const generator = orm.getSchemaGenerator()
     await generator.updateSchema()
     //await generator.dropSchema()
     //await generator.createSchema()
-}
+}*/
 
 export const getEm = () => {
     if (!orm) throw new Error('ORM not initialized. Call initORM() first.');

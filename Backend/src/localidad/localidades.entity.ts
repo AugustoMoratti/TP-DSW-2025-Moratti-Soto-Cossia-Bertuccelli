@@ -4,15 +4,16 @@ import { Usuario } from "../usuario/usuario.entity.js";
 
 @Entity()
 export class Localidad {
-  @PrimaryKey({ length: 100, unique: true, nullable: false })
-  nombre!: string;
+  @PrimaryKey()
+  id!: string;
 
-  @Property({ length: 10, unique: true, nullable: false })
-  codPostal!: string;
+  @Property({ length: 100, unique: true, nullable: false })
+  nombre!: string;
 
   @ManyToOne(() => Provincia, { nullable: false })
   provincia!: Rel<Provincia>;
 
   @OneToMany(() => Usuario, usuario => usuario.localidad, { cascade: [Cascade.PERSIST] })
   usuarios = new Collection<Usuario>(this);
+
 }

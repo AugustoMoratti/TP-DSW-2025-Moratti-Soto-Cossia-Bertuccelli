@@ -1,5 +1,5 @@
 
-export const fetchLocalidades = async (provinciaId: string) => {
+export const fetchLocalidadesByProvincia = async (provinciaId: string) => {
   const res = await fetch(
     `https://apis.datos.gob.ar/georef/api/localidades?provincia=${provinciaId}`
   );

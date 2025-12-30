@@ -7,7 +7,7 @@ export class Localidad {
   @PrimaryKey()
   id!: string;
 
-  @Property({ length: 100, unique: true, nullable: false })
+  @Property({ length: 100, nullable: false })
   nombre!: string;
 
   @ManyToOne(() => Provincia, { nullable: false })

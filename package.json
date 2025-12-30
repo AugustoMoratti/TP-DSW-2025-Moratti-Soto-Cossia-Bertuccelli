@@ -7,7 +7,8 @@
   "scripts": {
     "start:dev": "dotenv -e .env.development -- tsc-watch --noClear -p ./tsconfig.json --onSuccess \"node ./dist/Backend/src/app.js\"",
     "start:prod": "dotenv -e .env -- tsc-watch --noClear -p ./tsconfig.json --onSuccess \"node ./dist/Backend/src/app.js\"",
-    "seed": "ts-node src/seed/cargarUbicaciones.ts"
+    "seed": " dotenv -e .env.development npm run build && dotenv -e .env.development node dist/Backend/src/utils/seed/runSeed.js",
+    "build": "tsc"
   },
   "keywords": [],
   "author": "",

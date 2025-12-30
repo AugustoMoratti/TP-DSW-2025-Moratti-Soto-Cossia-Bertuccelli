@@ -1,6 +1,9 @@
 ### GET ALL
 GET http://localhost:3000/api/localidad
 
+### GET ONE
+GET http://localhost:3000/api/localidad/Cañada%20de%20Gomez
+
 ### POST
 # @name createLocalidad
 POST http://localhost:3000/api/localidad

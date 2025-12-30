@@ -6,11 +6,11 @@ import { MikroORM } from '@mikro-orm/core'
 import { SqlHighlighter } from '@mikro-orm/sql-highlighter'
 
 const host = process.env.DB_HOST;
-const port = Number(process.env.DB_PORT ?? 26772);
-const db = process.env.DB_NAME ?? 'defaultdb';
-const user = process.env.DB_USER ?? 'avnadmin';
+const port = Number(process.env.DB_PORT);
+const db = process.env.DB_NAME;
+const user = process.env.DB_USER;
 const pass = process.env.DB_PASS ?? '';
-const caPath = process.env.CA_PATH ?? './certs/ca.pem';
+const caPath = process.env.CA_PATH ?? '';
 
 const isProd = process.env.NODE_ENV === 'production';
 const clientUrl = isProd

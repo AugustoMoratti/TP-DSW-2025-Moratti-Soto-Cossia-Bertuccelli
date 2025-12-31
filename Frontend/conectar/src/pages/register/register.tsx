@@ -97,13 +97,14 @@ export default function Registro() {
       console.log("Respuesta del servidor:", data);
 
       if (!response.ok) {
-        setError(data.error || "❌ Error en el registro.");
+        console.log(data.error)
+        setError(data.error);
         return;
       }
 
       // Registro exitoso
       setShowModal(true);
-      
+
     } catch (err) {
       console.error(err);
       setError("⚠️ Error de conexión con el servidor.");
@@ -117,7 +118,7 @@ export default function Registro() {
 
   return (
     <section className="main-bg">
-      <img src="../assets/conect_1.png" alt="Logo" style={{ height: '150px' , cursor: 'pointer'}} onClick={() => navigate("/")}/>
+      <img src="../assets/conect_1.png" alt="Logo" style={{ height: '150px', cursor: 'pointer' }} onClick={() => navigate("/")} />
 
       <div className="card">
         <div className="card-header">
@@ -167,12 +168,12 @@ export default function Registro() {
             />
             <label htmlFor="term">
               Acepto los             <button
-              className="cta-link"
-              type="button"
-              onClick={() => navigate("/terminos")}
-            >
-              terminos de Conectar
-            </button>
+                className="cta-link"
+                type="button"
+                onClick={() => navigate("/terminos")}
+              >
+                terminos de Conectar
+              </button>
             </label>
           </div>
 

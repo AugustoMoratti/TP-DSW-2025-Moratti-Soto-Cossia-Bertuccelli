@@ -19,8 +19,37 @@ export const register = async (req: Request, res: Response) => {
       return res.status(400).json({ message: 'Faltan campos requeridos: nombre, apellido, clave, email, provincia o localidad' })
     }*/
 
-    const provinciaRef = em.getReference(Provincia, provincia)
-    const localidadRef = em.getReference(Localidad, localidad)
+    const provinciaRef = await em.findOne(Provincia, { nombre: provincia }) as Provincia
+    console.log("prov", provinciaRef.nombre)
+    if (!provinciaRef) {
+      const err: any = new Error('Provincia inexistente');
+      err.status = 400;
+      throw err;
+    }
+
+    const qRaw = String(localidad).trim().toLowerCase();
+
+    if (!qRaw) {
+      return res.status(400).json({ message: 'Debe ingresar un término de búsqueda.' });
+    }
+
+    const qParam = `%${qRaw}%`;
+    const localidadRef = await em.findOne(Localidad, { nombre: { $like: `%${qParam}%` } }) as Localidad;
+    console.log("localidad", localidadRef.nombre)
+    if (!localidadRef) {
+      const err: any = new Error('Localidad inexistente');
+      err.status = 400;
+      throw err;
+    }
+
+    if (localidadRef.provincia.nombre !== provinciaRef.nombre) {
+      //return res.status(400).json({ message: 'La localidad no pertenece a la provincia seleccionada' })
+      const err: any = new Error('La localidad no pertenece a la provincia seleccionada');
+      err.status = 400;
+      throw err;
+    }
+
+
 
     const profesionesName: string[] = Array.isArray(req.body.sanitizedInput.profesiones)
       ? req.body.sanitizedInput.profesiones
@@ -61,7 +90,7 @@ export const register = async (req: Request, res: Response) => {
 
     const usuarioExistente = await em.findOne(Usuario, { email });
     if (usuarioExistente) {
-      return res.status(400).json({ message: 'Ya existe un usuario con ese email' });
+      return res.status(400).json({ error: 'Ya existe un usuario con ese email' });
     }
 
     em.persist(usuario)
@@ -81,7 +110,9 @@ export const register = async (req: Request, res: Response) => {
       .status(201)
       .json({ message: 'Usuario class created', data: usuario })
   } catch (error: any) {
-    res.status(500).json({ message: error.message })
+    return res.status(error.status || 500).json({
+      error: error.message || 'Error interno del servidor'
+    });
   }
 }
 

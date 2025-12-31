@@ -5,10 +5,10 @@ import { Usuario } from "../usuario/usuario.entity.js";
 
 @Entity()
 export class Provincia {
-  @PrimaryKey()
+  @Property()
   id!: string;
 
-  @Property({ length: 100, unique: true, nullable: false })
+  @PrimaryKey({ length: 100, unique: true, nullable: false })
   nombre!: string;
 
   @OneToMany(() => Localidad, localidad => localidad.provincia, { cascade: [Cascade.ALL] })

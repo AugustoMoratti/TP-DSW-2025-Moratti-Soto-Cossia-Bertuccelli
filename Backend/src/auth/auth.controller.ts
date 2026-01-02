@@ -14,16 +14,17 @@ export const register = async (req: Request, res: Response) => {
   try {
     //const usuario = em.create(Usuario, req.body)
     const em = getEm();
-    const { nombre, apellido, clave, email, descripcion, contacto, provincia, localidad, profesiones, fechaNac, direccion, trabajos } = req.body.sanitizedInput
-    /*if (!nombre || !apellido || !clave || !email || !provincia || !localidad) {
+    const { nombre, apellido, clave, email, descripcion, contacto, provincia, localidad, fechaNac, direccion } = req.body.sanitizedInput
+    if (!nombre || !apellido || !clave || !email || !provincia || !localidad) {
       return res.status(400).json({ message: 'Faltan campos requeridos: nombre, apellido, clave, email, provincia o localidad' })
-    }*/
+    }
 
     const provinciaRef = await em.findOne(Provincia, { nombre: provincia }) as Provincia
     console.log("prov", provinciaRef.nombre)
     if (!provinciaRef) {
       const err: any = new Error('Provincia inexistente');
       err.status = 400;
+      err.code = 'PROVINCIA_NOT_FOUND';
       throw err;
     }
 
@@ -39,13 +40,14 @@ export const register = async (req: Request, res: Response) => {
     if (!localidadRef) {
       const err: any = new Error('Localidad inexistente');
       err.status = 400;
+      err.code = 'LOCALIDAD_NOT_FOUND';
       throw err;
     }
 
     if (localidadRef.provincia.nombre !== provinciaRef.nombre) {
-      //return res.status(400).json({ message: 'La localidad no pertenece a la provincia seleccionada' })
       const err: any = new Error('La localidad no pertenece a la provincia seleccionada');
       err.status = 400;
+      err.code = 'LOCALIDAD_PROVINCIA_MISMATCH';
       throw err;
     }
 
@@ -90,7 +92,10 @@ export const register = async (req: Request, res: Response) => {
 
     const usuarioExistente = await em.findOne(Usuario, { email });
     if (usuarioExistente) {
-      return res.status(400).json({ error: 'Ya existe un usuario con ese email' });
+      const err: any = new Error('El email ya está registrado');
+      err.status = 400;
+      err.code = 'EMAIL_ALREADY_REGISTERED';
+      throw err;
     }
 
     em.persist(usuario)
@@ -108,10 +113,10 @@ export const register = async (req: Request, res: Response) => {
 
     res
       .status(201)
-      .json({ message: 'Usuario class created', data: usuario })
-  } catch (error: any) {
-    return res.status(error.status || 500).json({
-      error: error.message || 'Error interno del servidor'
+      .json({ message: 'Usuario creado', data: usuario })
+  } catch (err: any) {
+    return res.status(err.status || 500).json({
+      err: err.message || 'Error interno del servidor'
     });
   }
 }

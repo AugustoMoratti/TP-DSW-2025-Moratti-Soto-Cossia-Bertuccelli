@@ -90,7 +90,7 @@ app.use('/api/resenia', reseniaRouter)
 
 
 app.use((_req: Request, res: Response, _next: NextFunction) => {
-  return res.status(404).send({ message: 'Not found' })
+  return res.status(404).send({ message: 'Ruta no encontrada' })
 })
 
 await syncSchema() //never in production

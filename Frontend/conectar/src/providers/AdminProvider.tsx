@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import type { ReactNode } from 'react';
 import { AdminContext } from '../contexts/AdminContext.tsx';
 import { fetchMeAdmin } from '../services/auth.services.ts';
@@ -19,8 +19,6 @@ export const AdminProvider = ({ children }: { children: ReactNode }) => {
       setLoading(false);
     }
   };
-
-  useEffect(() => { refreshAdmin(); }, []);
 
   return (
     <AdminContext.Provider value={{ admin, loading, refreshAdmin }}>

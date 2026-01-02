@@ -97,8 +97,8 @@ export default function Registro() {
       console.log("Respuesta del servidor:", data);
 
       if (!response.ok) {
-        console.log(data.error)
-        setError(data.error);
+        console.log(data.err)
+        setError(data.err);
         return;
       }
 

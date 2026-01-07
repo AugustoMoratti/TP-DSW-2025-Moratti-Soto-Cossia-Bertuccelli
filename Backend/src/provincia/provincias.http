@@ -2,7 +2,7 @@
 GET http://localhost:3000/api/provincia
 
 ### GET ONE
-GET http://localhost:3000/api/provincia/Salta
+GET http://localhost:3000/api/provincia/venezuela
 
 ### POST
 # @name createProvincia

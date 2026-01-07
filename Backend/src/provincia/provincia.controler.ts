@@ -18,39 +18,39 @@ function sanitizeProvinciaInput(req: Request, res: Response, next: NextFunction)
   next()
 }
 
-async function findAll(req: Request, res: Response) {
+async function findAll(req: Request, res: Response, next: NextFunction) {
   try {
     const provincia = await em.find(
       Provincia,
       {},
     )
-    if (provincia.length === 0) {
+    if (provincia.length > 0) {
       res.status(200).json({ message: 'Todas Las Provincias', data: provincia })
     } else {
       res.status(200).json({ message: 'No hay Provincias aun', data: [] })
     }
   } catch (error: any) {
-    throw new HttpError(500, 'INTERNAL_SERVER_ERROR', error.message)
+    next(error)
   }
 }
 
-async function findOne(req: Request, res: Response) {
+async function findOne(req: Request, res: Response, next: NextFunction) {
   try {
     const nombre = req.params.nombre
-    const provincia = await em.findOneOrFail(
+    const provincia = await em.findOne(
       Provincia,
       { nombre },
     )
     if (!provincia) {
-      throw new HttpError(404, 'PROVINCIA_NOT_FOUND', 'Provincia no encontrada')
+      throw new HttpError(404, 'PROVINCIA_NOT_FOUND', 'Provincia no encontrada');
     }
     res.status(200).json({ message: 'Provincia encontrada', data: provincia })
   } catch (error: any) {
-    throw new HttpError(500, 'INTERNAL_SERVER_ERROR', error.message)
+    next(error)
   }
 }
 
-async function add(req: Request, res: Response) {
+async function add(req: Request, res: Response, next: NextFunction) {
   try {
     const { nombre } = req.body.sanitizedInput
     if (typeof nombre !== 'string' || nombre === "") {
@@ -62,18 +62,18 @@ async function add(req: Request, res: Response) {
     await em.flush();
     res.status(201).json({ message: 'Provincia creada', data: provincia })
   } catch (error: any) {
-    throw new HttpError(500, 'INTERNAL_SERVER_ERROR', error.message)
+    next(error)
   }
 }
 
-async function update(req: Request, res: Response) {
+async function update(req: Request, res: Response, next: NextFunction) {
   try {
     const nombre = req.params.nombre
     const { nombreNuevo } = req.body.sanitizedInput
     if (typeof nombreNuevo !== 'string' || nombreNuevo === "") {
-      throw new HttpError(400, 'INVALID_INPUT', 'El nombreNuevo es obligatorio y debe ser un string')
+      throw new HttpError(400, 'INVALID_INPUT', 'El nombre nuevo es obligatorio y debe ser un string')
     }
-    const provinciaToUpdate = await em.findOneOrFail(Provincia, { nombre })
+    const provinciaToUpdate = await em.findOne(Provincia, { nombre })
     if (!provinciaToUpdate) {
       throw new HttpError(404, 'PROVINCIA_NOT_FOUND', 'Provincia no encontrada')
     }
@@ -83,11 +83,11 @@ async function update(req: Request, res: Response) {
       .status(200)
       .json({ message: 'Provincia actualizada', data: provinciaToUpdate })
   } catch (error: any) {
-    throw new HttpError(500, 'INTERNAL_SERVER_ERROR', error.message)
+    next(error)
   }
 }
 
-async function remove(req: Request, res: Response) {
+async function remove(req: Request, res: Response, next: NextFunction) {
   try {
     const nombre = req.params.nombre;
     // buscar la entidad primero
@@ -98,7 +98,7 @@ async function remove(req: Request, res: Response) {
     await em.removeAndFlush(provincia);
     res.status(200).json({ message: "Provincia eliminada", data: provincia });
   } catch (error: any) {
-    throw new HttpError(500, 'INTERNAL_SERVER_ERROR', error.message);
+    next(error)
   }
 }
 

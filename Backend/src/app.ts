@@ -12,6 +12,7 @@ import { usuarioRouter } from './usuario/usuario.routes.js'
 import { trabajosRouter } from './trabajos/trabajos.routes.js'
 import { reseniaRouter } from './resenia/resenia.routes.js';
 import { UPLOADS_DIR } from './utils/upload.js';
+import { errorHandler } from './middleware/errorHandler.js';
 
 const app = express()
 app.use(cors({
@@ -87,11 +88,13 @@ app.use('/api/localidad', localidadesRouter)
 app.use('/api/usuario', usuarioRouter)
 app.use('/api/trabajos', trabajosRouter)
 app.use('/api/resenia', reseniaRouter)
-
+app.use(errorHandler)
 
 app.use((_req: Request, res: Response, _next: NextFunction) => {
   return res.status(404).send({ message: 'Ruta no encontrada' })
 })
+
+
 
 await syncSchema() //never in production
 

@@ -1,8 +1,18 @@
 import { Request, Response, NextFunction } from 'express';
+import { HttpError } from '../types/HttpError';
 
-export const errorHandler = (err: any, _req: Request, res: Response, _next: NextFunction) => {
-  console.error(err);
-  if (res.headersSent) return;
-  const status = err?.status ?? 500;
-  res.status(status).json({ error: err?.message ?? 'Internal Server Error' });
-};
+export function errorHandlert(
+  err: any,
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  if (err instanceof HttpError) {
+    res.status(err.status).json({
+      error: {
+        code: err.code,
+        message: err.message,
+      }
+    });
+  }
+}

@@ -2,6 +2,8 @@ import { Request, Response, NextFunction } from 'express';
 import { Localidad } from './localidades.entity.js';
 import { Provincia } from '../provincia/provincia.entity.js';
 import { orm } from '../../DB/orm.js';
+import { HttpError } from '../types/HttpError.js';
+
 
 const em = orm.em.fork();
 
@@ -19,42 +21,50 @@ function sanitizeLocalidadInput(req: Request, res: Response, next: NextFunction)
   next()
 }
 
-async function findAll(req: Request, res: Response) {
+async function findAll(req: Request, res: Response, next: NextFunction) {
   try {
     const localidad = await em.find(
       Localidad,
       {},
       { limit: 10, populate: ['provincia'] }
     )
-    res.status(200).json({ message: 'found all localidades', data: localidad })
+    if (localidad.length > 0) {
+      res.status(200).json({ message: 'Localidades encontradas', data: localidad })
+    } else {
+      res.status(200).json({ message: 'No hay localidades aun', data: [] })
+    }
+
   } catch (error: any) {
-    res.status(500).json({ message: error.message })
+    next(error)
   }
 }
 
-async function findOne(req: Request, res: Response) {
+async function findOne(req: Request, res: Response, next: NextFunction) {
   try {
     const nombre = req.params.nombre
-    const localidad = await em.findOneOrFail(
+    const localidad = await em.findOne(
       Localidad,
       { nombre },
       { populate: ['provincia'] }
     )
-    res.status(200).json({ message: 'found localidad', data: localidad })
+    if (!localidad) {
+      throw new HttpError(404, 'LOCALIDAD_NOT_FOUND', 'Localidad no encontrada');
+    }
+    res.status(200).json({ message: 'Localidad encontrada', data: localidad })
   } catch (error: any) {
-    res.status(500).json({ message: error.message })
+    next(error)
   }
 }
 
-async function add(req: Request, res: Response) {
+async function add(req: Request, res: Response, next: NextFunction) {
   try {
     const { nombre, id, provincia } = req.body.sanitizedInput
 
     if (!nombre || !id || !provincia) {
-      return res.status(400).json({ message: 'Faltan campos requeridos' })
+      throw new HttpError(400, 'INVALID_INPUT', 'La localidad debe tener nombre, id y una provincia asociada')
     };
     if (typeof nombre !== 'string' || nombre === "") {
-      return res.status(400).json({ message: 'El nombre debe ser un string' })
+      throw new HttpError(400, 'INVALID_INPUT', 'La localidad debe tener un nombre y debe ser un string')
     };
     /*if (typeof codPostal !== 'string' || codPostal === "") {
       return res.status(400).json({ message: 'El codigo postal debe ser un string' })
@@ -73,22 +83,25 @@ async function add(req: Request, res: Response) {
     await em.flush()
     res.status(201).json({ message: 'localidad created', data: localidad })*/
   } catch (error: any) {
-    res.status(500).json({ message: error.message })
+    next(error)
   }
 }
 
-async function update(req: Request, res: Response) {
+async function update(req: Request, res: Response, next: NextFunction) {
   try {
     const nombre = req.params.nombre;
     const { nombreNuevo, id, provincia } = req.body.sanitizedInput;
     if (typeof nombreNuevo !== 'string' || nombreNuevo === "") {
-      return res.status(400).json({ message: 'El nombre debe ser un string' })
+      throw new HttpError(400, 'INVALID_INPUT', 'El nombre nuevo es obligatorio y debe ser un string')
     };
     /*if (typeof codPostal !== 'string' || codPostal === "") {
       return res.status(400).json({ message: 'El codigo postal debe ser un string' })
     };*/
     const provinciaRef = em.getReference(Provincia, provincia)
-    const localidadToUpdate = await em.findOneOrFail(Localidad, { nombre })
+    const localidadToUpdate = await em.findOne(Localidad, { nombre })
+    if (!localidadToUpdate) {
+      throw new HttpError(404, 'NOT_FOUND', 'Localidad a actualizar no encontrada')
+    }
 
     if (nombre) localidadToUpdate.nombre = nombre;
     if (id) localidadToUpdate.id = id;
@@ -99,24 +112,23 @@ async function update(req: Request, res: Response) {
       .status(200)
       .json({ message: 'Localidad updated', data: localidadToUpdate })
   } catch (error: any) {
-    res.status(500).json({ message: error.message })
+    next(error)
   }
 }
 
-async function remove(req: Request, res: Response) {
+async function remove(req: Request, res: Response, next: NextFunction) {
   try {
     const nombre = req.params.nombre
     const localidad = await em.findOne(Localidad, { nombre });
     if (!localidad) {
-      return res.status(404).json({ message: "Provincia no encontrada" });
+      throw new HttpError(404, 'NOT_FOUND', 'Localidad a eliminar no encontrada')
     }
-
     await em.removeAndFlush(localidad)
     res
       .status(200)
       .json({ message: 'Localidad deleted', data: localidad })
   } catch (error: any) {
-    res.status(500).json({ message: error.message })
+    next(error)
   }
 }
 

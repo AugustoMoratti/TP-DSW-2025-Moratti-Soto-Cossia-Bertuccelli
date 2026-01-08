@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { Profesiones } from './profesion.entity.js';
 import { orm } from '../../DB/orm.js';
+import { HttpError } from '../types/HttpError.js';
 
 
 
@@ -20,23 +21,23 @@ function sanitizeProfesionInput(req: Request, res: Response, next: NextFunction)
 }
 
 
-async function findAllActive(req: Request, res: Response) {
+async function findAllActive(req: Request, res: Response, next: NextFunction) {
   const em = orm.em.fork();
 
   try {
     const profesiones = await em.find(Profesiones, { estado: true })//Agregue filtro para que solo muestre si esta activo
     if (profesiones.length === 0) {
-      return res.status(404).json({ message: 'No se han encontrado profesiones activas' })
+      return res.status(200).json({ message: 'No se han encontrado profesiones activas', data: profesiones })
     }
     res
       .status(200)
-      .json({ message: 'found all Profeciones', data: profesiones })
+      .json({ message: 'Profeciones activas encontradas', data: profesiones })
   } catch (error: any) {
-    res.status(500).json({ message: error.message })
+    next(error)
   }
 }
 
-async function findAllInactive(req: Request, res: Response) {
+async function findAllInactive(req: Request, res: Response, next: NextFunction) {
   const em = orm.em.fork();
 
   try {
@@ -46,43 +47,43 @@ async function findAllInactive(req: Request, res: Response) {
     }
     res
       .status(200)
-      .json({ message: 'found all Profeciones', data: profesiones })
+      .json({ message: 'Profeciones inactivas encontradas', data: profesiones })
   } catch (error: any) {
-    res.status(500).json({ message: error.message })
+    next(error)
   }
 }
 
-async function findOne(req: Request, res: Response) {
+async function findOne(req: Request, res: Response, next: NextFunction) {
   const em = orm.em.fork();
 
   try {
     const nombreProfesion = (req.params.nombreProfesion).toLowerCase()
-    const profesion = await em.findOneOrFail(Profesiones, { nombreProfesion })
+    const profesion = await em.findOne(Profesiones, { nombreProfesion })
 
     if (!profesion) { //findOrFail devuelve la profesion o false basicamente un error
-      return res.status(404).json({ message: 'No se ha encontrado la profesion' })
+      throw new HttpError(404, 'NOT_FOUND', 'No se ha encontrado la profesion')
     }
 
     if (!profesion.estado) {
-      return res.status(403).json({ message: 'La profesion existe pero aun no ha sido aceptada por el administrador' })
+      throw new HttpError(403, 'ACCESS_DENIED', 'La profesion existe pero aun no ha sido aceptada por el administrador')
     }
 
     res
       .status(200)
-      .json({ message: 'found Profesion', data: profesion })
+      .json({ message: 'Profesion encontrada', data: profesion })
   } catch (error: any) {
-    res.status(500).json({ message: error.message })
+    next(error)
   }
 }
 
-async function busquedaProf(req: Request, res: Response) {
+async function busquedaProf(req: Request, res: Response, next: NextFunction) {
   const em = orm.em.fork();
 
   try {
     const qRaw = String(req.params.query).trim().toLowerCase();
 
     if (!qRaw) {
-      return res.status(400).json({ message: 'Debe ingresar un término de búsqueda.' });
+      throw new HttpError(400, 'INVALID_INPUT', 'Debe ingresar un término de búsqueda.')
     }
 
     const qParam = `%${qRaw}%`;
@@ -95,15 +96,14 @@ async function busquedaProf(req: Request, res: Response) {
       limit: 10,
     });
 
-    return res.json({ data: profesiones });
-  } catch (err: any) {
-    console.error('🔥 Error buscando profesiones:', err);
-    return res.status(500).json({ message: 'Error interno al buscar profesiones.' });
+    return res.status(200).json({ data: profesiones });
+  } catch (error: any) {
+    next(error)
   }
 }
 
 
-async function add(req: Request, res: Response) {
+async function add(req: Request, res: Response, next: NextFunction) {
   const em = orm.em.fork();
 
   try {
@@ -111,13 +111,13 @@ async function add(req: Request, res: Response) {
 
     const profesion = new Profesiones()
     if (typeof nombreProfesion !== 'string' || nombreProfesion === "") {
-      return res.status(400).json({ message: 'El nombre debe ser un string y no debe estar vacio' })
+      throw new HttpError(400, 'INVALID_INPUT', 'El nombre debe ser un string y no debe estar vacio')
     };
     if (typeof descripcionProfesion !== 'string' || descripcionProfesion === "") {
-      return res.status(400).json({ message: 'La descripcion debe ser un string' })
+      throw new HttpError(400, 'INVALID_INPUT', 'La descripcion debe ser un string')
     };
     if (typeof estado !== 'boolean') {
-      return res.status(400).json({ message: 'El estado debe ser un booleano' })
+      throw new HttpError(400, 'INVALID_INPUT', 'El estado debe ser un booleano')
     };
 
     const hoy = new Date();
@@ -130,18 +130,21 @@ async function add(req: Request, res: Response) {
     await em.flush()
     res
       .status(201)
-      .json({ message: 'Profesion class created', data: profesion })
+      .json({ message: 'Profesion creada', data: profesion })
   } catch (error: any) {
-    res.status(500).json({ message: error.message })
+    next(error)
   }
 }
 
-async function update(req: Request, res: Response) {
+async function update(req: Request, res: Response, next: NextFunction) {
   const em = orm.em.fork();
 
   try {
     const nombreProfesion = (req.params.nombreProfesion).trim().toLowerCase();
-    const profesionToUpdate = await em.findOneOrFail(Profesiones, { nombreProfesion })
+    const profesionToUpdate = await em.findOne(Profesiones, { nombreProfesion })
+    if (!profesionToUpdate) {
+      throw new HttpError(404, 'NOT_FOUND', 'No se encontro la profesion a actualizar')
+    }
     if (req.body.descripcionProfesion !== undefined) {
       profesionToUpdate.descripcionProfesion = req.body.descripcionProfesion;
     }
@@ -154,23 +157,23 @@ async function update(req: Request, res: Response) {
     await em.persistAndFlush(profesionToUpdate);
     res.status(200).json({ message: 'Profesion class updated' })
   } catch (error: any) {
-    res.status(500).json({ message: error.message })
+    next(error)
   }
 }
 
-async function remove(req: Request, res: Response) {
+async function remove(req: Request, res: Response, next: NextFunction) {
   const em = orm.em.fork();
 
   try {
     const nombreProfesion = (req.params.nombreProfesion).toLowerCase()
     const profesion = await em.findOne(Profesiones, { nombreProfesion });
     if (!profesion) {
-      return res.status(404).json({ message: "Profesion no encontrada" });
+      throw new HttpError(404, 'NOT_FOUND', 'No se encontro la profesion a eliminar')
     }
     await em.removeAndFlush(profesion)
     res.status(200).send({ message: 'Profesion deleted' })
   } catch (error: any) {
-    res.status(500).json({ message: error.message })
+    next(error)
   }
 }
 

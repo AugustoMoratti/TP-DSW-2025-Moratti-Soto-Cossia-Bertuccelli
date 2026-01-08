@@ -3,6 +3,7 @@ import { verifyToken } from '../utils/jwt.js';
 import { getEm } from '../../DB/orm.js';
 import { Usuario } from '../usuario/usuario.entity.js';
 import { signToken } from '../utils/jwt.js';
+import { HttpError } from '../types/HttpError.js';
 
 export const authMiddleware = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -14,20 +15,22 @@ export const authMiddleware = async (req: Request, res: Response, next: NextFunc
     const tokenFromCookie = req.cookies?.userToken;
 
     const token = tokenFromHeader ?? tokenFromCookie;
-    if (!token) return res.status(401).json({ error: 'No autorizado' });
+    if (!token) { throw new HttpError(401, 'UNHAUTORIZED', 'Usuario no autorizado') }
+    //if (!token) return res.status(401).json({ error: 'No autorizado' });
 
     const payload = verifyToken(token);
-    if (!payload?.id) return res.status(401).json({ error: 'Token inválido' });
+    if (!payload?.id) { throw new HttpError(401, 'UNHAUTORIZED', 'Token inválido') }
+    //if (!payload?.id) return res.status(401).json({ error: 'Token inválido' });
 
     const em = getEm();
     const user = await em.findOne(Usuario, { id: payload.id });
-    if (!user) return res.status(401).json({ error: 'Usuario no existe' });
+    if (!user) { throw new HttpError(401, 'UNHAUTORIZED', 'Usuario no existe') }
+    //if (!user) return res.status(401).json({ error: 'Usuario no existe' });
 
     req.user = user;
     next();
-  } catch (err) {
-    console.error('authMiddleware error', err);
-    return res.status(401).json({ error: 'Token inválido o expirado' });
+  } catch (error) {
+    next(error)
   }
 };
 
@@ -48,6 +51,7 @@ export const refreshCookieMiddleware = (req: Request, res: Response, next: NextF
   } catch (err) {
     // token expirado, no hacemos nada
     console.log('token expirado')
+    res.clearCookie('userToken');
   }
 
   next();

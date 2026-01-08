@@ -3,6 +3,7 @@ import { Trabajo } from './trabajos.entity.js'
 import { Resenia } from '../resenia/resenia.entity.js';
 import { Usuario } from '../usuario/usuario.entity.js';
 import { orm } from '../../DB/orm.js';
+import { HttpError } from '../types/HttpError.js'
 
 
 const em = orm.em.fork();
@@ -26,18 +27,24 @@ function sanitizeTrabajoInput(req: Request, res: Response, next: NextFunction) {
   next()
 }
 
-async function findAll(req: Request, res: Response) {
+async function findAll(req: Request, res: Response, next: NextFunction) {
   try {
     const trabajos = await em.find(Trabajo, {}, { populate: ['cliente', 'profesional', 'resenia'] })
-    res
-      .status(200)
-      .json({ message: 'found all Trabajos', data: trabajos })
+    if (trabajos.length > 0) {
+      res
+        .status(200)
+        .json({ message: 'Todos los trabajos encontrados', data: trabajos })
+    } else {
+      res
+        .status(200)
+        .json({ message: 'No hay trabajos', data: trabajos })
+    }
   } catch (error: any) {
-    res.status(500).json({ message: error.message })
+    next(error)
   }
 }
 
-async function trabajosFinalizados(req: Request, res: Response) {
+async function trabajosFinalizados(req: Request, res: Response, next: NextFunction) {
   try {
     const { id } = req.params;
     const profRef = em.getReference(Usuario, id);
@@ -53,15 +60,20 @@ async function trabajosFinalizados(req: Request, res: Response) {
         offset,
         orderBy: { fechaFinalizado: 'DESC' }
       });
+    if (!trabajos) {
+      res
+        .status(200)
+        .json({ message: 'No hay trabajos finalizados', data: trabajos })
+    }
     res
       .status(200)
-      .json({ message: 'found all Trabajos', data: trabajos })
+      .json({ message: 'Trabajos finalizados encontrados', data: trabajos })
   } catch (error: any) {
-    res.status(500).json({ message: "error al obtener trabajos finalizados" })
+    next(error)
   }
 }
 
-async function trabajosFinalizadosContratados(req: Request, res: Response) {
+async function trabajosFinalizadosContratados(req: Request, res: Response, next: NextFunction) {
   try {
     const { id } = req.params;
     const cliRef = em.getReference(Usuario, id);
@@ -77,15 +89,20 @@ async function trabajosFinalizadosContratados(req: Request, res: Response) {
         offset,
         orderBy: { fechaFinalizado: 'DESC' }
       });
+    if (!trabajos) {
+      res
+        .status(200)
+        .json({ message: 'No hay trabajos contratados finalizados', data: trabajos })
+    }
     res
       .status(200)
-      .json({ message: 'found all Trabajos', data: trabajos })
+      .json({ message: 'Trabajos contratados finalizados encontrados', data: trabajos })
   } catch (error: any) {
-    res.status(500).json({ message: "error al obtener trabajos finalizados" })
+    next(error)
   }
 }
 
-async function trabajosPendientes(req: Request, res: Response) {
+async function trabajosPendientes(req: Request, res: Response, next: NextFunction) {
   try {
     const { id } = req.params
     const limit = Number(req.query.limit) || 10;
@@ -102,15 +119,20 @@ async function trabajosPendientes(req: Request, res: Response) {
         limit,
         offset
       });
+    if (!trabajos) {
+      res
+        .status(200)
+        .json({ message: 'No hay trabajos pendientes', data: trabajos })
+    }
     res
       .status(200)
-      .json({ message: 'found all Trabajos', data: trabajos })
+      .json({ message: 'Trabajos pendientes encontrados', data: trabajos })
   } catch (error: any) {
-    res.status(500).json({ message: error.message })
+    next(error)
   }
 }
 
-async function trabajosPendientesContratados(req: Request, res: Response) {
+async function trabajosPendientesContratados(req: Request, res: Response, next: NextFunction) {
   try {
     const { id } = req.params
     const limit = Number(req.query.limit) || 10;
@@ -127,27 +149,35 @@ async function trabajosPendientesContratados(req: Request, res: Response) {
         limit,
         offset
       });
+    if (!trabajos) {
+      res
+        .status(200)
+        .json({ message: 'No hay trabajos contratados pendientes', data: trabajos })
+    }
     res
       .status(200)
-      .json({ message: 'found all Trabajos', data: trabajos })
+      .json({ message: 'Trabajos contratados pendientes encontrados', data: trabajos })
   } catch (error: any) {
-    res.status(500).json({ message: error.message })
+    next(error)
   }
 }
 
-async function findOne(req: Request, res: Response) {
+async function findOne(req: Request, res: Response, next: NextFunction) {
   try {
     const id = Number.parseInt(req.params.id)
-    const trabajo = await em.findOneOrFail(Trabajo, { id }, { populate: ['cliente', 'profesional', 'resenia'] })
+    const trabajo = await em.findOne(Trabajo, { id }, { populate: ['cliente', 'profesional', 'resenia'] })
+    if (!trabajo) {
+      throw new HttpError(404, 'NOT_FOUND', 'No se encontró el trabajo')
+    }
     res
       .status(200)
-      .json({ message: 'found Trabajo', data: trabajo })
+      .json({ message: 'Trabajo Encontrado', data: trabajo })
   } catch (error: any) {
-    res.status(500).json({ message: error.message })
+    next(error)
   }
 }
 
-async function add(req: Request, res: Response) {
+async function add(req: Request, res: Response, next: NextFunction) {
   try {
     /*
     Reglas de negocio = a tener en cuenta en la creacion de trabajos
@@ -159,15 +189,15 @@ async function add(req: Request, res: Response) {
     console.log("Req body = ", req.body)
 
     if (!cliente || !profesional || !fechaSolicitud) {
-      return res.status(400).json({ message: 'Faltan campos oblgiatorios' })
+      throw new HttpError(400, 'INVALID_INPUT', 'Faltan campos obligatorios')
     };
 
     if (fechaFinalizado && !resenia) {
-      return res.status(400).json({ message: 'Se debe realizar la reseña antes de finalizar el trabajo' })
+      throw new HttpError(400, 'INVALID_INPUT', 'Se debe realizar la reseña antes de finalizar el trabajo')
     };
 
     if (fechaPago && !fechaFinalizado) {
-      return res.status(400).json({ message: 'Se debe finalizar un trabajo antes de ser pagado' })
+      throw new HttpError(400, 'INVALID_INPUT', 'Se debe finalizar un trabajo antes de ser pagado')
     };
 
     const trabajo = new Trabajo();
@@ -194,13 +224,13 @@ async function add(req: Request, res: Response) {
 
     res
       .status(201)
-      .json({ message: 'Trabajo class created', data: trabajo })
+      .json({ message: 'Trabajo creado correctamente', data: trabajo })
   } catch (error: any) {
-    return res.status(500).json({ message: error.message })
+    next(error)
   }
 }
 
-async function update(req: Request, res: Response) { //NO UTILIZAR PUT , SIEMPRE PATCH PARA UPDATE DE TRABAJOS
+async function update(req: Request, res: Response, next: NextFunction) { //NO UTILIZAR PUT , SIEMPRE PATCH PARA UPDATE DE TRABAJOS
   try {
     const id = Number.parseInt(req.params.id)
     const trabajo = em.getReference(Trabajo, id)
@@ -224,11 +254,11 @@ async function update(req: Request, res: Response) { //NO UTILIZAR PUT , SIEMPRE
 
     // Reglas de negocio
     if (fechaFinalizado && !resenia) {
-      return res.status(400).json({ message: 'La reseña es obligatoria cuando se finaliza el trabajo' });
+      throw new HttpError(400, 'INVALID_INPUT', 'La reseña es obligatoria cuando se finaliza el trabajo')
     }
 
     if (fechaPago && !fechaFinalizado) {
-      return res.status(400).json({ message: 'No puede haber fecha de pago sin fecha de finalización' });
+      throw new HttpError(400, 'INVALID_INPUT', 'No puede haber fecha de pago sin fecha de finalización')
     }
 
     // Asignación de valores con conversión de tipos
@@ -245,18 +275,18 @@ async function update(req: Request, res: Response) { //NO UTILIZAR PUT , SIEMPRE
     await em.flush();
     res.status(200).json({ message: 'Trabajo class updated', data: trabajo })
   } catch (error: any) {
-    res.status(500).json({ message: error.message })
+    next(error)
   }
 }
 
-async function remove(req: Request, res: Response) {
+async function remove(req: Request, res: Response, next: NextFunction) {
   try {
     const id = Number.parseInt(req.params.id)
     const trabajo = em.getReference(Trabajo, id)
     await em.removeAndFlush(trabajo)
     res.status(200).send({ message: 'Trabajo deleted' })
   } catch (error: any) {
-    res.status(500).json({ message: error.message })
+    next(error)
   }
 }
 

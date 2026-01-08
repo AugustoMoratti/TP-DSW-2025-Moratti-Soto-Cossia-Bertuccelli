@@ -2,6 +2,8 @@ import { Request, Response, NextFunction } from 'express';
 import { orm } from "../../DB/orm.js";
 import { Resenia } from "./resenia.entity.js";
 import { Trabajo } from '../trabajos/trabajos.entity.js';
+import { HttpError } from '../types/HttpError.js'
+import { NearMe } from '@mui/icons-material';
 const em = orm.em.fork();
 
 function sanitizeReseniaInput(req: Request, res: Response, next: NextFunction) {
@@ -18,49 +20,58 @@ function sanitizeReseniaInput(req: Request, res: Response, next: NextFunction) {
   next()
 }
 
-async function findAll(req: Request, res: Response) {
+async function findAll(req: Request, res: Response, next: NextFunction) {
   try {
     const resenia = await em.find(Resenia, {})
-    res
-      .status(200)
-      .json({ message: 'found all Resenia', data: resenia })
+    if (resenia.length > 0) {
+      res
+        .status(200)
+        .json({ message: 'Todas las resenias encontradas', data: resenia })
+    } else {
+      res
+        .status(200)
+        .json({ message: 'No hay resenias aun', data: resenia })
+    }
   } catch (error: any) {
-    res.status(500).json({ message: error.message })
+    next(error)
   }
 }
 
-async function findOne(req: Request, res: Response) {
+async function findOne(req: Request, res: Response, next: NextFunction) {
   try {
     const id = Number.parseInt(req.params.id)
-    const resenia = await em.findOneOrFail(Resenia, { id })
+    const resenia = await em.findOne(Resenia, { id })
+    if (!resenia) {
+      throw new HttpError(404, 'NOT_FOUND', 'Resenia no encontrada')
+    }
     res
       .status(200)
-      .json({ message: 'found Resenia', data: resenia })
+      .json({ message: 'Resenia encontrada', data: resenia })
   } catch (error: any) {
-    res.status(500).json({ message: error.message })
+    next(error)
   }
 }
 
-async function add(req: Request, res: Response) {
+async function add(req: Request, res: Response, next: NextFunction) {
   try {
     const { valor, descripcion, trabajo } = req.body.sanitizedInput
 
     const resenia = new Resenia();
 
     if (valor === undefined || valor === null || isNaN(valor)) {
-      return res.status(400).json({ message: 'Valor es un campo obligatorio y debe ser un number' });
+      throw new HttpError(400, 'INVALID_INPUT', 'Valor es un campo obligatorio y debe ser un number')
     }
 
     if (descripcion === undefined || descripcion === null || typeof descripcion !== 'string') {
-      return res.status(400).json({ message: 'Descripcion es un campo obligatorio y debe ser un string' });
+      throw new HttpError(400, 'INVALID_INPUT', 'Descripcion es un campo obligatorio y debe ser un string')
     };
 
     if (valor > 5 || valor < 0) {
-      return res.status(400).json({ message: 'El valor debe ser mayo que cero y menor que cinco' });
+      throw new HttpError(400, 'INVALID_INPUT', 'El valor debe ser mayo que cero y menor que cinco')
     }
     const trabajoEntero = em.getReference(Trabajo, trabajo)
     if (!trabajo) {
-      return res.status(400).json({ message: 'La resenia debe estar vinculada a un trabajo' });
+      throw new HttpError(400, 'INVALID_INPUT', 'La resenia debe estar vinculada a un trabajo')
     }
     resenia.valor = Number(valor);
     resenia.descripcion = descripcion;
@@ -69,13 +80,13 @@ async function add(req: Request, res: Response) {
     await em.flush()
     res
       .status(201)
-      .json({ message: 'Resenia class created', data: resenia })
+      .json({ message: 'Resenia creada', data: resenia })
   } catch (error: any) {
-    res.status(500).json({ message: error.message })
+    next(error)
   }
 }
 
-async function update(req: Request, res: Response) {
+async function update(req: Request, res: Response, next: NextFunction) {
   try {
     const id = Number.parseInt(req.params.id)
 
@@ -84,11 +95,11 @@ async function update(req: Request, res: Response) {
 
     // Validaciones de tipo para campos opcionales
     if (valor && typeof valor !== 'number') {
-      return res.status(400).json({ message: 'valor debe ser un número' });
+      throw new HttpError(400, 'INVALID_INPUT', 'valor debe ser un número')
     }
 
     if (descripcion && typeof descripcion !== 'string') {
-      return res.status(400).json({ message: 'descripcion debe ser un string' });
+      throw new HttpError(400, 'INVALID_INPUT', 'descripcion debe ser un string')
     }
 
     // Asignación solo si viene definido
@@ -100,18 +111,18 @@ async function update(req: Request, res: Response) {
 
     res.status(200).json({ message: 'Resenia actualizada', data: resenia });
   } catch (error: any) {
-    res.status(500).json({ message: error.message })
+    next(error)
   }
 }
 
-async function remove(req: Request, res: Response) {
+async function remove(req: Request, res: Response, next: NextFunction) {
   try {
     const id = Number.parseInt(req.params.id)
     const resenia = em.getReference(Resenia, id)
     em.removeAndFlush(resenia)
-    res.status(200).send({ message: 'Resenia deleted' })
+    res.status(200).send({ message: 'Resenia eliminada' })
   } catch (error: any) {
-    res.status(500).json({ message: error.message })
+    next(error)
   }
 }
 

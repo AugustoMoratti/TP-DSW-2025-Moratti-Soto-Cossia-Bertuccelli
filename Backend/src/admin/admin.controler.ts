@@ -1,6 +1,8 @@
 import { Request, Response, NextFunction } from 'express'
 import { Administrador } from './admin.entity.js'
 import { orm } from '../../DB/orm.js';
+import { HttpError } from '../types/HttpError.js';
+import { Http } from '@mui/icons-material';
 //terminado
 const em = orm.em.fork();
 
@@ -19,40 +21,51 @@ function sanitizeAdministradorInput(req: Request, res: Response, next: NextFunct
 }
 
 
-async function findAll(req: Request, res: Response) {
+async function findAll(req: Request, res: Response, next: NextFunction) {
   try {
     const admin = await em.find(Administrador, {})
-    res
-      .status(200)
-      .json({ message: 'found all Admins', data: admin })
+    if (admin.length > 0) {
+      res
+        .status(200)
+        .json({ message: 'Admins encontrados', data: admin })
+    } else {
+      res
+        .status(200)
+        .json({ message: 'No hay admins aun', data: admin })
+    }
   } catch (error: any) {
-    res.status(500).json({ message: error.message })
+    next(error)
   }
 }
 
-async function findOne(req: Request, res: Response) {
+async function findOne(req: Request, res: Response, next: NextFunction) {
   try {
     const id = req.params.id
-    const admin = await em.findOneOrFail(Administrador, { id })
+    const admin = await em.findOne(Administrador, { id })
+    if (!admin) {
+      throw new HttpError(404, 'NOT_FOUND', 'Admin no encontrado')
+    }
     res
       .status(200)
-      .json({ message: 'found Administrador', data: admin })
+      .json({ message: 'Administrador encontrado', data: admin })
   } catch (error: any) {
-    res.status(500).json({ message: error.message })
+    next(error)
   }
 }
 
-async function add(req: Request, res: Response) {
+/*async function add(req: Request, res: Response, next: NextFunction) {
   try {
     const admin = em.create(Administrador, req.body)
     await em.flush()
     res
       .status(201)
-      .json({ message: 'Usuario class created', data: admin })
+      .json({ message: 'Administrador creado', data: admin })
   } catch (error: any) {
-    res.status(500).json({ message: error.message })
+    next(error)
   }
-}
+}*/
+
+
 /*
 function update(req: Request, res: Response) {
 
@@ -64,5 +77,5 @@ function remove(req: Request, res: Response) {
 
 Ya creados y se loguean aparte */
 
-export { sanitizeAdministradorInput, findAll, findOne, add }
+export { sanitizeAdministradorInput, findAll, findOne, /*add*/ }
 

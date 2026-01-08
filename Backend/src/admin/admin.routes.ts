@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { sanitizeAdministradorInput, findAll, findOne, add } from './admin.controler.js'
+import { sanitizeAdministradorInput, findAll, findOne, /*add*/ } from './admin.controler.js'
 import { loginAdmin, registerAdmin } from '../auth/authAdmin.controller.js'
 import { authAdminMiddleware, refreshAdminCookieMiddleware } from '../middleware/authAdminMiddleware.js'
 import { meAdmin } from '../auth/authAdmin.controller.js'
@@ -14,9 +14,9 @@ administradorRouter.get('/meAdmin',
 administradorRouter.get('/', findAll)
 administradorRouter.get('/:id', findOne)
 administradorRouter.post('/login', loginAdmin)
-administradorRouter.post('/', sanitizeAdministradorInput, add)
 administradorRouter.post('/register', sanitizeAdministradorInput, registerAdmin)
 
+/*administradorRouter.post('/', sanitizeAdministradorInput, add)*/
 /*administradorRouter.put('/:id', sanitizeAdministradorInput, update)
 administradorRouter.patch('/:id', sanitizeAdministradorInput, update)
 administradorRouter.delete('/:id', remove)*/

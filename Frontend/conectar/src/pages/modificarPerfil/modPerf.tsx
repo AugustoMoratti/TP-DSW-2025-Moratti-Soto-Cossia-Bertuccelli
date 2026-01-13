@@ -172,7 +172,7 @@ export default function EditProfile() {
     try {
       setLoading(true);
       const res = await fetch(`http://localhost:3000/api/usuario/${user.id}`, {
-        method: " ",
+        method: "PATCH",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
         body: JSON.stringify(payload),

@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { fetchMe } from "../../services/auth.services";
 import type { ProfileCardProps as User } from "../../interfaces/profilaPropCard";
 import "./modPerf.css";
+import { type Localidad } from "../../interfaces/localidad.ts";
 
 export default function EditProfile() {
   // usar Partial<User> porque al inicio el objeto puede no tener todas las props
@@ -253,18 +254,18 @@ export default function EditProfile() {
   );
 
   // Normalizar/extraer nombre de provincia/localidad de forma segura
-  const provinciaNombre = useMemo(() => {
+  /*const provinciaNombre = useMemo(() => {
     if (!user.provincia) return "";
     return typeof user.provincia === "string"
       ? user.provincia
       : (user.provincia as any)?.nombre ?? "";
-  }, [user.provincia]);
+  }, [user.provincia]);*/
 
   const localidadNombre = useMemo(() => {
     if (!user.localidad) return "";
     return typeof user.localidad === "string"
       ? user.localidad
-      : (user.localidad as any)?.nombre ?? "";
+      : (user.localidad as Localidad)?.nombre ?? "";
   }, [user.localidad]);
 
   if (loading && !user.nombre)

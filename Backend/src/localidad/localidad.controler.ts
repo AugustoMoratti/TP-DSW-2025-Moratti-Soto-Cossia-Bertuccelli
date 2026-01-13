@@ -25,7 +25,7 @@ async function findAll(req: Request, res: Response, next: NextFunction) {
     const localidad = await em.find(
       Localidad,
       {},
-      { limit: 10, populate: ['provincia'] }
+      { populate: ['provincia'] }
     )
     if (localidad.length > 0) {
       res.status(200).json({ message: 'Localidades encontradas', data: localidad })

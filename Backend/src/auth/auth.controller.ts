@@ -28,14 +28,15 @@ export const register = async (req: Request, res: Response) => {
       throw err;
     }
 
-    const qRaw = String(localidad).trim().toLowerCase();
-
-    if (!qRaw) {
-      return res.status(400).json({ message: 'Debe ingresar un término de búsqueda.' });
-    }
-
-    const qParam = `%${qRaw}%`;
-    const localidadRef = await em.findOne(Localidad, { nombre: { $like: `%${qParam}%` } }) as Localidad;
+    /*const qRaw = String(localidad).trim().toLowerCase();
+ 
+     if (!qRaw) {
+       return res.status(400).json({ message: 'Debe ingresar un término de búsqueda.' });
+     }
+ 
+     const qParam = `%${qRaw}%`;
+     const localidadRef = await em.findOne(Localidad, { nombre: { $like: `%${qParam}%` } }) as Localidad;*/
+    const localidadRef = await em.findOne(Localidad, { nombre: localidad }) as Localidad
     console.log("localidad", localidadRef.nombre)
     if (!localidadRef) {
       const err: any = new Error('Localidad inexistente');
@@ -45,6 +46,8 @@ export const register = async (req: Request, res: Response) => {
     }
 
     if (localidadRef.provincia.nombre !== provinciaRef.nombre) {
+      console.log('provincia ', provinciaRef.nombre)
+      console.log('provincia de localidad', localidadRef.provincia.nombre)
       const err: any = new Error('La localidad no pertenece a la provincia seleccionada');
       err.status = 400;
       err.code = 'LOCALIDAD_PROVINCIA_MISMATCH';

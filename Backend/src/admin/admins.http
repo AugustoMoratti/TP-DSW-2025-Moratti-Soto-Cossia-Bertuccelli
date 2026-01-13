@@ -9,7 +9,7 @@ Content-Type: application/json
 
 {
   "user": "admin",
-  "email" : "augus@gmail.com" ,
+  "email" : "admin@gmail.com" ,
   "clave": "1234"
 }
 

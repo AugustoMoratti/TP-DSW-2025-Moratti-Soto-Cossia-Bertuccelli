@@ -330,8 +330,16 @@ async function update(req: Request, res: Response, next: NextFunction) {
     if (nombre) usuario.nombre = req.body.nombre.trim();
     if (apellido) usuario.apellido = req.body.apellido.trim();
     if (fechaNac) usuario.fechaNac = new Date(req.body.fechaNac).toISOString().split("T")[0];
-    if (provincia) usuario.provincia = em.getReference(Provincia, provincia);
-    if (localidad) usuario.localidad = em.getReference(Localidad, localidad);
+    //if (provincia) usuario.provincia = em.getReference(Provincia, provincia);
+    if (localidad) {
+      const localidadRef = await em.findOne(Localidad, { nombre: localidad }, { populate: ["provincia"] });
+      if (!usuario) {
+        throw new HttpError(404, 'NOT_FOUND', 'Usuario no encontrado')
+      }
+      usuario.localidad = localidadRef!
+      usuario.provincia = localidadRef!.provincia
+    };
+
 
     const imagen = req.file ? `/uploads/${req.file.filename}` : usuario.fotoUrl;
     usuario.fotoUrl = imagen;

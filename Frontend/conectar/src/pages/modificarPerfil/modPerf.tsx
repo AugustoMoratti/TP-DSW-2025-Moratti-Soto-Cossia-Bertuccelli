@@ -12,7 +12,7 @@ import { fetchMe } from "../../services/auth.services";
 import type { ProfileCardProps as User } from "../../interfaces/profilaPropCard";
 import "./modPerf.css";
 
-export default function EditProfile () {
+export default function EditProfile() {
   // usar Partial<User> porque al inicio el objeto puede no tener todas las props
   const [user, setUser] = useState<Partial<User>>({});
   const [clave, setClave] = useState("");
@@ -144,7 +144,7 @@ export default function EditProfile () {
     if (!user.contacto || user.contacto.length < 7) {
       setSaveError("El teléfono debe tener al menos 7 dígitos.");
       return;
-}
+    }
 
     if (clave !== confirmarClave) {
       setSaveError("⚠️ Las claves no coinciden.");
@@ -171,7 +171,7 @@ export default function EditProfile () {
     try {
       setLoading(true);
       const res = await fetch(`http://localhost:3000/api/usuario/${user.id}`, {
-        method: "PATCH",
+        method: " ",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
         body: JSON.stringify(payload),
@@ -296,7 +296,7 @@ export default function EditProfile () {
             {renderField("fechaNac", "Fecha de nacimiento", user.fechaNac, "date")}
             <h3>Ubicación</h3>
             <br />
-            {renderField("provincia", "Provincia", provinciaNombre)}
+
             {renderField("localidad", "Localidad", localidadNombre)}
             {renderField("direccion", "Dirección", user.direccion)}
             <h3>Contacto</h3>

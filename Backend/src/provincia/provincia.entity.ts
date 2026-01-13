@@ -8,7 +8,7 @@ export class Provincia {
   @PrimaryKey({ length: 100, unique: true, nullable: false })
   nombre!: string;
 
-  @OneToMany(() => Localidad, localidad => localidad.provincia, { cascade: [Cascade.ALL] })
+  @OneToMany(() => Localidad, localidad => localidad.provincia, { cascade: [Cascade.ALL], orphanRemoval: true })
   localidades = new Collection<Localidad>(this);
 
   @OneToMany(() => Usuario, usuario => usuario.provincia, { cascade: [Cascade.PERSIST] })

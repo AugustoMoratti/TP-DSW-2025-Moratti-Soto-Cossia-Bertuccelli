@@ -37,8 +37,7 @@ Content-Type: application/json
 }
 
 ### Eliminar una provicia (DELETE - eliminar recurso)
-DELETE http://localhost:3000/api/provincia/Santa%20Fe
-
+DELETE http://localhost:3000/api/provincia/Chaco
 
 /* La extension REST Client, nos permite hacer peticiones sin la 
 la necesidad del navegador, por ejemplo meter un archivo reversionado

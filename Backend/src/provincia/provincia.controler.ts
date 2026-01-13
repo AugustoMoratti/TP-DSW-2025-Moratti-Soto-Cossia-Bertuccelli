@@ -88,9 +88,9 @@ async function update(req: Request, res: Response, next: NextFunction) {
 
 async function remove(req: Request, res: Response, next: NextFunction) {
   try {
-    const nombre = req.params.nombre;
+    const nombreProv = req.params.nombre;
     // buscar la entidad primero
-    const provincia = await em.findOne(Provincia, { nombre });
+    const provincia = await em.findOne(Provincia, { nombre: nombreProv }, { populate: ['localidades'] });
     if (!provincia) {
       throw new HttpError(404, 'PROVINCIA_NOT_FOUND', 'Provincia no encontrada');
     }

@@ -125,8 +125,11 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
 
   return (
     <div className={styles.profile_container}>
-      <h2 className={styles.saludo}>Hola {nombre} 👋!</h2>
-
+      {tipoPage === "miPerfil" ? (
+        <h2 className={styles.saludo}>Hola {nombre} 👋!</h2>
+      ) : (
+        <h2 className={styles.saludo}>Bienvenido al perfil de {nombre} 👋!</h2>
+      )}
       {/* Header */}
       <section className={styles.profile_header}>
         <div className={styles.profile_info}>

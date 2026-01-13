@@ -5,8 +5,6 @@ import { Usuario } from "../usuario/usuario.entity.js";
 
 @Entity()
 export class Provincia {
-  @Property()
-  id!: string;
 
   @PrimaryKey({ length: 100, unique: true, nullable: false })
   nombre!: string;

@@ -10,7 +10,6 @@ const em = orm.em.fork();
 function sanitizeLocalidadInput(req: Request, res: Response, next: NextFunction) {
   req.body.sanitizedInput = {
     nombre: req.body.nombre,
-    id: req.body.id,
     provincia: req.body.provincia
   }
   Object.keys(req.body.sanitizedInput).forEach((key) => {
@@ -73,7 +72,6 @@ async function add(req: Request, res: Response, next: NextFunction) {
 
     const localidad = em.create(Localidad, {
       nombre,
-      id,
       provincia: provinciaRef,
     })
 
@@ -104,7 +102,6 @@ async function update(req: Request, res: Response, next: NextFunction) {
     }
 
     if (nombre) localidadToUpdate.nombre = nombre;
-    if (id) localidadToUpdate.id = id;
     if (provincia) localidadToUpdate.provincia = provinciaRef;
 
     await em.flush()

@@ -1,12 +1,9 @@
-import { Collection, Entity, OneToMany, Property, Cascade, PrimaryKey } from "@mikro-orm/core";
-import { BaseEntity } from "../../DB/baseEntity.entity.js";
+import { Collection, Entity, OneToMany, Cascade, PrimaryKey } from "@mikro-orm/core";
 import { Localidad } from "../localidad/localidades.entity.js";
 import { Usuario } from "../usuario/usuario.entity.js";
 
 @Entity()
 export class Provincia {
-  @Property()
-  id!: string;
 
   @PrimaryKey({ length: 100, unique: true, nullable: false })
   nombre!: string;

@@ -10,11 +10,10 @@ export async function cargarUbicaciones() {
   console.log(provinciasData);
 
   for (const prov of provinciasData.provincias) {
-    let provincia = await em.findOne(Provincia, { id: prov.id })
+    let provincia = await em.findOne(Provincia, { nombre: prov.nombre });
 
     if (!provincia) {
       provincia = em.create(Provincia, {
-        id: prov.id,
         nombre: prov.nombre
       });
       em.persist(provincia);

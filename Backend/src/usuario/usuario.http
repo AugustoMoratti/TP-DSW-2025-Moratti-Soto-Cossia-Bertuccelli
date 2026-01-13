@@ -20,8 +20,8 @@ Content-Type: application/json
   "descripcion":"Soy fan de uml y un crack",
   "contacto": "3416526398",
   "horarios":"08:00 a 12:00 y 15:00 a 19:00",
-  "provincia": "Santa Fe",
-  "localidad": "Cañada",
+  "provincia": "Ciudad Autónoma de Buenos Aires",
+  "localidad": "Retiro",
   "fechaNac": "08/04/2004"
 }
 

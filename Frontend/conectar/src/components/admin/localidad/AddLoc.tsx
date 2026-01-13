@@ -5,7 +5,6 @@ import type { Localidad } from "../../../interfaces/localidad.ts";
 export default function AddLoc() {
 
   const [nombreLoc, setNombreLoc] = useState<string>("");
-  const [codPostal, setCodPostal] = useState<string>("");
   const [prov, setProv] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -22,20 +21,10 @@ export default function AddLoc() {
       return;
     }
 
-    if (!codPostal.trim()) {
-      setError("El código postal no puede estar vacío");
-      return;
-    }
-
     /*if (!/^\d+$/.test(codPostal)) {
       setError("El código postal debe contener solo números");
       return;
     }*/
-
-    if (codPostal.length < 4) {
-      setError("El código postal no es valido");
-      return;
-    }
 
     if (!prov.trim()) {
       setError("La provincia no puede estar vacía");
@@ -47,7 +36,6 @@ export default function AddLoc() {
     try {
       const payload = {
         nombre: nombreLoc.trim(),
-        codPostal,
         provincia: prov.trim(),
       };
       console.log("Enviando payload:", payload);
@@ -113,13 +101,6 @@ export default function AddLoc() {
               label="Nombre"
               value={nombreLoc}
               onChange={(v: string) => setNombreLoc(v)}
-            />
-          </div>
-          <div className="input-col">
-            <StandardInput
-              label="Codigo Postal"
-              value={codPostal}
-              onChange={(v: string) => setCodPostal(v)}
             />
           </div>
           <div className="input-col">

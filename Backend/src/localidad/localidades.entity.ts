@@ -4,10 +4,8 @@ import { Usuario } from "../usuario/usuario.entity.js";
 
 @Entity()
 export class Localidad {
-  @PrimaryKey()
-  id!: string;
 
-  @Property({ length: 100, nullable: false })
+  @PrimaryKey({ length: 100, nullable: false })
   nombre!: string;
 
   @ManyToOne(() => Provincia, { nullable: false })

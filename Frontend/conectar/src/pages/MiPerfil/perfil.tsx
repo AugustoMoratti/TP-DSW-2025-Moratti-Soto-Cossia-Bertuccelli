@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Navigate } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import ProfileCard from "../../components/ProfileCard/ProfileCard";
 import Header from "../../components/header/header";
@@ -15,9 +16,11 @@ const Perfil: React.FC = () => {
   const [loadingUsuario, setLoadingUsuario] = useState(false);
   const [showSolicitar, setShowSolicitar] = useState(false);
 
+
   // ✅ Todos los Hooks siempre van arriba
   useEffect(() => {
-    if (userLoading) return; // aún no sabemos si hay usuario 
+    if (userLoading) { return }; // aún no sabemos si hay usuario 
+
     if (!user) {
       navigate("/login");
       return;
@@ -29,10 +32,12 @@ const Perfil: React.FC = () => {
         const res = await fetch(`http://localhost:3000/api/usuario/${user.id}`, {
           method: "GET",
         });
+
         if (!res.ok) {
-          navigate("/login"); // si no está existe el usuario lo enviamos de vuelta a la pagina busqueda profesionales
+          navigate("/login"); // si no existe lo enviamos al login
           return;
         }
+
         const data = await res.json();
         setUsuario(data.data);
       } catch (err) {
@@ -69,10 +74,12 @@ const Perfil: React.FC = () => {
       throw err;
     }
   };
-
+  console.log("PERFIL", { user, userLoading });
   // ✅ A partir de acá, retornos normales
   if (userLoading || loadingUsuario) return <div>Cargando perfil...</div>;
-  if (!user) return null; // en teoría ya redirigió
+  if (!user) {
+    return <Navigate to="/login" replace />;
+  }; // en teoría ya redirigió
 
   return (
     <div className="app-container">

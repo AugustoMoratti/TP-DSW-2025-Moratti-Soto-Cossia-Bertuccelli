@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import type { ReactNode } from 'react';
 import { UserContext } from '../contexts/UserContext.tsx';
 import { fetchMe } from '../services/auth.services.ts';
@@ -19,6 +19,10 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    refreshUser();
+  }, []);
 
   return (
     <UserContext.Provider value={{ user, loading, refreshUser }}>

@@ -127,8 +127,9 @@ export default function EditProfile() {
         body: formData,
       });
       const data = await res.json();
+
       if (!res.ok) throw new Error(data.error || "Error al subir imagen");
-      setUser((prev) => ({ ...(prev ?? {}), fotoUrl: data.fotoUrl || prev?.fotoUrl }));
+      setUser((prev) => ({ ...(prev ?? {}), fotoUrl: data.data.fotoUrl || prev?.fotoUrl }));
       setSuccessMsg("Imagen actualizada correctamente.");
     } catch (err) {
       console.error(err);

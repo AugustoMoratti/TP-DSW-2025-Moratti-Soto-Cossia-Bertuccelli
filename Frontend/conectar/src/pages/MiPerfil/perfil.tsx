@@ -74,7 +74,6 @@ const Perfil: React.FC = () => {
       throw err;
     }
   };
-  console.log("PERFIL", { user, userLoading });
   // ✅ A partir de acá, retornos normales
   if (userLoading || loadingUsuario) return <div>Cargando perfil...</div>;
   if (!user) {

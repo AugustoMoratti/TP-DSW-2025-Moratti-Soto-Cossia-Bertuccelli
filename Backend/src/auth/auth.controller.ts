@@ -159,3 +159,13 @@ export const me = async (req: Request, res: Response) => {
   if (!usuario) return res.status(401).json({ error: 'No autorizado (me)' });
   res.json({ usuario: { id: usuario.id, nombre: usuario.nombre, email: usuario.email } });
 };//Podemos quitar desde el token directamente sin pasar por el fetchMe
+
+export const logout = async (req: Request, res: Response) => {
+  res.clearCookie("userToken", {
+    httpOnly: true,
+    sameSite: "lax",
+    secure: false // true en producción con https
+  });
+
+  res.status(200).json({ message: "Logout OK" });
+};

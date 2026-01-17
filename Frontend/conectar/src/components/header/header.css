@@ -69,6 +69,25 @@
   border: 1px solid #fff;
 }
 
+.header-btn-logout {
+  background: transparent;
+  height: 50px;
+  color: #114f5a;
+  border: 1px solid #114f5a;
+  border-radius: 20px;
+  padding: 6px 18px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  margin-left: 15px;
+}
+
+.header-btn-logout:hover {
+  background-color: rgb(255, 0, 0);
+  color: #fff;
+  border: 1px solid #fff;
+}
+
 
 
 @media (max-width: 768px) {

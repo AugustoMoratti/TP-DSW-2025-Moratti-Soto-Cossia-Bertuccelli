@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Navigate } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import ProfileCard from "../../components/ProfileCard/ProfileCard";
@@ -8,6 +8,7 @@ import "./perfil.css";
 import type { OtroUsuario } from "../../interfaces/otroUsuario.ts";
 import { useUser } from "../../Hooks/useUser.tsx";
 import SolicitarProf from "../../components/solicitarProf.tsx";
+import { handleLogout } from "../../utils/logout.ts";
 
 const Perfil: React.FC = () => {
   const navigate = useNavigate();
@@ -15,6 +16,8 @@ const Perfil: React.FC = () => {
   const [usuario, setUsuario] = useState<OtroUsuario>();
   const [loadingUsuario, setLoadingUsuario] = useState(false);
   const [showSolicitar, setShowSolicitar] = useState(false);
+  const [sesionError, setSesionError] = useState('');
+  const errorTimerRef = useRef<number | null>(null);
 
 
   // ✅ Todos los Hooks siempre van arriba
@@ -50,6 +53,30 @@ const Perfil: React.FC = () => {
     fetchDetalle();
   }, [user, userLoading, navigate]);
 
+  const showError = (msg: string, ms = 5000) => {
+    // limpia timer anterior si existe
+    if (errorTimerRef.current) {
+      window.clearTimeout(errorTimerRef.current);
+      errorTimerRef.current = null;
+    }
+
+    setSesionError(msg);
+
+    // autoocultar error después de ms
+    errorTimerRef.current = window.setTimeout(() => {
+      errorTimerRef.current = null;
+    }, ms);
+  };
+
+  const handlerLogout = async () => {
+    const logout = await handleLogout();
+    if (!logout) {
+      showError('Error al cerrar sesion')
+    } else {
+      navigate('/login')
+    }
+  }
+
   const ActDesc = async (newDesc: string) => {
     if (!user) {
       throw new Error('No authenticated user');
@@ -76,6 +103,7 @@ const Perfil: React.FC = () => {
   };
   // ✅ A partir de acá, retornos normales
   if (userLoading || loadingUsuario) return <div>Cargando perfil...</div>;
+  if (sesionError) return <div>{sesionError}...</div>;
   if (!user) {
     return <Navigate to="/login" replace />;
   }; // en teoría ya redirigió
@@ -89,6 +117,9 @@ const Perfil: React.FC = () => {
         </Button>
         <Button className="header-btn" onClick={() => navigate("/busqProfesionales")}>
           Quiero buscar un profesional
+        </Button>
+        <Button className="header-btn-logout" onClick={() => handlerLogout()}>
+          Cerrar Sesion
         </Button>
       </Header>
 

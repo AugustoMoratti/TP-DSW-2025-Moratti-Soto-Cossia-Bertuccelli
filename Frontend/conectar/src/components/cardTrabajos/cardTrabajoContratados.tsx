@@ -5,6 +5,7 @@ import "../Modal-trabajos/Modal.css"
 import { useState, useMemo, useEffect } from "react";
 import type { FormEvent } from "react";
 import type { Resenia } from "../../interfaces/resenia.ts";
+import { initMercadoPago, Wallet } from "@mercadopago/sdk-react";
 
 interface TrabajoCardProps {
   trabajo: Trabajo;
@@ -20,6 +21,7 @@ export default function TrabajoCardContratados({ trabajo, tipo }: TrabajoCardPro
   const [hover, setHover] = useState(0);
   const [descripcion, setDescripcion] = useState("");
   const [actualizado, setActualizado] = useState<Trabajo>(trabajo);
+  const [preferenceId, setPreferenceId] = useState<string | null>(null);
 
   useEffect(() => {
     setActualizado(trabajo);
@@ -29,6 +31,38 @@ export default function TrabajoCardContratados({ trabajo, tipo }: TrabajoCardPro
     console.log("Trabajo actualizado:", actualizado);
   }, [actualizado]);
 
+
+  // Inicializar Mercado Pago UNA sola vez
+  useEffect(() => {
+    initMercadoPago("APP_USR-8e8768d5-dda1-4951-ad80-96c98a70d020");
+  }, []);
+
+  // Crear preferencia en el backend
+  useEffect(() => {
+    const createPreference = async () => {
+      try {
+        const response = await fetch("http://localhost:3000/create-preference", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ trabajoId: trabajo.id }),
+        });
+
+        if (!response.ok) {
+          const text = await response.text().catch(() => null);
+          throw new Error(text || `Error ${response.status}`);
+        }
+
+        const data = await response.json();
+        const prefId = data.preferenceId || data.preference_id;
+        setPreferenceId(prefId ?? null);
+        console.log("Preference ID:", prefId, data);
+      } catch (error) {
+        console.error("Error creando la preferencia:", error);
+      }
+    };
+
+    if (trabajo?.id) createPreference();
+  }, [trabajo]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value; // "2025-10-29"
@@ -148,6 +182,11 @@ export default function TrabajoCardContratados({ trabajo, tipo }: TrabajoCardPro
                   max={hoy}
                   required
                   style={{ marginLeft: "10px" }} />
+              </label>
+              <label>
+              {preferenceId && (
+                <Wallet initialization={{ preferenceId }} />
+              )}
               </label>
               <label>
                 Valoración

@@ -15,7 +15,6 @@ import Contacto from './pages/contacto/contacto.tsx';
 import TrabajosContratados from './pages/trabajo/trabajoContratados.tsx'
 import TrabajosPropios from './pages/trabajo/trabajoPropios.tsx'
 import LoginAdmin from './pages/loginAdmin/loginAdmin.tsx'
-import PagoPage from './pages/pago/pago.tsx'
 
 import { UserProvider } from './providers/UserProvider.tsx'
 import PrivateRoute from './components/PrivateRoute';
@@ -45,7 +44,6 @@ createRoot(document.getElementById('root')!).render(
           <Route path="/" element={<App />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Registro />} />
-          <Route path="/pago" element={<PagoPage />} />
           <Route path="/loginAdmin" element={<LoginAdmin />} />
 
 

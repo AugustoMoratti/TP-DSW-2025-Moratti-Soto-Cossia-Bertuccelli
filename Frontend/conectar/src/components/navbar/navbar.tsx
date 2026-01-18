@@ -2,13 +2,13 @@ import logo from "../../../assets/conect_2_1.png";
 import { Button } from "../button/Button";
 import { useNavigate } from "react-router";
 import { useUser } from "../../Hooks/useUser.tsx";
+import { handleLogout } from "../../utils/logout.ts";
 import "./navbar.css";
 
 const Navbar: React.FC = () => {
   const navigate = useNavigate();
 
   const { user } = useUser();
-
 
   return (
     <nav className="navbar">
@@ -32,6 +32,7 @@ const Navbar: React.FC = () => {
               <Button variant="contained" onClick={() => navigate("/perfil")}>
                 Mi Perfil
               </Button>
+
               <Button variant="contained" onClick={() => navigate("/loginAdmin")}>
                 Iniciar sesión Administrador
               </Button>

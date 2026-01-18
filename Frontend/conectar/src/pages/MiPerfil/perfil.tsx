@@ -20,7 +20,6 @@ const Perfil: React.FC = () => {
   const errorTimerRef = useRef<number | null>(null);
 
 
-  // ✅ Todos los Hooks siempre van arriba
   useEffect(() => {
     if (userLoading) { return }; // aún no sabemos si hay usuario 
 

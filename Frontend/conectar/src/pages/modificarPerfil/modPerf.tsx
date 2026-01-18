@@ -272,8 +272,8 @@ export default function EditProfile() {
   if (loading && !user.nombre)
     return <div className="main-bg">Cargando datos del usuario...</div>;
 
-  if (errors)
-    return <div className="main-bg">Ocurrio un error...</div>;
+  if (Object.keys(errors).length > 0)
+    return <div className="main-bg">Ocurrió un error...</div>;
 
   return (
     <section className="main-bg">

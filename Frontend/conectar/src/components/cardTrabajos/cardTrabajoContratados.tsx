@@ -1,4 +1,4 @@
-  import type { Trabajo } from "../../interfaces/trabajo.ts";
+import type { Trabajo } from "../../interfaces/trabajo.ts";
 import "./cardTrabajoContratados.css"
 import ModalTrabajos from "../Modal-trabajos/Modal.tsx";
 import "../Modal-trabajos/Modal.css"
@@ -59,7 +59,11 @@ export default function TrabajoCardContratados({ trabajo, tipo }: TrabajoCardPro
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ valor: valor, descripcion: descripcion, trabajo: trabajo.id }),
+        body: JSON.stringify({ 
+          valor: valor, 
+          descripcion: descripcion, 
+          trabajo: trabajo.id 
+        }),
       })
 
       if (!res.ok) {

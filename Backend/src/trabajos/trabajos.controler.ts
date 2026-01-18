@@ -181,9 +181,9 @@ async function add(req: Request, res: Response, next: NextFunction) {
   try {
     /*
     Reglas de negocio = a tener en cuenta en la creacion de trabajos
-     1) No debe haber fechaPago sin haber fechaFinalizado
-     2) No debe haber fechaFinalizado sin haber resenia
-     3) montoTotal, cliente, profesional, fechaSolicitud son campos obligatorios.
+      1) No debe haber fechaPago sin haber fechaFinalizado
+      2) No debe haber fechaFinalizado sin haber resenia
+      3) montoTotal, cliente, profesional, fechaSolicitud son campos obligatorios.
     */
     const { montoTotal, cliente, profesional, fechaPago, fechaSolicitud, fechaFinalizado, resenia } = req.body;
     console.log("Req body = ", req.body)

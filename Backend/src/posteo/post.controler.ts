@@ -124,7 +124,6 @@ async function add(req: Request, res: Response, next: NextFunction) {
 }
 
 
-
 async function update(req: Request, res: Response, next: NextFunction) {
   const em = orm.em.fork();
 

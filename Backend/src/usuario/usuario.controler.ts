@@ -317,7 +317,6 @@ async function deleteProfesion(req: Request, res: Response, next: NextFunction) 
 
 async function update(req: Request, res: Response, next: NextFunction) {
   try {
-    console.log(req.body);
 
     const id = req.params.id;
     const usuario = await em.findOne(Usuario, { id }, { populate: ['profesiones'] });

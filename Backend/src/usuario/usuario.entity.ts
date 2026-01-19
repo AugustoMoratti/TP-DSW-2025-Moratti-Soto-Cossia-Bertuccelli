@@ -4,6 +4,7 @@ import { Localidad } from "../localidad/localidades.entity.js";
 import { Profesiones } from "../profesion/profesion.entity.js";
 import { Provincia } from "../provincia/provincia.entity.js";
 import { Trabajo } from '../trabajos/trabajos.entity.js';
+import { Posteo } from '../posteo/post.entity.js';
 
 
 @Entity()
@@ -40,6 +41,9 @@ export class Usuario extends BaseEntity2 {
 
   @ManyToOne(() => Provincia, { nullable: false })
   provincia!: Rel<Provincia>;
+
+  @ManyToMany(() => Posteo, undefined, { cascade: [Cascade.PERSIST] })
+  posteos = new Collection<Posteo>(this);
 
   @ManyToMany(() => Profesiones, undefined, { cascade: [Cascade.PERSIST] })
   profesiones = new Collection<Profesiones>(this);

@@ -22,6 +22,7 @@ export default function TrabajoCardContratados({ trabajo, tipo }: TrabajoCardPro
   const [descripcion, setDescripcion] = useState("");
   const [actualizado, setActualizado] = useState<Trabajo>(trabajo);
   const [preferenceId, setPreferenceId] = useState<string | null>(null);
+  const publicKey = import.meta.env.VITE_MP_PUBLIC_KEY as string | undefined;
 
   useEffect(() => {
     setActualizado(trabajo);
@@ -34,14 +35,19 @@ export default function TrabajoCardContratados({ trabajo, tipo }: TrabajoCardPro
 
   // Inicializar Mercado Pago UNA sola vez
   useEffect(() => {
-    initMercadoPago("APP_USR-8e8768d5-dda1-4951-ad80-96c98a70d020");
+    if (publicKey) initMercadoPago(publicKey);
   }, []);
 
   // Crear preferencia en el backend
   useEffect(() => {
     const createPreference = async () => {
+      
+        if (!trabajo?.id) return;
+        if (!trabajo.montoTotal || trabajo.montoTotal <= 0) return;
+
       try {
-        const response = await fetch("http://localhost:3000/create-preference", {
+        console.log(import.meta.env.VITE_MP_PUBLIC_KEY)
+        const response = await fetch("http://localhost:3000/api/mp/create-preference", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ trabajoId: trabajo.id }),
@@ -184,9 +190,9 @@ export default function TrabajoCardContratados({ trabajo, tipo }: TrabajoCardPro
                   style={{ marginLeft: "10px" }} />
               </label>
               <label>
-              {preferenceId && (
-                <Wallet initialization={{ preferenceId }} />
-              )}
+                {publicKey && preferenceId && (
+                  <Wallet initialization={{ preferenceId }} />
+                )}
               </label>
               <label>
                 Valoración

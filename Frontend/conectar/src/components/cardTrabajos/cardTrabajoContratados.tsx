@@ -1,11 +1,11 @@
 import type { Trabajo } from "../../interfaces/trabajo.ts";
 import "./cardTrabajoContratados.css"
 import ModalTrabajos from "../Modal-trabajos/Modal.tsx";
+import PaymentModal from "../Modal-trabajos/ModalPago.tsx";
 import "../Modal-trabajos/Modal.css"
 import { useState, useMemo, useEffect } from "react";
 import type { FormEvent } from "react";
 import type { Resenia } from "../../interfaces/resenia.ts";
-import { initMercadoPago, Wallet } from "@mercadopago/sdk-react";
 
 interface TrabajoCardProps {
   trabajo: Trabajo;
@@ -19,10 +19,15 @@ export default function TrabajoCardContratados({ trabajo, tipo }: TrabajoCardPro
   const [error, setError] = useState<string | null>(null);
   const [valor, setValor] = useState(0);
   const [hover, setHover] = useState(0);
-  const [descripcion, setDescripcion] = useState("");
+  const [showModal, setShowModal] = useState(false);
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [descripcionTrabajo, setDescripcionTrabajo] = useState("");
+  const [comentarioResenia, setComentarioResenia] = useState("");
   const [actualizado, setActualizado] = useState<Trabajo>(trabajo);
-  const [preferenceId, setPreferenceId] = useState<string | null>(null);
-  const publicKey = import.meta.env.VITE_MP_PUBLIC_KEY as string | undefined;
+  const [reseniaId, setReseniaId] = useState<number | null>(null);
+  const hoyISO = new Date().toISOString().slice(0, 10);
+  const [dateInput, setDateInput] = useState<string>(hoyISO);
+
 
   useEffect(() => {
     setActualizado(trabajo);
@@ -33,67 +38,31 @@ export default function TrabajoCardContratados({ trabajo, tipo }: TrabajoCardPro
   }, [actualizado]);
 
 
-  // Inicializar Mercado Pago UNA sola vez
-  useEffect(() => {
-    if (publicKey) initMercadoPago(publicKey);
-  }, []);
-
-  // Crear preferencia en el backend
-  useEffect(() => {
-    const createPreference = async () => {
-      
-        if (!trabajo?.id) return;
-        if (!trabajo.montoTotal || trabajo.montoTotal <= 0) return;
-
-      try {
-        console.log(import.meta.env.VITE_MP_PUBLIC_KEY)
-        const response = await fetch("http://localhost:3000/api/mp/create-preference", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ trabajoId: trabajo.id }),
-        });
-
-        if (!response.ok) {
-          const text = await response.text().catch(() => null);
-          throw new Error(text || `Error ${response.status}`);
-        }
-
-        const data = await response.json();
-        const prefId = data.preferenceId || data.preference_id;
-        setPreferenceId(prefId ?? null);
-        console.log("Preference ID:", prefId, data);
-      } catch (error) {
-        console.error("Error creando la preferencia:", error);
-      }
-    };
-
-    if (trabajo?.id) createPreference();
-  }, [trabajo]);
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value; // "2025-10-29"
+    setDateInput(value);
     if (!value) return setFechaPago(""); // si está vacío
     const [year, month, day] = value.split("-"); // ["2025", "10", "29"]
     const fechaFormateada = `${day}/${month}/${year}`; // "29/10/2025"
     setFechaPago(fechaFormateada);
   };
 
-  // fechaHoy en formato DD/MM/YYYY — calculada, no necesita estado
-  const hoy = new Date().toISOString().slice(0, 10);
   const fechaHoy = useMemo(() => {
-    const [year, month, day] = hoy.split("-");
+    const [year, month, day] = hoyISO.split("-");
     return `${day}/${month}/${year}`;
-  }, [hoy]);
+  }, [hoyISO]);
 
   const handleFinalizarTrabajo = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    alert("Formulario enviado");
     setIsOpen(false);
     setError(null);
     setLoading(true);
 
     let resenia: Resenia | undefined;
     try {
+      if (!comentarioResenia || typeof comentarioResenia !== 'string') {
+        throw new Error('La descripción de la reseña es obligatoria');
+      }
       const res = await fetch(`http://localhost:3000/api/resenia`, {
         method: "POST",
         headers: {
@@ -101,7 +70,7 @@ export default function TrabajoCardContratados({ trabajo, tipo }: TrabajoCardPro
         },
         body: JSON.stringify({ 
           valor: valor, 
-          descripcion: descripcion, 
+          descripcion: comentarioResenia, 
           trabajo: trabajo.id 
         }),
       })
@@ -113,6 +82,7 @@ export default function TrabajoCardContratados({ trabajo, tipo }: TrabajoCardPro
 
       const data = await res.json();
       resenia = data.data as Resenia
+      setReseniaId(resenia.id ?? null);
       console.log("Respuesta del servidor:", resenia);
 
     } catch (err: any) {
@@ -135,7 +105,10 @@ export default function TrabajoCardContratados({ trabajo, tipo }: TrabajoCardPro
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ fechaFinalizado: fechaHoy, fechaPago: fechaPago, resenia: resenia.id }),
+        body: JSON.stringify({
+          fechaFinalizado: fechaHoy,
+          resenia: resenia.id,
+          descripcion: descripcionTrabajo }),
       })
       if (!resp.ok) {
         const text = await resp.text().catch(() => null);
@@ -143,6 +116,8 @@ export default function TrabajoCardContratados({ trabajo, tipo }: TrabajoCardPro
       }
       const data = await resp.json();
       setActualizado(data.data as Trabajo);
+      // abrir modal de pago después de actualizar trabajo
+      setShowPaymentModal(true);
     } catch (err: any) {
       console.error("Error guardando monto:", err);
       setError(err?.message ?? "Error al guardar la resenia")
@@ -150,6 +125,10 @@ export default function TrabajoCardContratados({ trabajo, tipo }: TrabajoCardPro
       setLoading(false)
     }
   }
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
 
   return (
     <div className="container_trabajos_card">
@@ -168,31 +147,34 @@ export default function TrabajoCardContratados({ trabajo, tipo }: TrabajoCardPro
           <div className="trabajos_info_container_pendientes">
             <p>Profesional : {trabajo.profesional.nombre}, {trabajo.profesional.apellido}</p>
             <p>Fecha Solicitud : {trabajo.fechaSolicitud}</p>
-            <p>Monto Actualizado : ${trabajo.montoTotal}</p>
+            <p>Monto Final : ${trabajo.montoTotal}</p>
             {trabajo.montoTotal === undefined || trabajo.montoTotal === null || trabajo.montoTotal === 0 && (
               <button className="btn_finalizar_trabajo" onClick={() => alert("Aun no hay un monto Final")}>Finalizar Trabajo</button>
             )}
             {trabajo.montoTotal !== undefined && trabajo.montoTotal !== null && trabajo.montoTotal !== 0 && (
-              <button className="btn_finalizar_trabajo" onClick={() => setIsOpen(true)}>Finalizar Trabajo</button>
+              <button className="btn_finalizar_trabajo" onClick={() => { setIsOpen(true); setDateInput(hoyISO); setFechaPago(fechaHoy); }}>Finalizar Trabajo</button>
             )}
           </div>
 
-          <ModalTrabajos isOpen={isOpen} onClose={() => setIsOpen(false)} title="Finalizar Trabajo">
+          <ModalTrabajos
+            isOpen={isOpen}
+            onClose={() => {
+              setIsOpen(false);
+            }}
+            title="Finalizar Trabajo"
+          >
             <p>Ingresa datos para dar el trabajo como finalizado</p>
             <form onSubmit={handleFinalizarTrabajo} style={{ display: "flex", flexDirection: "column", gap: "1rem", width: "300px" }}>
               <label>
-                Fecha del Pago
+                Descripcion del trabajo
                 <input
-                  type="date"
-                  onChange={handleChange}
-                  max={hoy}
+                  type="text"
+                  value={descripcionTrabajo}
+                  onChange={(e) => setDescripcionTrabajo(e.target.value)}
+                  placeholder="Descripción del trabajo"
                   required
-                  style={{ marginLeft: "10px" }} />
-              </label>
-              <label>
-                {publicKey && preferenceId && (
-                  <Wallet initialization={{ preferenceId }} />
-                )}
+                  style={{ width: "100%" }}
+                />
               </label>
               <label>
                 Valoración
@@ -216,8 +198,8 @@ export default function TrabajoCardContratados({ trabajo, tipo }: TrabajoCardPro
                 Comentario:
                 <textarea
                   name="comentario"
-                  value={descripcion}
-                  onChange={(e) => setDescripcion(e.target.value)}
+                  value={comentarioResenia}
+                  onChange={(e) => setComentarioResenia(e.target.value)}
                   placeholder="Escribe tu reseña..."
                   required
                   style={{ width: "100%", height: "80px", resize: "none" }}
@@ -225,13 +207,58 @@ export default function TrabajoCardContratados({ trabajo, tipo }: TrabajoCardPro
               </label>
               {error && <p style={{ color: "red", marginTop: 8 }}>{error}</p>}
               <div style={{ marginTop: "10px" }}>
-                <button type="submit" disabled={loading}>Enviar</button>
+                <button className="btn" type="submit" disabled={loading}>Enviar</button>
               </div>
             </form>
           </ModalTrabajos>
-          <hr></hr>
+          {/** Se muestra despues del Modal anterior */}
+          <PaymentModal
+            trabajo={actualizado}
+            isOpen={showPaymentModal}
+            onClose={() => setShowPaymentModal(false)}
+            onConfirm={async (fecha) => {
+              setLoading(true);
+              setError(null);
+              try {
+                const resp = await fetch(`http://localhost:3000/api/trabajos/${trabajo.id}`, {
+                  method: "PUT",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({
+                    fechaPago: fecha,
+                    fechaFinalizado: actualizado.fechaFinalizado ?? fechaHoy,
+                    resenia: reseniaId ?? (actualizado.resenia ?? null),
+                    descripcion: descripcionTrabajo,
+                  }),
+                });
+                if (!resp.ok) {
+                  const text = await resp.text().catch(() => null);
+                  throw new Error(text || `Error ${resp.status}`);
+                }
+                const data = await resp.json();
+                setActualizado(data.data as Trabajo);
+                setShowPaymentModal(false);
+                setShowModal(true);
+              } catch (err: any) {
+                console.error("Error al confirmar pago:", err);
+                setError(err?.message ?? "Error al confirmar pago");
+              } finally {
+                setLoading(false);
+              }
+            }}
+          />
         </div>
       )}
+    {showModal && (
+      <div className="modal-overlay">
+        <div className="modal-card">
+          <h2>✅ Formulario enviado</h2>
+          <p>Se ha registrado y enviado el formulario.</p>
+          <button className="notfound-btn" onClick={handleCloseModal}>
+            Cerrar
+          </button>
+        </div>
+      </div>
+    )}
     </div>
   );
 }

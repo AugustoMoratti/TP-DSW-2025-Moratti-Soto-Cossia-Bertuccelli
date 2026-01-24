@@ -15,6 +15,9 @@ import { Resenia } from '../resenia/resenia.entity.js';
 export class Trabajo extends BaseEntity {
 
     @Property({ nullable: true })
+    descripcion!: string;
+
+    @Property({ nullable: true })
     montoTotal?: number;
 
     @ManyToOne(() => Usuario, { nullable: false })

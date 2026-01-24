@@ -3,7 +3,6 @@ import { orm } from "../../DB/orm.js";
 import { Resenia } from "./resenia.entity.js";
 import { Trabajo } from '../trabajos/trabajos.entity.js';
 import { HttpError } from '../types/HttpError.js'
-import { NearMe } from '@mui/icons-material';
 const em = orm.em.fork();
 
 function sanitizeReseniaInput(req: Request, res: Response, next: NextFunction) {

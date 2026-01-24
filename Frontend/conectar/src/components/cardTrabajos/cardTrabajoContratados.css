@@ -5,6 +5,17 @@
   margin-left: 10px;
 }
 
+.btn{
+  height: 30px;
+  border-radius: 10px;
+  padding: 0px 15px;
+  background-color: #114f5a44;
+  color: #114f5a;
+  border: 1px solid #114f5a;
+  transition: 0.2s;
+  cursor: pointer;
+}
+
 .star-rating span {
   transition: color 0.2s ease, transform 0.2s ease;
 }

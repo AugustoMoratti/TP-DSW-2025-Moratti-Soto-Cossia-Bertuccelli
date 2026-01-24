@@ -25,6 +25,17 @@
   animation: fadeIn 0.2s ease-in-out;
 }
 
+.btn-cerrar {
+  height: 30px;
+  border-radius: 10px;
+  padding: 0px 15px;
+  background-color: #114f5a44;
+  color: #114f5a;
+  border: 1px solid #114f5a;
+  transition: 0.2s;
+  cursor: pointer;
+}
+
 /* Header */
 .modal-header {
   display: flex;

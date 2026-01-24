@@ -15,6 +15,7 @@ export default function TrabajoCard({ trabajo, tipo }: TrabajoCardProps) {
   const [monto, setMonto] = useState<number>(0);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [showModal, setShowModal] = useState(false);
   const [montoActual, setMontoActual] = useState<number | null>(trabajo.montoTotal ?? null);
 
   useEffect(() => {
@@ -23,7 +24,7 @@ export default function TrabajoCard({ trabajo, tipo }: TrabajoCardProps) {
 
   const handleMonto = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    alert("Formulario enviado");
+    setShowModal(true);
     setIsOpen(false);
     setError(null);
 
@@ -63,6 +64,10 @@ export default function TrabajoCard({ trabajo, tipo }: TrabajoCardProps) {
     }
   }
 
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
   return (
     <div className="container_trabajos_card">
       {tipo === "finalizado" ? (
@@ -88,24 +93,36 @@ export default function TrabajoCard({ trabajo, tipo }: TrabajoCardProps) {
             )}
             <form onSubmit={handleMonto}>
               <label>
-                Monto Nuevo
+                Monto Nuevo:
                 <input
                   type="number"
                   value={monto === 0 ? "" : monto}
                   onChange={e => setMonto(Number(e.target.value))}
                   min={0}
                   required
-                  style={{ marginLeft: "10px" }} />
+                  className="input_plata"
+                  />
               </label>
               {error && <p style={{ color: "red", marginTop: 8 }}>{error}</p>}
               <div style={{ marginTop: "10px" }}>
-                <button type="submit" disabled={loading}>Enviar</button>
+                <button className="btn" type="submit" disabled={loading}>Enviar</button>
               </div>
             </form>
           </ModalTrabajos>
           <hr></hr>
         </div>
       )}
+    {showModal && (
+      <div className="modal-overlay">
+        <div className="modal-card">
+          <h2>✅ Pago actualizado</h2>
+          <p>Se ha registrado el monto.</p>
+          <button className="notfound-btn" onClick={handleCloseModal}>
+            Cerrar
+          </button>
+        </div>
+      </div>
+    )}
     </div>
   );
 }

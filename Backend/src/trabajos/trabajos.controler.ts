@@ -243,6 +243,7 @@ async function update(req: Request, res: Response, next: NextFunction) { //NO UT
 
     // Solo usamos los campos que vienen del sanitized
     const {
+      descripcion,
       montoTotal,
       cliente,
       profesional,
@@ -262,6 +263,7 @@ async function update(req: Request, res: Response, next: NextFunction) { //NO UT
     }
 
     // Asignación de valores con conversión de tipos
+    if (descripcion) trabajo.descripcion = descripcion;
     if (montoTotal) trabajo.montoTotal = Number(montoTotal);
     if (cliente) trabajo.cliente = em.getReference(Usuario, cliente);
     if (profesional) trabajo.profesional = em.getReference(Usuario, profesional);

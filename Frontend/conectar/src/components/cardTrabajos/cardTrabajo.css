@@ -22,6 +22,35 @@
   padding: 0px 30px;
 }
 
+.btn{
+  height: 30px;
+  border-radius: 10px;
+  padding: 0px 15px;
+  background-color: #114f5a44;
+  color: #114f5a;
+  border: 1px solid #114f5a;
+  transition: 0.2s;
+  cursor: pointer;
+}
+
+.input_plata {
+  height: 30px;
+  border-radius: 10px;
+  padding: 0px 10px;
+  border: 1px solid #ccc;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none; /* Oculta las flechas */
+    margin: 0; /* Elimina el margen extra */
+}
+
+/* Para Firefox */
+input[type="number"] {
+    -moz-appearance: textfield; /* Oculta las flechas */
+}
+
 .btn_agregar_monto {
   height: 40px;
   border-radius: 20px;

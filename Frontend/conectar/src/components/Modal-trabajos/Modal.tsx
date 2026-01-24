@@ -41,7 +41,7 @@ const ModalTrabajos: React.FC<ModalProps> = ({ isOpen, onClose, title, children 
         <div className="modal-body">{children}</div>
 
         <div className="modal-footer">
-          <button onClick={onClose}>Cerrar</button>
+          <button onClick={onClose} className="btn-cerrar">Cerrar</button>
         </div>
       </div>
     </div>,

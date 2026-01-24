@@ -21,7 +21,6 @@ export default function TrabajoCardContratados({ trabajo, tipo }: TrabajoCardPro
   const [hover, setHover] = useState(0);
   const [showModal, setShowModal] = useState(false);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
-  const [descripcionTrabajo, setDescripcionTrabajo] = useState("");
   const [comentarioResenia, setComentarioResenia] = useState("");
   const [actualizado, setActualizado] = useState<Trabajo>(trabajo);
   const [reseniaId, setReseniaId] = useState<number | null>(null);
@@ -108,7 +107,7 @@ export default function TrabajoCardContratados({ trabajo, tipo }: TrabajoCardPro
         body: JSON.stringify({
           fechaFinalizado: fechaHoy,
           resenia: resenia.id,
-          descripcion: descripcionTrabajo }),
+          }),
       })
       if (!resp.ok) {
         const text = await resp.text().catch(() => null);
@@ -166,17 +165,6 @@ export default function TrabajoCardContratados({ trabajo, tipo }: TrabajoCardPro
             <p>Ingresa datos para dar el trabajo como finalizado</p>
             <form onSubmit={handleFinalizarTrabajo} style={{ display: "flex", flexDirection: "column", gap: "1rem", width: "300px" }}>
               <label>
-                Descripcion del trabajo
-                <input
-                  type="text"
-                  value={descripcionTrabajo}
-                  onChange={(e) => setDescripcionTrabajo(e.target.value)}
-                  placeholder="Descripción del trabajo"
-                  required
-                  style={{ width: "100%" }}
-                />
-              </label>
-              <label>
                 Valoración
                 <div className="star-rating">
                   {[1, 2, 3, 4, 5].map((star) => (
@@ -227,7 +215,6 @@ export default function TrabajoCardContratados({ trabajo, tipo }: TrabajoCardPro
                     fechaPago: fecha,
                     fechaFinalizado: actualizado.fechaFinalizado ?? fechaHoy,
                     resenia: reseniaId ?? (actualizado.resenia ?? null),
-                    descripcion: descripcionTrabajo,
                   }),
                 });
                 if (!resp.ok) {

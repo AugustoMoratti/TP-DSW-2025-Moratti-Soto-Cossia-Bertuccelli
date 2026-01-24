@@ -33,6 +33,15 @@
   cursor: pointer;
 }
 
+.textarea_descripcion{
+  height: 20px;
+  border-radius: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  width: 50%;
+  resize:vertical;
+}
+
 .input_plata {
   height: 30px;
   border-radius: 10px;

@@ -40,7 +40,10 @@ export default function TrabajoCard({ trabajo, tipo }: TrabajoCardProps) {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ montoTotal: monto }),
+        body: JSON.stringify({ 
+          montoTotal: monto,
+          descripcion: trabajo.descripcion
+        }),
       });
 
       if (!res.ok) {
@@ -89,7 +92,7 @@ export default function TrabajoCard({ trabajo, tipo }: TrabajoCardProps) {
           <ModalTrabajos isOpen={isOpen} onClose={() => setIsOpen(false)} title="Modificar Monto del trabajo">
             <p>Ingresa el nuevo monto</p>
             {trabajo.montoTotal !== null && (
-              <p>El monto actual es = ${trabajo.montoTotal ?? "Sin monto"}</p>
+              <p>El monto actual es ${trabajo.montoTotal ?? "Sin monto"}</p>
             )}
             <form onSubmit={handleMonto}>
               <label>
@@ -102,6 +105,16 @@ export default function TrabajoCard({ trabajo, tipo }: TrabajoCardProps) {
                   required
                   className="input_plata"
                   />
+              </label>
+              <label>
+                <p>Que vas a hacer?</p>
+                <input
+                  type="text"
+                  value={trabajo.descripcion}
+                  placeholder="Descripcion del trabajo a realizar"
+                  required
+                  className="textarea_descripcion"
+                />
               </label>
               {error && <p style={{ color: "red", marginTop: 8 }}>{error}</p>}
               <div style={{ marginTop: "10px" }}>

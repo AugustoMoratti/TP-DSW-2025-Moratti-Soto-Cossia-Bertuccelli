@@ -81,14 +81,6 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ trabajo, isOpen, onClose, o
     if (e.target === overlayRef.current) onClose();
   };
 
-  const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setDateInput(value);
-    if (!value) return setFechaPago("");
-    const [year, month, day] = value.split("-");
-    setFechaPago(`${day}/${month}/${year}`);
-  };
-
   const handleConfirm = async () => {
     setLoading(true);
     setError(null);

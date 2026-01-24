@@ -4,6 +4,8 @@ import Header from "../../components/header/header.tsx";
 import { useState, useEffect } from "react";
 import { fetchMe } from "../../services/auth.services.ts";
 import TrabajoCard from "../../components/cardTrabajos/cardTrabajo.tsx";
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import "./trabajoPropios.css";
 
 export default function TrabajosPropios() {
@@ -60,7 +62,7 @@ export default function TrabajosPropios() {
               onClick={() => setPage2((p) => p - 1)}
               className="btn_atrasar"
             >
-              ◀
+              <ChevronLeftIcon />
             </button>
 
             <button
@@ -68,7 +70,7 @@ export default function TrabajosPropios() {
               onClick={() => setPage2((p) => p + 1)}
               className="btn_adelantar"
             >
-              ▶
+              <ChevronRightIcon />
             </button>
           </div>
         </section>
@@ -86,7 +88,7 @@ export default function TrabajosPropios() {
               onClick={() => setPage((p) => p - 1)}
               className="btn_atrasar"
             >
-              ◀
+              <ChevronLeftIcon />
             </button>
 
             <button
@@ -94,7 +96,7 @@ export default function TrabajosPropios() {
               onClick={() => setPage((p) => p + 1)}
               className="btn_adelantar"
             >
-              ▶
+              <ChevronRightIcon />
             </button>
           </div>
         </section>

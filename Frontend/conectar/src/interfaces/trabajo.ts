@@ -3,6 +3,7 @@ import type { Usuario } from "./usuario.ts";
 
 export interface Trabajo {
   id: number;
+  descripcion?: string;
   resenia: Resenia;
   montoTotal?: number;
   cliente: Usuario;

@@ -4,7 +4,10 @@ import Header from "../../components/header/header.tsx";
 import { useState, useEffect } from "react";
 import { fetchMe } from "../../services/auth.services.ts";
 import TrabajoCardContratados from "../../components/cardTrabajos/cardTrabajoContratados.tsx";
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import "./trabajoContratados.css"
+
 export default function TrabajosContratados() {
   const navigate = useNavigate();
   const [trabajosFinalizados, setTrabajosFinalizados] = useState<Trabajo[]>([])
@@ -58,7 +61,7 @@ export default function TrabajosContratados() {
               onClick={() => setPage2((p) => p - 1)}
               className="btn_atrasar"
             >
-              ◀
+              <ChevronLeftIcon />
             </button>
 
             <button
@@ -66,7 +69,7 @@ export default function TrabajosContratados() {
               onClick={() => setPage2((p) => p + 1)}
               className="btn_adelantar"
             >
-              ▶
+              <ChevronRightIcon />
             </button>
           </div>
         </section>
@@ -84,7 +87,7 @@ export default function TrabajosContratados() {
               onClick={() => setPage((p) => p - 1)}
               className="btn_atrasar"
             >
-              ◀
+              <ChevronLeftIcon />
             </button>
 
             <button
@@ -92,7 +95,7 @@ export default function TrabajosContratados() {
               onClick={() => setPage((p) => p + 1)}
               className="btn_adelantar"
             >
-              ▶
+              <ChevronRightIcon />
             </button>
           </div>
         </section>

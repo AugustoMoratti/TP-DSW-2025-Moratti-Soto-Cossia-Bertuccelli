@@ -40,10 +40,12 @@ hr {
   width: 40px;
   height: 30px;
   border-radius: 10px;
-  background-color: #114f5ac4;
-  color: #ffffffd7;
+  padding: 0 8px;
+  background-color: #114f5a44;
+  color: #114f5a;
+  border: 1px solid #114f5a;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: background-color 0.2s, color 0.2s;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -51,12 +53,14 @@ hr {
 
 .btn_atrasar:hover,
 .btn_adelantar:hover {
-  background-color: #114f5a;
+  background-color: #114f5a7a;
+  color: #fff;
 }
 
 .btn_atrasar:disabled,
 .btn_adelantar:disabled {
-  background-color: #383c3c7f;
+  color: #ffffff99;
+  cursor: not-allowed;
 }
 
 /* ----------- RESPONSIVE ----------- */

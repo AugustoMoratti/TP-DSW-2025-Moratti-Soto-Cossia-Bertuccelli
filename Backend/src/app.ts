@@ -13,7 +13,6 @@ import { trabajosRouter } from "./trabajos/trabajos.routes.js";
 import { reseniaRouter } from "./resenia/resenia.routes.js";
 import { UPLOADS_DIR } from "./utils/upload.js";
 import { errorHandler } from "./middleware/errorHandler.js";
-import { Trabajo } from "./trabajos/trabajos.entity.js";
 import dotenv from "dotenv";
 import { MPRouter } from "./utils/MP/mp.routes.js";
 dotenv.config();
@@ -29,61 +28,6 @@ app.use(
 
 app.use(express.json());
 app.use(cookieParser());
-
-// configurar multer
-/*const uploadsDir = path.join(process.cwd(), "uploads");
-const storage = multer.diskStorage({
-  destination: (req: Request, file: Express.Multer.File, cb: (err: Error | null, destination: string) => void) => {
-    cb(null, uploadsDir);
-  },
-  filename: (req: Request, file: Express.Multer.File, cb: (err: Error | null, filename: string) => void) => {
-    const ext = path.extname(file.originalname);
-    const name = `${Date.now()}-${Math.random().toString(36).slice(2)}${ext}`;
-    cb(null, name);
-  },
-});
-const upload = multer({ storage });
-
-// servir archivos subidos
-app.use("/uploads", express.static(uploadsDir));
-
-// RequestContext middleware debe ir antes de las rutas
-app.use((req: Request, res: Response, next: NextFunction) => {
-  RequestContext.create(orm.em, next);
-});
-
-// ahora rutas y handlers (ya tienen RequestContext)
-app.post("/upload", upload.single("image"), async (req: Request & { file?: Express.Multer.File }, res: Response) => {
-  try {
-    if (!req.file) return res.status(400).json({ message: "No file uploaded" });
-
-    const imageUrl = `${req.protocol}://${req.get("host")}/uploads/${req.file.filename}`;
-    const { userId } = req.body;
-
-    if (userId) {
-      const em = RequestContext.getEntityManager(); // ahora disponible
-      if (!em) {
-        return res.status(500).json({ message: "EntityManager not available" });
-      }
-      const user = await em.findOne(Usuario, { id: String(userId) });
-      if (!user) return res.status(404).json({ message: "User not found" });
-      user.fotoUrl = imageUrl;
-      await em.persistAndFlush(user);
-    }
-
-    return res.json({ imageUrl });
-  } catch (err: any) {
-    console.error(err);
-    return res.status(500).json({ message: "Upload failed", error: err.message });
-  }
-});
-
-//Despues de los middlewares de express
-app.use((req: Request, res: Response, next: NextFunction) => {
-  RequestContext.create(orm.em, next)
-})
-//Antes de los middlewares de rutas
-*/
 
 app.use("/uploads", express.static(UPLOADS_DIR));
 

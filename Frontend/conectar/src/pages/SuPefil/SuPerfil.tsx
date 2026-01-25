@@ -48,6 +48,7 @@ const SuPerfil: React.FC = () => {
               nombre={user.nombre}
               apellido={user.apellido}
               email={user.email}
+              contacto={user.contacto}
               localidad={user.localidad.nombre}
               provincia={user.provincia.nombre}
               profesiones={user.profesiones ?? []}

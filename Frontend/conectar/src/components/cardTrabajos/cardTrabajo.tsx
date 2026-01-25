@@ -4,6 +4,8 @@ import ModalTrabajos from "../Modal-trabajos/Modal.tsx";
 import "../Modal-trabajos/Modal.css"
 import type { FormEvent } from "react";
 import { useState, useEffect } from "react";
+import ModalDetalles from "./ModalDetalles.tsx";
+import ModalExito from "./ModalExito.tsx";
 
 interface TrabajoCardProps {
   trabajo: Trabajo;
@@ -15,7 +17,8 @@ export default function TrabajoCard({ trabajo, tipo }: TrabajoCardProps) {
   const [monto, setMonto] = useState<number>(0);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [showModal, setShowModal] = useState(false);
+  const [showDetails, setShowDetails] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
   const [montoActual, setMontoActual] = useState<number | null>(trabajo.montoTotal ?? null);
 
   useEffect(() => {
@@ -24,7 +27,6 @@ export default function TrabajoCard({ trabajo, tipo }: TrabajoCardProps) {
 
   const handleMonto = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setShowModal(true);
     setIsOpen(false);
     setError(null);
 
@@ -55,10 +57,12 @@ export default function TrabajoCard({ trabajo, tipo }: TrabajoCardProps) {
       console.log("data trabajos", json)
       const actualizado: Trabajo = json.data;
 
-      // 🔹 Actualizamos el monto del trabajo directamente (esto dispara el useEffect)
-      trabajo.montoTotal = actualizado.montoTotal;
+        // 🔹 Actualizamos el monto del trabajo directamente (esto dispara el useEffect)
+        trabajo.montoTotal = actualizado.montoTotal;
+        // mostrar modal de éxito
+        setShowSuccess(true);
 
-      setMonto(0);
+        setMonto(0);
     } catch (err: any) {
       console.error("Error guardando monto:", err);
       setError(err?.message ?? "Error al guardar");
@@ -68,7 +72,7 @@ export default function TrabajoCard({ trabajo, tipo }: TrabajoCardProps) {
   }
 
   const handleCloseModal = () => {
-    setShowModal(false);
+    setShowSuccess(false);
   };
 
   return (
@@ -76,9 +80,12 @@ export default function TrabajoCard({ trabajo, tipo }: TrabajoCardProps) {
       {tipo === "finalizado" ? (
         <div className="trabajos_container_finalizados">
           <div className="trabajos_info_container_finalizados">
-            <p>Cliente : {trabajo.cliente.nombre}, {trabajo.cliente.apellido}</p>
-            <p>Fecha Finalizado : {trabajo.fechaFinalizado}</p>
-            <p>Fecha Pago : {trabajo.fechaPago}</p>
+            <p>Profesional : {trabajo.profesional.nombre}, {trabajo.profesional.apellido}</p>
+            <p>        </p>
+            <p>Descripcion : {trabajo.descripcion}</p>
+            <div style={{ marginLeft: "auto" }}>
+            <button className="btn" onClick={() => setShowDetails(true)}>Ver más</button>
+            </div>
           </div>
           <hr></hr>
         </div>
@@ -125,16 +132,11 @@ export default function TrabajoCard({ trabajo, tipo }: TrabajoCardProps) {
           <hr></hr>
         </div>
       )}
-    {showModal && (
-      <div className="modal-overlay">
-        <div className="modal-card">
-          <h2>✅ Pago actualizado</h2>
-          <p>Se ha registrado el monto.</p>
-          <button className="notfound-btn" onClick={handleCloseModal}>
-            Cerrar
-          </button>
-        </div>
-      </div>
+    {showDetails && (
+      <ModalDetalles trabajo={trabajo} isOpen={showDetails} onClose={() => setShowDetails(false)} />
+    )}
+    {showSuccess && (
+      <ModalExito isOpen={showSuccess} onClose={handleCloseModal} />
     )}
     </div>
   );

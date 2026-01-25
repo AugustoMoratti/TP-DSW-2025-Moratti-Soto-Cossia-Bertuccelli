@@ -13,6 +13,7 @@ function sanitizeTrabajoInput(req: Request, res: Response, next: NextFunction) {
   req.body.sanitizedInput = {
     montoTotal: req.body.montoTotal,
     cliente: req.body.cliente,
+    descripcion: req.body.descripcion,
     profesional: req.body.profesional,
     fechaPago: req.body.fechaPago,
     fechaSolicitud: req.body.fechaSolicitud,
@@ -236,9 +237,9 @@ async function update(req: Request, res: Response, next: NextFunction) { //NO UT
     const trabajo = em.getReference(Trabajo, id)
     /*
     Reglas de negocio = a tener en cuenta en la modificacion de trabajos
-     1) No debe haber fechaPago sin haber fechaFinalizado
-     2) No debe haber fechaFinalizado sin haber resenia
-     3) montoTotal, cliente, profesional, fechaSolicitud son campos obligatorios.
+      1) No debe haber fechaPago sin haber fechaFinalizado
+      2) No debe haber fechaFinalizado sin haber resenia
+      3) montoTotal, cliente, profesional, fechaSolicitud son campos obligatorios.
     */
 
     // Solo usamos los campos que vienen del sanitized

@@ -11,10 +11,11 @@ import { localidadesRouter } from "./localidad/localidad.routes.js";
 import { usuarioRouter } from "./usuario/usuario.routes.js";
 import { trabajosRouter } from "./trabajos/trabajos.routes.js";
 import { reseniaRouter } from "./resenia/resenia.routes.js";
+import { MPRouter } from "./utils/MP/mp.routes.js";
 import { UPLOADS_DIR } from "./utils/upload.js";
 import { errorHandler } from "./middleware/errorHandler.js";
 import dotenv from "dotenv";
-import { MPRouter } from "./utils/MP/mp.routes.js";
+
 dotenv.config();
 
 const app = express();

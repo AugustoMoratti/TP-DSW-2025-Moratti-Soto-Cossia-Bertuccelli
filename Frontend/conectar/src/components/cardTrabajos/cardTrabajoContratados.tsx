@@ -2,10 +2,12 @@ import type { Trabajo } from "../../interfaces/trabajo.ts";
 import "./cardTrabajoContratados.css"
 import ModalTrabajos from "../Modal-trabajos/Modal.tsx";
 import PaymentModal from "../Modal-trabajos/ModalPago.tsx";
+import ModalDetalles from "./ModalDetalles";
 import "../Modal-trabajos/Modal.css"
 import { useState, useMemo, useEffect } from "react";
 import type { FormEvent } from "react";
 import type { Resenia } from "../../interfaces/resenia.ts";
+import ModalExito from "./ModalExito.tsx";
 
 interface TrabajoCardProps {
   trabajo: Trabajo;
@@ -19,7 +21,8 @@ export default function TrabajoCardContratados({ trabajo, tipo }: TrabajoCardPro
   const [error, setError] = useState<string | null>(null);
   const [valor, setValor] = useState(0);
   const [hover, setHover] = useState(0);
-  const [showModal, setShowModal] = useState(false);
+  const [showDetails, setShowDetails] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [comentarioResenia, setComentarioResenia] = useState("");
   const [actualizado, setActualizado] = useState<Trabajo>(trabajo);
@@ -126,7 +129,7 @@ export default function TrabajoCardContratados({ trabajo, tipo }: TrabajoCardPro
   }
 
   const handleCloseModal = () => {
-    setShowModal(false);
+    setShowSuccess(false);
   };
 
   return (
@@ -135,9 +138,11 @@ export default function TrabajoCardContratados({ trabajo, tipo }: TrabajoCardPro
         <div className="trabajos_container_finalizados">
           <div className="trabajos_info_container_finalizados">
             <p>Profesional : {trabajo.profesional.nombre}, {trabajo.profesional.apellido}</p>
-            <p>Fecha Finalizado : {trabajo.fechaFinalizado}</p>
-            <p>Fecha Pago : {trabajo.fechaPago}</p>
-            <p>Monto Final : ${trabajo.montoTotal}</p>
+            <p>    </p>
+            <p>Descripcion : {trabajo.descripcion}</p>
+            <div style={{ marginLeft: "auto" }}>
+              <button className="btn" onClick={() => setShowDetails(true)}>Ver más</button>
+            </div>
           </div>
           <hr></hr>
         </div>
@@ -214,7 +219,7 @@ export default function TrabajoCardContratados({ trabajo, tipo }: TrabajoCardPro
                   body: JSON.stringify({
                     fechaPago: fecha,
                     fechaFinalizado: actualizado.fechaFinalizado ?? fechaHoy,
-                    resenia: reseniaId ?? (actualizado.resenia ?? null),
+                    resenia: reseniaId ?? (actualizado.resenia ?? null)
                   }),
                 });
                 if (!resp.ok) {
@@ -224,7 +229,7 @@ export default function TrabajoCardContratados({ trabajo, tipo }: TrabajoCardPro
                 const data = await resp.json();
                 setActualizado(data.data as Trabajo);
                 setShowPaymentModal(false);
-                setShowModal(true);
+                setShowSuccess(true);
               } catch (err: any) {
                 console.error("Error al confirmar pago:", err);
                 setError(err?.message ?? "Error al confirmar pago");
@@ -235,16 +240,11 @@ export default function TrabajoCardContratados({ trabajo, tipo }: TrabajoCardPro
           />
         </div>
       )}
-    {showModal && (
-      <div className="modal-overlay">
-        <div className="modal-card">
-          <h2>✅ Formulario enviado</h2>
-          <p>Se ha registrado y enviado el formulario.</p>
-          <button className="notfound-btn" onClick={handleCloseModal}>
-            Cerrar
-          </button>
-        </div>
-      </div>
+    {showDetails && (
+      <ModalDetalles trabajo={actualizado} isOpen={showDetails} onClose={() => setShowDetails(false)} />
+    )}
+    {showSuccess && (
+      <ModalExito isOpen={showSuccess} onClose={() => setShowSuccess(false)} />
     )}
     </div>
   );

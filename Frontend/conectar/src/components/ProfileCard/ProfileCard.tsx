@@ -12,6 +12,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
   nombre,
   apellido,
   email,
+  contacto,
   localidad = "",
   provincia = "",
   fotoUrl,
@@ -148,6 +149,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
                 Argentina, {provinciaNombre}, {localidadNombre}
               </p>
               <p>Email: {email}</p>
+              <p>Telefono: {contacto}</p>
             </div>
           </div>
 

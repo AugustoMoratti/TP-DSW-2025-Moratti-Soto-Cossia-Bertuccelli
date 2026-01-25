@@ -141,6 +141,7 @@ const Perfil: React.FC = () => {
               nombre={usuario.nombre}
               apellido={usuario.apellido}
               email={usuario.email}
+              contacto={usuario.contacto}
               localidad={usuario.localidad.nombre}
               provincia={usuario.provincia.nombre}
               profesiones={usuario.profesiones ?? []}

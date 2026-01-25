@@ -7,6 +7,7 @@ export interface OtroUsuario {
   nombre: string;
   apellido: string;
   email: string;
+  contacto?: string;
   provincia: { nombre: string };
   localidad: { nombre: string };
   descripcion?: string;

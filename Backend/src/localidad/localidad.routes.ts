@@ -1,10 +1,10 @@
 import { Router } from "express"
-import { findOne, findAll, add, update, remove, sanitizeLocalidadInput } from "./localidad.controler.js"
-//import { removeListener } from "process"
+import { findOne, findAll, add, update, remove, sanitizeLocalidadInput, buscarLocalidades } from "./localidad.controler.js"
 
 export const localidadesRouter = Router()
 
 localidadesRouter.get('/', findAll)
+localidadesRouter.get('/buscar', buscarLocalidades)
 localidadesRouter.get('/:nombre', findOne)
 localidadesRouter.post('/', sanitizeLocalidadInput, add)
 localidadesRouter.put('/:nombre', sanitizeLocalidadInput, update)

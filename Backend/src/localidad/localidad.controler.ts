@@ -20,6 +20,30 @@ function sanitizeLocalidadInput(req: Request, res: Response, next: NextFunction)
   next()
 }
 
+async function buscarLocalidades(req: Request, res: Response, next: NextFunction) {
+  const em = orm.em.fork();
+
+  try {
+    const qRaw = String(req.query.q ?? '').trim().toLowerCase();
+
+
+    const qParam = `%${qRaw}%`;
+
+    const localidades = await em.find(Localidad, {
+      $or: [
+        { nombre: { $like: qParam } }
+      ]
+    });
+    
+    if (localidades.length === 0) {
+      res.status(200).json({ message: 'No hay localidades con esas especificaciones', data: localidades })
+    }
+    return res.status(200).json({ data: localidades });
+  } catch (error: any) {
+    next(error)
+  }
+}
+
 async function findAll(req: Request, res: Response, next: NextFunction) {
   try {
     const localidad = await em.find(
@@ -136,5 +160,6 @@ export {
   add,
   update,
   remove,
-  sanitizeLocalidadInput
+  sanitizeLocalidadInput,
+  buscarLocalidades
 };

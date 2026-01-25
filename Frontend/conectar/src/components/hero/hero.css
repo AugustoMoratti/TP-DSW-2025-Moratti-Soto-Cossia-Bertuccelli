@@ -10,14 +10,14 @@
 }
 
 .hero_text p {
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   margin-bottom: 30px;
-  letter-spacing: 0.5px;
+  letter-spacing: 5px;
   word-spacing: 3px;
 }
 
 .hero_text h2 {
-  font-size: 2rem;
+  font-size: 2.2em;
   width: 75%;
   font-weight: 700;
   margin-top: 50px;
@@ -44,7 +44,7 @@
 }
 
 .logo {
-  height: 60px;
+  height: 75px;
 }
 
 .paper_plane {
@@ -64,8 +64,6 @@
   height: 450px;
   border-radius: 20px;
   overflow: hidden;
-  border: 5px solid #fff;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .hero_image img {

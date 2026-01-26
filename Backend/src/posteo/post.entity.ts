@@ -12,6 +12,9 @@ export class Posteo extends BaseEntity2 {
     @Property({ length: 1500, nullable: false })
     texto!: string;
 
+    @Property({ onCreate: () => new Date() })
+    fechaCreacion!: Date;
+
     @ManyToOne(() => Usuario, { nullable: false })
     user!: Rel<Usuario>;
 }

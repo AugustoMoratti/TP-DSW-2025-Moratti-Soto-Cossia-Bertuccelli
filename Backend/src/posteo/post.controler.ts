@@ -11,8 +11,9 @@ import { Http } from '@mui/icons-material';
 function sanitizePosteoInput(req: Request, res: Response, next: NextFunction) {
   req.body.sanitizedInput = {
     user: req.body.user,
-    texto: req.body.texti,
-    imagenUrl: req.body.imagenUrl
+    texto: req.body.texto,
+    imagenUrl: req.body.imagenUrl,
+    fechaCreacion: req.body.fechaCreacion
   }
   Object.keys(req.body.sanitizedInput).forEach((key) => {
     if (req.body.sanitizedInput[key] === undefined) {
@@ -27,7 +28,19 @@ async function findAll(req: Request, res: Response, next: NextFunction) {
   const em = orm.em.fork();
 
   try {
-    const posteos = await em.find(Posteo, {})
+    const page = Number(req.query.page) || 1;
+    const limit = 10;
+
+    const [posteos, total] = await em.findAndCount(
+      Posteo,
+      {},
+      {
+        orderBy: { fechaCreacion: 'DESC' },
+        limit,
+        offset: (page - 1) * limit
+      }
+    )
+
     if (posteos.length > 0) {
       res
         .status(200)
@@ -65,6 +78,8 @@ async function findAllForUser(req: Request, res: Response, next: NextFunction) {
   const em = orm.em.fork();
 
   try {
+    const page = Number(req.query.page) || 1;
+    const limit = 10;
     const email = req.params.emailUser
 
     const user = await em.findOne(Usuario, { email })
@@ -72,7 +87,7 @@ async function findAllForUser(req: Request, res: Response, next: NextFunction) {
       throw new HttpError(404, 'NOT_FOUND', 'Usuario no encontrado')
     }
 
-    const posteos = await em.find(Posteo, { user }, { populate: ['user'] })
+    const posteos = await em.findAndCount(Posteo, { user }, { populate: ['user'], limit, offset: (page - 1) * limit })
     if (posteos.length > 0) {
       res
         .status(200)

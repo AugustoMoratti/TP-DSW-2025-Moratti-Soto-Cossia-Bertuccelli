@@ -8,6 +8,7 @@ import NotFound from './pages/error/notFound.tsx'
 import Perfil from './pages/MiPerfil/perfil.tsx';
 import SuPerfil from './pages/SuPefil/SuPerfil.tsx'
 import EditProfile from './pages/modificarPerfil/modPerf.tsx'
+import EditProfile2 from './pages/modificarPerfil/mod2Perf.tsx'
 import InternalServerError from './pages/error/error500.tsx';
 import Dashboard from './pages/Dashboard/dashboard.tsx'
 import Terminos from './pages/terminos/terminos.tsx';
@@ -58,6 +59,7 @@ createRoot(document.getElementById('root')!).render(
             <Route path="/trabajosPropios" element={<TrabajosPropios />} />
             <Route path="/SuPerfil/:id" element={<SuPerfil />} />
             <Route path="/ModPerfil/:id" element={<EditProfile />} />
+            <Route path="/ModPerfil2/:id" element={<EditProfile2 />} />
             <Route path="/busqProfesionales" element={<BusquedaProfesionales />} />
           </Route>
 

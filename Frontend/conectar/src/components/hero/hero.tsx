@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { animate, splitText, stagger } from "animejs";
 import heroImage from "../../../assets/plomero.png";
 import logo from "../../../assets/conect.png";
@@ -94,7 +94,7 @@ const Hero: React.FC = () => {
         </div>
       </div>
 
-        <div className="vacio"></div>
+      <div className="vacio"></div>
     </>
   );
 };

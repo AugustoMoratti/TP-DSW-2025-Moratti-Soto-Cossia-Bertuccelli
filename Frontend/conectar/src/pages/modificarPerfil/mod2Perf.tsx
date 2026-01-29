@@ -2,11 +2,27 @@ import { useEffect, useState } from "react";
 import { type Usuario } from "../../interfaces/usuario.ts";
 import { fetchMe } from "../../services/auth.services.ts";
 import { useNavigate } from "react-router";
+import Modal from "react-modal";
+import EditIcon from "@mui/icons-material/Edit";
+import SaveIcon from "@mui/icons-material/Save";
+import DeleteIcon from "@mui/icons-material/Delete";
+import StandardInput from "../../components/form/Form.tsx";
+import RmProf from "../../components/profesiones/RmProf.tsx";
+import AddProf from "../../components/profesiones/AddProf.tsx";
+import HandleHabi from "../../components/habilidades/HandleHabi.tsx";
 
 export default function EditProfile2() {
   const navigate = useNavigate()
   const [user, setUser] = useState<Usuario | null>(null);
   const [loading, setLoading] = useState(false)
+  const [showClavesModal, setShowClavesModal] = useState(false);
+  const [showProfModal, setShowProfModal] = useState(false);
+  const [showHabiModal, setShowHabiModal] = useState(false);
+  const [pestaña, setPestaña] = useState(false);
+  const [clave, setClave] = useState("");
+  const [confirmarClave, setConfirmarClave] = useState("");
+  const [errorGuardado, setErrorGuardado] = useState<string>()
+  const [guardadoExitoso, setGuardadoExitoso] = useState<string>()
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -31,6 +47,70 @@ export default function EditProfile2() {
     }
     fetchUser();
   }, [navigate])
+  console.log(user)
+
+  const handleSaveAll = async () => {
+    setErrorGuardado("")
+    setGuardadoExitoso("")
+
+    if (user !== null) {
+      if (!user!.contacto || user!.contacto.length < 7) {
+        setErrorGuardado("El teléfono debe tener al menos 7 dígitos.");
+        return;
+      }
+
+      if (clave !== confirmarClave) {
+        setErrorGuardado("⚠️ Las claves no coinciden.");
+        return;
+      }
+
+      if (!user!.id) {
+        setErrorGuardado("Usuario no cargado.");
+        return;
+      }
+
+      const payload = {
+        nombre: user.nombre,
+        apellido: user.apellido,
+        fechaNac: user.fechaNac,
+        provincia: user.provincia,
+        localidad: user.localidad.nombre,
+        direccion: user.direccion,
+        contacto: user.contacto,
+        email: user.email,
+        clave: clave || undefined,
+      };
+
+      try {
+        setLoading(true);
+        const res = await fetch(`http://localhost:3000/api/usuario/${user.id}`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify(payload),
+        });
+
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || "Error al guardar usuario");
+
+        setGuardadoExitoso("Datos actualizados correctamente.");
+
+        if (showClavesModal) {
+          setShowClavesModal(false);
+          setClave("");
+          setConfirmarClave("");
+        }
+      } catch (err) {
+        console.error(err);
+        setErrorGuardado("Error de conexión al guardar.");
+      } finally {
+        setLoading(false);
+      }
+
+    }
+  };
+
+
 
   return (
 
@@ -39,6 +119,7 @@ export default function EditProfile2() {
       {loading && (
         <div style={{ color: "white", fontSize: "0.9em" }}>Estamos cargando el contenido</div>
       )}
+
 
       <div className="top-bar">
         <img
@@ -50,40 +131,279 @@ export default function EditProfile2() {
       </div>
 
       {user && (
-        <div className="info-container">
+        <div className="card-container-single-card">
 
           <div className="card-header">
             <span className="card-title">Mi Perfil</span>
           </div>
 
           <div className="card-content profile-grid-single">
-            <div className="div-contacto">
-              <p></p>
-              <p></p>
-              <img
-                src={user?.fotoUrl ? `http://localhost:3000${user.fotoUrl}` : ""}
-                alt="Foto de perfil"
-                className="profile-image"
-              />
+
+            <div className="div-imagen">
+              <div className="field-with-action">
+                <img
+                  src={user?.fotoUrl ? `http://localhost:3000${user.fotoUrl}` : ""}
+                  alt="Foto de perfil"
+                  className="profile-image"
+                />
+                <button
+                  type="button"
+                  className="btn_modPerf editar-btn"
+                //onClick={() => toggleEdit(field)}
+                >
+                  Editar Imagen
+                </button>
+              </div>
+
             </div>
 
+            <div className="div-contacto">
+
+              <h3>Datos de Contacto</h3>
+
+              <div className="field-with-action">
+                <p>Telefono</p>
+                <p >{user.contacto}</p>
+                <button
+                  type="button"
+                  className="btn_modPerf editar-btn"
+                //onClick={() => toggleEdit(field)}
+                >
+                  Editar <EditIcon />
+                </button>
+              </div>
+
+              <div className="field-with-action">
+                <p>Email</p>
+                <p>{user.email}</p>
+                <button
+                  type="button"
+                  className="btn_modPerf editar-btn"
+                //onClick={() => toggleEdit(field)}
+                >
+                  Editar <EditIcon />
+                </button>
+              </div>
+
+            </div>
+
+
             <div className="div-ubicacion">
-              <p></p>
-              <p></p>
+
+              <h3>Ubicacion</h3>
+
+              <div className="field-with-action">
+                <p>Localidad</p>
+                <p>{user.localidad.nombre}</p>
+                <button
+                  type="button"
+                  className="btn_modPerf editar-btn"
+                //onClick={() => toggleEdit(field)}
+                >
+                  Editar <EditIcon />
+                </button>
+              </div>
+
+              <div className="field-with-action">
+                <p>Direccion</p>
+                <p>{user.direccion}</p>
+                <button
+                  type="button"
+                  className="btn_modPerf editar-btn"
+                //onClick={() => toggleEdit(field)}
+                >
+                  Editar <EditIcon />
+                </button>
+              </div>
+
             </div>
 
             <div className="div-datos-personales">
-              <p></p>
-              <p></p>
-              <p></p>
+
+              <h3>Datos Personales</h3>
+
+              <div className="field-with-action">
+                <p>Nombre</p>
+                <p>{user.nombre}</p>
+                <button
+                  type="button"
+                  className="btn_modPerf editar-btn"
+                //onClick={() => toggleEdit(field)}
+                >
+                  Editar <EditIcon />
+                </button>
+              </div>
+
+              <div className="field-with-action">
+                <p>Apellido</p>
+                <p>{user.apellido}</p>
+                <button
+                  type="button"
+                  className="btn_modPerf editar-btn"
+                //onClick={() => toggleEdit(field)}
+                >
+                  Editar <EditIcon />
+                </button>
+              </div>
+
+              <div className="field-with-action">
+                <p>Fecha de Nacimiento</p>
+                <p>{user.fechaNac}</p>
+                <button
+                  type="button"
+                  className="btn_modPerf editar-btn"
+                //onClick={() => toggleEdit(field)}
+                >
+                  Editar <EditIcon />
+                </button>
+              </div>
+
             </div>
+
+            <div>
+              <h3>Funciones Especiales</h3>
+              {/* CAMBIAR CLAVE */}
+              <button
+                className="btn_modPerf"
+                style={{ marginTop: 40 }}
+                onClick={() => setShowClavesModal(true)}
+              >
+                Cambiar contraseña
+              </button>
+
+              <Modal
+                isOpen={showClavesModal}
+                onRequestClose={() => setShowClavesModal(false)}
+                className="modal"
+                overlayClassName="modal_overlay_modPerf"
+                ariaHideApp={false}
+              >
+                <div className="card">
+                  <h2>Claves de Seguridad</h2>
+                  <StandardInput
+                    label="Clave"
+                    value={clave}
+                    onChange={setClave}
+                    type="password"
+                  />
+                  <StandardInput
+                    label="Confirmar clave"
+                    value={confirmarClave}
+                    onChange={setConfirmarClave}
+                    type="password"
+                  />
+                  {clave !== confirmarClave && confirmarClave && (
+                    <div style={{ color: "red" }}>Las claves no coinciden</div>
+                  )}
+                  <div>
+                    <button
+                      className="btn_modPerf"
+                      onClick={handleSaveAll}
+                      disabled={clave !== confirmarClave}
+                    >
+                      Guardar <SaveIcon />
+                    </button>
+                    <button
+                      className="btn_modPerf"
+                      onClick={() => setShowClavesModal(false)}
+                    >
+                      Cerrar <DeleteIcon />
+                    </button>
+                  </div>
+                </div>
+              </Modal>
+
+              {/* PROFESIONES */}
+              <button
+                className="btn_modPerf"
+                style={{ marginTop: 40 }}
+                onClick={() => setShowProfModal(true)}
+              >
+                ¡Quiero gestionar mis profesiones!
+              </button>
+
+              <Modal
+                isOpen={showProfModal}
+                onRequestClose={() => setShowProfModal(false)}
+                className="modal"
+                overlayClassName="modal_overlay_modPerf"
+                ariaHideApp={false}
+              >
+                <div className="card-modProf">
+                  <button
+                    type="button"
+                    className="close_modPerf"
+                    onClick={() => setShowProfModal(false)}
+                  >
+                    &times;
+                  </button>
+                  <h2>Gestionar Profesiones</h2>
+                  <div className="pestañas-container">
+                    <button
+                      className={`btn-pestaña ${!pestaña ? "active" : ""}`}
+                      onClick={() => setPestaña(false)}
+                    >
+                      ➕ Agregar
+                    </button>
+                    <button
+                      className={`btn-pestaña ${pestaña ? "active" : ""}`}
+                      onClick={() => setPestaña(true)}
+                    >
+                      ➖ Quitar
+                    </button>
+                  </div>
+                  {!pestaña ? <AddProf /> : <RmProf />}
+                </div>
+              </Modal>
+
+              {/* HABILIDADES */}
+              <button
+                className="btn_modPerf"
+                style={{ marginTop: 40 }}
+                onClick={() => setShowHabiModal(true)}
+              >
+                ¡Quiero gestionar mis habilidades!
+              </button>
+
+              <Modal
+                isOpen={showHabiModal}
+                onRequestClose={() => setShowHabiModal(false)}
+                className="modal"
+                overlayClassName="modal_overlay_modPerf"
+                ariaHideApp={false}
+              >
+                <div className="card-modProf">
+                  <button
+                    type="button"
+                    className="close_modPerf"
+                    onClick={() => setShowHabiModal(false)}
+                  >
+                    &times;
+                  </button>
+                  <h2>Gestionar Habilidades</h2>
+                  <HandleHabi />
+                </div>
+              </Modal>
+
+            </div>
+
           </div>
+
+
+
 
         </div>
       )}
 
       <div>
-        <button>Guardar cambios</button>
+        <button style={{ marginTop: 40 }} onClick={() => navigate(-1)}>
+          ← Volver
+        </button>
+        <button style={{ marginTop: 40 }} onClick={handleSaveAll}>
+          Guardar cambios
+        </button>
+        {errorGuardado && <div className="global-error">{errorGuardado}</div>}
+        {guardadoExitoso && <div className="global-success">{guardadoExitoso}</div>}
       </div>
 
     </section>

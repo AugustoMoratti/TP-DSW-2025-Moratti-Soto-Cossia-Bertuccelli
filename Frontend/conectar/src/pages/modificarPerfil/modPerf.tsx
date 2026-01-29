@@ -71,7 +71,7 @@ export default function EditProfile() {
     };
     fetchUser();
   }, [navigate]);
-
+  console.log(user)
   const toggleEdit = (field: keyof User) => {
     setEditable(prev => {
       const newEditable: Partial<Record<keyof User, boolean>> = {};

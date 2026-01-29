@@ -21,6 +21,8 @@ export default function EditProfile2() {
   const [pestaña, setPestaña] = useState(false);
   const [clave, setClave] = useState("");
   const [confirmarClave, setConfirmarClave] = useState("");
+  const [errorGuardado, setErrorGuardado] = useState<string>()
+  const [guardadoExitoso, setGuardadoExitoso] = useState<string>()
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -48,7 +50,64 @@ export default function EditProfile2() {
   console.log(user)
 
   const handleSaveAll = async () => {
+    setErrorGuardado("")
+    setGuardadoExitoso("")
 
+    if (user !== null) {
+      if (!user!.contacto || user!.contacto.length < 7) {
+        setErrorGuardado("El teléfono debe tener al menos 7 dígitos.");
+        return;
+      }
+
+      if (clave !== confirmarClave) {
+        setErrorGuardado("⚠️ Las claves no coinciden.");
+        return;
+      }
+
+      if (!user!.id) {
+        setErrorGuardado("Usuario no cargado.");
+        return;
+      }
+
+      const payload = {
+        nombre: user.nombre,
+        apellido: user.apellido,
+        fechaNac: user.fechaNac,
+        provincia: user.provincia,
+        localidad: user.localidad.nombre,
+        direccion: user.direccion,
+        contacto: user.contacto,
+        email: user.email,
+        clave: clave || undefined,
+      };
+
+      try {
+        setLoading(true);
+        const res = await fetch(`http://localhost:3000/api/usuario/${user.id}`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify(payload),
+        });
+
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || "Error al guardar usuario");
+
+        setGuardadoExitoso("Datos actualizados correctamente.");
+
+        if (showClavesModal) {
+          setShowClavesModal(false);
+          setClave("");
+          setConfirmarClave("");
+        }
+      } catch (err) {
+        console.error(err);
+        setErrorGuardado("Error de conexión al guardar.");
+      } finally {
+        setLoading(false);
+      }
+
+    }
   };
 
 
@@ -201,141 +260,151 @@ export default function EditProfile2() {
 
             </div>
 
-            {/* CAMBIAR CLAVE */}
-            <button
-              className="btn_modPerf"
-              style={{ marginTop: 40 }}
-              onClick={() => setShowClavesModal(true)}
-            >
-              Cambiar contraseña
-            </button>
+            <div>
+              <h3>Funciones Especiales</h3>
+              {/* CAMBIAR CLAVE */}
+              <button
+                className="btn_modPerf"
+                style={{ marginTop: 40 }}
+                onClick={() => setShowClavesModal(true)}
+              >
+                Cambiar contraseña
+              </button>
 
-            <Modal
-              isOpen={showClavesModal}
-              onRequestClose={() => setShowClavesModal(false)}
-              className="modal"
-              overlayClassName="modal_overlay_modPerf"
-              ariaHideApp={false}
-            >
-              <div className="card">
-                <h2>Claves de Seguridad</h2>
-                <StandardInput
-                  label="Clave"
-                  value={clave}
-                  onChange={setClave}
-                  type="password"
-                />
-                <StandardInput
-                  label="Confirmar clave"
-                  value={confirmarClave}
-                  onChange={setConfirmarClave}
-                  type="password"
-                />
-                {clave !== confirmarClave && confirmarClave && (
-                  <div style={{ color: "red" }}>Las claves no coinciden</div>
-                )}
-                <div>
-                  <button
-                    className="btn_modPerf"
-                    onClick={handleSaveAll}
-                    disabled={clave !== confirmarClave}
-                  >
-                    Guardar <SaveIcon />
-                  </button>
-                  <button
-                    className="btn_modPerf"
-                    onClick={() => setShowClavesModal(false)}
-                  >
-                    Cerrar <DeleteIcon />
-                  </button>
+              <Modal
+                isOpen={showClavesModal}
+                onRequestClose={() => setShowClavesModal(false)}
+                className="modal"
+                overlayClassName="modal_overlay_modPerf"
+                ariaHideApp={false}
+              >
+                <div className="card">
+                  <h2>Claves de Seguridad</h2>
+                  <StandardInput
+                    label="Clave"
+                    value={clave}
+                    onChange={setClave}
+                    type="password"
+                  />
+                  <StandardInput
+                    label="Confirmar clave"
+                    value={confirmarClave}
+                    onChange={setConfirmarClave}
+                    type="password"
+                  />
+                  {clave !== confirmarClave && confirmarClave && (
+                    <div style={{ color: "red" }}>Las claves no coinciden</div>
+                  )}
+                  <div>
+                    <button
+                      className="btn_modPerf"
+                      onClick={handleSaveAll}
+                      disabled={clave !== confirmarClave}
+                    >
+                      Guardar <SaveIcon />
+                    </button>
+                    <button
+                      className="btn_modPerf"
+                      onClick={() => setShowClavesModal(false)}
+                    >
+                      Cerrar <DeleteIcon />
+                    </button>
+                  </div>
                 </div>
-              </div>
-            </Modal>
+              </Modal>
 
-            {/* PROFESIONES */}
-            <button
-              className="btn_modPerf"
-              style={{ marginTop: 40 }}
-              onClick={() => setShowProfModal(true)}
-            >
-              ¡Quiero gestionar mis profesiones!
-            </button>
+              {/* PROFESIONES */}
+              <button
+                className="btn_modPerf"
+                style={{ marginTop: 40 }}
+                onClick={() => setShowProfModal(true)}
+              >
+                ¡Quiero gestionar mis profesiones!
+              </button>
 
-            <Modal
-              isOpen={showProfModal}
-              onRequestClose={() => setShowProfModal(false)}
-              className="modal"
-              overlayClassName="modal_overlay_modPerf"
-              ariaHideApp={false}
-            >
-              <div className="card-modProf">
-                <button
-                  type="button"
-                  className="close_modPerf"
-                  onClick={() => setShowProfModal(false)}
-                >
-                  &times;
-                </button>
-                <h2>Gestionar Profesiones</h2>
-                <div className="pestañas-container">
+              <Modal
+                isOpen={showProfModal}
+                onRequestClose={() => setShowProfModal(false)}
+                className="modal"
+                overlayClassName="modal_overlay_modPerf"
+                ariaHideApp={false}
+              >
+                <div className="card-modProf">
                   <button
-                    className={`btn-pestaña ${!pestaña ? "active" : ""}`}
-                    onClick={() => setPestaña(false)}
+                    type="button"
+                    className="close_modPerf"
+                    onClick={() => setShowProfModal(false)}
                   >
-                    ➕ Agregar
+                    &times;
                   </button>
-                  <button
-                    className={`btn-pestaña ${pestaña ? "active" : ""}`}
-                    onClick={() => setPestaña(true)}
-                  >
-                    ➖ Quitar
-                  </button>
+                  <h2>Gestionar Profesiones</h2>
+                  <div className="pestañas-container">
+                    <button
+                      className={`btn-pestaña ${!pestaña ? "active" : ""}`}
+                      onClick={() => setPestaña(false)}
+                    >
+                      ➕ Agregar
+                    </button>
+                    <button
+                      className={`btn-pestaña ${pestaña ? "active" : ""}`}
+                      onClick={() => setPestaña(true)}
+                    >
+                      ➖ Quitar
+                    </button>
+                  </div>
+                  {!pestaña ? <AddProf /> : <RmProf />}
                 </div>
-                {!pestaña ? <AddProf /> : <RmProf />}
-              </div>
-            </Modal>
+              </Modal>
 
-            {/* HABILIDADES */}
-            <button
-              className="btn_modPerf"
-              style={{ marginTop: 40 }}
-              onClick={() => setShowHabiModal(true)}
-            >
-              ¡Quiero gestionar mis habilidades!
-            </button>
+              {/* HABILIDADES */}
+              <button
+                className="btn_modPerf"
+                style={{ marginTop: 40 }}
+                onClick={() => setShowHabiModal(true)}
+              >
+                ¡Quiero gestionar mis habilidades!
+              </button>
 
-            <Modal
-              isOpen={showHabiModal}
-              onRequestClose={() => setShowHabiModal(false)}
-              className="modal"
-              overlayClassName="modal_overlay_modPerf"
-              ariaHideApp={false}
-            >
-              <div className="card-modProf">
-                <button
-                  type="button"
-                  className="close_modPerf"
-                  onClick={() => setShowHabiModal(false)}
-                >
-                  &times;
-                </button>
-                <h2>Gestionar Habilidades</h2>
-                <HandleHabi />
-              </div>
-            </Modal>
+              <Modal
+                isOpen={showHabiModal}
+                onRequestClose={() => setShowHabiModal(false)}
+                className="modal"
+                overlayClassName="modal_overlay_modPerf"
+                ariaHideApp={false}
+              >
+                <div className="card-modProf">
+                  <button
+                    type="button"
+                    className="close_modPerf"
+                    onClick={() => setShowHabiModal(false)}
+                  >
+                    &times;
+                  </button>
+                  <h2>Gestionar Habilidades</h2>
+                  <HandleHabi />
+                </div>
+              </Modal>
+
+            </div>
 
           </div>
 
-          <button className="btn_modPerf" style={{ marginTop: 40 }} onClick={() => navigate(-1)}>
-            ← Volver
-          </button>
 
-          <button className="btn_modPerf" style={{ marginTop: 40 }}>
-            Guardar cambios
-          </button>
+
 
         </div>
       )}
+
+      <div>
+        <button style={{ marginTop: 40 }} onClick={() => navigate(-1)}>
+          ← Volver
+        </button>
+        <button style={{ marginTop: 40 }}>
+          Guardar cambios
+        </button>
+        {errorGuardado && <div className="global-error">{errorGuardado}</div>}
+        {guardadoExitoso && <div className="global-success">{guardadoExitoso}</div>}
+      </div>
 
     </section>
 

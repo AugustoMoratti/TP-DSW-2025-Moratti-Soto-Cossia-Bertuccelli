@@ -330,9 +330,9 @@ export default function EditProfile2() {
             ← Volver
           </button>
 
-          <div className="btn_modPerf">
-            <button>Guardar cambios</button>
-          </div>
+          <button className="btn_modPerf" style={{ marginTop: 40 }}>
+            Guardar cambios
+          </button>
 
         </div>
       )}

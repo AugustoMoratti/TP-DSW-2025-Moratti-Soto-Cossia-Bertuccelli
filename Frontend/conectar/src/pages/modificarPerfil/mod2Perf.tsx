@@ -399,7 +399,7 @@ export default function EditProfile2() {
         <button style={{ marginTop: 40 }} onClick={() => navigate(-1)}>
           ← Volver
         </button>
-        <button style={{ marginTop: 40 }}>
+        <button style={{ marginTop: 40 }} onClick={handleSaveAll}>
           Guardar cambios
         </button>
         {errorGuardado && <div className="global-error">{errorGuardado}</div>}

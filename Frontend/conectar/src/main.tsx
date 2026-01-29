@@ -22,6 +22,7 @@ import PrivateRoute from './components/PrivateRoute';
 
 import { AdminProvider } from './providers/AdminProvider.tsx'
 import PrivateRouteAdmin from './components/PrivateRouteAdmin.tsx'
+import PostPage from './pages/Posts/PostPage.tsx'
 
 /*
 <Route element={<PrivateRoute />}>   
@@ -45,6 +46,7 @@ createRoot(document.getElementById('root')!).render(
           <Route path="/" element={<App />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Registro />} />
+
           <Route path="/loginAdmin" element={<LoginAdmin />} />
 
 
@@ -55,6 +57,7 @@ createRoot(document.getElementById('root')!).render(
 
           <Route element={<PrivateRoute />}>
             <Route path="/perfil" element={<Perfil />} />
+            <Route path="/PostPage" element={<PostPage />} />
             <Route path="/trabajosContratados" element={<TrabajosContratados />} />
             <Route path="/trabajosPropios" element={<TrabajosPropios />} />
             <Route path="/SuPerfil/:id" element={<SuPerfil />} />

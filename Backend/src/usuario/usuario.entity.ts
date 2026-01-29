@@ -69,4 +69,11 @@ export class Usuario extends BaseEntity2 {
   @Property({ nullable: true })
   habilidades: string[] = [];
 
+  @Property({ nullable: true })
+  resetToken?: string;
+
+  @Property({ nullable: true })
+  resetTokenExp?: Date;
+
+
 }

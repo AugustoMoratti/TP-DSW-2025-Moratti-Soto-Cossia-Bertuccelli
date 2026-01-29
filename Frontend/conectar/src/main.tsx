@@ -16,6 +16,8 @@ import Contacto from './pages/contacto/contacto.tsx';
 import TrabajosContratados from './pages/trabajo/trabajoContratados.tsx'
 import TrabajosPropios from './pages/trabajo/trabajoPropios.tsx'
 import LoginAdmin from './pages/loginAdmin/loginAdmin.tsx'
+import ForgotPassword from './pages/Password/OlvidarP.tsx'
+import ResetPassword from './pages/Password/CambiarP.tsx'
 
 import { UserProvider } from './providers/UserProvider.tsx'
 import PrivateRoute from './components/PrivateRoute';
@@ -45,6 +47,9 @@ createRoot(document.getElementById('root')!).render(
         <Routes>
           <Route path="/" element={<App />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
+
           <Route path="/register" element={<Registro />} />
 
           <Route path="/loginAdmin" element={<LoginAdmin />} />

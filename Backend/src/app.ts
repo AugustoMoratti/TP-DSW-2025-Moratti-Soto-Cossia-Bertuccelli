@@ -15,6 +15,7 @@ import { postRouter } from "./posteo/post.routes.js";
 import { MPRouter } from "./utils/MP/mp.routes.js";
 import { UPLOADS_DIR } from "./utils/upload.js";
 import { errorHandler } from "./middleware/errorHandler.js";
+import authRoutes from "./auth/auth.routes.js";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -43,6 +44,7 @@ app.use("/api/trabajos", trabajosRouter);
 app.use("/api/resenia", reseniaRouter);
 app.use("/api/post", postRouter);
 app.use("/api/mp", MPRouter);
+app.use("/api/auth", authRoutes);
 app.use(errorHandler);
 
 app.use((_req: Request, res: Response, _next: NextFunction) => {

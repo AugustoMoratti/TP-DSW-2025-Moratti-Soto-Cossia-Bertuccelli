@@ -11,13 +11,14 @@ import RmProf from "../../components/profesiones/RmProf.tsx";
 import AddProf from "../../components/profesiones/AddProf.tsx";
 import HandleHabi from "../../components/habilidades/HandleHabi.tsx";
 import type { HTMLInputTypeAttribute } from "react";
+import "./modPerf.css";
 
 export default function EditProfile2() {
   const navigate = useNavigate()
   const [user, setUser] = useState<Usuario | null>(null);
   const [loading, setLoading] = useState(false)
   const [showClavesModal, setShowClavesModal] = useState(false);
-  const [showCambiosModal, setShowCambiosModal] = useState<HTMLInputTypeAttribute | null>(null);;
+  const [showCambiosModal, setShowCambiosModal] = useState<HTMLInputTypeAttribute | null>(null); //Si no es null se abre el modal, en caso contrario se cierra
   const [showProfModal, setShowProfModal] = useState(false);
   const [showHabiModal, setShowHabiModal] = useState(false);
   const [pestaña, setPestaña] = useState(false);
@@ -27,6 +28,7 @@ export default function EditProfile2() {
   const [guardadoExitoso, setGuardadoExitoso] = useState<string>()
   const [nombrePropiedad, setNombrePropiedad] = useState<string>("")
   const [nuevoContenido, setNuevoContenido] = useState<string>("")
+  const [hayCambios, setHayCambios] = useState(false);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -51,26 +53,49 @@ export default function EditProfile2() {
     }
     fetchUser();
   }, [navigate, guardadoExitoso])
+  //________________________________________________________________________________________________________________________
 
+  useEffect(() => { //para que cuando de f5 o salir de la pagina le recuerde si hay cambios pendientes
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (hayCambios) {
+        e.preventDefault();
+        e.returnValue = "";
+      }
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
+  }, [hayCambios]);
+  //________________________________________________________________________________________________________________________
 
   const saveUser = () => {
-    if (user !== null) {
-      if (nombrePropiedad === "email" && nuevoContenido !== "") {
-        user.email = nuevoContenido
-      };
-      if (nombrePropiedad === "contacto" && nuevoContenido !== "") {
-        user.contacto = nuevoContenido
-      };
-      if (nombrePropiedad === "localidad" && nuevoContenido !== "") {
-        user.localidad.nombre = nuevoContenido
-      };
-      if (nombrePropiedad === "direccion" && nuevoContenido !== "") {
-        user.direccion = nuevoContenido
-      };
-      setShowCambiosModal(null);
-      setNuevoContenido("");
+    if (!user || !nuevoContenido.trim()) return;
+
+    switch (nombrePropiedad) {
+      case "email":
+        user.email = nuevoContenido;
+        break;
+
+      case "contacto":
+        user.contacto = nuevoContenido;
+        break;
+
+      case "localidad":
+        user.localidad.nombre = nuevoContenido;
+        break;
+
+      case "direccion":
+        user.direccion = nuevoContenido;
+        break;
+
+      default:
+        return; // propiedad no reconocida
     }
-  }
+    setHayCambios(true)
+    setShowCambiosModal(null);
+    setNuevoContenido("");
+  };
+  //________________________________________________________________________________________________________________________
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (user !== null) {
@@ -101,7 +126,7 @@ export default function EditProfile2() {
       }
     }
   };
-
+  //________________________________________________________________________________________________________________________
 
   const handleSaveAll = async () => {
 
@@ -146,7 +171,7 @@ export default function EditProfile2() {
         if (!res.ok) throw new Error(data.error || "Error al guardar usuario");
 
         setGuardadoExitoso("Datos actualizados correctamente.");
-
+        setHayCambios(false)
         if (showClavesModal) {
           setShowClavesModal(false);
           setClave("");
@@ -161,7 +186,7 @@ export default function EditProfile2() {
 
     }
   };
-
+  //________________________________________________________________________________________________________________________
 
 
 
@@ -172,7 +197,7 @@ export default function EditProfile2() {
       {loading && (
         <div style={{ color: "white", fontSize: "0.9em" }}>Estamos cargando el contenido</div>
       )}
-
+      {/*________________________________________________________________________________________________________________________*/}
 
       <div className="top-bar">
         <img
@@ -182,13 +207,16 @@ export default function EditProfile2() {
           onClick={() => navigate("/")}
         />
       </div>
+      {/*________________________________________________________________________________________________________________________*/}
 
       {user && (
         <div className="card-container-single-card">
+          {/*________________________________________________________________________________________________________________________*/}
 
           <div className="card-header">
             <span className="card-title">Mi Perfil</span>
           </div>
+          {/*________________________________________________________________________________________________________________________*/}
 
           <div className="card-content profile-grid-single">
 
@@ -212,6 +240,7 @@ export default function EditProfile2() {
               </div>
 
             </div>
+            {/*________________________________________________________________________________________________________________________*/}
 
             <div className="div-contacto">
 
@@ -240,7 +269,7 @@ export default function EditProfile2() {
                   type="button"
                   className="btn_modPerf editar-btn"
                   onClick={() => {
-                    setShowCambiosModal("mail");
+                    setShowCambiosModal("email");
                     setNombrePropiedad("email");
                   }}
                 >
@@ -249,7 +278,7 @@ export default function EditProfile2() {
               </div>
 
             </div>
-
+            {/*________________________________________________________________________________________________________________________*/}
 
             <div className="div-ubicacion">
 
@@ -287,6 +316,7 @@ export default function EditProfile2() {
               </div>
 
             </div>
+            {/*________________________________________________________________________________________________________________________*/}
 
             <div className="div-datos-personales">
 
@@ -317,29 +347,34 @@ export default function EditProfile2() {
               >
                 {showCambiosModal !== null && (
                   <div>
+
                     <h2>Realice el cambio</h2>
-                    <input
-                      type={showCambiosModal}
-                      value={nuevoContenido}
-                      onChange={(e) => setNuevoContenido(e.target.value)}
-                      className={`input_field`}
-                    />
-                    <label htmlFor=""> Modifique el campo</label>
+                    <form onSubmit={(e) => {
+                      e.preventDefault(); // evita recargar
+                      saveUser(); // SOLO se ejecuta si el input es válido
+                    }}>
+                      <input
+                        type={showCambiosModal}
+                        value={nuevoContenido}
+                        onChange={(e) => setNuevoContenido(e.target.value)}
+                        className="input_field"
+                        required
+                      />
+                      <label htmlFor=""> Modifique el campo</label>
+                      <button
+                        type="submit"
+                        className="btn_modPerf"
+                      >
+                        Guardar <SaveIcon />
+                      </button>
+                      <button
+                        className="btn_modPerf"
+                        onClick={() => { setNuevoContenido(""); setShowCambiosModal(null); }}
+                      >
+                        Cerrar <DeleteIcon />
+                      </button>
+                    </form>
 
-
-                    <button
-                      className="btn_modPerf"
-                      onClick={() => saveUser()}
-                    >
-                      Guardar <SaveIcon />
-                    </button>
-
-                    <button
-                      className="btn_modPerf"
-                      onClick={() => setShowCambiosModal(null)}
-                    >
-                      Cerrar <DeleteIcon />
-                    </button>
 
                   </div>
                 )}
@@ -347,7 +382,7 @@ export default function EditProfile2() {
               </Modal>
 
             </div>
-
+            {/*________________________________________________________________________________________________________________________*/}
 
             <div>
               <h3>Funciones Especiales</h3>

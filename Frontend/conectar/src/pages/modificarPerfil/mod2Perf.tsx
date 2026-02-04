@@ -10,12 +10,14 @@ import StandardInput from "../../components/form/Form.tsx";
 import RmProf from "../../components/profesiones/RmProf.tsx";
 import AddProf from "../../components/profesiones/AddProf.tsx";
 import HandleHabi from "../../components/habilidades/HandleHabi.tsx";
+import type { HTMLInputTypeAttribute } from "react";
 
 export default function EditProfile2() {
   const navigate = useNavigate()
   const [user, setUser] = useState<Usuario | null>(null);
   const [loading, setLoading] = useState(false)
   const [showClavesModal, setShowClavesModal] = useState(false);
+  const [showCambiosModal, setShowCambiosModal] = useState<HTMLInputTypeAttribute | null>(null);;
   const [showProfModal, setShowProfModal] = useState(false);
   const [showHabiModal, setShowHabiModal] = useState(false);
   const [pestaña, setPestaña] = useState(false);
@@ -23,6 +25,8 @@ export default function EditProfile2() {
   const [confirmarClave, setConfirmarClave] = useState("");
   const [errorGuardado, setErrorGuardado] = useState<string>()
   const [guardadoExitoso, setGuardadoExitoso] = useState<string>()
+  const [nombrePropiedad, setNombrePropiedad] = useState<string>("")
+  const [nuevoContenido, setNuevoContenido] = useState<string>("")
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -46,12 +50,60 @@ export default function EditProfile2() {
       }
     }
     fetchUser();
-  }, [navigate])
-  console.log(user)
+  }, [navigate, guardadoExitoso])
+
+
+  const saveUser = () => {
+    if (user !== null) {
+      if (nombrePropiedad === "email" && nuevoContenido !== "") {
+        user.email = nuevoContenido
+      };
+      if (nombrePropiedad === "contacto" && nuevoContenido !== "") {
+        user.contacto = nuevoContenido
+      };
+      if (nombrePropiedad === "localidad" && nuevoContenido !== "") {
+        user.localidad.nombre = nuevoContenido
+      };
+      if (nombrePropiedad === "direccion" && nuevoContenido !== "") {
+        user.direccion = nuevoContenido
+      };
+      setShowCambiosModal(null);
+      setNuevoContenido("");
+    }
+  }
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (user !== null) {
+      const file = e.target.files?.[0];
+      if (!file) return;
+      if (!user.id) {
+        setErrorGuardado("Usuario no cargado todavía.");
+        return;
+      }
+      const formData = new FormData(); //necesario para pasar archivo y no texto normal json
+      formData.append("imagen", file); //agregamos al formdata
+      try {
+        setLoading(true);
+        const res = await fetch(`http://localhost:3000/api/usuario/${user.id}`, {
+          method: "PATCH",
+          credentials: "include",
+          body: formData,
+        });
+        const data = await res.json();
+
+        if (!res.ok) throw new Error(data.error || "Error al subir imagen");
+        setGuardadoExitoso("Imagen actualizada correctamente.");
+      } catch (err) {
+        console.error(err);
+        setErrorGuardado("Error de conexión al subir imagen.");
+      } finally {
+        setLoading(false);
+      }
+    }
+  };
+
 
   const handleSaveAll = async () => {
-    setErrorGuardado("")
-    setGuardadoExitoso("")
 
     if (user !== null) {
       if (!user!.contacto || user!.contacto.length < 7) {
@@ -112,6 +164,7 @@ export default function EditProfile2() {
 
 
 
+
   return (
 
 
@@ -146,13 +199,16 @@ export default function EditProfile2() {
                   alt="Foto de perfil"
                   className="profile-image"
                 />
-                <button
-                  type="button"
-                  className="btn_modPerf editar-btn"
-                //onClick={() => toggleEdit(field)}
-                >
-                  Editar Imagen
-                </button>
+                <input
+                  id="fileInput"
+                  style={{ display: "none" }}
+                  type="file"
+                  accept=".jpg,.png"
+                  onChange={handleFileChange}
+                />
+                <label htmlFor="fileInput" className="btn_modPerf change-photo-btn">
+                  Cambiar imagen
+                </label>
               </div>
 
             </div>
@@ -167,7 +223,11 @@ export default function EditProfile2() {
                 <button
                   type="button"
                   className="btn_modPerf editar-btn"
-                //onClick={() => toggleEdit(field)}
+                  onClick={() => {
+                    setShowCambiosModal("number");
+                    setNombrePropiedad("contacto");
+                  }
+                  }
                 >
                   Editar <EditIcon />
                 </button>
@@ -179,7 +239,10 @@ export default function EditProfile2() {
                 <button
                   type="button"
                   className="btn_modPerf editar-btn"
-                //onClick={() => toggleEdit(field)}
+                  onClick={() => {
+                    setShowCambiosModal("mail");
+                    setNombrePropiedad("email");
+                  }}
                 >
                   Editar <EditIcon />
                 </button>
@@ -198,7 +261,11 @@ export default function EditProfile2() {
                 <button
                   type="button"
                   className="btn_modPerf editar-btn"
-                //onClick={() => toggleEdit(field)}
+                  onClick={() => {
+                    setShowCambiosModal("text");
+                    setNombrePropiedad("localidad");
+                  }
+                  }
                 >
                   Editar <EditIcon />
                 </button>
@@ -210,7 +277,10 @@ export default function EditProfile2() {
                 <button
                   type="button"
                   className="btn_modPerf editar-btn"
-                //onClick={() => toggleEdit(field)}
+                  onClick={() => {
+                    setShowCambiosModal("text");
+                    setNombrePropiedad("direccion");
+                  }}
                 >
                   Editar <EditIcon />
                 </button>
@@ -225,43 +295,63 @@ export default function EditProfile2() {
               <div className="field-with-action">
                 <p>Nombre</p>
                 <p>{user.nombre}</p>
-                <button
-                  type="button"
-                  className="btn_modPerf editar-btn"
-                //onClick={() => toggleEdit(field)}
-                >
-                  Editar <EditIcon />
-                </button>
               </div>
 
               <div className="field-with-action">
                 <p>Apellido</p>
                 <p>{user.apellido}</p>
-                <button
-                  type="button"
-                  className="btn_modPerf editar-btn"
-                //onClick={() => toggleEdit(field)}
-                >
-                  Editar <EditIcon />
-                </button>
               </div>
 
               <div className="field-with-action">
                 <p>Fecha de Nacimiento</p>
                 <p>{user.fechaNac}</p>
-                <button
-                  type="button"
-                  className="btn_modPerf editar-btn"
-                //onClick={() => toggleEdit(field)}
-                >
-                  Editar <EditIcon />
-                </button>
               </div>
+
+              {/*MODAL DE CAMBIOS NORMALES*/}
+              <Modal
+                isOpen={showCambiosModal !== null}
+                onRequestClose={() => setShowCambiosModal(null)}
+                className="modal"
+                overlayClassName="modal_overlay_modPerf"
+                ariaHideApp={false}
+              >
+                {showCambiosModal !== null && (
+                  <div>
+                    <h2>Realice el cambio</h2>
+                    <input
+                      type={showCambiosModal}
+                      value={nuevoContenido}
+                      onChange={(e) => setNuevoContenido(e.target.value)}
+                      className={`input_field`}
+                    />
+                    <label htmlFor=""> Modifique el campo</label>
+
+
+                    <button
+                      className="btn_modPerf"
+                      onClick={() => saveUser()}
+                    >
+                      Guardar <SaveIcon />
+                    </button>
+
+                    <button
+                      className="btn_modPerf"
+                      onClick={() => setShowCambiosModal(null)}
+                    >
+                      Cerrar <DeleteIcon />
+                    </button>
+
+                  </div>
+                )}
+
+              </Modal>
 
             </div>
 
+
             <div>
               <h3>Funciones Especiales</h3>
+
               {/* CAMBIAR CLAVE */}
               <button
                 className="btn_modPerf"
@@ -384,13 +474,11 @@ export default function EditProfile2() {
                   <HandleHabi />
                 </div>
               </Modal>
-
+              {errorGuardado && <div className="global-error">{errorGuardado}</div>}
+              {guardadoExitoso && <div className="global-success">{guardadoExitoso}</div>}
             </div>
 
           </div>
-
-
-
 
         </div>
       )}
@@ -402,8 +490,7 @@ export default function EditProfile2() {
         <button style={{ marginTop: 40 }} onClick={handleSaveAll}>
           Guardar cambios
         </button>
-        {errorGuardado && <div className="global-error">{errorGuardado}</div>}
-        {guardadoExitoso && <div className="global-success">{guardadoExitoso}</div>}
+
       </div>
 
     </section>

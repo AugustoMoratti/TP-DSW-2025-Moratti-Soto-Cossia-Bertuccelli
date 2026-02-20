@@ -81,9 +81,9 @@ async function findOne(req: Request, res: Response, next: NextFunction) {
 
 async function add(req: Request, res: Response, next: NextFunction) {
   try {
-    const { nombre, id, provincia } = req.body.sanitizedInput
+    const { nombre, provincia } = req.body.sanitizedInput
 
-    if (!nombre || !id || !provincia) {
+    if (!nombre || !provincia) {
       throw new HttpError(400, 'INVALID_INPUT', 'La localidad debe tener nombre, id y una provincia asociada')
     };
     if (typeof nombre !== 'string' || nombre === "") {

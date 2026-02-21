@@ -4,6 +4,8 @@ import { Button } from "../button/Button";
 import { useNavigate } from "react-router";
 import { useUser } from "../../Hooks/useUser";
 import { handleLogout } from "../../utils/logout";
+import LoginIcon from '@mui/icons-material/Login';
+import HowToRegIcon from '@mui/icons-material/HowToReg';
 import logo from "../../../assets/conect_2_1.png";
 import "./navbar.css";
 
@@ -92,11 +94,11 @@ const Navbar: React.FC = () => {
           ) : (
             // NO LOGEADO
             <>
-              <Button variant="contained" onClick={() => navigate("/register")}>
-                Registrarse
+              <Button variant="contained" onClick={() => navigate("/register")} >
+                <HowToRegIcon style={{ marginRight: "10px"}}/> Registrarse
               </Button>
               <Button variant="contained" onClick={() => navigate("/login")}>
-                Iniciar sesión
+                <LoginIcon style={{ marginRight: "10px"}}/> Iniciar sesión
               </Button>
               <Button
                 variant="contained"

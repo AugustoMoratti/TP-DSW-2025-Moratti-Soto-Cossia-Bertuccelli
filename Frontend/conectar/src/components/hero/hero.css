@@ -19,6 +19,7 @@
 
 .button-register-hero{
   gap: 0.5em;
+  margin-top: -20vh;
   margin-left: 1vh;
   padding: 0.5em 1.5em;
   font-size: 1rem;

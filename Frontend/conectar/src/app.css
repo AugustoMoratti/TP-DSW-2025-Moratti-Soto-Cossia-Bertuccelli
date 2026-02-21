@@ -1,5 +1,9 @@
 body {
   padding-bottom: 40px;
+  font-family: "Zalando Sans Expanded", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
 }
 
 p{

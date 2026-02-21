@@ -1,4 +1,4 @@
-import "./postPage.css";
+import "./PostPage.css";
 import UserCard from "../../components/userCard/userCard";
 import PostBox from "../../components/post/postBox";
 import Post from "../../components/post/post";

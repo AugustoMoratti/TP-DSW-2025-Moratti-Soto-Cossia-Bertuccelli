@@ -1,5 +1,6 @@
-import { useEffect } from "react";
+import { useRef, useEffect } from "react";
 import { animate, splitText, stagger } from "animejs";
+import HowToRegIcon from '@mui/icons-material/HowToReg';
 import heroImage from "../../../assets/plomero.png";
 import logo from "../../../assets/conect.png";
 import img1 from "../../../assets/laburante_1.png";
@@ -10,7 +11,44 @@ import { useNavigate } from "react-router";
 
 const Hero: React.FC = () => {
 
+  const buttonRegisterRef = useRef<HTMLButtonElement | null>(null);
+  const errorTimerRef = useRef<number | null>(null);
+
   const Navigate = useNavigate();
+
+  useEffect(() => {
+    const button = buttonRegisterRef.current;
+    if (!button) return;
+
+    const handleEnter = () => {
+      animate(button, {
+        scale: 1.15,
+        duration: 300,
+        ease: "out(3)",
+      });
+    };
+
+    const handleLeave = () => {
+      animate(button, {
+        scale: 1,
+        duration: 300,
+        ease: "out(3)",
+      });
+    };
+
+    button.addEventListener("mouseenter", handleEnter);
+    button.addEventListener("mouseleave", handleLeave);
+
+    return () => {
+      button.removeEventListener("mouseenter", handleEnter);
+      button.removeEventListener("mouseleave", handleLeave);
+
+      // limpiar timer si existe
+      if (errorTimerRef.current) {
+        window.clearTimeout(errorTimerRef.current);
+      }
+    };
+  }, []);
 
   useEffect(() => {
 
@@ -72,7 +110,7 @@ const Hero: React.FC = () => {
           className="button-register-hero"
           onClick={() => Navigate("/register")}
         >
-          <strong>Registrate</strong> Gratis y empeza a trabajar
+          <HowToRegIcon/> <strong>Registrate</strong> Gratis y empeza a trabajar
         </button>
       </div>
 

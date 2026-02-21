@@ -18,6 +18,7 @@ const Perfil: React.FC = () => {
   const [showSolicitar, setShowSolicitar] = useState(false);
   const [sesionError, setSesionError] = useState('');
   const errorTimerRef = useRef<number | null>(null);
+  const { refreshUser } = useUser();
 
 
   useEffect(() => {
@@ -67,14 +68,19 @@ const Perfil: React.FC = () => {
     }, ms);
   };
 
+
+
   const handlerLogout = async () => {
-    const logout = await handleLogout();
-    if (!logout) {
-      showError('Error al cerrar sesion')
-    } else {
-      navigate('/login')
+    try {
+      await handleLogout();
+
+      await refreshUser(); // 🔥 vuelve a consultar /me
+
+      navigate('/login');
+    } catch {
+      showError('Error al cerrar sesión');
     }
-  }
+  };
 
   const ActDesc = async (newDesc: string) => {
     if (!user) {

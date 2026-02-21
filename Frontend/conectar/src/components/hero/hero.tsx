@@ -1,5 +1,6 @@
 import { useRef, useEffect } from "react";
 import { animate, splitText, stagger } from "animejs";
+import { useUser } from "../../Hooks/useUser.tsx";
 import HowToRegIcon from '@mui/icons-material/HowToReg';
 import heroImage from "../../../assets/plomero.png";
 import logo from "../../../assets/conect.png";
@@ -13,6 +14,8 @@ const Hero: React.FC = () => {
 
   const buttonRegisterRef = useRef<HTMLButtonElement | null>(null);
   const errorTimerRef = useRef<number | null>(null);
+
+  const { user } = useUser();
 
   const Navigate = useNavigate();
 
@@ -105,6 +108,7 @@ const Hero: React.FC = () => {
           <img src={heroImage} alt="Hero" />
         </div>
       </section>
+      {user ? null : (
       <div className="register-container">
         <button
           className="button-register-hero"
@@ -113,6 +117,7 @@ const Hero: React.FC = () => {
           <HowToRegIcon/> <strong>Registrate</strong> Gratis y empeza a trabajar
         </button>
       </div>
+)}
 
       <div>
         <div className="text_info">

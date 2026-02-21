@@ -7,6 +7,8 @@ import { handleLogout } from "../../utils/logout";
 import LoginIcon from '@mui/icons-material/Login';
 import HowToRegIcon from '@mui/icons-material/HowToReg';
 import ContactPageIcon from '@mui/icons-material/ContactPage';
+import SearchIcon from '@mui/icons-material/Search';
+import PersonIcon from '@mui/icons-material/Person';
 import logo from "../../../assets/conect_2_1.png";
 import "./navbar.css";
 
@@ -83,8 +85,11 @@ const Navbar: React.FC = () => {
           {user ? (
             // LOGEADO
             <>
+              <Button variant="contained" onClick={() => navigate("/busqProfesionales")}>
+                <SearchIcon style={{ marginRight: "10px"}}/> Quiero Buscar un Profesional
+              </Button>
               <Button variant="contained" onClick={() => navigate("/perfil")}>
-                Mi Perfil
+                <PersonIcon style={{ marginRight: "10px"}}/> Mi Perfil
               </Button>
 
               <Button

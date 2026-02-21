@@ -384,7 +384,7 @@ export default function EditProfile2() {
             </div>
             {/*________________________________________________________________________________________________________________________*/}
 
-            <div>
+            <div className="div-funciones">
               <h3>Funciones Especiales</h3>
 
               {/* CAMBIAR CLAVE */}
@@ -518,11 +518,11 @@ export default function EditProfile2() {
         </div>
       )}
 
-      <div>
-        <button style={{ marginTop: 40 }} onClick={() => navigate(-1)}>
+      <div className="sepa">
+        <button className="btn_modPerf2" style={{ marginTop: 40 }} onClick={() => navigate(-1)}>
           ← Volver
         </button>
-        <button style={{ marginTop: 40 }} onClick={handleSaveAll}>
+        <button className="btn_modPerf2" style={{ marginTop: 40 }} onClick={handleSaveAll}>
           Guardar cambios
         </button>
 

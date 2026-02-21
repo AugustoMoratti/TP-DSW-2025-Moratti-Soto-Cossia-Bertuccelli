@@ -34,10 +34,12 @@
 
 .div-funciones {
   grid-column: 3;
-  grid-row: 1;
+  grid-row: 1 / span 2; 
+  border-left: 3px solid #114f5a;
+  padding-left: 25px;
   display: flex;
   flex-direction: column;
-  gap: 20px;  
+  gap: 18px;
 }
 
 .div-contacto,
@@ -48,8 +50,8 @@
 
 .div-datos-personales,
 .div-ubicacion {
-  border-top: 3px solid #114f5a;
-  padding-top: 1.5rem;
+  border-top: 2px solid #114f5a;
+  padding-top: 15px;
 }
 
 .div-funciones h3 {
@@ -92,9 +94,9 @@
 }
 
 .card-container-single-card {
-  background-color: #fafafa;
-  border-radius: 12px;
-  padding: 2rem;
+  background-color: #ffffff;
+  border-radius: 75px;
+  padding: 1.5rem 2rem;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   max-width: 2100px;   
   width: 90%;          
@@ -123,7 +125,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 0.8rem;
-  margin-bottom: 20px;
+  margin-bottom: 12px;
 }
 
 .global-error {
@@ -147,8 +149,8 @@
   gap: 0.5em;
   margin-left: 1vh;
   border-radius: 6px;
-  padding: 1em 2.5em;
-  font-size: 1.1rem;
+  padding: 0.7em 1.6em;
+  font-size: 0.95rem;
   font-weight: 500;
   cursor: pointer;
   border: none;
@@ -159,24 +161,49 @@
   background-color: #2ab1b8;
 }
 
-.btn_modPerf2 {
-  background-color: #fff;
-  color: #114f5a;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  margin-left: 1vh;
+.field-label {
+  font-weight: 600;
+  color: #333;
+  margin-right: 10px;
+}
+
+.field-valor {
+  font-style: italic;
+}
+
+.input_field {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #ccc;
   border-radius: 6px;
-  padding: 1em 2.5em;
-  font-size: 1.1rem;
+  font-size: 1rem;
+}
+
+.btn_modPerf2{
+  gap: 0.5em;
+  margin-top: -20vh;
+  margin-left: 1vh;
+  padding: 0.5em 1.5em;
+  font-size: 1rem;
   font-weight: 500;
   cursor: pointer;
-  border: none;
-  transition: background 0.2s ease, color 0.2s ease;
+  background: #ffffff;
+  color: #114f5a;
+  border: 2px solid #ffffff;
+  border-radius: 15px;
+  text-align: center;
+  place-items: center;
+  height: 7.5vh; 
+  display: flex;
+  justify-content: center; 
+  align-items: center;
+  transition: background 0.5s, color 0.5s, border 0.5s;
 }
 
 .btn_modPerf2:hover {
-  background-color: #2ab1b8;
+  background: #b6c1c2;
+  color: #114f5a;
+  border-color: #b6c1c2;
 }
 
 .sepa {
@@ -287,8 +314,8 @@
 
 .profile-grid-single {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 2rem;
+  grid-template-columns: 220px 1fr 1fr;
+  gap: 25px;
   align-items: start;
 }
 

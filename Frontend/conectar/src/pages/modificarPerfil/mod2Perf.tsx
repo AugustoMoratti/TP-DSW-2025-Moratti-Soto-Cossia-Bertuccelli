@@ -247,8 +247,8 @@ export default function EditProfile2() {
               <h3>Datos de Contacto</h3>
 
               <div className="field-with-action">
-                <p>Telefono</p>
-                <p >{user.contacto}</p>
+                <p className="field-label">Telefono</p>
+                <p className="field-valor">{user.contacto}</p>
                 <button
                   type="button"
                   className="btn_modPerf editar-btn"
@@ -263,8 +263,8 @@ export default function EditProfile2() {
               </div>
 
               <div className="field-with-action">
-                <p>Email</p>
-                <p>{user.email}</p>
+                <p className="field-label">Email</p>
+                <p className="field-valor">{user.email}</p>
                 <button
                   type="button"
                   className="btn_modPerf editar-btn"
@@ -285,8 +285,8 @@ export default function EditProfile2() {
               <h3>Ubicacion</h3>
 
               <div className="field-with-action">
-                <p>Localidad</p>
-                <p>{user.localidad.nombre}</p>
+                <p className="field-label">Localidad</p>
+                <p className="field-valor">{user.localidad.nombre}</p>
                 <button
                   type="button"
                   className="btn_modPerf editar-btn"
@@ -301,8 +301,8 @@ export default function EditProfile2() {
               </div>
 
               <div className="field-with-action">
-                <p>Direccion</p>
-                <p>{user.direccion}</p>
+                <p className="field-label">Direccion</p>
+                <p className="field-valor">{user.direccion}</p>
                 <button
                   type="button"
                   className="btn_modPerf editar-btn"
@@ -323,18 +323,18 @@ export default function EditProfile2() {
               <h3>Datos Personales</h3>
 
               <div className="field-with-action">
-                <p>Nombre</p>
-                <p>{user.nombre}</p>
+                <p className="field-label">Nombre</p>
+                <p className="field-valor">{user.nombre}</p>
               </div>
 
               <div className="field-with-action">
-                <p>Apellido</p>
-                <p>{user.apellido}</p>
+                <p className="field-label">Apellido</p>
+                <p className="field-valor">{user.apellido}</p>
               </div>
 
               <div className="field-with-action">
-                <p>Fecha de Nacimiento</p>
-                <p>{user.fechaNac}</p>
+                <p className="field-label">Fecha de Nacimiento</p>
+                <p className="field-valor">{user.fechaNac}</p>
               </div>
 
               {/*MODAL DE CAMBIOS NORMALES*/}
@@ -356,23 +356,25 @@ export default function EditProfile2() {
                       <input
                         type={showCambiosModal}
                         value={nuevoContenido}
+                        placeholder="Ingrese el cambio aqui"
                         onChange={(e) => setNuevoContenido(e.target.value)}
                         className="input_field"
                         required
                       />
-                      <label htmlFor=""> Modifique el campo</label>
-                      <button
-                        type="submit"
-                        className="btn_modPerf"
-                      >
-                        Guardar <SaveIcon />
-                      </button>
-                      <button
-                        className="btn_modPerf"
-                        onClick={() => { setNuevoContenido(""); setShowCambiosModal(null); }}
-                      >
-                        Cerrar <DeleteIcon />
-                      </button>
+                      <div style={{ display: "flex", justifyContent: "flex-end", gap: "10px", marginTop: "15px" }}>
+                        <button
+                          type="submit"
+                          className="btn_modPerf"
+                        >
+                          Guardar <SaveIcon />
+                        </button>
+                        <button
+                          className="btn_modPerf"
+                          onClick={() => { setNuevoContenido(""); setShowCambiosModal(null); }}
+                        >
+                          Cerrar <DeleteIcon />
+                        </button>
+                      </div>
                     </form>
 
 
@@ -403,7 +405,6 @@ export default function EditProfile2() {
                 overlayClassName="modal_overlay_modPerf"
                 ariaHideApp={false}
               >
-                <div className="card">
                   <h2>Claves de Seguridad</h2>
                   <StandardInput
                     label="Clave"
@@ -420,7 +421,7 @@ export default function EditProfile2() {
                   {clave !== confirmarClave && confirmarClave && (
                     <div style={{ color: "red" }}>Las claves no coinciden</div>
                   )}
-                  <div>
+                  <div style={{ display: "flex", justifyContent: "flex-end", gap: "10px", marginTop: "15px" }}>
                     <button
                       className="btn_modPerf"
                       onClick={handleSaveAll}
@@ -434,7 +435,6 @@ export default function EditProfile2() {
                     >
                       Cerrar <DeleteIcon />
                     </button>
-                  </div>
                 </div>
               </Modal>
 
@@ -454,7 +454,6 @@ export default function EditProfile2() {
                 overlayClassName="modal_overlay_modPerf"
                 ariaHideApp={false}
               >
-                <div className="card-modProf">
                   <button
                     type="button"
                     className="close_modPerf"
@@ -478,7 +477,6 @@ export default function EditProfile2() {
                     </button>
                   </div>
                   {!pestaña ? <AddProf /> : <RmProf />}
-                </div>
               </Modal>
 
               {/* HABILIDADES */}
@@ -497,7 +495,6 @@ export default function EditProfile2() {
                 overlayClassName="modal_overlay_modPerf"
                 ariaHideApp={false}
               >
-                <div className="card-modProf">
                   <button
                     type="button"
                     className="close_modPerf"
@@ -507,7 +504,6 @@ export default function EditProfile2() {
                   </button>
                   <h2>Gestionar Habilidades</h2>
                   <HandleHabi />
-                </div>
               </Modal>
               {errorGuardado && <div className="global-error">{errorGuardado}</div>}
               {guardadoExitoso && <div className="global-success">{guardadoExitoso}</div>}
@@ -523,7 +519,7 @@ export default function EditProfile2() {
           ← Volver
         </button>
         <button className="btn_modPerf2" style={{ marginTop: 40 }} onClick={handleSaveAll}>
-          Guardar cambios
+          <SaveIcon />  Guardar cambios
         </button>
 
       </div>

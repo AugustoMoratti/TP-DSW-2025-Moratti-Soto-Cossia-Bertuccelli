@@ -88,7 +88,7 @@ const Navbar: React.FC = () => {
               </Button>
 
               <Button
-                className="header-btn-logout"
+                style={{ backgroundColor: "#e74c3c", color: "#fff", border: "none" }}
                 onClick={handlerLogout}
               >
                 Cerrar Sesión

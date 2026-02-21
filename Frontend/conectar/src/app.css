@@ -2,6 +2,14 @@ body {
   padding-bottom: 40px;
 }
 
+p{
+  font-family: "Zalando Sans Expanded"
+}
+
+h2{
+  font-family: "Poppins"
+}
+
 .home-container {
   font-family: "Poppins", sans-serif;
   background-color: #114f5a;

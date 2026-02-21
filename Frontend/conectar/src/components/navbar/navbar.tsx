@@ -6,6 +6,7 @@ import { useUser } from "../../Hooks/useUser";
 import { handleLogout } from "../../utils/logout";
 import LoginIcon from '@mui/icons-material/Login';
 import HowToRegIcon from '@mui/icons-material/HowToReg';
+import ContactPageIcon from '@mui/icons-material/ContactPage';
 import logo from "../../../assets/conect_2_1.png";
 import "./navbar.css";
 
@@ -74,7 +75,9 @@ const Navbar: React.FC = () => {
       </div>
 
       <div className="right_section">
-        <Button onClick={() => navigate("/contact")}>Contacto</Button>
+        <Button onClick={() => navigate("/contact")} >
+          <ContactPageIcon style={{ marginRight: "10px"}}/> Contacto
+        </Button>
 
         <div className="nav_buttons">
           {user ? (

@@ -6,10 +6,58 @@
 }
 
 .profile-grid-single {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 2rem;
-  align-items: start;
+  display: grid !important;
+  grid-template-columns: 250px 1fr 1fr !important;
+  grid-template-rows: auto auto;
+  gap: 40px 40px !important;
+}
+
+.div-imagen {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.div-contacto {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.div-ubicacion {
+  grid-column: 2;
+  grid-row: 2;
+}
+
+.div-datos-personales {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+.div-funciones {
+  grid-column: 3;
+  grid-row: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;  
+}
+
+.div-contacto,
+.div-funciones {
+  border-left: 3px solid #114f5a;
+  padding-left: 1.5rem;
+}
+
+.div-datos-personales,
+.div-ubicacion {
+  border-top: 3px solid #114f5a;
+  padding-top: 1.5rem;
+}
+
+.div-funciones h3 {
+    margin-bottom: 10px;    
+}
+
+.div-funciones .btn_modPerf {
+    width: fit-content;      
 }
 
 .card-title {
@@ -46,8 +94,11 @@
 .card-container-single-card {
   background-color: #fafafa;
   border-radius: 12px;
-  padding: 1.5rem;
+  padding: 2rem;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  max-width: 2100px;   
+  width: 90%;          
+  margin: 0 auto
 }
 
 .profile-section h3 {
@@ -95,9 +146,9 @@
   justify-content: center;
   gap: 0.5em;
   margin-left: 1vh;
-  padding: 0.5em 1.5em;
   border-radius: 6px;
-  font-size: 0.8rem;
+  padding: 1em 2.5em;
+  font-size: 1.1rem;
   font-weight: 500;
   cursor: pointer;
   border: none;
@@ -106,6 +157,35 @@
 
 .btn_modPerf:hover {
   background-color: #2ab1b8;
+}
+
+.btn_modPerf2 {
+  background-color: #fff;
+  color: #114f5a;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 1vh;
+  border-radius: 6px;
+  padding: 1em 2.5em;
+  font-size: 1.1rem;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.btn_modPerf2:hover {
+  background-color: #2ab1b8;
+}
+
+.sepa {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;       
+  margin-top: 30px;      
+  margin-bottom: 40px; 
 }
 
 .card-modProf,
@@ -207,7 +287,7 @@
 
 .profile-grid-single {
   display: grid;
-  grid-template-columns: 2fr 1fr; /* inputs a la izquierda, imagen a la derecha */
+  grid-template-columns: repeat(3, 1fr);
   gap: 2rem;
   align-items: start;
 }

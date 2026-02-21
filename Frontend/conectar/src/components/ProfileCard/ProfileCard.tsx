@@ -19,6 +19,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
   tipoPage,
   profesiones,
   habilidades,
+  trabajos,
   descripcion = "",
   onUpdateDescripcion,
 }) => {
@@ -301,6 +302,43 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
             )}
           </section>
 
+          {/* CARD HISTORIAL */}
+          {tipoPage == 'suPerfil' && (
+            <div className="historial-card">
+              <h4>Historial de Trabajos</h4>
+
+              {trabajos && trabajos.length > 0 ? (
+                <ul className="historial_trabajo">
+                  {trabajos.map((trabajo, index) => (
+                    <li key={trabajo.id}>
+                      <p>{trabajo.descripcion}</p>
+
+                      <p>
+                        Cliente:{" "}
+                        {trabajo.cliente?.nombre}{" "}
+                        {trabajo.cliente?.apellido}
+                      </p>
+
+                      <p>
+                        Fecha:{" "}
+                        {trabajo.fechaFinalizado
+                          ? new Date(trabajo.fechaFinalizado).toLocaleDateString()
+                          : "Sin fecha"}
+                      </p>
+
+                      {index < trabajos!.length - 1 && (
+                        <div className="divisor"></div>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="no_trabajo">
+                  No tiene trabajos realizados
+                </p>
+              )}
+            </div>
+          )}
         </div>
       </section>
     </div>

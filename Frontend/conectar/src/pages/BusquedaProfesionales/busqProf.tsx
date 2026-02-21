@@ -2,8 +2,11 @@ import { useState } from "react";
 import Header from "../../components/header/header"
 import type { Usuario } from "../../interfaces/usuario.ts";
 import CardProfesional from "../../components/cardsProfesionales/cardsProf.tsx";
+import { animate } from "animejs";
 import "./busqProf.css";
 import { useNavigate } from "react-router";
+
+//HACER ANIMACION DE LAS CARDS
 
 export default function BusquedaProfesionales() {
   const [query, setQuery] = useState('');

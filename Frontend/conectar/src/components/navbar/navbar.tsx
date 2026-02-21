@@ -2,18 +2,19 @@ import { useRef, useEffect } from "react";
 import { animate } from "animejs";
 import { Button } from "../button/Button";
 import { useNavigate } from "react-router";
-import { useUser } from "../../Hooks/useUser.tsx";
-import { handleLogout } from "../../utils/logout.ts";
+import { useUser } from "../../Hooks/useUser";
+import { handleLogout } from "../../utils/logout";
 import logo from "../../../assets/conect_2_1.png";
 import "./navbar.css";
 
 const Navbar: React.FC = () => {
   const logoRef = useRef<HTMLImageElement | null>(null);
+  const errorTimerRef = useRef<number | null>(null);
 
   const navigate = useNavigate();
-
   const { user } = useUser();
 
+  // 🔹 Animación del logo
   useEffect(() => {
     const logoEl = logoRef.current;
     if (!logoEl) return;
@@ -40,8 +41,29 @@ const Navbar: React.FC = () => {
     return () => {
       logoEl.removeEventListener("mouseenter", handleEnter);
       logoEl.removeEventListener("mouseleave", handleLeave);
+
+      // limpiar timer si existe
+      if (errorTimerRef.current) {
+        window.clearTimeout(errorTimerRef.current);
+      }
     };
   }, []);
+
+
+  const handlerLogout = async () => {
+    try {
+      const logout = await handleLogout();
+
+      if (!logout) {
+        console.error("Error al cerrar sesión");
+        return;
+      }
+
+      navigate("/login");
+    } catch (error) {
+      console.error("Error inesperado:", error);
+    }
+  };
 
   return (
     <nav className="navbar">
@@ -61,10 +83,10 @@ const Navbar: React.FC = () => {
               </Button>
 
               <Button
-                variant="contained"
-                onClick={() => navigate("/loginAdmin")}
+                className="header-btn-logout"
+                onClick={handlerLogout}
               >
-                Iniciar sesión Administrador
+                Cerrar Sesión
               </Button>
             </>
           ) : (

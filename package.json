@@ -16,8 +16,8 @@
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
-    "@mikro-orm/core": "5.8.10",
-    "@mikro-orm/mysql": "5.8.10",
+    "@mikro-orm/core": "5.9.8",
+    "@mikro-orm/mysql": "5.9.8",
     "@mikro-orm/sql-highlighter": "1.0.1",
     "@mui/icons-material": "^7.3.4",
     "@mui/material": "^7.3.4",
@@ -26,8 +26,10 @@
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "express": "4.18.2",
+    "helmet": "^8.1.0",
     "jsonwebtoken": "^9.0.2",
     "mercadopago": "^2.12.0",
+    "mime-types": "^3.0.2",
     "multer": "^2.0.2",
     "nodemailer": "^7.0.13",
     "react": "^19.2.0",
@@ -37,7 +39,7 @@
     "uuid": "^13.0.0"
   },
   "devDependencies": {
-    "@mikro-orm/cli": "^5.8.10",
+    "@mikro-orm/cli": "5.9.8",
     "@types/axios": "^0.9.36",
     "@types/cookie-parser": "^1.4.9",
     "@types/cors": "^2.8.19",
@@ -56,5 +58,5 @@
     "typescript": "^5.9.3",
     "vite": "^7.1.9"
   },
-  "packageManager": "pnpm@10.20.0+sha512.cf9998222162dd85864d0a8102e7892e7ba4ceadebbf5a31f9c2fce48dfce317a9c53b9f6464d1ef9042cba2e02ae02a9f7c143a2b438cd93c91840f0192b9dd"
+  "packageManager": "pnpm@10.30.1"
 }

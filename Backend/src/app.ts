@@ -1,5 +1,6 @@
 import express from "express";
 import cors from "cors";
+import helmet from "helmet";
 import cookieParser from "cookie-parser";
 import "reflect-metadata";
 import { orm, syncSchema } from "../DB/orm.js";
@@ -31,6 +32,11 @@ app.use(
 
 app.use(express.json());
 app.use(cookieParser());
+app.use(
+  helmet({
+    crossOriginResourcePolicy: { policy: "cross-origin" },
+  })
+);
 
 app.use("/uploads", express.static(UPLOADS_DIR));
 

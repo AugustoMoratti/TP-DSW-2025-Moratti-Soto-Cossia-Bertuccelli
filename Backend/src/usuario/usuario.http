@@ -12,10 +12,10 @@ POST http://localhost:3000/api/usuario/register
 Content-Type: application/json
 
 {
-  "nombre":"lucas",
+  "nombre":"valen",
   "apellido": "Bertucceli",
   "clave":"1234",
-  "email":"lucas@gmail.com",
+  "email":"valen@gmail.com",
   "direccion":"Lavalle 1120",
   "descripcion":"Soy fan de uml y un crack",
   "contacto": "3416526398",

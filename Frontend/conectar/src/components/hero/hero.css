@@ -9,6 +9,40 @@
   min-height: 80vh; 
 }
 
+.register-container {
+  height: 10vh; 
+  margin-bottom: 10vh;
+  display: flex;
+  justify-content: center; 
+  align-items: center; 
+}
+
+.button-register-hero{
+  gap: 0.5em;
+  margin-left: 1vh;
+  padding: 0.5em 1.5em;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  background: #ffffff;
+  color: #114f5a;
+  border: 2px solid #ffffff;
+  border-radius: 15px;
+  text-align: center;
+  place-items: center;
+  height: 7.5vh; 
+  display: flex;
+  justify-content: center; 
+  align-items: center;
+  transition: background 0.5s, color 0.5s, border 0.5s;
+}
+
+.button-register-hero:hover {
+  background: #b6c1c2;
+  color: #114f5a;
+  border-color: #b6c1c2;
+}
+
 .hero_text p {
   font-size: 1.4rem;
   margin-bottom: 30px;

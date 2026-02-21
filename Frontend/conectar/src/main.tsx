@@ -7,7 +7,7 @@ import BusquedaProfesionales from './pages/BusquedaProfesionales/busqProf.tsx'
 import NotFound from './pages/error/notFound.tsx'
 import Perfil from './pages/MiPerfil/perfil.tsx';
 import SuPerfil from './pages/SuPefil/SuPerfil.tsx'
-import EditProfile from './pages/modificarPerfil/modPerf.tsx'
+import EditProfile2 from './pages/modificarPerfil/mod2Perf.tsx'
 import InternalServerError from './pages/error/error500.tsx';
 import Dashboard from './pages/Dashboard/dashboard.tsx'
 import Terminos from './pages/terminos/terminos.tsx';
@@ -15,12 +15,15 @@ import Contacto from './pages/contacto/contacto.tsx';
 import TrabajosContratados from './pages/trabajo/trabajoContratados.tsx'
 import TrabajosPropios from './pages/trabajo/trabajoPropios.tsx'
 import LoginAdmin from './pages/loginAdmin/loginAdmin.tsx'
+import ForgotPassword from './pages/Password/OlvidarP.tsx'
+import ResetPassword from './pages/Password/CambiarP.tsx'
 
 import { UserProvider } from './providers/UserProvider.tsx'
 import PrivateRoute from './components/PrivateRoute';
 
 import { AdminProvider } from './providers/AdminProvider.tsx'
 import PrivateRouteAdmin from './components/PrivateRouteAdmin.tsx'
+import PostPage from './pages/Posts/PostPage.tsx'
 
 /*
 <Route element={<PrivateRoute />}>   
@@ -43,7 +46,11 @@ createRoot(document.getElementById('root')!).render(
         <Routes>
           <Route path="/" element={<App />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
+
           <Route path="/register" element={<Registro />} />
+
           <Route path="/loginAdmin" element={<LoginAdmin />} />
 
 
@@ -54,10 +61,11 @@ createRoot(document.getElementById('root')!).render(
 
           <Route element={<PrivateRoute />}>
             <Route path="/perfil" element={<Perfil />} />
+            <Route path="/PostPage" element={<PostPage />} />
             <Route path="/trabajosContratados" element={<TrabajosContratados />} />
             <Route path="/trabajosPropios" element={<TrabajosPropios />} />
             <Route path="/SuPerfil/:id" element={<SuPerfil />} />
-            <Route path="/ModPerfil/:id" element={<EditProfile />} />
+            <Route path="/ModPerfil/:id" element={<EditProfile2 />} />
             <Route path="/busqProfesionales" element={<BusquedaProfesionales />} />
           </Route>
 

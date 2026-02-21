@@ -199,6 +199,14 @@ export default function Login() {
             <button
               className="cta-link"
               type="button"
+              onClick={() => Navigate("/forgot-password")}
+            >
+            ¿Olvidaste tu contraseña?
+            </button>
+
+            <button
+              className="cta-link"
+              type="button"
               onClick={() => Navigate("/register")}
             >
               ¿No tiene cuenta? Cree una ahora mismo

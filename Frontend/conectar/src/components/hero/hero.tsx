@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { animate, splitText, stagger } from "animejs";
 import heroImage from "../../../assets/plomero.png";
 import logo from "../../../assets/conect.png";
@@ -6,8 +6,11 @@ import img1 from "../../../assets/laburante_1.png";
 import img2 from "../../../assets/laburante_2.png";
 import img3 from "../../../assets/laburante_3.png";
 import "./hero.css";
+import { useNavigate } from "react-router";
 
 const Hero: React.FC = () => {
+
+  const Navigate = useNavigate();
 
   useEffect(() => {
 
@@ -36,6 +39,12 @@ const Hero: React.FC = () => {
       translateX: { from: "16rem" },
     });
 
+    // BUTTON
+    animate(".button-register-hero", {
+      opacity: { from: 0 },
+      translateY: { from: "2rem" },
+    });
+
   }, []);
 
   return (
@@ -58,6 +67,14 @@ const Hero: React.FC = () => {
           <img src={heroImage} alt="Hero" />
         </div>
       </section>
+      <div className="register-container">
+        <button
+          className="button-register-hero"
+          onClick={() => Navigate("/register")}
+        >
+          <strong>Registrate</strong> Gratis y empeza a trabajar
+        </button>
+      </div>
 
       <div>
         <div className="text_info">
@@ -94,7 +111,7 @@ const Hero: React.FC = () => {
         </div>
       </div>
 
-        <div className="vacio"></div>
+      <div className="vacio"></div>
     </>
   );
 };

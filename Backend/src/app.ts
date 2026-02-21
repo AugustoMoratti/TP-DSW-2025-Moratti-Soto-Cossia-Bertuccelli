@@ -1,5 +1,6 @@
 import express from "express";
 import cors from "cors";
+import helmet from "helmet";
 import cookieParser from "cookie-parser";
 import "reflect-metadata";
 import { orm, syncSchema } from "../DB/orm.js";
@@ -15,6 +16,7 @@ import { postRouter } from "./posteo/post.routes.js";
 import { MPRouter } from "./utils/MP/mp.routes.js";
 import { UPLOADS_DIR } from "./utils/upload.js";
 import { errorHandler } from "./middleware/errorHandler.js";
+import authRoutes from "./auth/auth.routes.js";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -30,6 +32,11 @@ app.use(
 
 app.use(express.json());
 app.use(cookieParser());
+app.use(
+  helmet({
+    crossOriginResourcePolicy: { policy: "cross-origin" },
+  })
+);
 
 app.use("/uploads", express.static(UPLOADS_DIR));
 
@@ -43,6 +50,7 @@ app.use("/api/trabajos", trabajosRouter);
 app.use("/api/resenia", reseniaRouter);
 app.use("/api/post", postRouter);
 app.use("/api/mp", MPRouter);
+app.use("/api/auth", authRoutes);
 app.use(errorHandler);
 
 app.use((_req: Request, res: Response, _next: NextFunction) => {

@@ -325,7 +325,7 @@ async function update(req: Request, res: Response, next: NextFunction) {
     }
 
     const { nombre, apellido, fechaNac, provincia, localidad, clave, email, descripcion, contacto, horarios, direccion, habilidades } = req.body;
-
+    console.log("req.body = ", req.body)
     if (nombre) usuario.nombre = req.body.nombre.trim();
     if (apellido) usuario.apellido = req.body.apellido.trim();
     if (fechaNac) usuario.fechaNac = new Date(req.body.fechaNac).toISOString().split("T")[0];

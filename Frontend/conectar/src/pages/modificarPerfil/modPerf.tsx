@@ -71,7 +71,7 @@ export default function EditProfile() {
     };
     fetchUser();
   }, [navigate]);
-
+  console.log(user)
   const toggleEdit = (field: keyof User) => {
     setEditable(prev => {
       const newEditable: Partial<Record<keyof User, boolean>> = {};
@@ -129,7 +129,6 @@ export default function EditProfile() {
       const data = await res.json();
 
       if (!res.ok) throw new Error(data.error || "Error al subir imagen");
-      setUser((prev) => ({ ...(prev ?? {}), fotoUrl: data.data.fotoUrl || prev?.fotoUrl }));
       setSuccessMsg("Imagen actualizada correctamente.");
     } catch (err) {
       console.error(err);
@@ -453,6 +452,8 @@ export default function EditProfile() {
                 <HandleHabi />
               </div>
             </Modal>
+
+
 
             <button className="btn_modPerf" style={{ marginTop: 40 }} onClick={() => navigate(-1)}>
               ← Volver

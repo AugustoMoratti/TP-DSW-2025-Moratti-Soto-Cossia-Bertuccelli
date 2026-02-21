@@ -40,25 +40,23 @@ const SuPerfil: React.FC = () => {
         <button className="header-btn" onClick={() => navigate("/perfil")}>Mi Perfil</button>
       </Header>
 
-      <main>
+      <main className="perfil-main">
         <div className="profile-wrapper">
-          {user && (
-            <ProfileCard
-              id={user.id}
-              nombre={user.nombre}
-              apellido={user.apellido}
-              email={user.email}
-              contacto={user.contacto}
-              localidad={user.localidad.nombre}
-              provincia={user.provincia.nombre}
-              profesiones={user.profesiones ?? []}
-              habilidades={user.habilidades ?? []}
-              fotoUrl={user.fotoUrl}
-              tipoPage="suPerfil"
-              trabajos={user.trabajos ?? []}
-              descripcion={user?.descripcion}
-            />
-          )}
+          <ProfileCard
+            id={user.id}
+            nombre={user.nombre}
+            apellido={user.apellido}
+            email={user.email}
+            contacto={user.contacto}
+            localidad={user.localidad.nombre}
+            provincia={user.provincia.nombre}
+            profesiones={user.profesiones ?? []}
+            habilidades={user.habilidades ?? []}
+            fotoUrl={user.fotoUrl}
+            tipoPage="suPerfil"
+            trabajos={user.trabajos ?? []}
+            descripcion={user?.descripcion}
+          />
         </div>
       </main>
     </div>

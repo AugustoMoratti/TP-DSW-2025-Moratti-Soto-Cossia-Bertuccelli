@@ -33,7 +33,8 @@
 }
 
 .card-titlee {
-  font-family: 'Cormorant Garamond', serif;
+  font-family: "Ruda", sans-serif;
+  font-optical-sizing: auto;
   font-size: 2rem;
   color: #114f5a;
   letter-spacing: 2px;
@@ -83,4 +84,6 @@
   font-size: 0.9rem;
   color: #114f5a;
   text-align: center;
+  font-family: "Atkinson", sans-serif;
+  font-optical-sizing: auto;
 }

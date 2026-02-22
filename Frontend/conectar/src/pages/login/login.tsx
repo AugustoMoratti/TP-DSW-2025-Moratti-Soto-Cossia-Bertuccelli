@@ -212,15 +212,6 @@ export default function Login() {
               ¿No tiene cuenta? Cree una ahora mismo
             </button>
 
-            <Button
-              type="submit"
-              variant="contained"
-              icon={<CheckIcon />}
-              disabled={loading}
-            >
-              {loading ? "Ingresando..." : "Enviar"}
-            </Button>
-
             {error && (
               <div
                 style={{ color: "red", marginTop: 10, textAlign: "center" }}
@@ -228,6 +219,17 @@ export default function Login() {
                 {error}
               </div>
             )}
+          </div>
+          <div>
+            <Button
+              type="submit"
+              className="btn-submit"
+              variant="contained"
+              icon={<CheckIcon />}
+              disabled={loading}
+            >
+              {loading ? "Ingresando..." : "Enviar"}
+            </Button>
           </div>
         </form>
       </div>

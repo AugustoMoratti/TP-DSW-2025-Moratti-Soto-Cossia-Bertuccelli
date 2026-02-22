@@ -1,23 +1,60 @@
 import React from 'react';
 import Header from '../../components/header/header';
 import { useNavigate } from 'react-router-dom';
+import { useUser } from "../../Hooks/useUser";
+import { handleLogout } from "../../utils/logout";
 import './contact.css';
 import fotoCossia from "../../../assets/Cossia.jpg";
 import fotoBertu from "../../../assets/Bertu.png";
 import fotoMora from "../../../assets/Mora.png";
+import { Button } from '../../components/button/Button.tsx';
 
 const Contacto: React.FC = () => {
+
+  const user = useUser();
+
   const navigate = useNavigate();
+
+  const handlerLogout = async () => {
+    try {
+      const logout = await handleLogout();
+
+      if (!logout) {
+        console.error("Error al cerrar sesión");
+        return;
+      }
+
+      navigate("/login");
+    } catch (error) {
+      console.error("Error inesperado:", error);
+    }
+  };
 
   return (
     <div className="app-container">
       <Header bgColor="#ffffff" logoSrc="/assets/conect_2_1.png">
-        <button className="header-btn" onClick={() => navigate("/register")}>
-          Register
-        </button>
-        <button className="header-btn" onClick={() => navigate("/login")}>
-          Login
-        </button>
+      { !user ? (
+        <>
+          <button className="header-btn" onClick={() => navigate("/register")}>
+            Register
+          </button>
+          <button className="header-btn" onClick={() => navigate("/login")}>
+            Login
+          </button>
+        </>
+        ) : (
+          <>
+            <button className="header-btn" onClick={() => navigate("/perfil")}>
+              Mi Perfil
+            </button>
+            <Button
+              style={{ backgroundColor: "#e74c3c", color: "#fff", border: "none" }}
+              onClick={handlerLogout}
+            >
+              Cerrar Sesión
+            </Button>
+          </>
+        )}
       </Header>
 
       <div className='card_about'>

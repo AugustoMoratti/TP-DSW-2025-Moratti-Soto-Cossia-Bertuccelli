@@ -1,4 +1,6 @@
 import React from "react";
+import { useRef, useEffect } from "react";
+import { animate } from "animejs";
 import "./Button.css";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -12,7 +14,9 @@ export const Button: React.FC<ButtonProps> = ({
   variant = "contained",
   icon,
   ...props
-}) => (
+}) => 
+  (
+    
   <button
     className={`custom_btn ${variant === "outlined" ? "outlined" : "contained"}`}
     {...props}

@@ -11,17 +11,26 @@ const Post = ({ post }: PostProps) => {
       <div className="post-header">
         <div className="avatarrr" />
         <div>
-          <h4>Apellido, Nombre</h4>
-          <p>Localidad, Provincia</p>
+          <h4>{post.user.nombre} , {post.user.apellido}</h4>
+          <p>{post.user.localidad.nombre}, {post.user.localidad.provincia.nombre}</p>
         </div>
       </div>
 
       <div className="post-content">
+
         <p>
-          Para entender la historia de Five Nights at Freddy's hay que olvidarse
-          que estos son juegos y tomarlos como ciencia ficción.
+          {post.texto}
         </p>
-        <div className="post-image" />
+
+        {post.imagenUrl && (
+          <img
+            src={post.imagenUrl}
+            alt={'Imagen del posteo'}
+            className="post-image"
+          />
+        )
+        }
+
       </div>
     </div>
   );

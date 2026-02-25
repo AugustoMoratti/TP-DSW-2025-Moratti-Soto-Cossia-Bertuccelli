@@ -23,7 +23,31 @@ function sanitizePosteoInput(req: Request, res: Response, next: NextFunction) {
   next()
 }
 
-//terminado
+async function getPosteos(req: Request, res: Response) {
+  const em = orm.em.fork();
+
+  const { cursor, limit = 5 } = req.query;
+
+  const where = cursor
+    ? { fechaCreacion: { $lt: new Date(cursor as string) } } // $lt -> Less Than , Menor que
+    : {};
+
+  const posteos = await em.find(Posteo, where, {
+    populate: ["user"],
+    orderBy: { fechaCreacion: "DESC" },
+    limit: Number(limit)
+  });
+
+  res.json({
+    posteos,
+    nextCursor:
+      posteos.length > 0
+        ? posteos[posteos.length - 1].fechaCreacion
+        : null
+  });
+};
+
+
 async function findAll(req: Request, res: Response, next: NextFunction) {
   const em = orm.em.fork();
 
@@ -183,5 +207,5 @@ async function remove(req: Request, res: Response, next: NextFunction) {
 
 
 
-export { sanitizePosteoInput, findAll, findOne, add, findAllForUser, update, remove }
+export { sanitizePosteoInput, findAll, findOne, add, findAllForUser, update, remove, getPosteos }
 

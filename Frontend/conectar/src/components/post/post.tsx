@@ -1,6 +1,11 @@
 import "./post.css";
+import type { PosteoType } from "../../interfaces/post.ts";
 
-const Post = () => {
+type PostProps = {
+  post: PosteoType;
+};
+
+const Post = ({ post }: PostProps) => {
   return (
     <div className="post-card">
       <div className="post-header">

@@ -1,9 +1,63 @@
+import { useEffect, useState, useRef, useCallback } from "react";
 import "./PostPage.css";
 import UserCard from "../../components/userCard/userCard";
 import PostBox from "../../components/post/postBox";
 import Post from "../../components/post/post";
+import type { PosteoType } from "../../interfaces/post.ts";
 
 const PostPage = () => {
+
+  const [posteos, setPosteos] = useState<PosteoType[]>([]);
+  const [cursor, setCursor] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
+
+  // useCallback hace que la referencia de una función sea estable entre renders, 
+  // siempre que sus dependencias no cambien.
+
+  const loadPosteos = useCallback(async () => {
+    if (loading || !hasMore) return;
+
+    setLoading(true);
+
+    const url = cursor
+      ? `http://localhost:3000/api/posteos?limit=5&cursor=${cursor}`
+      : `http://localhost:3000/api/posteos?limit=5`;
+
+    const res = await fetch(url, { credentials: "include" });
+    const data = await res.json();
+
+    if (data.posteos.length === 0) {
+      setHasMore(false);
+    } else {
+      setPosteos(prev => [...prev, ...data.posteos]);
+      setCursor(data.nextCursor);
+    }
+
+    setLoading(false);
+  }, [cursor, loading, hasMore]);
+
+  useEffect(() => {
+    loadPosteos();
+  }, [loadPosteos]);
+
+  const observer = useRef<IntersectionObserver | null>(null);
+
+  const lastPostRef = useCallback((node: HTMLDivElement | null) => {
+    if (loading) return;
+
+    if (observer.current) observer.current.disconnect();
+
+    observer.current = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting && hasMore) {
+        loadPosteos();
+      }
+    });
+
+    if (node) observer.current.observe(node);
+  }, [loading, hasMore, loadPosteos]);
+
+
   return (
     <div className="post-page">
       <div className="post-layout">
@@ -18,14 +72,25 @@ const PostPage = () => {
 
         <main className="feedd">
           <PostBox />
-          <Post />
-          <Post />
+
+          {posteos.map((post, index) => {
+            if (index === posteos.length - 1) {
+              return (
+                <div ref={lastPostRef} key={post.id}>
+                  <Post post={post} />
+                </div>
+              );
+            }
+            return <Post key={post.id} post={post} />;
+          })}
+
+          {loading && <p>Cargando...</p>}
+          {!hasMore && <p>No hay más posteos</p>}
         </main>
 
       </div>
     </div>
   );
 };
-//conectar el backend para darle a post y usercard datos reales. ver donde ubicar la pagina, si luego del login o donde
 
 export default PostPage;

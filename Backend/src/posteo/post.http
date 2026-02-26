@@ -1,24 +1,21 @@
 ### GET ALL
-GET http://localhost:3000/api/admin
+GET http://localhost:3000/api/post
 
 
 ### POST
-# @name createAdmin
-POST http://localhost:3000/api/admin/register
+# @name createPost
+POST http://localhost:3000/api/post/
 Content-Type: application/json
 
 {
-  "user": "admin",
-  "email" : "admin@gmail.com" ,
-  "clave": "1234"
+  "user": "0d406f9e-4fb0-41a2-8faa-324b21e48fa1",
+  "texto" : "Este es el septimo posteo que hago"
 }
 
 ###
-POST http://localhost:3000/api/admin/register
+DELETE http://localhost:3000/api/post/bcb9eeb7-631c-4cae-a5b7-e94712ec2720
 Content-Type: application/json
 
 {
-  "user":"admin",
-  "email":"augus@gmail.com",
-  "clave":"1234"
+  
 }

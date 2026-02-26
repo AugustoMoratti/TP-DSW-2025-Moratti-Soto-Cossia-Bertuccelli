@@ -12,7 +12,7 @@ const Post = ({ post }: PostProps) => {
         <div className="avatarrr" />
         <div>
           <h4>{post.user.nombre} , {post.user.apellido}</h4>
-          <p>{post.user.localidad.nombre}, {post.user.localidad.provincia.nombre}</p>
+          <p>{post.user.localidad}, {post.user.provincia}</p>
         </div>
       </div>
 

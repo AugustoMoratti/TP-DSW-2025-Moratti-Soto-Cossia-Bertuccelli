@@ -4,7 +4,7 @@ import { sanitizePosteoInput, findAll, findOne, add, findAllForUser, update, rem
 export const postRouter = Router()
 
 
-postRouter.get('/', findAll)
+//postRouter.get('/', findAll)
 postRouter.get('/', getPosteos)
 postRouter.get('/:id', findOne)
 postRouter.get('/:emailUser', findAllForUser)

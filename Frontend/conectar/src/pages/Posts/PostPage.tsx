@@ -21,17 +21,20 @@ const PostPage = () => {
     setLoading(true);
 
     const url = cursor
-      ? `http://localhost:3000/api/posteos?limit=5&cursor=${cursor}`
-      : `http://localhost:3000/api/posteos?limit=5`;
+      ? `http://localhost:3000/api/post?limit=5&cursor=${cursor}`
+      : `http://localhost:3000/api/post?limit=5`;
+
 
     const res = await fetch(url, { credentials: "include" });
     const data = await res.json();
 
-    if (data.posteos.length === 0) {
-      setHasMore(false);
-    } else {
+    if (data.posteos.length > 0) {
       setPosteos(prev => [...prev, ...data.posteos]);
       setCursor(data.nextCursor);
+    }
+
+    if (data.posteos.length < 5) {
+      setHasMore(false);
     }
 
     setLoading(false);
@@ -39,7 +42,7 @@ const PostPage = () => {
 
   useEffect(() => {
     loadPosteos();
-  }, [loadPosteos]);
+  }, []);
 
   const observer = useRef<IntersectionObserver | null>(null);
 
@@ -52,6 +55,8 @@ const PostPage = () => {
       if (entries[0].isIntersecting && hasMore) {
         loadPosteos();
       }
+    }, {
+      threshold: 1
     });
 
     if (node) observer.current.observe(node);

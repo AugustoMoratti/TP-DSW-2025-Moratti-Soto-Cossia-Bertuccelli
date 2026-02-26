@@ -6,11 +6,7 @@ export interface PosteoType {
   user: {
     nombre: string;
     apellido: string;
-    localidad: {
-      nombre: string;
-      provincia: {
-        nombre: string;
-      };
-    };
+    localidad: string;
+    provincia: string;
   };
-}
+};

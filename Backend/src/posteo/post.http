@@ -12,8 +12,17 @@ Content-Type: application/json
   "texto" : "Este es el septimo posteo que hago"
 }
 
+### GET
+GET http://localhost:3000/api/post?limit=5
+Content-Type: application/json
+
+{
+  
+}
+
+
 ###
-DELETE http://localhost:3000/api/post/bcb9eeb7-631c-4cae-a5b7-e94712ec2720
+DELETE http://localhost:3000/api/post/b7c2fd80-19a7-4263-8b73-3d456b6789f6
 Content-Type: application/json
 
 {

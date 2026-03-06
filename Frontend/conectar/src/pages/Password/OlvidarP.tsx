@@ -1,8 +1,12 @@
 import { useState } from "react";
 import "./OlvidarCambiarP.css";
+import { useNavigate } from "react-router-dom";
 
 export default function ForgotPassword() {
+
   const [email, setEmail] = useState("");
+
+  const Navigate = useNavigate();
 
   const send = async () => {
     await fetch("http://localhost:3000/api/auth/forgot-password", {
@@ -16,9 +20,10 @@ export default function ForgotPassword() {
 
   return (
     <div className="main-bgg">
+      <img src="../assets/conect_1.png" alt="Logo" style={{ height: '150px', cursor: 'pointer' }} onClick={() => Navigate("/")} />
       <div className="cardd">
         <div className="card-headerr">
-          <h2 className="card-titlee">Recuperar contraseña</h2>
+          <h2 className="card-titlee"> RECUPERAR CONTRASEÑA</h2>
         </div>
 
         <div className="card-contentt">

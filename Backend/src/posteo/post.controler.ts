@@ -23,7 +23,31 @@ function sanitizePosteoInput(req: Request, res: Response, next: NextFunction) {
   next()
 }
 
-//terminado
+async function getPosteos(req: Request, res: Response) {
+  const em = orm.em.fork();
+
+  const { cursor, limit = 5 } = req.query;
+
+  const where = cursor
+    ? { fechaCreacion: { $lt: new Date(cursor as string) } } // $lt -> Less Than , Menor que
+    : {};
+
+  const posteos = await em.find(Posteo, where, {
+    populate: ["user"],
+    orderBy: { fechaCreacion: "DESC" },
+    limit: Number(limit)
+  });
+
+  res.json({
+    posteos,
+    nextCursor:
+      posteos.length > 0
+        ? posteos[posteos.length - 1].fechaCreacion
+        : null
+  });
+};
+
+
 async function findAll(req: Request, res: Response, next: NextFunction) {
   const em = orm.em.fork();
 
@@ -107,16 +131,17 @@ async function add(req: Request, res: Response, next: NextFunction) {
   const em = orm.em.fork();
 
   try {
-    const { idUser, texto, imagenUrl } = req.body.sanitizedInput
+    const { user, texto, imagenUrl } = req.body.sanitizedInput
 
-    if (typeof idUser !== 'string') {
+    if (typeof user !== 'string') {
       throw new HttpError(400, 'INVALID_INPUT', 'El id del usuario debe ser un string')
     }
-    if (typeof imagenUrl !== 'string') {
+    console.log("imagenUrl =", imagenUrl)
+    if (typeof imagenUrl !== 'string' && imagenUrl !== undefined) {
       throw new HttpError(400, 'INVALID_INPUT', 'La url de la imagen debe ser un string')
     }
-    const id = idUser
-    const user = em.getReference(Usuario, id)
+    const id = user
+    const userEntity = em.getReference(Usuario, id)
     //Uso getReference porque el id sera enviado desde el front utilizando las cookies, no hay forma que no exista
 
     if (typeof texto !== 'string' || texto === "") {
@@ -125,7 +150,7 @@ async function add(req: Request, res: Response, next: NextFunction) {
 
     const post = new Posteo()
     post.texto = texto
-    post.user = user
+    post.user = userEntity
     if (imagenUrl !== '') post.imagenUrl = imagenUrl
 
     em.persist(post)
@@ -183,5 +208,5 @@ async function remove(req: Request, res: Response, next: NextFunction) {
 
 
 
-export { sanitizePosteoInput, findAll, findOne, add, findAllForUser, update, remove }
+export { sanitizePosteoInput, findAll, findOne, add, findAllForUser, update, remove, getPosteos }
 

@@ -53,13 +53,8 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
     return `${day}/${month}/${year}`;
   }, [hoy]);
 
-  const provinciaNombre = useMemo(() => {
-    return typeof provincia === "string" ? provincia : provincia?.nombre ?? "";
-  }, [provincia]);
-
-  const localidadNombre = useMemo(() => {
-    return typeof localidad === "string" ? localidad : localidad?.nombre ?? "";
-  }, [localidad]);
+  const provinciaNombre = provincia ?? "";
+  const localidadNombre = localidad ?? "";
 
   const handleEmpezarTrabajo = async () => {
     setError(null);

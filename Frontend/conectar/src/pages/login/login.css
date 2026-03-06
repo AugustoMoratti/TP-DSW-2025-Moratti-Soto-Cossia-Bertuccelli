@@ -16,6 +16,25 @@ background {
   min-height: 100vh;
 }
 
+.btn-submit {
+  background-color: #114f5a;
+  color: #ffffff;
+  font-weight: 500;
+  border: none;
+  font-size: 1rem;
+  padding: 0.5rem 1.5rem;
+  margin-top: 1rem;
+  align-items: center;
+  width: 100%;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn-submit:hover {
+  background-color: #2ab1b8;
+}
+
 .logo_login {
   width: 250px;
   height: auto;

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import type { Provincia } from "../../../interfaces/provincia";
+import "./provincia.css";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 export default function RmProv() {
@@ -81,7 +82,9 @@ export default function RmProv() {
   return (
     <>
       {loading && provincia.length === 0 ? (
-        <p>Cargando...</p>
+        <div className="loading-container">
+          <div className="spinner"></div>
+        </div>
       ) : provincia.length === 0 ? (
         <p>No hay provincias registradas.</p>
       ) : (

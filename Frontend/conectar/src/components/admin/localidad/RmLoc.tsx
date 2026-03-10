@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import type { Localidad } from "../../../interfaces/localidad.ts";
+import "./localidad.css"
 import DeleteIcon from "@mui/icons-material/Delete";
 
 export default function RmLoc() {
@@ -113,7 +114,7 @@ export default function RmLoc() {
       {error && <p className="error">{error}</p>}
 
       <div>
-        {loading && localidad.length === 0 && <p>Cargando...</p>}
+        {loading && localidad.length === 0 && <div className="loading-container"> <div className="spinner"></div> </div>}
         {!loading && localidad.length === 0 && <p>No hay localidades registradas.</p>}
 
         <ul className="provincia-list two-columns">

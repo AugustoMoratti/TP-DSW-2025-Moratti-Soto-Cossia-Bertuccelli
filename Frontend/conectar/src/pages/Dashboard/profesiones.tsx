@@ -12,7 +12,7 @@ export default function SolicProfesiones() {
 
   return (
     <>
-      {loading && <p>Cargando profesiones...</p>}
+      {loading && <div className="loading-container"> <div className="spinner"></div> </div>}
 
       {error && (
         <>

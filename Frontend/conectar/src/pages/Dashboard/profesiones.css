@@ -6,6 +6,28 @@
   margin: 15px 0;
 }
 
+.loading-container {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.spinner {
+  width: 70px;
+  height: 70px;
+  border: 6px solid #e0e0e0;
+  border-top: 6px solid #114f5a;
+  border-radius: 50%;
+  animation: spin 0.9s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 .container-table {
   box-sizing: border-box;
   width: 100%;

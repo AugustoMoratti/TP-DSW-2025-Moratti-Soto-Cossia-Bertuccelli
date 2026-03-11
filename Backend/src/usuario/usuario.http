@@ -58,7 +58,7 @@ Content-Type: application/json
 DELETE http://localhost:3000/api/usuario/{{id}}
 
 ### Eliminar un usuario (DELETE - eliminar recurso)
-DELETE http://localhost:3000/api/usuario/dcccec7e-1828-4a76-982f-57f825ee8a80
+DELETE http://localhost:3000/api/usuario/6594b8d5-5955-4109-b374-c039c0da9833
 
 /* La extension REST Client, nos permite hacer peticiones sin la 
 la necesidad del navegador, por ejemplo meter un archivo reversionado

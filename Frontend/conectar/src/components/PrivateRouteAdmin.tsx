@@ -11,7 +11,12 @@ const PrivateRouteAdmin = () => {
     }
   }, []);
 
-  if (loading) return <div>Cargando...</div>; // opcional mientras verifica
+  if (loading)     
+    return (
+      <div className="loading-container">
+        <div className="spinner"></div>
+      </div>
+    );
 
   return admin ? <Outlet /> : <Navigate to="/loginAdmin" replace />;
 };

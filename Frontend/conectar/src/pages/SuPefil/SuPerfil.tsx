@@ -30,7 +30,12 @@ const SuPerfil: React.FC = () => {
     })();
   }, [id, navigate]);
 
-  if (loading) return <p>Cargando perfil...</p>;
+  if (loading)     
+    return (
+      <div className="loading-container">
+        <div className="spinner"></div>
+      </div>
+    );
   if (!user) return <p>No se encontró el usuario.</p>;
 
   return (

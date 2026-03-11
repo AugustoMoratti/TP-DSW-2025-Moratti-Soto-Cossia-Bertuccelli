@@ -89,7 +89,10 @@ const PostPage = () => {
             return <Post key={post.id} post={post} />;
           })}
 
-          {loading && <p>Cargando...</p>}
+          {loading && <div className="loading-container">
+              <div className="spinner"></div>
+            </div>
+          }
           {!hasMore && <p>No hay más posteos</p>}
         </main>
 

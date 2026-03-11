@@ -107,7 +107,13 @@ const Perfil: React.FC = () => {
     }
   };
   // ✅ A partir de acá, retornos normales
-  if (userLoading || loadingUsuario) return <div>Cargando perfil...</div>;
+    if (userLoading || loadingUsuario) {
+      return (
+        <div className="loading-container">
+          <div className="spinner"></div>
+        </div>
+      );
+    }
   if (sesionError) return <div>{sesionError}...</div>;
   if (!user) {
     return <Navigate to="/login" replace />;

@@ -48,7 +48,10 @@ export default function BusquedaProfesionales() {
           onKeyDown={e => e.key === 'Enter' && handleBuscarUsuarios()} />
 
 
-        {cargando && <p>cargando...</p>}
+        {cargando && <div className="loading-container">
+            <div className="spinner"></div>
+          </div>
+        }
 
         <div className="container-perfiles">
           <CardProfesional usuarios={usuarios} />

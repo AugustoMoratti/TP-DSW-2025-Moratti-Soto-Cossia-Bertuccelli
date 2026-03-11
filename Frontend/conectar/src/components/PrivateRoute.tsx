@@ -5,7 +5,12 @@ const PrivateRoute = () => {
   const { user, loading } = useUser();
 
 
-  if (loading) return <div>Cargando...</div>; // opcional mientras verifica
+  if (loading)     
+    return (
+      <div className="loading-container">
+        <div className="spinner"></div>
+      </div>
+    ); // opcional mientras verifica
 
   return user ? <Outlet /> : <Navigate to="/login" replace />;
 };

@@ -41,6 +41,18 @@
   border-bottom: 2px solid #2ab1b8;
 }
 
+.input_field:disabled {
+  background-color: rgba(0, 0, 0, 0.05);
+  color: #999;
+  border-bottom: 2px solid #ccc;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.input_field:disabled ~ .input_label {
+  color: #999;
+}
+
 .input_label.floating {
   top: -23px;
   left: -20px;

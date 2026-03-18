@@ -27,6 +27,8 @@ export const authMiddleware = async (req: Request, res: Response, next: NextFunc
     if (!user) { throw new HttpError(401, 'UNHAUTORIZED', 'Usuario no existe') }
     //if (!user) return res.status(401).json({ error: 'Usuario no existe' });
 
+    if (user.baneado) throw new HttpError(403, 'BANNED', 'Tu cuenta está suspendida');
+
     req.user = user;
     next();
   } catch (error) {

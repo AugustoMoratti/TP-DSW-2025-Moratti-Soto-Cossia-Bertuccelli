@@ -75,5 +75,13 @@ export class Usuario extends BaseEntity2 {
   @Property({ nullable: true })
   resetTokenExp?: Date;
 
+  @Property({ default: false })
+  baneado!: boolean;
+
+  @Property({ nullable: true })
+  motivoBaneo?: string;
+
+  @Property({ nullable: true })
+  fechaBaneo?: Date;
 
 }

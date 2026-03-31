@@ -10,6 +10,7 @@ import { useLoginAttempts } from "../../Hooks/useLoginAttempts.tsx";
 import "./loginAdmin.css";
 //import { useUser } from "../../Hooks/useUser.tsx";
 import { useAdmin } from "../../Hooks/useAdmin.tsx";
+import { animate } from "animejs/animation";
 
 export default function LoginAdmin() {
   const [admin, setAdmin] = useState<string>("");
@@ -167,9 +168,25 @@ export default function LoginAdmin() {
     }
   };
 
+  const handleEnter = () => {
+    animate(".logo1", {
+      scale: 1.15,
+      duration: 300,
+      ease: "out(3)",
+    });
+  };
+
+  const handleLeave = () => {
+    animate(".logo1", {
+      scale: 1,
+      duration: 300,
+      ease: "out(3)",
+    });
+  };
+
   return (
     <section className="main-bg">
-      <img src="../assets/conect_1.png" alt="Logo" style={{ height: '150px', cursor: 'pointer' }} onClick={() => Navigate("/")} />
+      <img src="../assets/conect_1.png" alt="Logo" style={{ height: '150px', cursor: 'pointer' }} onClick={() => Navigate("/")} className="logo1" onMouseEnter={handleEnter} onMouseLeave={handleLeave}/>
       <div className="card">
         <form onSubmit={handleLogin}>
           <div className="card-header">

@@ -4,6 +4,7 @@ import CheckIcon from '@mui/icons-material/Check';
 import { useNavigate } from "react-router-dom";
 import { useState } from 'react';
 import './register.css';
+import { animate } from 'animejs/animation';
 
 export default function Registro() {
   const [nombre, setNombre] = useState("");
@@ -116,9 +117,25 @@ export default function Registro() {
     navigate("/login");
   };
 
+  const handleEnter = () => {
+    animate(".logo1", {
+      scale: 1.15,
+      duration: 300,
+      ease: "out(3)",
+    });
+  };
+
+  const handleLeave = () => {
+    animate(".logo1", {
+      scale: 1,
+      duration: 300,
+      ease: "out(3)",
+    });
+  };
+
   return (
     <section className="main-bg">
-      <img src="../assets/conect_1.png" alt="Logo" style={{ height: '150px', cursor: 'pointer' }} onClick={() => navigate("/")} />
+      <img src="../assets/conect_1.png" alt="Logo" style={{ height: '150px', cursor: 'pointer' }} onClick={() => navigate("/")} className="logo1" onMouseEnter={handleEnter} onMouseLeave={handleLeave}/>
 
       <div className="card">
         <div className="card-header">

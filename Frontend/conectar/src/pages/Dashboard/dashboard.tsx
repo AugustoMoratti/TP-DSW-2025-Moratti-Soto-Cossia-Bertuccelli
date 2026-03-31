@@ -7,7 +7,7 @@ import Usuarios from "../../components/admin/usuario.tsx"
 import Baneo from "../../components/admin/ban.tsx"
 import "./dashboard.css";
 
-type Page = "provincias" | "localidades" | "usuarios" | "profesiones" | "baneo";
+type Page = "provincias" | "localidades" | "usuarios" | "profesiones" | "Suspension de usuarios";
 
 export default function Dashboard() {
   const [active, setActive] = useState<Page>("profesiones");
@@ -20,7 +20,7 @@ export default function Dashboard() {
         return <Localidades />;
       case "usuarios":
         return <Usuarios />;
-      case "baneo":
+      case "Suspension de usuarios":
         return <Baneo />;
       case "profesiones":
       default:
@@ -58,11 +58,11 @@ export default function Dashboard() {
           </button>
 
           <button
-            className={`action-btn ${active === "baneo" ? "active" : ""}`}
-            onClick={() => setActive("baneo")}
-            aria-pressed={active === "baneo"}
+            className={`action-btn ${active === "Suspension de usuarios" ? "active" : ""}`}
+            onClick={() => setActive("Suspension de usuarios")}
+            aria-pressed={active === "Suspension de usuarios"}
           >
-            Baneo
+            Suspension de usuarios
           </button>
 
           <button

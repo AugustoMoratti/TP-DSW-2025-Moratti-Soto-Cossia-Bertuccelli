@@ -6,13 +6,17 @@ import { animate } from "animejs";
 import "./busqProf.css";
 import { useNavigate } from "react-router";
 
-//HACER ANIMACION DE LAS CARDS
 
 export default function BusquedaProfesionales() {
   const [query, setQuery] = useState('');
   const [cargando, setCargando] = useState(false);
   const [usuarios, setUsuarios] = useState<Usuario[]>([]);
   const navigate = useNavigate();
+
+  animate(".container-perfiles", {
+    opacity: { from: 0, to: 1 },
+    translateY: { from: "7rem", to : 0 },
+  });
 
   const handleBuscarUsuarios = () => {
     if (!query.trim()) return;

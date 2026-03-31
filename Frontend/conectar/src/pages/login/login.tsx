@@ -10,6 +10,7 @@ import ErrorModal from "../../components/ErrorModal/ErrorModal.tsx";
 import { useLoginAttempts } from "../../Hooks/useLoginAttempts.tsx";
 import "./login.css";
 import { useUser } from "../../Hooks/useUser.tsx";
+import { animate } from "animejs/animation";
 
 export default function Login() {
   const [usuario, setUsuario] = useState<string>("");
@@ -195,15 +196,30 @@ export default function Login() {
     }
   };
 
+      const handleEnter = () => {
+      animate(".logo1", {
+        scale: 1.15,
+        duration: 300,
+        ease: "out(3)",
+      });
+    };
+
+    const handleLeave = () => {
+      animate(".logo1", {
+        scale: 1,
+        duration: 300,
+        ease: "out(3)",
+      });
+    };
+
   return (
     <section className="main-bg">
-      <img src="../assets/conect_1.png" alt="Logo" style={{ height: '150px', cursor: 'pointer' }} onClick={() => Navigate("/")} />
+      <img src="../assets/conect_1.png" className="logo1" alt="Logo" style={{ height: '150px', cursor: 'pointer' }} onClick={() => Navigate("/")} onMouseEnter={handleEnter} onMouseLeave={handleLeave}/>
       <div className="card">
         <form onSubmit={handleLogin}>
           <div className="card-header">
             <span className="card-title">INICIE SESIÓN</span>
           </div>
-
           <div className="card-content">
             <StandardInput
               label="Usuario"

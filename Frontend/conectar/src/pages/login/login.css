@@ -35,6 +35,13 @@ background {
   background-color: #2ab1b8;
 }
 
+.btn-submit:disabled {
+  background-color: #ccc;
+  color: #666;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
 .logo_login {
   width: 250px;
   height: auto;
@@ -124,6 +131,13 @@ background {
   text-decoration: underline;
 }
 
+.cta-link:disabled {
+  color: #ccc;
+  cursor: not-allowed;
+  opacity: 0.6;
+  text-decoration: underline;
+}
+
 .recuerdame-container {
   display: flex;
   flex-direction: row;
@@ -143,6 +157,11 @@ background {
 
 #recuerdame:hover {
   cursor: pointer;
+}
+
+#recuerdame:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
 }
 
 .password-container {

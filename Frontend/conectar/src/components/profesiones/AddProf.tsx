@@ -116,7 +116,10 @@ export default function AddProf() {
         </button>
       </div>
 
-      {loading && <p className="loading">Cargando profesiones...</p>}
+      {loading && <div className="loading-container">
+          <div className="spinner"></div>
+        </div>
+      }
       {error && <p style={{ color: '#c00' }}>{error}</p>}
       {mensajeOk && <p style={{ color: '#2ab1b8' }}>{mensajeOk}</p>}
 

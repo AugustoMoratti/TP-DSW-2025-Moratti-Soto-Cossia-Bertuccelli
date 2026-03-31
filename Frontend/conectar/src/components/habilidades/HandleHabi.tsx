@@ -93,7 +93,12 @@ export default function HandleHabi() {
     await handleSave(habilidades, "Habilidades guardadas correctamente ✅");
   };
 
-  if (loading) return <p>Cargando usuario...</p>;
+  if (loading)     
+    return (
+      <div className="loading-container">
+        <div className="spinner"></div>
+      </div>
+    );
   if (error) return <p style={{ color: '#dc2626' }}>{error}</p>;
 
   return (

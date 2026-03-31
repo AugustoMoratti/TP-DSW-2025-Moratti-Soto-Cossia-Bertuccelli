@@ -1,0 +1,78 @@
+.usuarios-container {
+  padding: 20px;
+  width: 100%;
+}
+
+.usuarios-title {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: #1e3a3a;
+}
+
+.usuario-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f4f6f8;
+  border-radius: 10px;
+  padding: 12px 16px;
+  margin-bottom: 10px;
+  transition: 0.2s;
+  gap: 20px;
+}
+
+.usuario-row:hover {
+  background-color: #e8ecef;
+}
+
+.usuario-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.usuario-nombre {
+  font-weight: 500;
+  color: #1e1e1e;
+}
+
+.usuario-estado {
+  font-size: 14px;
+}
+
+.baneado {
+  color: #d32f2f;
+  font-weight: 500;
+}
+
+.activo {
+  color: #2e7d32;
+}
+
+.usuario-actions button {
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: 0.2s;
+}
+
+.btn-ban {
+  background-color: #d32f2f;
+  color: white;
+}
+
+.btn-ban:hover {
+  background-color: #b71c1c;
+}
+
+.btn-unban {
+  background-color: #2e7d32;
+  color: white;
+}
+
+.btn-unban:hover {
+  background-color: #1b5e20;
+}

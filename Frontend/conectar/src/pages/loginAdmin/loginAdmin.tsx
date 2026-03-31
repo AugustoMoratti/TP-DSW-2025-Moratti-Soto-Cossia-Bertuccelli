@@ -5,6 +5,8 @@ import CheckIcon from "@mui/icons-material/Check";
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { useNavigate } from "react-router-dom";
+import ErrorModal from "../../components/ErrorModal/ErrorModal.tsx";
+import { useLoginAttempts } from "../../Hooks/useLoginAttempts.tsx";
 import "./loginAdmin.css";
 //import { useUser } from "../../Hooks/useUser.tsx";
 import { useAdmin } from "../../Hooks/useAdmin.tsx";
@@ -14,12 +16,15 @@ export default function LoginAdmin() {
   const [clave, setClave] = useState<string>("");
 
   const [error, setError] = useState<string>("");
+  const [errorVisible, setErrorVisible] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [showPsw, setShowPsw] = useState(false);
   const Navigate = useNavigate();
   const errorTimerRef = useRef<number | null>(null);
 
-  const { refreshAdmin } = useAdmin()
+  const { refreshAdmin } = useAdmin();
+  const { attempts, recordFailedAttempt, resetAttempts, getAttempsRemaining } =
+    useLoginAttempts();
   // cleanup on unmount: limpiar timers
   useEffect(() => {
     return () => {
@@ -35,10 +40,11 @@ export default function LoginAdmin() {
     }
 
     setError(msg);
+    setErrorVisible(true);
 
     // autoocultar error después de ms
     errorTimerRef.current = window.setTimeout(() => {
-      setError("");
+      setErrorVisible(false);
       errorTimerRef.current = null;
     }, ms);
   };
@@ -54,6 +60,15 @@ export default function LoginAdmin() {
   const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    // Verificar si está bloqueado
+    if (attempts.isBlocked) {
+      showError(
+        `Has intentado muchas veces. Intenta mas tarde.`,
+        5000
+      );
+      return;
+    }
+
     // Validaciones simples
     if (!admin || !clave) {
       showError("⚠️ Por favor, completá email y contraseña.");
@@ -63,7 +78,6 @@ export default function LoginAdmin() {
       showError("⚠️ Usá un correo @gmail.com");
       return;
     }
-    setError("");
     setLoading(true);
 
     const controller = new AbortController();
@@ -90,13 +104,30 @@ export default function LoginAdmin() {
       }
 
       if (!res.ok) {
-        // mostrar error y permitir reintento
-        showError(data?.error || "Admin email o contraseña incorrecta", 5000);
+        // Registrar intento fallido
+        recordFailedAttempt();
+        const attemptsRemaining = getAttempsRemaining();
+
+        if (attemptsRemaining > 0) {
+          showError(
+            `${data?.error || "Admin email o contraseña incorrecta"}.`,
+            5000
+          );
+        } else {
+          showError(
+            "Muchos intentos erroneos.",
+            5000
+          );
+        }
+
         setLoading(false);
         return;
       }
 
       setLoading(false);
+
+      // Login exitoso: limpiar intentos
+      resetAttempts();
 
       // Verificar sesión con /me
       try {
@@ -111,10 +142,23 @@ export default function LoginAdmin() {
       Navigate('/dashboard');
 
     } catch (err: unknown) {
+      recordFailedAttempt();
+      const attemptsRemaining = getAttempsRemaining();
+
       if (err instanceof DOMException && err.name === "AbortError") {
         showError("⏱️ Tiempo de espera agotado. Inténtalo de nuevo.", 5000);
       } else {
-        showError("⚠️ Error de conexión con el servidor.", 5000);
+        if (attemptsRemaining > 0) {
+          showError(
+            `Error de conexión con el servidor.`,
+            5000
+          );
+        } else {
+          showError(
+            "❌ Muchos intentos erroneos.",
+            5000
+          );
+        }
       }
       setLoading(false);
     } finally {
@@ -139,6 +183,7 @@ export default function LoginAdmin() {
               value={admin}
               autoComplete="username"
               onChange={onChangeStr(setAdmin)}
+              disabled={attempts.isBlocked}
             />
             <div className="password-container">
               <StandardInput
@@ -147,6 +192,7 @@ export default function LoginAdmin() {
                 value={clave}
                 autoComplete="current-password"
                 onChange={onChangeStr(setClave)}
+                disabled={attempts.isBlocked}
               />
               {showPsw ? (
                 <VisibilityIcon className="psw-icon" onClick={() => setShowPsw(false)} />
@@ -161,21 +207,20 @@ export default function LoginAdmin() {
               type="submit"
               variant="contained"
               icon={<CheckIcon />}
-              disabled={loading}
+              disabled={loading || attempts.isBlocked}
             >
-              {loading ? "Ingresando..." : "Enviar"}
+              {loading ? "Ingresando..." : attempts.isBlocked ? `Bloqueado (${attempts.timeRemaining}s)` : "Enviar"}
             </Button>
-
-            {error && (
-              <div
-                style={{ color: "red", marginTop: 10, textAlign: "center" }}
-              >
-                {error}
-              </div>
-            )}
           </div>
         </form>
       </div>
+
+      <ErrorModal
+        message={error}
+        isVisible={errorVisible}
+        onClose={() => setErrorVisible(false)}
+        duration={5000}
+      />
     </section>
   );
 };

@@ -4,9 +4,10 @@ import SolicProfesiones from "./profesiones.tsx";
 import Provincias from "../../components/admin/provincia/provincia.tsx"
 import Localidades from "../../components/admin/localidad/localidad.tsx"
 import Usuarios from "../../components/admin/usuario.tsx"
+import Baneo from "../../components/admin/ban.tsx"
 import "./dashboard.css";
 
-type Page = "provincias" | "localidades" | "usuarios" | "profesiones";
+type Page = "provincias" | "localidades" | "usuarios" | "profesiones" | "baneo";
 
 export default function Dashboard() {
   const [active, setActive] = useState<Page>("profesiones");
@@ -19,6 +20,8 @@ export default function Dashboard() {
         return <Localidades />;
       case "usuarios":
         return <Usuarios />;
+      case "baneo":
+        return <Baneo />;
       case "profesiones":
       default:
         return <SolicProfesiones />;
@@ -52,6 +55,14 @@ export default function Dashboard() {
             aria-pressed={active === "usuarios"}
           >
             Administradores
+          </button>
+
+          <button
+            className={`action-btn ${active === "baneo" ? "active" : ""}`}
+            onClick={() => setActive("baneo")}
+            aria-pressed={active === "baneo"}
+          >
+            Baneo
           </button>
 
           <button

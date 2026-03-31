@@ -195,7 +195,9 @@ export default function EditProfile2() {
 
     <section>
       {loading && (
-        <div style={{ color: "white", fontSize: "0.9em" }}>Estamos cargando el contenido</div>
+        <div className="loading-container">
+          <div className="spinner"></div>
+        </div>
       )}
       {/*________________________________________________________________________________________________________________________*/}
 

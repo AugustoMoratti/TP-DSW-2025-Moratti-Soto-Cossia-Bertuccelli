@@ -9,7 +9,7 @@
 ### Repositorios
 * [BackEnd](https://github.com/AugustoMoratti/TP-Desarrollo-de-Software/tree/main/Backend)
 
-* [FrontEnd](https://github.com/AugustoMoratti/TP-Desarrollo-de-Software/tree/main/Frontend)
+* [FrontEnd](https://github.com/AugustoMoratti/TP-Desarrollo-de-Software/tree/main/Frontend/conectar)
 
 ## Tema
 
@@ -17,7 +17,8 @@
 Nuestra propuesta se basa en una aplicacion online que logre conectar dos personas, un primer usuario que requiere de un servicio (como puede ser un electricista) y otro tipo de usuario que ofrezca sus servicios, en la cual los usuarios puedan encontrar, postular y puntuar profesionales que estén ofreciendo sus servicios. estos servicios están orientado a oficios como electricista, plomero o carpintero, todos con su debida acreditación y con reseñas de usuarios. La idea es crear un lugar donde se pueden encontrar profesionales con validaciones de usuarios previos con sus experiencia.
 
 ### Diagrama Entidad-Relacion (D-E-R)
-<img width="731" height="631" alt="DSW Rev drawio" src="https://github.com/user-attachments/assets/acaaf108-5e31-48e6-9f75-ddcf82b0d4db" />
+<img width="783" height="591" alt="DSW1 1 drawio" src="https://github.com/user-attachments/assets/9ab4147e-2d3e-4483-ac5b-346705a44c09" />
+
 
 
 ## Alcance Funcional

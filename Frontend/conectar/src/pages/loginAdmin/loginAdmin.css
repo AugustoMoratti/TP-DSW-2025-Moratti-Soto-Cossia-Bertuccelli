@@ -105,6 +105,13 @@ background {
   text-decoration: underline;
 }
 
+.cta-link:disabled {
+  color: #ccc;
+  cursor: not-allowed;
+  opacity: 0.6;
+  text-decoration: underline;
+}
+
 .recuerdame-container {
   display: flex;
   flex-direction: row;
@@ -126,6 +133,11 @@ background {
   cursor: pointer;
 }
 
+#recuerdame:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
 .password-container {
   position: relative;
   width: 100%;
@@ -138,6 +150,14 @@ background {
   transform: translateY(-50%);
   cursor: pointer;
   color: #114f5a;
+}
+
+/* Estilos para botones deshabilitados */
+button:disabled {
+  background-color: #ccc !important;
+  color: #666 !important;
+  cursor: not-allowed;
+  opacity: 0.6;
 }
 
 

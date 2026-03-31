@@ -119,7 +119,12 @@ export default function RmProf() {
   };
 
   // 🔹 Renderizado
-  if (loading) return <p>Cargando profesiones...</p>;
+  if (loading)     
+    return (
+      <div className="loading-container">
+        <div className="spinner"></div>
+      </div>
+    );
   if (error) return <p className="error">{error}</p>;
 
   return (

@@ -6,6 +6,8 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { useNavigate } from "react-router-dom";
 import { getCookie, setCookie, deleteCookie } from "../../utils/cookies.ts";
+import ErrorModal from "../../components/ErrorModal/ErrorModal.tsx";
+import { useLoginAttempts } from "../../Hooks/useLoginAttempts.tsx";
 import "./login.css";
 import { useUser } from "../../Hooks/useUser.tsx";
 
@@ -14,12 +16,15 @@ export default function Login() {
   const [clave, setClave] = useState<string>("");
   const [recuerdame, setRecuerdame] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
+  const [errorVisible, setErrorVisible] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [showPsw, setShowPsw] = useState(false);
   const Navigate = useNavigate();
   const errorTimerRef = useRef<number | null>(null);
 
-  const { refreshUser } = useUser()
+  const { refreshUser } = useUser();
+  const { attempts, recordFailedAttempt, resetAttempts, getAttempsRemaining } =
+    useLoginAttempts();
   // cleanup on unmount: limpiar timers
   useEffect(() => {
     return () => {
@@ -35,10 +40,11 @@ export default function Login() {
     }
 
     setError(msg);
+    setErrorVisible(true);
 
     // autoocultar error después de ms
     errorTimerRef.current = window.setTimeout(() => {
-      setError("");
+      setErrorVisible(false);
       errorTimerRef.current = null;
     }, ms);
   };
@@ -68,6 +74,15 @@ export default function Login() {
   const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    // Verificar si está bloqueado
+    if (attempts.isBlocked) {
+      showError(
+        `Has intentado muchas veces. Intenta mas tarde.`,
+        5000
+      );
+      return;
+    }
+
     if (recuerdame) {
       setCookie("usuario", usuario, 30, {
         sameSite: "Lax",
@@ -83,7 +98,6 @@ export default function Login() {
       deleteCookie("recuerdame");
     }
 
-
     // Validaciones simples
     if (!usuario || !clave) {
       showError("⚠️ Por favor, completá email y contraseña.");
@@ -93,7 +107,6 @@ export default function Login() {
       showError("⚠️ Usá un correo @gmail.com");
       return;
     }
-    setError("");
     setLoading(true);
 
     const controller = new AbortController();
@@ -120,13 +133,30 @@ export default function Login() {
       }
 
       if (!res.ok) {
-        // mostrar error y permitir reintento
-        showError(data?.error || "Usuario o contraseña incorrecta", 5000);
+        // Registrar intento fallido
+        recordFailedAttempt();
+        const attemptsRemaining = getAttempsRemaining();
+
+        if (attemptsRemaining > 0) {
+          showError(
+            `${data?.error || "Usuario o contraseña incorrecta"}. `,
+            5000
+          );
+        } else {
+          showError(
+            "Has agotado los 3 intentos. Intenta de nuevo en 1 minuto.",
+            5000
+          );
+        }
+
         setLoading(false);
         return;
       }
 
       setLoading(false);
+
+      // Login exitoso: limpiar intentos
+      resetAttempts();
 
       // Verificar sesión con /me
       try {
@@ -139,12 +169,24 @@ export default function Login() {
       }
 
       Navigate('/perfil');
-
     } catch (err: unknown) {
+      recordFailedAttempt();
+      const attemptsRemaining = getAttempsRemaining();
+
       if (err instanceof DOMException && err.name === "AbortError") {
-        showError("⏱️ Tiempo de espera agotado. Inténtalo de nuevo.", 5000);
+        showError("Tiempo de espera agotado. Inténtalo de nuevo.", 5000);
       } else {
-        showError("⚠️ Error de conexión con el servidor.", 5000);
+        if (attemptsRemaining > 0) {
+          showError(
+            `⚠️ Error de conexión con el servidor. Intentos restantes: ${attemptsRemaining}`,
+            5000
+          );
+        } else {
+          showError(
+            "❌ Has agotado los 3 intentos. Intenta de nuevo en 1 minuto.",
+            5000
+          );
+        }
       }
       setLoading(false);
     } finally {
@@ -168,6 +210,7 @@ export default function Login() {
               value={usuario}
               autoComplete="username"
               onChange={onChangeStr(setUsuario)}
+              disabled={attempts.isBlocked}
             />
             <div className="password-container">
               <StandardInput
@@ -176,6 +219,7 @@ export default function Login() {
                 value={clave}
                 autoComplete="current-password"
                 onChange={onChangeStr(setClave)}
+                disabled={attempts.isBlocked}
               />
               {showPsw ? (
                 <VisibilityIcon className="psw-icon" onClick={() => setShowPsw(false)} />
@@ -191,6 +235,7 @@ export default function Login() {
               id="recuerdame"
               checked={recuerdame}
               onChange={() => setRecuerdame((v) => !v)}
+              disabled={attempts.isBlocked}
             />
             <label htmlFor="recuerdame">Recuérdame</label>
           </div>
@@ -200,25 +245,19 @@ export default function Login() {
               className="cta-link"
               type="button"
               onClick={() => Navigate("/forgot-password")}
+              disabled={attempts.isBlocked}
             >
-            ¿Olvidaste tu contraseña?
+              ¿Olvidaste tu contraseña?
             </button>
 
             <button
               className="cta-link"
               type="button"
               onClick={() => Navigate("/register")}
+              disabled={attempts.isBlocked}
             >
               ¿No tiene cuenta? Cree una ahora mismo
             </button>
-
-            {error && (
-              <div
-                style={{ color: "red", marginTop: 10, textAlign: "center" }}
-              >
-                {error}
-              </div>
-            )}
           </div>
           <div>
             <Button
@@ -226,13 +265,20 @@ export default function Login() {
               className="btn-submit"
               variant="contained"
               icon={<CheckIcon />}
-              disabled={loading}
+              disabled={loading || attempts.isBlocked}
             >
-              {loading ? "Ingresando..." : "Enviar"}
+              {loading ? "Ingresando..." : attempts.isBlocked ? `Bloqueado (${attempts.timeRemaining}s)` : "Enviar"}
             </Button>
           </div>
         </form>
       </div>
+
+      <ErrorModal
+        message={error}
+        isVisible={errorVisible}
+        onClose={() => setErrorVisible(false)}
+        duration={5000}
+      />
     </section>
   );
 };

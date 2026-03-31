@@ -395,4 +395,54 @@ async function remove(req: Request, res: Response, next: NextFunction) {
   }
 }
 
-export { findAll, findOne, add, update, remove, sanitizeUsuarioInput, buscarUsuarios, deleteProfesion }
+async function banUsuario(req: Request, res: Response, next: NextFunction) {
+  try {
+    const { id } = req.params;
+    const { motivo } = req.body;
+
+    const usuario = await em.findOne(Usuario, { id });
+    if (!usuario) {
+      throw new HttpError(404, 'NOT_FOUND', 'Usuario no encontrado');
+    }
+
+    usuario.baneado = true;
+    usuario.motivoBaneo = motivo ?? 'Sin motivo especificado';
+    usuario.fechaBaneo = new Date();
+
+    await em.flush();
+
+    res.status(200).json({
+      message: 'Usuario baneado correctamente',
+      data: usuario
+    });
+
+  } catch (error) {
+    next(error);
+  }
+}
+
+async function unbanUsuario(req: Request, res: Response, next: NextFunction) {
+  try {
+    const { id } = req.params;
+
+    const usuario = await em.findOne(Usuario, { id });
+    if (!usuario) {
+      throw new HttpError(404, 'NOT_FOUND', 'Usuario no encontrado');
+    }
+
+    usuario.baneado = false;
+    usuario.motivoBaneo = undefined;
+    usuario.fechaBaneo = undefined;
+
+    await em.flush();
+
+    res.status(200).json({
+      message: 'Usuario desbaneado correctamente'
+    });
+
+  } catch (error) {
+    next(error);
+  }
+}
+
+export { findAll, findOne, add, update, remove, sanitizeUsuarioInput, buscarUsuarios, deleteProfesion, banUsuario, unbanUsuario}

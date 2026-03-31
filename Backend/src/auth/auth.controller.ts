@@ -138,6 +138,9 @@ export const login = async (req: Request, res: Response) => {
     const ok = await comparePassword(clave, usuario.clave);
     if (!ok) return res.status(401).json({ error: 'Credenciales inválidas' });
 
+    if (usuario.baneado) return res.status(403).json({ error: 'Tu cuenta está suspendida' });
+
+
     const token = signToken({ id: usuario.id!, email: usuario.email });
 
     res.cookie('userToken', token, {

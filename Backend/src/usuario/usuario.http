@@ -12,16 +12,16 @@ POST http://localhost:3000/api/usuario/register
 Content-Type: application/json
 
 {
-  "nombre":"valen",
+  "nombre":"Marcos Meridius",
   "apellido": "Bertucceli",
   "clave":"1234",
-  "email":"valen@gmail.com",
-  "direccion":"Lavalle 1120",
+  "email":"decimo@gmail.com",
+  "direccion":"Roma",
   "descripcion":"Soy fan de uml y un crack",
   "contacto": "3416526398",
   "horarios":"08:00 a 12:00 y 15:00 a 19:00",
-  "provincia": "Ciudad Autónoma de Buenos Aires",
-  "localidad": "Retiro",
+  "provincia": "Santa Fe",
+  "localidad": "Rosario",
   "fechaNac": "08/04/2004"
 }
 

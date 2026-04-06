@@ -11,6 +11,7 @@ export interface Usuario {
   fechaNac?: string;
   provincia: { nombre: string };
   localidad: { nombre: string };
+  descripcion?: string;
   profesiones?: Profesion[];
   direccion: string;
   trabajos: Trabajo[];

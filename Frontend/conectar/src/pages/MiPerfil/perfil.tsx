@@ -123,6 +123,9 @@ const Perfil: React.FC = () => {
     <div className="app-container">
       <Header bgColor="#ffffff" logoSrc="/assets/conect_2_1.png">
         {/* Abrir modal en vez de pasar el componente como handler */}
+        <Button className="header-btn" onClick={() => navigate("/PostPage")}>
+          Postear
+        </Button>
         <Button className="header-btn" onClick={() => setShowSolicitar(true)}>
           Quiero solicitar una nueva profesion
         </Button>

@@ -21,6 +21,15 @@
   font-size: 20px;
 }
 
+.emoji-btn {
+  background: none;
+  border: none;
+  height: 40px;
+  width: 40px;
+  cursor: pointer;
+  transition: transform 0.1s ease;
+}
+
 .post-actions .sharee {
   margin-left: auto;
 }
@@ -43,6 +52,17 @@
 
 .publish-btn:active {
   transform: scale(0.98);
+}
+
+/* Emoji Picker Animation */
+.emoji-picker-container {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-in-out;
+}
+
+.emoji-picker-container.show {
+  max-height: 400px; /* Adjust based on picker height */
 }
 
 /* Post */

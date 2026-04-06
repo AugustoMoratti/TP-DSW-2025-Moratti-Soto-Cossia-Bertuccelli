@@ -69,7 +69,7 @@ async function buscarUsuarios(req: Request, res: Response, next: NextFunction) {
 
 async function findAll(req: Request, res: Response, next: NextFunction) {
   try {
-    const usuarios = await em.find(Usuario, {}, { populate: ['profesiones', 'localidad'] })
+    const usuarios = await em.find(Usuario, {}, { populate: ['profesiones', 'localidad', 'provincia'] })
     if (usuarios.length === 0) {
       res
         .status(200)

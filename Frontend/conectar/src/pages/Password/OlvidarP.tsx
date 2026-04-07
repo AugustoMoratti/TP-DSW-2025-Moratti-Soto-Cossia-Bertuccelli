@@ -3,21 +3,50 @@ import "./OlvidarCambiarP.css";
 import { useNavigate } from "react-router-dom";
 import FastRewindIcon from '@mui/icons-material/FastRewind';
 import { animate } from "animejs/animation";
+import ErrorModal from "../../components/ErrorModal/ErrorModal";
 
 export default function ForgotPassword() {
 
   const [email, setEmail] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [showError, setShowError] = useState(false);
 
   const Navigate = useNavigate();
 
   const send = async () => {
-    await fetch("http://localhost:3000/api/auth/forgot-password", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email }),
-    });
+    if (!email) {
+      setError("Por favor ingresa tu email");
+      setShowError(true);
+      return;
+    }
 
-    alert("Si el mail existe, se envió el correo");
+    try {
+      const response = await fetch("http://localhost:3000/api/auth/forgot-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setError(data.message || "Error al enviar el correo");
+        setShowError(true);
+        return;
+      }
+
+      if (data.message === "Mail enviado") {
+        alert("Correo enviado correctamente");
+        setEmail("");
+      } else {
+        // Si el email no existe, mostrar error
+        setError("El email no está registrado en el sistema");
+        setShowError(true);
+      }
+    } catch (err) {
+      setError("Error al conectar con el servidor");
+      setShowError(true);
+    }
   };
 
     const handleEnter = () => {
@@ -68,6 +97,11 @@ export default function ForgotPassword() {
 
         </div>
       </div>
+      <ErrorModal 
+        message={error || ""} 
+        isVisible={showError} 
+        onClose={() => setShowError(false)} 
+      />
     </div>
   );
 }

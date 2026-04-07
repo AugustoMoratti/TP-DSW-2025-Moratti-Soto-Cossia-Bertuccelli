@@ -35,6 +35,5 @@ const Post = ({ post }: PostProps) => {
     </div>
   );
 };
-//cambiar h4 y p cuando se conecte con el back
 
 export default Post;

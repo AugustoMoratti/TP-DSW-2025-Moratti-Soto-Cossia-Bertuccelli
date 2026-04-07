@@ -61,6 +61,10 @@ app.use((_req: Request, res: Response, _next: NextFunction) => {
 
 await syncSchema(); //never in production
 
+console.log("1")
+
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
+console.log("2")

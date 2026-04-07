@@ -19,6 +19,8 @@ import { errorHandler } from "./middleware/errorHandler.js";
 import authRoutes from "./auth/auth.routes.js";
 import dotenv from "dotenv";
 
+const PORT = process.env.PORT || 3000;
+
 dotenv.config();
 
 const app = express();
@@ -59,6 +61,6 @@ app.use((_req: Request, res: Response, _next: NextFunction) => {
 
 await syncSchema(); //never in production
 
-app.listen(3000, () => {
-  console.log("Server runnning on http://localhost:3000/");
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });

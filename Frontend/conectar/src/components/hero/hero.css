@@ -14,13 +14,14 @@
   margin-bottom: 10vh;
   display: flex;
   justify-content: center; 
-  align-items: center; 
+  align-items: center;
+  gap: 2rem;
+  flex-wrap: wrap;
 }
 
 .button-register-hero{
   gap: 0.5em;
   margin-top: -20vh;
-  margin-left: 1vh;
   padding: 0.5em 1.5em;
   font-size: 1rem;
   font-weight: 500;
@@ -36,6 +37,7 @@
   justify-content: center; 
   align-items: center;
   transition: background 0.5s, color 0.5s, border 0.5s;
+  white-space: nowrap;
 }
 
 .button-register-hero:hover {

@@ -2,6 +2,8 @@ import { useRef, useEffect } from "react";
 import { animate, splitText, stagger } from "animejs";
 import { useUser } from "../../Hooks/useUser.tsx";
 import HowToRegIcon from '@mui/icons-material/HowToReg';
+import AddIcon from '@mui/icons-material/Add';
+import SearchIcon from '@mui/icons-material/Search';
 import heroImage from "../../../assets/plomero.png";
 import logo from "../../../assets/conect.png";
 import img1 from "../../../assets/laburante_1.png";
@@ -108,16 +110,31 @@ const Hero: React.FC = () => {
           <img src={heroImage} alt="Hero" />
         </div>
       </section>
-      {user ? null : (
       <div className="register-container">
-        <button
-          className="button-register-hero"
-          onClick={() => Navigate("/register")}
-        >
-          <HowToRegIcon/> <strong>Registrate</strong> Gratis y empeza a trabajar
-        </button>
+        {user ? (
+          <>
+            <button
+              className="button-register-hero"
+              onClick={() => Navigate("/busqProfesionales")}
+            >
+              <SearchIcon/> <strong>Buscar</strong> profesionales
+            </button>
+            <button
+              className="button-register-hero"
+              onClick={() => Navigate("/PostPage")}
+            >
+              <AddIcon/> <strong>Ponete</strong>a postear con gente
+            </button>
+          </>
+        ) : (
+          <button
+            className="button-register-hero"
+            onClick={() => Navigate("/register")}
+          >
+            <HowToRegIcon/> <strong>Registrate</strong> Gratis y empeza a trabajar
+          </button>
+        )}
       </div>
-)}
 
       <div>
         <div className="text_info">

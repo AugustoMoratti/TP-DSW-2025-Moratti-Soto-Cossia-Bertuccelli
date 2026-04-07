@@ -86,7 +86,7 @@ async function findAll(req: Request, res: Response, next: NextFunction) {
 async function findOne(req: Request, res: Response, next: NextFunction) {
   try {
     const id = req.params.id
-    const usuario = await em.findOne(Usuario, { id }, { populate: ['profesiones', 'trabajos', 'trabajos.resenia', 'provincia', 'localidad'] })
+    const usuario = await em.findOne(Usuario, { id }, { populate: ['profesiones', 'trabajos', 'trabajos.resenia', 'provincia', 'localidad', 'posteos'] })
     if (!usuario) {
       throw new HttpError(404, 'NOT_FOUND', 'No se encontró el Usuario')
     }
@@ -445,4 +445,4 @@ async function unbanUsuario(req: Request, res: Response, next: NextFunction) {
   }
 }
 
-export { findAll, findOne, add, update, remove, sanitizeUsuarioInput, buscarUsuarios, deleteProfesion, banUsuario, unbanUsuario}
+export { findAll, findOne, add, update, remove, sanitizeUsuarioInput, buscarUsuarios, deleteProfesion, banUsuario, unbanUsuario }

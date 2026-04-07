@@ -1,8 +1,8 @@
 import "./post.css";
-import type { PosteoType } from "../../interfaces/post.ts";
+import type { Posteo } from "../../interfaces/post.ts";
 
 type PostProps = {
-  post: PosteoType;
+  post: Posteo;
 };
 
 const Post = ({ post }: PostProps) => {
@@ -35,6 +35,5 @@ const Post = ({ post }: PostProps) => {
     </div>
   );
 };
-//cambiar h4 y p cuando se conecte con el back
 
 export default Post;

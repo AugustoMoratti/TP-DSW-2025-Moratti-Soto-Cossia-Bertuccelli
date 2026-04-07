@@ -1,4 +1,4 @@
-export interface PosteoType {
+export interface Posteo {
   id: number;
   texto: string;
   imagenUrl?: string;

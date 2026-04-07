@@ -7,8 +7,8 @@ export default function AddProv () {
   const [nombreProv, setNombreProv] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  const [provincia, setProvincia] = useState<Provincia[]>([]);
-  const [reload, setReload] = useState(0);
+  const [_provincia, setProvincia] = useState<Provincia[]>([]);
+  const [_reload, setReload] = useState(0);
   const [showModal, setShowModal] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {

@@ -7,7 +7,7 @@ export default function CreatePerfilAdmin() {
   const [clave, setClave] = useState('');
   const [user, setUser] = useState('');
   const [email, setEmail] = useState('');
-  const [error, setError] = useState('');
+  const [_error, setError] = useState('');
   const [showModal, setShowModal] = useState(false);
 
   const addAdmin = async (e: React.FormEvent<HTMLFormElement>) => {

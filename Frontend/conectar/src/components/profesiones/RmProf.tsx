@@ -5,7 +5,7 @@ import "./AddProf.css";
 
 export default function RmProf() {
   const [user, setUser] = useState<{ id?: number; profesiones?: Profesion[] }>({});
-  const [prof, setProf] = useState<Profesion[]>([]);
+  const [_prof, setProf] = useState<Profesion[]>([]);
   const [seleccionadas, setSeleccionadas] = useState<Set<string>>(new Set());
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");

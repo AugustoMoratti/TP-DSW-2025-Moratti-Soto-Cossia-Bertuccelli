@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import ReportGmailerrorredIcon from '@mui/icons-material/ReportGmailerrorred';
 import "./ErrorModal.css";
 

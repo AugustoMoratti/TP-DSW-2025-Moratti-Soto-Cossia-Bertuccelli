@@ -8,8 +8,8 @@ export default function AddLoc() {
   const [prov, setProv] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  const [localidad, setLocalidad] = useState<Localidad[]>([]);
-  const [reload, setReload] = useState(0);
+  const [_localidad, setLocalidad] = useState<Localidad[]>([]);
+  const [_reload, setReload] = useState(0);
   const [showModal, setShowModal] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {

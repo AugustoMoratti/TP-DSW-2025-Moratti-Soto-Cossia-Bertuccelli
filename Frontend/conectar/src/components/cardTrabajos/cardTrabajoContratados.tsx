@@ -16,7 +16,7 @@ interface TrabajoCardProps {
 
 export default function TrabajoCardContratados({ trabajo, tipo }: TrabajoCardProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [fechaPago, setFechaPago] = useState<string>("");
+  const [_fechaPago, setFechaPago] = useState<string>("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [valor, setValor] = useState(0);
@@ -28,7 +28,7 @@ export default function TrabajoCardContratados({ trabajo, tipo }: TrabajoCardPro
   const [actualizado, setActualizado] = useState<Trabajo>(trabajo);
   const [reseniaId, setReseniaId] = useState<number | null>(null);
   const hoyISO = new Date().toISOString().slice(0, 10);
-  const [dateInput, setDateInput] = useState<string>(hoyISO);
+  const [_dateInput, setDateInput] = useState<string>(hoyISO);
 
 
   useEffect(() => {
@@ -38,16 +38,6 @@ export default function TrabajoCardContratados({ trabajo, tipo }: TrabajoCardPro
   useEffect(() => {
     console.log("Trabajo actualizado:", actualizado);
   }, [actualizado]);
-
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value; // "2025-10-29"
-    setDateInput(value);
-    if (!value) return setFechaPago(""); // si está vacío
-    const [year, month, day] = value.split("-"); // ["2025", "10", "29"]
-    const fechaFormateada = `${day}/${month}/${year}`; // "29/10/2025"
-    setFechaPago(fechaFormateada);
-  };
 
   const fechaHoy = useMemo(() => {
     const [year, month, day] = hoyISO.split("-");
@@ -127,10 +117,6 @@ export default function TrabajoCardContratados({ trabajo, tipo }: TrabajoCardPro
       setLoading(false)
     }
   }
-
-  const handleCloseModal = () => {
-    setShowSuccess(false);
-  };
 
   return (
     <div className="container_trabajos_card">

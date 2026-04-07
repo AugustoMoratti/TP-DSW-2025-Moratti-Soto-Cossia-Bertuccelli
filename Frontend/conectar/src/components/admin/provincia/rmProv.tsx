@@ -6,7 +6,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 export default function RmProv() {
   const [provincia, setProvincia] = useState<Provincia[]>([]);
   const [page, setPage] = useState(1);
-  const [error, setError] = useState<string | null>(null);
+  const [_error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [reload, setReload] = useState(0);
 

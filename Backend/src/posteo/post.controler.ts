@@ -104,10 +104,10 @@ async function add(req: Request, res: Response, next: NextFunction) {
     if (typeof user !== 'string') {
       throw new HttpError(400, 'INVALID_INPUT', 'El id del usuario debe ser un string')
     }
-    console.log("imagenUrl =", imagenUrl)
-    if (typeof imagenUrl !== 'string' && imagenUrl !== undefined) {
+
+    /*if (typeof imagenUrl !== 'string' && imagenUrl !== undefined) {
       throw new HttpError(400, 'INVALID_INPUT', 'La url de la imagen debe ser un string')
-    }
+    }*/
     const id = user
     const userEntity = em.getReference(Usuario, id)
     //Uso getReference porque el id sera enviado desde el front utilizando las cookies, no hay forma que no exista
@@ -116,10 +116,14 @@ async function add(req: Request, res: Response, next: NextFunction) {
       throw new HttpError(400, 'INVALID_INPUT', 'El texto del post es obligatorio y debe ser un string')
     }
 
+
+
     const post = new Posteo()
     post.texto = texto
     post.user = userEntity
-    if (imagenUrl !== '') post.imagenUrl = imagenUrl
+    const imagen = req.file ? `/uploads/${req.file.filename}` : post.imagenUrl;
+    post.imagenUrl = imagen;
+    //if (imagenUrl !== '') post.imagenUrl = imagenUrl
 
     em.persist(post)
     await em.flush()
@@ -176,5 +180,5 @@ async function remove(req: Request, res: Response, next: NextFunction) {
 
 
 
-export { sanitizePosteoInput, findAll, findOne, add, findAllForUser, update, remove, getPosteos }
+export { sanitizePosteoInput, findOne, add, findAllForUser, update, remove, getPosteos }
 

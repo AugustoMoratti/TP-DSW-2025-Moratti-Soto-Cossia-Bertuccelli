@@ -69,7 +69,7 @@ export function useLoginAttempts() {
 
   const recordFailedAttempt = () => {
     const now = Date.now();
-    let newCount = (attempts.count || 0) + 1;
+    const newCount = (attempts.count || 0) + 1;
     let blockedUntil = attempts.blockedUntil;
 
     // Si alcanzó el máximo de intentos, bloquear

@@ -12,8 +12,8 @@ const PostPage = () => {
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
 
-  //* useCallback hace que la referencia de una función sea estable entre renders, 
-  //* siempre que sus dependencias no cambien.
+  /* useCallback hace que la referencia de una función sea estable entre renders, 
+  siempre que sus dependencias no cambien.*/
 
   const loadPosteos = useCallback(async () => {
     if (loading || !hasMore) return;
@@ -90,8 +90,8 @@ const PostPage = () => {
           })}
 
           {loading && <div className="loading-container">
-              <div className="spinner"></div>
-            </div>
+            <div className="spinner"></div>
+          </div>
           }
           {!hasMore && <p>No hay más posteos</p>}
         </main>

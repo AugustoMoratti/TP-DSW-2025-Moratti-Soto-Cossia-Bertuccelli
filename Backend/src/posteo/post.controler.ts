@@ -47,38 +47,6 @@ async function getPosteos(req: Request, res: Response) {
   });
 };
 
-
-async function findAll(req: Request, res: Response, next: NextFunction) {
-  const em = orm.em.fork();
-
-  try {
-    const page = Number(req.query.page) || 1;
-    const limit = 10;
-
-    const [posteos, total] = await em.findAndCount(
-      Posteo,
-      {},
-      {
-        orderBy: { fechaCreacion: 'DESC' },
-        limit,
-        offset: (page - 1) * limit
-      }
-    )
-
-    if (posteos.length > 0) {
-      res
-        .status(200)
-        .json({ message: 'Posteos encontrados', data: posteos })
-    } else {
-      res
-        .status(200)
-        .json({ message: 'No hay posteos aun', data: posteos })
-    }
-  } catch (error: any) {
-    next(error)
-  }
-}
-
 //Terminado
 async function findOne(req: Request, res: Response, next: NextFunction) {
   const em = orm.em.fork();

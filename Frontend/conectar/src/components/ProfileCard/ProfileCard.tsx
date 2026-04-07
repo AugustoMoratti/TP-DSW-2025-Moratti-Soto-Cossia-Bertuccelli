@@ -336,8 +336,12 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
           )}
         </div>
       </section>
+
+      <section className="user-posts">
+
+      </section>
     </div>
   );
 };
-//Agregar historial de trabajos para suPerfil con su reseñas
+
 export default ProfileCard;

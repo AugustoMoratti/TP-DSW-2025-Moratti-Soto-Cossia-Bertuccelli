@@ -55,7 +55,7 @@ async function buscarUsuarios(req: Request, res: Response, next: NextFunction) {
         { profesiones: { nombreProfesion: { $like: `%${qParam}%` } } } // ManyToMany
       ]
     }, {
-      populate: ['provincia', 'localidad', 'profesiones', 'trabajos', 'trabajos.resenia'],
+      populate: ['provincia', 'localidad', 'profesiones', 'trabajos', 'trabajos.resenia', 'posteos'],
       limit: 10
     });
     if (usuarios.length === 0) {
@@ -445,4 +445,4 @@ async function unbanUsuario(req: Request, res: Response, next: NextFunction) {
   }
 }
 
-export { findAll, findOne, add, update, remove, sanitizeUsuarioInput, buscarUsuarios, deleteProfesion, banUsuario, unbanUsuario}
+export { findAll, findOne, add, update, remove, sanitizeUsuarioInput, buscarUsuarios, deleteProfesion, banUsuario, unbanUsuario }

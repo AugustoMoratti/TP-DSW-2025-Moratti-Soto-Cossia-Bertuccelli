@@ -8,11 +8,11 @@ import "./userCard.css";
 type UserCardData = Usuario | OtroUsuario;
 
 interface Props {
-  small?: boolean;  
+  small?: boolean;
   usuario?: UserCardData;
 }
 
-export default function UserCard ({ small, usuario: usuarioProp }: Props) {
+export default function UserCard({ small, usuario: usuarioProp }: Props) {
   const { user, loading: userLoading } = useUser();
   const [usuario, setUsuario] = useState<UserCardData | undefined>(usuarioProp);
   const navigate = useNavigate();
@@ -58,10 +58,10 @@ export default function UserCard ({ small, usuario: usuarioProp }: Props) {
   return ( //!AGREGAR HEADER
     <div className={`user-card ${small ? "small" : ""}`}>
       <img
-          src={fotoSrc}
-          alt={"Foto de perfil del usuario"}
-          className={"avatarr"}
-        />
+        src={fotoSrc}
+        alt={"Foto de perfil del usuario"}
+        className={"avatarr"}
+      />
       <div className="user-infoo">
         {usuario ? <h4>{usuario.nombre} {usuario.apellido}</h4> : <h4>Cargando...</h4>}
         {usuario ? <p>{usuario.email}</p> : <p>Cargando...</p>}

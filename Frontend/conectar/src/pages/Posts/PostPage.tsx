@@ -3,11 +3,11 @@ import "./PostPage.css";
 import UserCard from "../../components/userCard/userCard";
 import PostBox from "../../components/post/postBox";
 import Post from "../../components/post/post";
-import type { PosteoType } from "../../interfaces/post.ts";
+import type { Posteo } from "../../interfaces/post.ts";
 
 const PostPage = () => {
 
-  const [posteos, setPosteos] = useState<PosteoType[]>([]);
+  const [posteos, setPosteos] = useState<Posteo[]>([]);
   const [cursor, setCursor] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);

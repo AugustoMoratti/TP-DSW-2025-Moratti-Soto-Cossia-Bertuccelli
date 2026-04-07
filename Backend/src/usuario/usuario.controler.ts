@@ -55,7 +55,7 @@ async function buscarUsuarios(req: Request, res: Response, next: NextFunction) {
         { profesiones: { nombreProfesion: { $like: `%${qParam}%` } } } // ManyToMany
       ]
     }, {
-      populate: ['provincia', 'localidad', 'profesiones', 'trabajos', 'trabajos.resenia', 'posteos'],
+      populate: ['provincia', 'localidad', 'profesiones', 'trabajos', 'trabajos.resenia'],
       limit: 10
     });
     if (usuarios.length === 0) {
@@ -86,7 +86,7 @@ async function findAll(req: Request, res: Response, next: NextFunction) {
 async function findOne(req: Request, res: Response, next: NextFunction) {
   try {
     const id = req.params.id
-    const usuario = await em.findOne(Usuario, { id }, { populate: ['profesiones', 'trabajos', 'trabajos.resenia', 'provincia', 'localidad'] })
+    const usuario = await em.findOne(Usuario, { id }, { populate: ['profesiones', 'trabajos', 'trabajos.resenia', 'provincia', 'localidad', 'posteos'] })
     if (!usuario) {
       throw new HttpError(404, 'NOT_FOUND', 'No se encontró el Usuario')
     }

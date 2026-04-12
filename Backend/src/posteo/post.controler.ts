@@ -99,7 +99,7 @@ async function add(req: Request, res: Response, next: NextFunction) {
   const em = orm.em.fork();
 
   try {
-    const { user, texto, imagenUrl } = req.body.sanitizedInput
+    const { user, texto } = req.body.sanitizedInput
 
     if (typeof user !== 'string') {
       throw new HttpError(400, 'INVALID_INPUT', 'El id del usuario debe ser un string')

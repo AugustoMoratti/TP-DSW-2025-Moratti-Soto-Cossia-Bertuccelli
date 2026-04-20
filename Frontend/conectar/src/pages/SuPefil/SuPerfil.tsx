@@ -30,7 +30,7 @@ const SuPerfil: React.FC = () => {
     })();
   }, [id, navigate]);
 
-  if (loading)     
+  if (loading)
     return (
       <div className="loading-container">
         <div className="spinner"></div>
@@ -61,6 +61,7 @@ const SuPerfil: React.FC = () => {
             tipoPage="suPerfil"
             trabajos={user.trabajos ?? []}
             descripcion={user?.descripcion}
+            posteos={user.posteos}
           />
         </div>
       </main>

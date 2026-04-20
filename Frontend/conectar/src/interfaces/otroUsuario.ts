@@ -1,5 +1,6 @@
 import type { Trabajo } from "./trabajo.ts";
 import type { Profesion } from "./profesion.ts";
+import type { Posteo } from "/.post.ts"
 
 export interface OtroUsuario {
   fotoUrl: string;
@@ -16,4 +17,5 @@ export interface OtroUsuario {
   direccion: string;
   trabajos?: Trabajo[];
   trabajosContratados?: Trabajo[];
+  posteos: Posteo[];
 };

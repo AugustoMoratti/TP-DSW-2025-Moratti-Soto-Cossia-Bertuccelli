@@ -107,13 +107,13 @@ const Perfil: React.FC = () => {
     }
   };
   // ✅ A partir de acá, retornos normales
-    if (userLoading || loadingUsuario) {
-      return (
-        <div className="loading-container">
-          <div className="spinner"></div>
-        </div>
-      );
-    }
+  if (userLoading || loadingUsuario) {
+    return (
+      <div className="loading-container">
+        <div className="spinner"></div>
+      </div>
+    );
+  }
   if (sesionError) return <div>{sesionError}...</div>;
   if (!user) {
     return <Navigate to="/login" replace />;
@@ -166,6 +166,7 @@ const Perfil: React.FC = () => {
               trabajos={usuario.trabajos ?? []}
               descripcion={usuario?.descripcion}
               onUpdateDescripcion={ActDesc}
+              posteos={usuario.posteos}
             />
           )}
         </div>

@@ -11,9 +11,9 @@ h3 {
 }
 
 .foto_perfil {
-  min-height: 80px;
-  min-width: 80px;
-  border-radius: 60%;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
   border: 1px solid #114f5a;
   box-shadow: 0px 0px 10px #466b71;
   object-fit: cover;
@@ -244,14 +244,6 @@ h3 {
   flex-direction: row;
   align-items: center;
   gap: 20px;
-}
-
-.foto_perfil {
-  max-height: 50px;
-  width: auto;
-  border-radius: 60%;
-  border: 1px solid #114f5a;
-  box-shadow: 0px 0px 10px #466b71;
 }
 
 .usuario_info {

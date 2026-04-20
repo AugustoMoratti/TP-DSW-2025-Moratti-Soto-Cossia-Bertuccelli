@@ -16,3 +16,7 @@ export const estrellas = (usuario: Usuario) => {
   return '★'.repeat(estrellasCompletas) + '☆'.repeat(5 - estrellasCompletas);
 
 }
+
+export const estrellas2 = (resenia: number) => {
+  return '★'.repeat(resenia) + '☆'.repeat(5 - resenia);
+}

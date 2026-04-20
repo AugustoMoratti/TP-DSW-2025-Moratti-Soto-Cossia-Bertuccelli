@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { sanitizePosteoInput, findAll, findOne, add, findAllForUser, update, remove, getPosteos } from './post.controler.js'
+import { sanitizePosteoInput, findOne, add, findAllForUser, update, remove, getPosteos } from './post.controler.js'
 
 export const postRouter = Router()
 

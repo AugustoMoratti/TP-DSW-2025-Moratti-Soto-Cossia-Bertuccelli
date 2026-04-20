@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { findAll, findOne, add, update, remove, sanitizeUsuarioInput, buscarUsuarios, addProfesiones, deleteProfesion, banUsuario, unbanUsuario } from './usuario.controler.js'
+import { findAll, findOne, findOne2, add, update, remove, sanitizeUsuarioInput, buscarUsuarios, addProfesiones, deleteProfesion, banUsuario, unbanUsuario } from './usuario.controler.js'
 import { login, register, me, logout } from '../auth/auth.controller.js'
 import { authMiddleware, refreshCookieMiddleware } from '../middleware/authMiddleware.js'
 import { upload } from '../utils/upload.js'
@@ -10,6 +10,7 @@ usuarioRouter.get('/', findAll)
 usuarioRouter.get('/buscar', buscarUsuarios);
 usuarioRouter.get('/me', authMiddleware, refreshCookieMiddleware, me)
 usuarioRouter.get('/:id', findOne)
+usuarioRouter.get('/:id/busquedaCliente', findOne2)
 usuarioRouter.post('/logout', logout)
 usuarioRouter.post('/login', login)
 usuarioRouter.post('/register', sanitizeUsuarioInput, register)

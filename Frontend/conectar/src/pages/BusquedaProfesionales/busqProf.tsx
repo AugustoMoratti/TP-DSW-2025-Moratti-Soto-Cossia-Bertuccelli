@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Header from "../../components/header/header"
+import Header from "../../components/header/header.tsx"
 import type { Usuario } from "../../interfaces/usuario.ts";
 import CardProfesional from "../../components/cardsProfesionales/cardsProf.tsx";
 import "./busqProf.css";
@@ -12,10 +12,10 @@ export default function BusquedaProfesionales() {
   const [usuarios, setUsuarios] = useState<Usuario[]>([]);
   const navigate = useNavigate();
 
-  animate(".container-perfiles", {
+  /*animate(".container-perfiles", {
     opacity: { from: 0, to: 1 },
-    translateY: { from: "7rem", to : 0 },
-  });
+    translateY: { from: "7rem", to: 0 },
+  });*/
 
   const handleBuscarUsuarios = () => {
     if (!query.trim()) return;
@@ -52,8 +52,8 @@ export default function BusquedaProfesionales() {
 
 
         {cargando && <div className="loading-container">
-            <div className="spinner"></div>
-          </div>
+          <div className="spinner"></div>
+        </div>
         }
 
         <div className="container-perfiles">

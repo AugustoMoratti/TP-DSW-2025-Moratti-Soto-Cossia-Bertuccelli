@@ -1,5 +1,6 @@
 import type { Profesion } from "./profesion.ts";
 import type { Trabajo } from "./trabajo.ts";
+import type { Posteo } from "./post.ts";
 //import type { Localidad } from "./localidad.ts"
 //import type { Provincia } from './provincia.ts'
 
@@ -21,5 +22,6 @@ export type ProfileCardProps = {
   trabajos?: Trabajo[];
   descripcion?: string;
   tipoPage: "miPerfil" | "suPerfil";
+  posteos?: Posteo[],
   onUpdateDescripcion?: (desc: string) => Promise<void> | void;
 };

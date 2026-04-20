@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 import type { ProfileCardProps } from "../../interfaces/profilaPropCard";
 import { fetchMe } from "../../services/auth.services.ts";
 import type { Usuario } from "../../interfaces/usuario.ts";
+import { estrellas2 } from "../../utils/reseniaNumber.ts";
+import { busquedaCliente } from "../../utils/cliente.ts";
 
 
 const ProfileCard: React.FC<ProfileCardProps> = ({
@@ -310,15 +312,18 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
 
                       <p>
                         Cliente:{" "}
-                        {trabajo.cliente?.nombre}{" "}
-                        {trabajo.cliente?.apellido}
+                        {trabajo.cliente.nombre}{" "}
+                        {trabajo.cliente.apellido}
                       </p>
 
                       <p>
                         Fecha:{" "}
-                        {trabajo.fechaFinalizado
-                          ? new Date(trabajo.fechaFinalizado).toLocaleDateString()
-                          : "Sin fecha"}
+                        {trabajo.fechaFinalizado}
+                      </p>
+
+                      <p>
+                        Resenia:{" "}
+                        {estrellas2(trabajo.resenia.valor)}
                       </p>
 
                       {index < trabajos!.length - 1 && (

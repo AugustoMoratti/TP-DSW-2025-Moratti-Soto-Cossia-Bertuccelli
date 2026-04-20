@@ -4,6 +4,11 @@ import UserCard from "../../components/userCard/userCard";
 import PostBox from "../../components/post/postBox";
 import Post from "../../components/post/post";
 import type { Posteo } from "../../interfaces/post.ts";
+import Header from "../../components/header/header.tsx";
+import { Button } from "../../components/button/Button.tsx";
+import { useNavigate } from "react-router";
+import { handleLogout } from "../../utils/logout.ts";
+import { useUser } from "../../Hooks/useUser.tsx";
 
 const PostPage = () => {
 
@@ -11,6 +16,10 @@ const PostPage = () => {
   const [cursor, setCursor] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
+  const errorTimerRef = useRef<number | null>(null);
+  const [sesionError, setSesionError] = useState('');
+  const { refreshUser } = useUser();
+  const navigate = useNavigate();
 
   /* useCallback hace que la referencia de una función sea estable entre renders, 
   siempre que sus dependencias no cambien.*/
@@ -63,8 +72,51 @@ const PostPage = () => {
   }, [loading, hasMore, loadPosteos]);
 
 
+  const showError = (msg: string, ms = 5000) => {
+    // limpia timer anterior si existe
+    if (errorTimerRef.current) {
+      window.clearTimeout(errorTimerRef.current);
+      errorTimerRef.current = null;
+    }
+
+    setSesionError(msg);
+
+    // autoocultar error después de ms
+    errorTimerRef.current = window.setTimeout(() => {
+      errorTimerRef.current = null;
+    }, ms);
+  };
+
+
+  const handlerLogout = async () => {
+    try {
+      await handleLogout();
+
+      await refreshUser(); // 🔥 vuelve a consultar /me
+
+      navigate('/login');
+    } catch {
+      showError('Error al cerrar sesión');
+    }
+  };
+
+  if (sesionError) return <div>{sesionError}...</div>;
+
   return (
     <div className="post-page">
+      <Header bgColor="#ffffff" logoSrc="/assets/conect_2_1.png">
+        <Button className="header-btn" onClick={() => navigate("/perfil")}>
+          Mi perfil
+        </Button>
+        <Button className="header-btn" onClick={() => navigate("/busqProfesionales")}>
+          Quiero buscar un profesional
+        </Button>
+        <Button className="header-btn-logout" onClick={() => handlerLogout()}>
+          Cerrar Sesion
+        </Button>
+      </Header>
+
+
       <div className="post-layout">
 
         <aside className="sidebarr">

@@ -6,9 +6,12 @@ export default function ResetPassword() {
   const [params] = useSearchParams();
   const token = params.get("token");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
   const nav = useNavigate();
 
   const reset = async () => {
+    if (loading) return;
+    setLoading(true);
     const res = await fetch("http://localhost:3000/api/auth/reset-password", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -39,8 +42,8 @@ export default function ResetPassword() {
             onChange={e => setPassword(e.target.value)}
           />
 
-          <button className="btn-primaryo" onClick={reset}>
-            Cambiar contraseña
+          <button className="btn-primaryo" onClick={reset} disabled={loading}>
+            {loading ? "Cambiando contraseña" : "Cambiar contraseña"}
           </button>
 
           <p className="info-texto">

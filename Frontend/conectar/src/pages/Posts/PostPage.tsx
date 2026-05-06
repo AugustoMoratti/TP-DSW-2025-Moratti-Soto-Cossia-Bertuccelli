@@ -128,7 +128,7 @@ const PostPage = () => {
         </aside>
 
         <main className="feedd">
-          <PostBox />
+          <PostBox onPostCreated={(newPost) => setPosteos((prev) => [newPost, ...prev])} />
 
           {posteos.map((post, index) => {
             if (index === posteos.length - 1) {

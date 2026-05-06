@@ -3,7 +3,7 @@ import "./cardTrabajo.css"
 import ModalTrabajos from "../Modal-trabajos/Modal.tsx";
 import "../Modal-trabajos/Modal.css"
 import type { FormEvent } from "react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import ModalDetalles from "./ModalDetalles.tsx";
 import ModalExito from "./ModalExito.tsx";
 
@@ -19,11 +19,7 @@ export default function TrabajoCard({ trabajo, tipo }: TrabajoCardProps) {
   const [error, setError] = useState<string | null>(null);
   const [showDetails, setShowDetails] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
-  const [montoActual, setMontoActual] = useState<number | null>(trabajo.montoTotal ?? null);
 
-  useEffect(() => {
-    setMontoActual(trabajo.montoTotal ?? null);
-  }, [montoActual, trabajo.montoTotal]);
 
   const handleMonto = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -44,7 +40,6 @@ export default function TrabajoCard({ trabajo, tipo }: TrabajoCardProps) {
         },
         body: JSON.stringify({ 
           montoTotal: monto,
-          descripcion: trabajo.descripcion
         }),
       });
 
@@ -57,7 +52,6 @@ export default function TrabajoCard({ trabajo, tipo }: TrabajoCardProps) {
       console.log("data trabajos", json)
       const actualizado: Trabajo = json.data;
 
-        // 🔹 Actualizamos el monto del trabajo directamente (esto dispara el useEffect)
         trabajo.montoTotal = actualizado.montoTotal;
         // mostrar modal de éxito
         setShowSuccess(true);
@@ -112,16 +106,6 @@ export default function TrabajoCard({ trabajo, tipo }: TrabajoCardProps) {
                   required
                   className="input_plata"
                   />
-              </label>
-              <label>
-                <p>Que vas a hacer?</p>
-                <input
-                  type="text"
-                  value={trabajo.descripcion}
-                  placeholder="Descripcion del trabajo a realizar"
-                  required
-                  className="textarea_descripcion"
-                />
               </label>
               {error && <p style={{ color: "red", marginTop: 8 }}>{error}</p>}
               <div style={{ marginTop: "10px" }}>

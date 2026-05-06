@@ -29,12 +29,12 @@ Regularidad:
 |Req|Detalle|
 |:-|:-|
 |CRUD simple|1. CRUD Provincia<br/>2. CRUD Profesiones<br/>3. CRUD Admin<br/>4. CRUD Trabajos<br/>|
-|CRUD dependiente|1. CRUD Usuarios *{depende de}* CRUD Provincia<br/>2. CRUD Localidad *{depende de}* CRUD Provincia<br/>3. CRUD Cliente/Profesional *{depende de}* CRUD Usuarios|
-|Listado + detalle|1. Listado de perfiles filtrado por Profesion, Localidad, Provincia Y Valoracion. Muestra Nombre y Valoracion => detalle CRUD Perfil<br/>2. Listado de Profesion. Muestra Nombre => detalle CRUD Profesion <br/>3. Listado de trabajos filtrado por Fecha, Profesional. Muestra trabajos => detalle CUU Trabajo|
+|CRUD dependiente|1. CRUD Usuarios *{depende de}* CRUD Provincia<br/>2. CRUD Localidad *{depende de}* CRUD Provincia<br/>3. CRUD Cliente/Profesional *{depende de}* CRUD Usuarios<br/>4. CRUD Posteos *{depende de}* CRUD Usuarios|
+|Listado + detalle|1. Listado de perfiles filtrado por Profesion, Localidad, Provincia Y Valoracion. Muestra Nombre y Valoracion => detalle CRUD Perfil<br/>2. Listado de Profesion. Muestra Nombre => detalle CRUD Profesion <br/>3. Listado de trabajos filtrado por Fecha, Profesional. Muestra trabajos => detalle CUU Trabajo| <!-- !VER DESPUES -->
 |CUU/Epic|1. Agendar trabajo<br/>2. Aceptar trabajo<br/>3. Reseñar Trabajo<br/>4. Cancelar Trabajo<br/>5. Pagar Trabajo<br/>6. Ver estado de cuotas de pago|
 
 Adicional para Aprobación:
 |Req|Detalle|
 |:-|:-|
-|CRUD |1. CRUD Provincia<br/>2. CRUD Profesiones<br/>3. CRUD Usuarios<br/>4. CRUD Localidad<br/>5. CRUD Admin<br/>6. CRUD Cliente/Profesional|
+|CRUD |1. CRUD Provincia<br/>2. CRUD Profesiones<br/>3. CRUD Usuarios<br/>4. CRUD Localidad<br/>5. CRUD Admin<br/>6. CRUD Cliente/Profesional<br/>7. CRUD Posteos|
 |CUU/Epic|1. Agendar trabajo<br/>2. Aceptar trabajo<br/>3. Reseñar Trabajo<br/>4. Cancelar Trabajo<br/>5. Pagar Trabajo<br/>6. Ver estado de cuotas de pago<br/>7. Solicitar nueva profesion<br/>8. Recuperar contraseña<br/>|

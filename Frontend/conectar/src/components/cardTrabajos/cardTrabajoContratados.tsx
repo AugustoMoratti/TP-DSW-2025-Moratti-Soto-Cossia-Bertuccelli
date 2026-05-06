@@ -8,6 +8,7 @@ import { useState, useMemo, useEffect } from "react";
 import type { FormEvent } from "react";
 import type { Resenia } from "../../interfaces/resenia.ts";
 import ModalExito from "./ModalExito.tsx";
+import ErrorModal from "../ErrorModal/ErrorModal";
 
 interface TrabajoCardProps {
   trabajo: Trabajo;
@@ -46,17 +47,20 @@ export default function TrabajoCardContratados({ trabajo, tipo }: TrabajoCardPro
 
   const handleFinalizarTrabajo = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    setIsOpen(false);
     setError(null);
     setLoading(true);
 
     let resenia: Resenia | undefined;
     try {
-      if (!comentarioResenia || typeof comentarioResenia !== 'string') {
+      if (!comentarioResenia || comentarioResenia.trim().length === 0) {
         throw new Error('La descripción de la reseña es obligatoria');
+      }
+      if (valor === 0) {
+        throw new Error('Debes seleccionar una valoración');
       }
       const res = await fetch(`http://localhost:3000/api/resenia`, {
         method: "POST",
+        credentials: "include",
         headers: {
           "Content-Type": "application/json",
         },
@@ -76,10 +80,11 @@ export default function TrabajoCardContratados({ trabajo, tipo }: TrabajoCardPro
       resenia = data.data as Resenia
       setReseniaId(resenia.id ?? null);
       console.log("Respuesta del servidor:", resenia);
+      setIsOpen(false);
 
     } catch (err: any) {
-      console.error("Error guardando monto:", err);
-      setError(err?.message ?? "Error al guardar la resenia")
+      console.error("Error guardando reseña:", err);
+      setError(err?.message ?? "Error al guardar la reseña")
     } finally {
       setLoading(false)
     }
@@ -125,7 +130,9 @@ export default function TrabajoCardContratados({ trabajo, tipo }: TrabajoCardPro
           <div className="trabajos_info_container_finalizados">
             <p>Profesional : {trabajo.profesional.nombre}, {trabajo.profesional.apellido}</p>
             <p>    </p>
-            <p>Descripcion : {trabajo.descripcion}</p>
+            <p>
+              Descripcion : {trabajo.descripcion ? trabajo.descripcion : "No hay descripción del trabajo"}
+            </p>
             <div style={{ marginLeft: "auto" }}>
               <button className="btn" onClick={() => setShowDetails(true)}>Ver más</button>
             </div>
@@ -139,7 +146,7 @@ export default function TrabajoCardContratados({ trabajo, tipo }: TrabajoCardPro
             <p>Fecha Solicitud : {trabajo.fechaSolicitud}</p>
             <p>Monto Final : ${trabajo.montoTotal}</p>
             {trabajo.montoTotal === undefined || trabajo.montoTotal === null || trabajo.montoTotal === 0 && (
-              <button className="btn_finalizar_trabajo" onClick={() => alert("Aun no hay un monto Final")}>Finalizar Trabajo</button>
+              <button className="btn_finalizar_trabajo" onClick={() => setError("Aun no hay un monto Final")}>Finalizar Trabajo</button>
             )}
             {trabajo.montoTotal !== undefined && trabajo.montoTotal !== null && trabajo.montoTotal !== 0 && (
               <button className="btn_finalizar_trabajo" onClick={() => { setIsOpen(true); setDateInput(hoyISO); setFechaPago(fechaHoy); }}>Finalizar Trabajo</button>
@@ -184,7 +191,11 @@ export default function TrabajoCardContratados({ trabajo, tipo }: TrabajoCardPro
                   style={{ width: "100%", height: "80px", resize: "none" }}
                 />
               </label>
-              {error && <p style={{ color: "red", marginTop: 8 }}>{error}</p>}
+              <ErrorModal
+                message={error || "Error al finalizar el trabajo"}
+                isVisible={!!error}
+                onClose={() => setError(null)}
+              />
               <div style={{ marginTop: "10px" }}>
                 <button className="btn" type="submit" disabled={loading}>Enviar</button>
               </div>

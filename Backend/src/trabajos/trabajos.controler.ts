@@ -30,7 +30,10 @@ function sanitizeTrabajoInput(req: Request, res: Response, next: NextFunction) {
 
 async function findAll(req: Request, res: Response, next: NextFunction) {
   try {
-    const trabajos = await em.find(Trabajo, {}, { populate: ['cliente', 'profesional', 'resenia'] })
+    const trabajos = await em.find(Trabajo, {}, {
+      populate: ['cliente', 'profesional', 'resenia'],
+      fields: ['id', 'descripcion', 'montoTotal', 'fechaSolicitud', 'fechaFinalizado', 'fechaPago', 'cliente', 'profesional', 'resenia'],
+    })
     if (trabajos.length > 0) {
       res
         .status(200)
@@ -57,6 +60,7 @@ async function trabajosFinalizados(req: Request, res: Response, next: NextFuncti
     },
       {
         populate: ['cliente', 'profesional', 'resenia'],
+        fields: ['id', 'descripcion', 'montoTotal', 'fechaSolicitud', 'fechaFinalizado', 'fechaPago', 'cliente', 'profesional', 'resenia'],
         limit,
         offset,
         orderBy: { fechaFinalizado: 'DESC' }
@@ -86,6 +90,7 @@ async function trabajosFinalizadosContratados(req: Request, res: Response, next:
     },
       {
         populate: ['cliente', 'profesional', 'resenia'],
+        fields: ['id', 'descripcion', 'montoTotal', 'fechaSolicitud', 'fechaFinalizado', 'fechaPago', 'cliente', 'profesional', 'resenia'],
         limit,
         offset,
         orderBy: { fechaFinalizado: 'DESC' }
@@ -117,6 +122,7 @@ async function trabajosPendientes(req: Request, res: Response, next: NextFunctio
     },
       {
         populate: ['cliente', 'profesional', 'resenia'],
+        fields: ['id', 'descripcion', 'montoTotal', 'fechaSolicitud', 'fechaFinalizado', 'fechaPago', 'cliente', 'profesional', 'resenia'],
         limit,
         offset
       });
@@ -147,6 +153,7 @@ async function trabajosPendientesContratados(req: Request, res: Response, next: 
     },
       {
         populate: ['cliente', 'profesional', 'resenia'],
+        fields: ['id', 'descripcion', 'montoTotal', 'fechaSolicitud', 'fechaFinalizado', 'fechaPago', 'cliente', 'profesional', 'resenia'],
         limit,
         offset
       });
@@ -186,7 +193,7 @@ async function add(req: Request, res: Response, next: NextFunction) {
       2) No debe haber fechaFinalizado sin haber resenia
       3) montoTotal, cliente, profesional, fechaSolicitud son campos obligatorios.
     */
-    const { montoTotal, cliente, profesional, fechaPago, fechaSolicitud, fechaFinalizado, resenia } = req.body;
+    const { montoTotal, cliente, profesional, fechaPago, fechaSolicitud, fechaFinalizado, resenia, descripcion } = req.body.sanitizedInput || req.body;
     console.log("Req body = ", req.body)
 
     if (!cliente || !profesional || !fechaSolicitud) {
@@ -207,6 +214,10 @@ async function add(req: Request, res: Response, next: NextFunction) {
     trabajo.cliente = em.getReference(Usuario, cliente);
     trabajo.profesional = em.getReference(Usuario, profesional);
     trabajo.fechaSolicitud = fechaSolicitud;
+
+    if (descripcion) {
+      trabajo.descripcion = descripcion;
+    }
 
     if (fechaFinalizado) {
       trabajo.fechaFinalizado = fechaFinalizado

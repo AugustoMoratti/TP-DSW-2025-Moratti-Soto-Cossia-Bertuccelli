@@ -21,7 +21,9 @@ import dotenv from "dotenv";
 
 const PORT = process.env.PORT || 3000;
 
-dotenv.config();
+dotenv.config({
+  path: process.cwd() + "/.env",
+});
 
 const app = express();
 app.use(

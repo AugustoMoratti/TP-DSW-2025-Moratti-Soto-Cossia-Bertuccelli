@@ -6,7 +6,7 @@ import type { ProfileCardProps } from "../../interfaces/profilaPropCard";
 import { fetchMe } from "../../services/auth.services.ts";
 import type { Usuario } from "../../interfaces/usuario.ts";
 import { estrellas2 } from "../../utils/reseniaNumber.ts";
-import { busquedaCliente } from "../../utils/cliente.ts";
+import ErrorModal from "../ErrorModal/ErrorModal";
 
 
 const ProfileCard: React.FC<ProfileCardProps> = ({
@@ -31,6 +31,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showModal, setShowModal] = useState(false);
+  const [trabajoDesc, setTrabajoDesc] = useState(""); // Nueva estado para la descripción del trabajo
 
   const navigate = useNavigate();
 
@@ -59,6 +60,10 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
   const localidadNombre = localidad ?? "";
 
   const handleEmpezarTrabajo = async () => {
+    if (!trabajoDesc.trim()) {
+      setError("Debes ingresar una descripción del trabajo");
+      return;
+    }
     setError(null);
     setLoading(true);
 
@@ -77,7 +82,8 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
           cliente: idCliente,
           profesional: idProfesional,
           fechaSolicitud: fechaHoy,
-          montoTotal: 0
+          montoTotal: 0,
+          descripcion: trabajoDesc.trim()
         })
       });
 
@@ -152,11 +158,12 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
           </div>
 
         </div>
-        {error && (
-          <div style={{ color: "red", marginTop: "10px", textAlign: "center" }}>
-            {error}
-          </div>
-        )}
+        <ErrorModal
+          message={error || "Error al finalizar el trabajo"}
+          isVisible={!!error}
+          onClose={() => setError(null)}
+          duration={5000}
+        />
         <div className={styles.botones_verticales}>
           {tipoPage === "miPerfil" ? (
             <button
@@ -167,14 +174,26 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
               Modificar Perfil
             </button>
           ) : (
-            <button
-              type="button"
-              className={styles.btn_direccion}
-              onClick={handleEmpezarTrabajo}
-              disabled={loading}
-            >
-              Contratar
-            </button>
+            <>
+            {/*Ahora la descripción del trabajo se ingresa al momento de contratar, no es parte del perfil del profesional*/}
+              <label> 
+                <textarea
+                  value={trabajoDesc}
+                  onChange={(e) => setTrabajoDesc(e.target.value)}
+                  placeholder="Describe el trabajo que necesitas..."
+                  required
+                  className={styles.contratar}
+                />
+              </label>
+              <button
+                type="button"
+                className={styles.btn_direccion1}
+                onClick={handleEmpezarTrabajo}
+                disabled={loading}
+              >
+                Contratar
+              </button>
+            </>
           )}
 
           {showModal && (
@@ -323,7 +342,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
 
                       <p>
                         Resenia:{" "}
-                        {estrellas2(trabajo.resenia.valor)}
+                        {trabajo.resenia ? estrellas2(trabajo.resenia.valor) : "Sin reseña"}
                       </p>
 
                       {index < trabajos!.length - 1 && (

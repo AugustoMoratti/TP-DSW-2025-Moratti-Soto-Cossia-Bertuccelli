@@ -49,7 +49,7 @@ export default function ErrorModal({
           </button>
         </div>
         <div className="error-modal-body">
-          <p>{message}</p>
+          <p style={{ color: "red" }}>{message}</p>
         </div>
       </div>
     </div>

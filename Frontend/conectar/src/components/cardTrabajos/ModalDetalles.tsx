@@ -29,6 +29,7 @@ const ModalDetalles: React.FC<Props> = ({ trabajo, isOpen, onClose, isSuccess = 
         <p><strong>Profesional:</strong> {trabajo.profesional?.nombre} {trabajo.profesional?.apellido}</p>
         <p><strong>Cliente:</strong> {trabajo.cliente?.nombre} {trabajo.cliente?.apellido}</p>
         <p><strong>Descripción del trabajo por el profesional:</strong> {trabajo.descripcion ?? "—"}</p>
+        <p><strong>Valor de la reseña del cliente:</strong> {trabajo.resenia?.valor ?? "—"}</p>
         <p><strong>Reseña del cliente:</strong> {trabajo.resenia?.descripcion ?? "—"}</p>
         <p><strong>Monto total:</strong> ${trabajo.montoTotal ?? 0}</p>
         <p><strong>Fecha solicitud:</strong> {trabajo.fechaSolicitud ?? "—"}</p>

@@ -72,6 +72,16 @@ h3 {
   transform: scale(1.05);
 }
 
+.contratar{
+  width: 50vh;
+  min-height: 100px;
+  padding: 0.8rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  resize: none;
+  line-height: 1.6;
+  overflow: hidden;
+}
 
 .avatar {
   width: 80px;
@@ -95,6 +105,7 @@ h3 {
   background: #114f5a;
   color: #fff;
   border: none;
+  width: 50vh;
   padding: 0.5rem 1rem;
   border-radius: 12px;
   cursor: pointer;
@@ -205,7 +216,6 @@ h3 {
   margin-Top: 0.5rem 0;
 }
 
-
 .slide_section {
   overflow: hidden;
   transition: max-height 0.5s ease-in-out;
@@ -301,6 +311,17 @@ h3 {
   cursor: pointer;
   transition: background 0.2s, color 0.2s, border 0.2s;
   width: 150px;
+}
+
+.btn_direccion1 {
+  background: #114f5a;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, border 0.2s;
+  width: 50vh;
 }
 
 .btn_direccion:hover {

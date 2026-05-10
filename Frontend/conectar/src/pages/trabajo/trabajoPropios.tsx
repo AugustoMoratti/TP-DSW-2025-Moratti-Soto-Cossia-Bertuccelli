@@ -52,7 +52,12 @@ export default function TrabajosPropios() {
           <h2 className="titulo_trabajos">TRABAJOS PENDIENTES</h2>
           <hr></hr>
           {trabajosPendientes.length > 0 ? (trabajosPendientes.map(trabajo => (
-            <TrabajoCard key={trabajo.id} trabajo={trabajo} tipo={"pendientes"} />
+            <TrabajoCard
+              key={trabajo.id}
+              trabajo={trabajo}
+              tipo={"pendientes"}
+              onCancel={(id) => setTrabajosPendientes((prev) => prev.filter((t) => t.id !== id))}
+            />
           ))) : (
             <p className="parrafo_aviso">No hay trabajos pendientes</p>
           )}

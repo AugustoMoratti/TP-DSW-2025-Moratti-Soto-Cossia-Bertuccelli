@@ -60,6 +60,13 @@ input[type="number"] {
     -moz-appearance: textfield; /* Oculta las flechas */
 }
 
+.trabajo_botones_pendientes {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
 .btn_agregar_monto {
   height: 40px;
   border-radius: 20px;
@@ -75,6 +82,21 @@ input[type="number"] {
   background-color: #114f5aca;
   color: #fff;
   border: 1px solid #114f5a;
+}
+
+.btn_cancelar_trabajo {
+  height: 40px;
+  border-radius: 20px;
+  padding: 0px 15px;
+  background-color: #e64545;
+  color: #fff;
+  border: 1px solid #c12c2c;
+  transition: 0.2s;
+  cursor: pointer;
+}
+
+.btn_cancelar_trabajo:hover {
+  background-color: #c12c2c;
 }
 
 /* Tablets (≤ 1024px) */

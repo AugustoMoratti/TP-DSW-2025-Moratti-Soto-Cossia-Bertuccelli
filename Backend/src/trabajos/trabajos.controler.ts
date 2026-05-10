@@ -296,9 +296,15 @@ async function update(req: Request, res: Response, next: NextFunction) { //NO UT
 async function remove(req: Request, res: Response, next: NextFunction) {
   try {
     const id = Number.parseInt(req.params.id)
+    const motivo = String(req.query.motivo || req.body.motivo || "").trim();
+    if (!motivo) {
+      throw new HttpError(400, 'INVALID_INPUT', 'El motivo de cancelación es obligatorio');
+    }
+
     const trabajo = em.getReference(Trabajo, id)
+    console.log(`Trabajo cancelado ${id}: ${motivo}`);
     await em.removeAndFlush(trabajo)
-    res.status(200).send({ message: 'Trabajo deleted' })
+    res.status(200).send({ message: 'Trabajo cancelado', motivo })
   } catch (error: any) {
     next(error)
   }

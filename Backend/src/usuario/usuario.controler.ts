@@ -459,5 +459,31 @@ async function unbanUsuario(req: Request, res: Response, next: NextFunction) {
     next(error);
   }
 }
+/*
+async function seguir(req: Request, res: Response, next: NextFunction) {
+  try {
+    const { id } = req.params;
+    const { seguidoId } = req.body;
 
+    const usuario = await em.findOne(Usuario, { id });
+    const seguido = await em.findOne(Usuario, { id: seguidoId });
+
+    if (!usuario || !seguido) {
+      throw new HttpError(404, 'NOT_FOUND', 'Usuario no encontrado');
+    }
+
+    usuario.seguidos.add(seguido);
+    seguido.seguidores.add(usuario);
+
+    await em.flush();
+
+    res.status(200).json({
+      message: 'Usuario seguido correctamente'
+    });
+
+  } catch (error) {
+    next(error);
+  }
+}
+*/
 export { findAll, findOne, findOne2, add, update, remove, sanitizeUsuarioInput, buscarUsuarios, deleteProfesion, banUsuario, unbanUsuario }

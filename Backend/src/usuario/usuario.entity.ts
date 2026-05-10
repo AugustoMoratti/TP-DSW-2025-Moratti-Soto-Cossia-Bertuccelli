@@ -84,4 +84,10 @@ export class Usuario extends BaseEntity2 {
   @Property({ nullable: true })
   fechaBaneo?: Date;
 
+  @Property({ nullable: true })
+  seguidores: Usuario[] = [];
+
+  @Property({ nullable: true })
+  seguidos: Usuario[] = [];
+
 }

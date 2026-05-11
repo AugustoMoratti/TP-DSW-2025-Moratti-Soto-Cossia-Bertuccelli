@@ -55,7 +55,7 @@ export default function UserCard({ small, usuario: usuarioProp }: Props) {
   const usuarioConDescripcion = usuario as UserCardData & { descripcion?: string };
   const fotoSrc = usuario?.fotoUrl ? `http://localhost:3000${usuario.fotoUrl}` : "/default-avatar.png";
 
-  return ( //!AGREGAR HEADER
+  return ( 
     <div className={`user-card ${small ? "small" : ""}`}>
       <img
         src={fotoSrc}

@@ -8,5 +8,6 @@ export interface Posteo {
     apellido: string;
     localidad: string;
     provincia: string;
+    fotoUrl?: string;
   };
 };

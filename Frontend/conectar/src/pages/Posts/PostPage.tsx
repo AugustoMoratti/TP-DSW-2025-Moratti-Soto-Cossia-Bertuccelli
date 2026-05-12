@@ -18,11 +18,8 @@ const PostPage = () => {
   const [hasMore, setHasMore] = useState(true);
   const errorTimerRef = useRef<number | null>(null);
   const [sesionError, setSesionError] = useState('');
-  const { refreshUser } = useUser();
+  const { refreshUser, user } = useUser();
   const navigate = useNavigate();
-
-  /* useCallback hace que la referencia de una función sea estable entre renders, 
-  siempre que sus dependencias no cambien.*/
 
   const loadPosteos = useCallback(async () => {
     if (loading || !hasMore) return;
@@ -73,7 +70,6 @@ const PostPage = () => {
 
 
   const showError = (msg: string, ms = 5000) => {
-    // limpia timer anterior si existe
     if (errorTimerRef.current) {
       window.clearTimeout(errorTimerRef.current);
       errorTimerRef.current = null;
@@ -81,7 +77,6 @@ const PostPage = () => {
 
     setSesionError(msg);
 
-    // autoocultar error después de ms
     errorTimerRef.current = window.setTimeout(() => {
       errorTimerRef.current = null;
     }, ms);
@@ -92,7 +87,7 @@ const PostPage = () => {
     try {
       await handleLogout();
 
-      await refreshUser(); // 🔥 vuelve a consultar /me
+      await refreshUser(); 
 
       navigate('/login');
     } catch {
@@ -134,11 +129,11 @@ const PostPage = () => {
             if (index === posteos.length - 1) {
               return (
                 <div ref={lastPostRef} key={post.id}>
-                  <Post post={post} />
+                  <Post post={post} userId={user?.id ?? ''} />
                 </div>
               );
             }
-            return <Post key={post.id} post={post} />;
+            return <Post key={post.id} post={post} userId={user?.id ?? ''} />;
           })}
 
           {loading && <div className="loading-container">

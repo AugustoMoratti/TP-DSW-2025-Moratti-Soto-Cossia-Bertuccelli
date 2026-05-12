@@ -146,20 +146,62 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
+  min-width: 36px;
   height: 36px;
-  padding: 8px;
+  padding: 8px 10px;
+  gap: 6px;
   border: none;
   border-radius: 12px;
   background-color: rgba(255, 255, 255, 0.95);
   color: #114f5a;
   cursor: pointer;
   transition: transform 0.1s ease, background-color 0.2s ease;
+  white-space: nowrap;
+}
+
+.post-action-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: color 0.2s, transform 0.1s;
+}
+
+.post-action-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.post-action-btn--active {
+  color: #1976d2;
+}
+
+.post-action-btn--active svg {
+  transform: scale(1.15);
+}
+
+.post-action-btn--active-dislike {
+  color: #e53935;
+}
+
+.post-action-btn--active-dislike svg {
+  transform: scale(1.15);
+}
+
+.post-action-count {
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1;
 }
 
 .post-action-btn:hover {
   transform: translateY(-1px);
   background-color: #f0f7f8;
+}
+
+.post-action-count {
+  font-size: 0.85rem;
+  line-height: 1;
+  color: #114f5a;
 }
 
 .post-action-btn--warn {

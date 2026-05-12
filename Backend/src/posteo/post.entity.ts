@@ -12,6 +12,12 @@ export class Posteo extends BaseEntity2 {
     @Property({ length: 1500, nullable: false })
     texto!: string;
 
+    @Property({ nullable: true })
+    likes!: number;
+
+    @Property({ nullable: true })
+    dislikes!: number;
+
     @Property({ onCreate: () => new Date() })
     @Index() // Lo usamos para el infinity scroll
     fechaCreacion!: Date;
